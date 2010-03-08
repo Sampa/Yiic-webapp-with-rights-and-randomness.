@@ -1,5 +1,6 @@
 <?php
 
+
 class MessagesController extends Controller
 {
 	private $_model;

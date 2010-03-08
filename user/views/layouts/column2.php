@@ -6,6 +6,7 @@
 		</div><!-- content -->
 	</div>
 	<div class="span-5 last">
+		<?php if(!empty($this->menu)) : ?>
 		<div id="sidebar">
 		<?php
 			$this->beginWidget('zii.widgets.CPortlet', array(
@@ -18,6 +19,7 @@
 			$this->endWidget();
 		?>
 		</div><!-- sidebar -->
+		<?php endif; ?>
 	</div>
 </div>
 <?php $this->endContent(); ?>

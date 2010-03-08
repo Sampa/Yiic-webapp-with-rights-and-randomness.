@@ -238,7 +238,7 @@ class Relation extends CWidget
 				$dataArray[$obj->{$this->foreignFieldPk}] = $value;
 			}	
 		}
-		if(!is_array($dataArray))
+		if(!isset($dataArray) || !is_array($dataArray))
 			$dataArray = array();
 
 		return $dataArray;
