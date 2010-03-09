@@ -22,7 +22,8 @@ class DefaultController extends Controller
 	{
 		return array(
 			array('allow',  
-				'actions'=>array('index','view','registration','captcha','login', 'recovery', 'activation'),
+				'actions'=>array('index','view','registration',
+					'captcha','login', 'recovery', 'activation'),
 				'users'=>array('*'),
 			),
 			array('allow', 
@@ -198,13 +199,13 @@ class DefaultController extends Controller
 							$find->password = Yii::app()->User->encrypting($form2->password);
 							$find->activkey=Yii::app()->User->encrypting(microtime().$form2->password);
 							$find->save();
-							Yii::app()->user->setFlash('loginMessage',Yii::t("user", "New password is saved."));
+							Yii::app()->user->setFlash('loginMessage',Yii::t("UserModule.user", "New password is saved."));
 							$this->redirect(array("user/login"));
 						}
 					} 
 					$this->render('/user/changepassword',array('form'=>$form2));
 				} else {
-					Yii::app()->user->setFlash('recoveryMessage',Yii::t("user", "Incorrect recovery link."));
+					Yii::app()->user->setFlash('recoveryMessage',Yii::t("UserModule.user", "Incorrect recovery link."));
 					$this->redirect('http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery'));
 				}
 			} else {
@@ -215,7 +216,7 @@ class DefaultController extends Controller
 						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 						$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery',array("activkey" => $user->activkey, "email" => $user->email));
 						mail($user->email,"You have requested the password recovery site ".Yii::app()->name,"You have requested the password recovery site ".Yii::app()->name.". To receive a new password, go to $activation_url.",$headers);
-						Yii::app()->user->setFlash('recoveryMessage',Yii::t("user", "Please check your email. An instructions was sent to your email address."));
+						Yii::app()->user->setFlash('recoveryMessage',Yii::t("UserModule.user", "Please check your email. Instructions have been sent to your email address."));
 						$this->refresh();
 					}
 				}
@@ -255,7 +256,7 @@ class DefaultController extends Controller
 			if($model->validate()&&$profile->validate()) {
 				$model->save();
 				$profile->save();
-				Yii::app()->user->setFlash('profileMessage',Yii::t("user", "Changes is saved."));
+				Yii::app()->user->setFlash('profileMessage',Yii::t("UserModule.user", "Changes are saved."));
 				$this->redirect(array('profile','id'=>$model->id));
 			}
 		}

@@ -2,7 +2,7 @@
 
 class UserModule extends CWebModule
 {
-	public $version = '0.2';
+	public $version = '0.4';
 	public $debug = false;
 	public $usersTable = "users";
 	public $messagesTable = "messages";

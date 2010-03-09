@@ -11,6 +11,8 @@ return array(
 	'User belongs to Roles' => 'Benutzer gehört diesen Rollen an',
 	'Login' => 'Login',
 	'Users: ' => 'Benutzer: ',
+	'Changes are saved' => 'Änderungen wurden gespeichert.',
+	'Please check your email. Instructions have been sent to your email address.' => 'Bitte schauen Sie in ihr Postfach. Weitere Anweisungen wurden per E-Mail geschickt.',
 	'Description' => 'Beschreibung',
 	'Create Role' => 'Rolle anlegen',
 	'List Roles' => 'Rollen anzeigen',

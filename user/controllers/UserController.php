@@ -76,7 +76,7 @@ class UserController extends Controller
 					$model->verifyPassword = Yii::app()->User->encrypting($model->verifyPassword);
 					$model->activkey = Yii::app()->User->encrypting(microtime().$model->password);
 					$model->createtime = time();
-					$model->lastvisit = ((Yii::app()->User->autoLogin && Yii::app()->User->loginNotActiv) ? time() : 0);
+					$model->lastvisit = ((Yii::app()->User->autoLogin && Yii::app()->User->loginNotActive) ? time() : 0);
 					$model->superuser = 0;
 					$model->status = 0;
 
@@ -92,7 +92,7 @@ class UserController extends Controller
 								"activkey" => $model->activkey, "email" => $model->email)
 							);
 						mail($model->email,"You registered from " . Yii::app()->name,"Please activate you account go to $activation_url.",$headers);
-						if (Yii::app()->User->loginNotActiv) 
+						if (Yii::app()->User->loginNotActive) 
 						{
 							if (Yii::app()->User->autoLogin) 
 							{
@@ -352,7 +352,8 @@ class UserController extends Controller
 		{
 			$model->attributes=$_POST['User'];
 			$model->roles = $_POST['User']['Role'];
-			$profile->attributes=$_POST['Profile'];
+			if(isset($_POST['Profile'])) 
+				$profile->attributes=$_POST['Profile'];
 
 			if($model->validate() && $profile->validate()) {
 				$old_password = User::model()->findByPk($model->id);

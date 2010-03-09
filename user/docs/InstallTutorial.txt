@@ -16,14 +16,14 @@ Create a Web application under '/var/www/testdrive'? [Yes|No] Yes
 Your application has been created successfully under /var/www/testdrive.
 
 2.) Extract the Yii User Management Module under the modules/ directory
-of your new Web Application. Replace the _0.2 with the latest Version
+of your new Web Application. Replace the _0.4 with the latest Version
 available.
 
 $ cd testdrive/protected
 $ mkdir modules
 $ cd modules
-$ wget http://www.yiiframework.com/extension/yii-user-management/files/User_Management_Module_0.2.tar.bz2
-$ tar xvf User_Management_Module_0.2.tar.bz2
+$ wget http://www.yiiframework.com/extension/yii-user-management/files/User_Management_Module_0.4.tar.bz2
+$ tar xvf User_Management_Module_0.4.tar.bz2
 
 3.) Add the Module to your Application Configuration
 
@@ -62,13 +62,15 @@ Authentification Method in the Application Configuration:
       'class' => 'User',
     ),
 
-	 'import'=>array(  
+ 'import'=>array(  
   'application.modules.user.models.*',
+	[...]
     
-This tells our Web Application that is should access the Model 'User'
-when Yii:app()->User is run. Please note the difference of 'User'
-and 'user' here. 'User' represents our ActiveRecord-Model while 'user'
-represents the user configuration.
+This tells our Web Application that is can access the Model 'User'
+even when not in the modules/user environment. This is needed for calling
+User::hasRole() in your Code. It is wise to let this line occur as the first
+included Model, so you can overwrite the User-Model with your own in your
+Application models/ Directory if you like.
 
 If you want, you can set the loginUrl of the Application to this:
 
@@ -119,7 +121,7 @@ the Application Configuration. If you want, you can add a
 'language' => 'de',
 
 in your config/main.php to get German Language strings. French and
-Spain are available, but not every string is translated at the time
+Russian are available, but not every string is translated at the time
 of this writing.
 
 Role Management:
@@ -147,7 +149,7 @@ in a later Version.
 available Application Configuration Parameters:
 
  Version number of the Module:
-$version = '0.2'; 
+$version = '0.4';
 
  Whether the Module is in Debug mode.
 $debug = false; 

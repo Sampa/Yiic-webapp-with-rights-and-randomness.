@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 
 <?php
 $this->menu = array(
-array('label'=>Yii::t('UserModule.user', 'List Roles'), 'url'=>array('index')),
 array('label'=>Yii::t('UserModule.user', 'Create Role'), 'url'=>array('create')),
+array('label'=>Yii::t('UserModule.user', 'List Roles'), 'url'=>array('index')),
 array('label'=>Yii::t('UserModule.user', 'Manage Users'), 'url'=>array('user/admin')),
 );
 ?>
@@ -20,12 +20,14 @@ array('label'=>Yii::t('UserModule.user', 'Manage Users'), 'url'=>array('user/adm
 		array(
 			'name' => 'id',
 			'type'=>'raw',
-			'value' => 'CHtml::link(CHtml::encode($data->id),array("role/update","id"=>$data->id))',
+			'value' => 'CHtml::link(CHtml::encode($data->id),
+				array("role/update","id"=>$data->id))',
 		),
 		array(
 			'name' => 'title',
 			'type'=>'raw',
-			'value' => 'CHtml::link(CHtml::encode($data->title),array("role/view","id"=>$data->id))',
+			'value' => 'CHtml::link(CHtml::encode($data->title),
+				array("role/view","id"=>$data->id))',
 		),
 		array(
 			'class'=>'CButtonColumn',

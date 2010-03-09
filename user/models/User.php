@@ -11,7 +11,7 @@ class User extends CActiveRecord
 	public $email;
 	public $hash='md5';
 	public $sendActivationMail=true;
-	public $loginNotActiv=false;
+	public $loginNotActive=false;
 	public $autoLogin=true;
 	public $registrationUrl = array("user/registration");
 	public $recoveryUrl = array("user/recovery");
@@ -32,9 +32,12 @@ class User extends CActiveRecord
 
 	public function tableName()
 	{
-		return Yii::app()->controller->module->usersTable
-			? Yii::app()->controller->module->usersTable
-			: 'users';
+		if(is_object(Yii::app()->controller->module)) {
+			return Yii::app()->controller->module->usersTable
+				? Yii::app()->controller->module->usersTable
+				: 'users';
+		} else
+			return 'users';
 	}
 
 	public function rules()
@@ -63,12 +66,17 @@ class User extends CActiveRecord
 
 	public function hasRole($role)
 	{
+		if(!is_array($role))
+			$role = array ($role);
+
 		$user = CActiveRecord::model('User')->findByPk(Yii::app()->user->getId());
-		foreach($user->roles as $obj) 
-		{
-			if($role == $obj->title)
-				return true;
-		}
+		if(isset($user->roles)) 
+			foreach($user->roles as $roleobj) 
+			{
+				if(in_array($roleobj->title, $role) ||
+				  in_array($roleobj->id, $role))
+					return true;
+			}
 		return false;
 	}
 
@@ -109,7 +117,7 @@ class User extends CActiveRecord
             'active'=>array(
                 'condition'=>'status='.self::STATUS_ACTIVE,
             ),
-            'notactvie'=>array(
+            'notactive'=>array(
                 'condition'=>'status='.self::STATUS_NOACTIVE,
             ),
             'banned'=>array(

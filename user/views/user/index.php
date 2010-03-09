@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 $this->menu = array(
 array('label'=>Yii::t('UserModule.user', 'Create User'), 'url'=>array('create')),
 array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin')),
+array('label'=>Yii::t('UserModule.user', 'Manage Role'), 'url'=>array('role/admin')),
 array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profileField/admin')),
 );
 ?>
