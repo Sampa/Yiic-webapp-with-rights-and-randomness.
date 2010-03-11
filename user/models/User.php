@@ -1,15 +1,16 @@
 <?php
 
-class User extends CActiveRecord
+class User extends CActiveRecord implements IBehavior
 {
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
 	
+	public static $hash='md5';
+
 	public $username;
 	public $password;
 	public $email;
-	public $hash='md5';
 	public $sendActivationMail=true;
 	public $loginNotActive=false;
 	public $autoLogin=true;
@@ -18,6 +19,31 @@ class User extends CActiveRecord
 	public $loginUrl = array("user/login");
 	public $returnUrl = array("user/profile");
 	public $returnLogoutUrl = array("user/login");
+	
+	// IBehavior
+	private $_enabled;
+	private $_owner;
+	
+	public function attach($owner)
+	{
+		$this->_owner=$owner;
+	}
+	
+	public function detach($owner)
+	{
+		$this->_owner=null;
+	}
+	
+	public function getEnabled()
+	{
+		return $this->_enabled;
+	}
+
+	public function setEnabled($value)
+	{
+		$this->_enabled=$value;
+	}
+	// IBehavior end
 	
 	public static function model($className=__CLASS__)
 	{
@@ -32,12 +58,9 @@ class User extends CActiveRecord
 
 	public function tableName()
 	{
-		if(is_object(Yii::app()->controller->module)) {
-			return (Yii::app()->controller->module->usersTable)
-				? Yii::app()->controller->module->usersTable
-				: 'users';
-		} else
-			return 'users';
+		return isset(Yii::app()->controller->module->usersTable)
+			? Yii::app()->controller->module->usersTable
+			: 'users';
 	}
 
 	public function rules()
@@ -102,7 +125,7 @@ class User extends CActiveRecord
 	 * @return hash string.
 	 */
 	public static function encrypting($string="") {
-		$hash = Yii::app()->User->hash;
+		$hash = self::$hash;
 		if ($hash=="md5")
 			return md5($string);
 		if ($hash=="sha1")

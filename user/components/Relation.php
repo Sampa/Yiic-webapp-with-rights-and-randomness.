@@ -269,7 +269,7 @@ class Relation extends CWidget
 			$objects[$id] = $this->_foreignModel->findByPk($id); 
 		}
 
-		return $objects ? $objects : array();
+		return isset($objects) ? $objects : array();
 	}
 
 	/**

@@ -55,13 +55,13 @@ $this->menu=array(
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('createtime')); ?>
 </th>
-    <td><?php echo date("d.m.Y H:i:s",$model->createtime); ?>
+    <td><?php echo date(UserModule::$dateFormat,$model->createtime); ?>
 </td>
 </tr>
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('lastvisit')); ?>
 </th>
-    <td><?php echo date("d.m.Y H:i:s",$model->lastvisit); ?>
+    <td><?php echo date(UserModule::$dateFormat,$model->lastvisit); ?>
 </td>
 </tr>
 </table>

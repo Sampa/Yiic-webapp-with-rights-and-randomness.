@@ -20,7 +20,7 @@ array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array(
 <h1><?php echo Yii::t("UserModule.user", 'View User').' "'.$model->username.'"'; ?></h1>
 
 <?php 
-if(Yii::app()->User->isAdmin()) {
+if(Yii::app()->user->isAdmin()) {
 	$attributes = array(
 		'id',
 		'username',
@@ -43,11 +43,11 @@ if(Yii::app()->User->isAdmin()) {
 		'activkey',
 		array(
 			'name' => 'createtime',
-			'value' => date("d.m.Y H:i:s",$model->createtime),
+			'value' => date(UserModule::$dateFormat,$model->createtime),
 		),
 		array(
 			'name' => 'lastvisit',
-			'value' => date("d.m.Y H:i:s",$model->lastvisit),
+			'value' => date(UserModule::$dateFormat,$model->lastvisit),
 		),
 		array(
 			'name' => 'superuser',
@@ -83,11 +83,11 @@ if(Yii::app()->User->isAdmin()) {
 	array_push($attributes,
 		array(
 			'name' => 'createtime',
-			'value' => date("d.m.Y H:i:s",$model->createtime),
+			'value' => date(UserModule::$dateFormat,$model->createtime),
 		),
 		array(
 			'name' => 'lastvisit',
-			'value' => date("d.m.Y H:i:s",$model->lastvisit),
+			'value' => date(UserModule::$dateFormat,$model->lastvisit),
 		)
 	);
 			

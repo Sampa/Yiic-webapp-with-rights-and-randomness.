@@ -12,12 +12,12 @@ $this->menu = array(
 		array(
 			'label'=>Yii::t('UserModule.user', 'Manage User'), 
 			'url'=>array('admin'),
-			'visible' => Yii::app()->User->isAdmin()
+			'visible' => Yii::app()->user->isAdmin()
 			), 
 		array(
 			'label'=> Yii::t('UserModule.user', 'List User'),
 			'url'=>array('list'),
-			'visible' => !Yii::app()->User->isAdmin()
+			'visible' => !Yii::app()->user->isAdmin()
 			), 
 		array(
 			'label'=> Yii::t('UserModule.user', 'Profile'),

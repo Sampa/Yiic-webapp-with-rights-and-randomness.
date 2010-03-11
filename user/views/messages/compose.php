@@ -30,7 +30,7 @@ $this->menu = array(
 		'Select multiple recipients by holding the CTRL key'); ?> </p>
 
 <?php 
-		echo CHtml::ListBox('Messages[to_user_id]', $_GET['to_user_id'], CHtml::listData( 
+		echo CHtml::ListBox('Messages[to_user_id]', isset($_GET['to_user_id'])?$_GET['to_user_id']:"", CHtml::listData( 
 		User::model()->active()->findAll(), 'id', 'username'),
 			array('multiple' => 'multiple'));
 		?>

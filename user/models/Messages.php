@@ -9,7 +9,7 @@ class Messages extends CActiveRecord
 
 	public function tableName()
 	{
-		return ( Yii::app()->controller->module->messagesTable )
+		return isset( Yii::app()->controller->module->messagesTable )
 			? Yii::app()->controller->module->messagesTable
 			: 'messages';
 	}

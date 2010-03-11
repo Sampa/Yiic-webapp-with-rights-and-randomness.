@@ -10,7 +10,7 @@ class Role extends CActiveRecord
 	public function tableName()
 	{
 		if(is_object(Yii::app()->controller->module)) {
-			return (Yii::app()->controller->module->rolesTable)
+			return isset(Yii::app()->controller->module->rolesTable)
 				? Yii::app()->controller->module->rolesTable
 				: 'roles';
 		} else

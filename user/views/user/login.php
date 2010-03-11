@@ -39,7 +39,7 @@ $this->breadcrumbs=array(
 	
 	<div class="row">
 		<p class="hint">
-		<?php echo CHtml::link(Yii::t("UserModule.user", "Registration"),Yii::app()->User->registrationUrl); ?> | <?php echo CHtml::link(Yii::t("UserModule.user", "Lost Password?"),Yii::app()->User->recoveryUrl); ?>
+		<?php echo CHtml::link(Yii::t("UserModule.user", "Registration"),Yii::app()->user->registrationUrl); ?> | <?php echo CHtml::link(Yii::t("UserModule.user", "Lost Password?"),Yii::app()->user->recoveryUrl); ?>
 		</p>
 	</div>
 	

@@ -34,7 +34,7 @@ class UserController extends Controller
 					'users'=>array('@'),
 					),
 				array('allow', 
-					'actions'=>array('admin','delete','create','update'),
+					'actions'=>array('admin','delete','create','update', 'list'),
 					'users'=>User::getAdmins(),
 					),
 				array('deny',  // deny all other users
@@ -56,9 +56,12 @@ class UserController extends Controller
 
 	public function actionIndex()
 	{
-		$this->actionLogin();
-
-
+		if(Yii::app()->user->isGuest) 
+			$this->actionLogin();
+		else if(Yii::app()->user->isAdmin())
+			$this->actionList();
+		else 
+			$this->actionProfile(); 
 	}
 
 	public function actionRegistration() 
@@ -78,11 +81,11 @@ class UserController extends Controller
 				if($model->validate()&&$profile->validate())
 				{
 					$sourcePassword = $model->password;
-					$model->password = Yii::app()->User->encrypting($model->password);
-					$model->verifyPassword = Yii::app()->User->encrypting($model->verifyPassword);
-					$model->activkey = Yii::app()->User->encrypting(microtime().$model->password);
+					$model->password = Yii::app()->user->encrypting($model->password);
+					$model->verifyPassword = Yii::app()->user->encrypting($model->verifyPassword);
+					$model->activkey = Yii::app()->user->encrypting(microtime().$model->password);
 					$model->createtime = time();
-					$model->lastvisit = ((Yii::app()->User->autoLogin && Yii::app()->User->loginNotActive) ? time() : 0);
+					$model->lastvisit = ((Yii::app()->user->autoLogin && Yii::app()->user->loginNotActive) ? time() : 0);
 					$model->superuser = 0;
 					$model->status = 0;
 
@@ -97,14 +100,14 @@ class UserController extends Controller
 										"activkey" => $model->activkey, "email" => $model->email)
 									);
 						mail($model->email,"You registered from " . Yii::app()->name,"Please activate your account go to $activation_url.",$headers);
-						if (Yii::app()->User->loginNotActive) 
+						if (Yii::app()->user->loginNotActive) 
 						{
-							if (Yii::app()->User->autoLogin) 
+							if (Yii::app()->user->autoLogin) 
 							{
 								$identity = new UserIdentity($model->username,$sourcePassword);
 								$identity->authenticate();
 								Yii::app()->user->login($identity, 0);
-								$this->redirect(Yii::app()->User->returnUrl);
+								$this->redirect(Yii::app()->user->returnUrl);
 							} 
 							else 
 							{
@@ -150,7 +153,7 @@ class UserController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->User->returnLogoutUrl);
+		$this->redirect(Yii::app()->user->returnLogoutUrl);
 
 	}
 
@@ -169,7 +172,7 @@ class UserController extends Controller
 			} 
 			elseif($find->activkey==$activkey) 
 			{
-				$find->activkey = Yii::app()->User->encrypting(microtime());
+				$find->activkey = Yii::app()->user->encrypting(microtime());
 				$find->status = 1;
 				$find->save();
 				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Your account has been activated.")));
@@ -199,8 +202,8 @@ class UserController extends Controller
 				if($form->validate()) 
 				{
 					$new_password = User::model()->findByPk(Yii::app()->user->id);
-					$new_password->password = Yii::app()->User->encrypting($form->password);
-					$new_password->activkey=Yii::app()->User->encrypting(microtime().$form->password);
+					$new_password->password = Yii::app()->user->encrypting($form->password);
+					$new_password->activkey=Yii::app()->user->encrypting(microtime().$form->password);
 					$new_password->save();
 					Yii::app()->user->setFlash('profileMessage',Yii::t("user", "Your new password has been saved."));
 					$this->redirect(array("user/profile"));
@@ -219,14 +222,13 @@ class UserController extends Controller
 		$form = new UserRecoveryForm;
 		if ($uid = Yii::app()->user->id) 
 		{
-			$this->redirect(Yii::app()->User->returnUrl);
+			$this->redirect(Yii::app()->user->returnUrl);
 		} 
 		else 
 		{
-			$email = $_GET['email'];
-			$activkey = $_GET['activkey'];
-			if ($email && $activkey) 
-			{
+			if (isset($_GET['email']) && isset($_GET['activkey'])) {
+				$email = $_GET['email'];
+				$activkey = $_GET['activkey'];
 				$form2 = new UserChangePassword;
 				$find = User::model()->findByAttributes(array('email'=>$email));
 				if($find->activkey==$activkey) 
@@ -236,8 +238,8 @@ class UserController extends Controller
 						$form2->attributes=$_POST['UserChangePassword'];
 						if($form2->validate()) 
 						{
-							$find->password = Yii::app()->User->encrypting($form2->password);
-							$find->activkey=Yii::app()->User->encrypting(microtime().$form2->password);
+							$find->password = Yii::app()->user->encrypting($form2->password);
+							$find->activkey=Yii::app()->user->encrypting(microtime().$form2->password);
 							$find->save();
 							Yii::app()->user->setFlash('loginMessage',Yii::t("user", "Your new password has been saved."));
 							$this->redirect(array("user/login"));
@@ -352,13 +354,13 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
-			$model->activkey=Yii::app()->User->encrypting(microtime().$model->password);
+			$model->activkey=Yii::app()->user->encrypting(microtime().$model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
-			$profile->attributes=$_POST['Profile'];
+			if( isset($_POST['Profile']) ) $profile->attributes=$_POST['Profile'];
 			$profile->user_id=0;
 			if($model->validate()&&$profile->validate()) {
-				$model->password=Yii::app()->User->encrypting($model->password);
+				$model->password=Yii::app()->user->encrypting($model->password);
 				if($model->save()) {
 					$profile->user_id=$model->id;
 					$profile->save();
@@ -390,8 +392,8 @@ class UserController extends Controller
 			if($model->validate() && $profile->validate()) {
 				$old_password = User::model()->findByPk($model->id);
 				if ($old_password->password!=$model->password) {
-					$model->password=Yii::app()->User->encrypting($model->password);
-					$model->activkey=Yii::app()->User->encrypting(microtime().$model->password);
+					$model->password=Yii::app()->user->encrypting($model->password);
+					$model->activkey=Yii::app()->user->encrypting(microtime().$model->password);
 				}
 				$model->save();
 				$profile->save();
@@ -424,6 +426,15 @@ class UserController extends Controller
 
 	public function actionList()
 	{
+		$dataProvider=new CActiveDataProvider('User', array(
+			'pagination'=>array(
+					'pageSize'=>self::PAGE_SIZE,
+					),
+		));
+
+		$this->render('/user/index',array(
+					'dataProvider'=>$dataProvider,
+					));
 	}
 
 	public function actionAdmin()

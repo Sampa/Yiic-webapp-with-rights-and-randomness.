@@ -26,11 +26,11 @@ array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array(
 		),
 		array(
 			'name' => 'createtime',
-			'value' => 'date("d.m.Y H:i:s",$data->createtime)',
+			'value' => 'date(UserModule::$dateFormat,$data->createtime)',
 		),
 		array(
 			'name' => 'lastvisit',
-			'value' => 'date("d.m.Y H:i:s",$data->lastvisit)',
+			'value' => 'date(UserModule::$dateFormat,$data->lastvisit)',
 		),
 	),
 )); ?>

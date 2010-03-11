@@ -2,6 +2,8 @@
 
 class UserModule extends CWebModule
 {
+	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
+	
 	public $version = '0.4';
 	public $debug = false;
 	public $usersTable = "users";

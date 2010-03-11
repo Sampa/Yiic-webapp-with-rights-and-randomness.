@@ -11,9 +11,9 @@ $this->breadcrumbs=array(
 <?php
 
 $this->menu=array(
-	array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin'), 'visible' => Yii::app()->User->isAdmin()),
-	array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin'), 'visible' => Yii::app()->User->isAdmin()),
-	array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index'), 'visible' => !Yii::app()->User->isAdmin()),
+	array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin'), 'visible' => Yii::app()->user->isAdmin()),
+	array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin'), 'visible' => Yii::app()->user->isAdmin()),
+	array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index'), 'visible' => !Yii::app()->user->isAdmin()),
 	array('label'=>Yii::t('UserModule.user', 'Profile'), 'url'=>array('profile')),
 	array('label'=>Yii::t('UserModule.user', 'Edit'), 'url'=>array('edit')),
 	array('label'=>Yii::t('UserModule.user', 'Change password'), 'url'=>array('changepassword')),
@@ -69,13 +69,13 @@ $this->menu=array(
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('createtime')); ?>
 </th>
-    <td><?php echo date("d.m.Y H:i:s",$model->createtime); ?>
+    <td><?php echo date(UserModule::$dateFormat,$model->createtime); ?>
 </td>
 </tr>
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('lastvisit')); ?>
 </th>
-    <td><?php echo date("d.m.Y H:i:s",$model->lastvisit); ?>
+    <td><?php echo date(UserModule::$dateFormat,$model->lastvisit); ?>
 </td>
 </tr>
 <tr>

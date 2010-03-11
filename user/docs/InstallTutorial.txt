@@ -58,8 +58,11 @@ the User Management Module, we need to overwrite the default
 Authentification Method in the Application Configuration:
 
  'components'=>array(
- 'User'=>array(
-      'class' => 'User',
+ 'user'=>array(
+      'class' => 'application.modules.user.components.WebUser',
+      'allowAutoLogin'=>true,
+      'loginUrl' => array('/user/user/login'),
+      [...]
     ),
 
  'import'=>array(  
@@ -72,13 +75,6 @@ User::hasRole() in your Code. It is wise to let this line occur as the first
 included Model, so you can overwrite the User-Model with your own in your
 Application models/ Directory if you like.
 
-If you want, you can set the loginUrl of the Application to this:
-
- 'user'=>array(
-      'allowAutoLogin'=>true,
-      'loginUrl' => array('/user/user/login'),
-    ),
-    
  At the time of this writing you have to copy over the UserIdentity.php
  of the User Module to your Application components directory manually.
  This will be automated in later versions. Do it like this:
@@ -88,9 +84,13 @@ If you want, you can set the loginUrl of the Application to this:
 6.) Run the User Management Installer in your Web-Browser:
 
 http://localhost/testdrive/index.php/user/install
+or
+http://localhost/testdrive/index.php?r=user/install
+
+depending on your setup.
 
 7.) Now the Installer of the User Management Module should appear.
-To the right you can set up alternating Table Names used by the
+To the right you can set up alternate Table Names used by the
 Module. In most cases this is not needed and you can ignore this 
 Settings. If you do change this, be sure to set up the correct table
 Names in your Application Configuration, so the User Module can access
@@ -98,7 +98,7 @@ them.
 
 Click 'Install Module':
 
-Congratulations, your User management Module Installation Succeded !
+Congratulations, you have installed the User Management Module !
 
 8.) Click on "Administrate your Users (use admin/admin)".
 Now you are taken to the default Front-End Login-Screen of the User 
