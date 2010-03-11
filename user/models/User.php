@@ -33,7 +33,7 @@ class User extends CActiveRecord
 	public function tableName()
 	{
 		if(is_object(Yii::app()->controller->module)) {
-			return Yii::app()->controller->module->usersTable
+			return (Yii::app()->controller->module->usersTable)
 				? Yii::app()->controller->module->usersTable
 				: 'users';
 		} else
@@ -64,7 +64,7 @@ class User extends CActiveRecord
 		);
 	}
 
-	public function hasRole($role)
+	public static function hasRole($role)
 	{
 		if(!is_array($role))
 			$role = array ($role);
@@ -101,7 +101,7 @@ class User extends CActiveRecord
 	/**
 	 * @return hash string.
 	 */
-	public function encrypting($string="") {
+	public static function encrypting($string="") {
 		$hash = Yii::app()->User->hash;
 		if ($hash=="md5")
 			return md5($string);
@@ -129,7 +129,7 @@ class User extends CActiveRecord
         );
     }
 	
-	public function itemAlias($type,$code=NULL) {
+	public static function itemAlias($type,$code=NULL) {
 		$_items = array(
 			'UserStatus' => array(
 				'0' => Yii::t("UserModule.user", 'Not active'),
@@ -151,7 +151,7 @@ class User extends CActiveRecord
 	 * Return admins.
 	 * @return array syperusers names
 	 */	
-	public function getAdmins() {
+	public static function getAdmins() {
 		$admins = User::model()->active()->superuser()->findAll();
 		$return_name = array();
 		foreach ($admins as $admin)
@@ -163,7 +163,7 @@ class User extends CActiveRecord
 	 * Return admin status.
 	 * @return boolean
 	 */
-	public function isAdmin() {
+	public static function isAdmin() {
 		if(Yii::app()->user->isGuest)
 			return false;
 		else {

@@ -6,6 +6,9 @@
  Since version 0.8 it is able to handle BELONGS_TO, HAS_ONE and 
  MANY_MANY Relations. The Relation type is detected automatically from
  the Model 'relations()' section. 
+
+ Since 1.0RC it can render HAS_MANY and MANY_MANY selections as a Checkbox
+ with the 'style' => 'checkbox' option
  
  The following example shows how to use Relation with a minimal config, 
  assuming we have a Model "Post" and "User", where one User belongs 
@@ -63,9 +66,10 @@
  			$this->redirect(array(urldecode($_GET['returnTo'])));
  	</pre>
  			
-  Using the 'style' option we can configure if we want our widget to be
-	rendered as a 'Selectbox' (default) or a 'ListBox'. When we have a MANY_MANY
-	Relation, we can define the 'twopane' view to render two panes.
+  Using the 'style' option we can configure how our Widget gets rendered.
+  The following styles are available:
+  Selectbox (default), Listbox, Checkbox and in MANY_MANY relations 'twopane'
+	The style is case insensitive so one can use SelectBox or selectbox.
  
   Use the option 'createAction' if the action to add additional foreign Model
   options differs from 'create'.
@@ -120,7 +124,7 @@ class Relation extends CWidget
 	public $addButtonString = "+";
 	public $returnLink;
 	public $delimiter = " | ";
-	public $style = "SelectBox";
+	public $style = "selectbox";
 	public $createAction = "create";
 	public $htmlOptions = array();
 	public $parentObjects = 0;
@@ -328,20 +332,26 @@ class Relation extends CWidget
 	}
 
 	public function renderBelongsToSelection() {
-		if($this->style == "SelectBox") 
+		if(strcasecmp($this->style, "selectbox") == 0) 
 			echo CHtml::ActiveDropDownList($this->_Model, 
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
-		else if($this->style == "ListBox") 
+		else if(strcasecmp($this->style, "ListBox") == 0) 
 			echo CHtml::ActiveListBox($this->_Model, 
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
+		else if(strcasecmp($this->style, "CheckBox") == 0) 
+			echo CHtml::ActiveCheckBoxList($this->_Model, 
+			$this->field, 
+			$this->getRelatedData(), 
+			$this->htmlOptions);
+
 	}
 
 	public function renderManyManySelection() {
-		if($this->style == 'twopane') 
+		if(strcasecmp($this->style, 'twopane') == 0) 
 			$this->renderTwoPaneSelection();
 		else
 			$this->renderOnePaneSelection();

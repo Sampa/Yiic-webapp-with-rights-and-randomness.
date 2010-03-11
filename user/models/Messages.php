@@ -9,8 +9,8 @@ class Messages extends CActiveRecord
 
 	public function tableName()
 	{
-		return Yii::app()->controller->module->messagesTable 
-			? Yii::app()->controller->module->messagesTable 
+		return ( Yii::app()->controller->module->messagesTable )
+			? Yii::app()->controller->module->messagesTable
 			: 'messages';
 	}
 
@@ -24,7 +24,7 @@ class Messages extends CActiveRecord
 				);
 	}
 
-	public function getTitle() 
+	public function getTitle()
 	{
 		if($this->message_read)
 			return $this->title;
@@ -35,20 +35,20 @@ class Messages extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'from_user' => array(self::BELONGS_TO, 'User', 'from_user_id'),
-			'to_user' => array(self::BELONGS_TO, 'User', 'to_user_id'),
-		);
+				'from_user' => array(self::BELONGS_TO, 'User', 'from_user_id'),
+				'to_user' => array(self::BELONGS_TO, 'User', 'to_user_id'),
+				);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
-			'id' => '#',
-			'from_user_id' => Yii::t('UserModule.user', 'From'),
-			'to_user_id' => Yii::t('UserModule.user', 'To'),
-			'title' => Yii::t('UserModule.user', 'Title'),
-			'message' => Yii::t('UserModule.user', 'Message'),
-		);
+				'id' => '#',
+				'from_user_id' => Yii::t('UserModule.user', 'From'),
+				'to_user_id' => Yii::t('UserModule.user', 'To'),
+				'title' => Yii::t('UserModule.user', 'Title'),
+				'message' => Yii::t('UserModule.user', 'Message'),
+				);
 	}
 
 }

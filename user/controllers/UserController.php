@@ -1,64 +1,70 @@
 <?php
 
+Yii::import('application.modules.user.models.*');
+
 class UserController extends Controller
 {
-	const PAGE_SIZE=20;
-
+	const PAGE_SIZE=10;
 	private $_model;
 
-
-	public function beforeAction() 
+	public function beforeAction($action) 
 	{
 		$this->layout = Yii::app()->controller->module->layout;
 		return true;
 	}
 
+
 	public function filters()
 	{
 		return array(
-			'accessControl',
-		);
+				'accessControl', 
+				);
 	}
 
 	public function accessRules()
 	{
 		return array(
-				array('allow', 
-					'actions'=>array('index','view','registration','captcha','login', 'recovery', 'activation'),
+				array('allow',  
+					'actions'=>array('index','view','registration',
+						'captcha','login', 'recovery', 'activation'),
 					'users'=>array('*'),
-				     ),
-				array('allow',
+					),
+				array('allow', 
 					'actions'=>array('profile', 'edit', 'logout', 'changepassword'),
 					'users'=>array('@'),
-				     ),
+					),
 				array('allow', 
-					'actions'=>array('admin','delete','create','update','assign', 'revoke'),
+					'actions'=>array('admin','delete','create','update'),
 					'users'=>User::getAdmins(),
-				     ),
+					),
 				array('deny',  // deny all other users
 					'users'=>array('*'),
-				     ),
-			    );
+					),
+				);
 	}
 
 
 	public function actions()
 	{
 		return array(
-			'captcha'=>array(
-				'class'=>'CCaptchaAction',
-				'backColor'=>0xFFFFFF,
-			),
-		);
+				'captcha'=>array(
+					'class'=>'CCaptchaAction',
+					'backColor'=>0xFFFFFF,
+					),
+				);
 	}
 
-	/**
-	 * Registration user
-	 */
+	public function actionIndex()
+	{
+		$this->actionLogin();
+
+
+	}
+
 	public function actionRegistration() 
 	{
 		$model = new RegistrationForm;
-		$profile=new Profile;
+		$profile = new Profile;
 		if ($uid = Yii::app()->user->id) 
 		{
 			$this->redirect(Yii::app()->homeUrl);
@@ -82,16 +88,15 @@ class UserController extends Controller
 
 					if ($model->save()) 
 					{
-						//$model->save();
 						$profile->user_id = $model->id;
 						$profile->save();
 						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 						$activation_url = 'http://' .
 							$_SERVER['HTTP_HOST'] .
 							$this->createUrl('user/activation',array(
-								"activkey" => $model->activkey, "email" => $model->email)
-							);
-						mail($model->email,"You registered from " . Yii::app()->name,"Please activate you account go to $activation_url.",$headers);
+										"activkey" => $model->activkey, "email" => $model->email)
+									);
+						mail($model->email,"You registered from " . Yii::app()->name,"Please activate your account go to $activation_url.",$headers);
 						if (Yii::app()->User->loginNotActive) 
 						{
 							if (Yii::app()->User->autoLogin) 
@@ -103,13 +108,15 @@ class UserController extends Controller
 							} 
 							else 
 							{
-								Yii::app()->user->setFlash('registration',Yii::t("user", "Thank you for your registration. Please check your email or login."));
+								Yii::app()->user->setFlash('registration',Yii::t("user",
+											"Thank you for your registration. Please check your email or login."));
 								$this->refresh();
 							}
 						} 
 						else 
 						{
-							Yii::app()->user->setFlash('registration',Yii::t("user", "Thank you for your registration. Please check your email."));
+							Yii::app()->user->setFlash('registration',Yii::t("user",
+										"Thank you for your registration. Please check your email."));
 							$this->refresh();
 						}
 					}
@@ -120,9 +127,6 @@ class UserController extends Controller
 	}
 
 
-	/**
-	 * Displays the login page
-	 */
 	public function actionLogin()
 	{
 		$model=new UserLogin;
@@ -143,19 +147,18 @@ class UserController extends Controller
 		$this->render('/user/login',array('model'=>$model,));
 	}
 
-	/**
-	 * Logout the current user and redirect to returnLogoutUrl.
-	 */
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->User->returnLogoutUrl);
+
 	}
 
 	/**
 	 * Activation of an user account
 	 */
-	public function actionActivation () {
+	public function actionActivation () 
+	{
 		$email = $_GET['email'];
 		$activkey = $_GET['activkey'];
 		if ($email&&$activkey) {
@@ -163,27 +166,30 @@ class UserController extends Controller
 			if ($find->status) 
 			{
 				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Your account has been activated.")));
-			} elseif($find->activkey==$activkey) 
+			} 
+			elseif($find->activkey==$activkey) 
 			{
 				$find->activkey = Yii::app()->User->encrypting(microtime());
 				$find->status = 1;
 				$find->save();
 				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Your account has been activated.")));
-			} else 
+			}
+			else 
 			{
 				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Incorrect activation URL.")));
 			}
-		} else 
-			{
-				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Incorrect activation URL.")));
-			}
+		}
+		else 
+		{
+			$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Incorrect activation URL.")));
+		}
+
 	}
 
 	/**
 	 * Change password
 	 */
-	public function actionChangepassword() 
-	{
+	public function actionChangepassword() {
 		$form = new UserChangePassword;
 		if ($uid = Yii::app()->user->id) 
 		{
@@ -202,11 +208,12 @@ class UserController extends Controller
 			} 
 			$this->render('/user/changepassword',array('form'=>$form));
 		}
+
 	}
 
 
 	/**
-	 * Recovery of a password
+	 * Recover password
 	 */
 	public function actionRecovery () {
 		$form = new UserRecoveryForm;
@@ -218,13 +225,17 @@ class UserController extends Controller
 		{
 			$email = $_GET['email'];
 			$activkey = $_GET['activkey'];
-			if ($email && $activkey) {
+			if ($email && $activkey) 
+			{
 				$form2 = new UserChangePassword;
 				$find = User::model()->findByAttributes(array('email'=>$email));
-				if($find->activkey==$activkey) {
-					if(isset($_POST['UserChangePassword'])) {
+				if($find->activkey==$activkey) 
+				{
+					if(isset($_POST['UserChangePassword'])) 
+					{
 						$form2->attributes=$_POST['UserChangePassword'];
-						if($form2->validate()) {
+						if($form2->validate()) 
+						{
 							$find->password = Yii::app()->User->encrypting($form2->password);
 							$find->activkey=Yii::app()->User->encrypting(microtime().$form2->password);
 							$find->save();
@@ -233,14 +244,20 @@ class UserController extends Controller
 						}
 					} 
 					$this->render('/user/changepassword',array('form'=>$form2));
-				} else {
+				}
+				else
+				{
 					Yii::app()->user->setFlash('recoveryMessage',Yii::t("user", "Incorrect recovery link."));
 					$this->redirect('http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery'));
 				}
-			} else {
-				if(isset($_POST['UserRecoveryForm'])) {
+			}
+			else
+			{
+				if(isset($_POST['UserRecoveryForm'])) 
+				{
 					$form->attributes=$_POST['UserRecoveryForm'];
-					if($form->validate()) {
+					if($form->validate()) 
+					{
 						$user = User::model()->findbyPk($form->user_id);
 						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 						$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery',array("activkey" => $user->activkey, "email" => $user->email));
@@ -254,33 +271,40 @@ class UserController extends Controller
 		}
 	}
 
+	public function actionAssign() 
+	{
+		Relation::handleAjaxRequest($_POST);
+	}
+
+
 	public function actionProfile()
 	{
 		// Display my own profile:
-		if(!isset($_GET['id'])) {
-			if (Yii::app()->user->id) {
-				$model = $this->loadUser($uid = Yii::app()->user->id);
+		if(!isset($_GET['id'])) 
+		{
+			if (Yii::app()->user->id) 
+			{
+				$model = $this->loadUser(Yii::app()->user->id);
 				$this->render('/user/myprofile',array(
-					'model'=>$model,
-					'profile'=>$model->profile,
-				));
+							'model'=>$model,
+							'profile'=>$model->profile,
+							));
 			}
 		} 
 		else 
 		{ // Display a foreign profile:
 			$model = $this->loadUser($uid = $_GET['id']);
 			$this->render('/user/foreignprofile',array(
-				'model'=>$model,
-				'profile'=>$model->profile,
-			));
+						'model'=>$model,
+						'profile'=>$model->profile,
+						));
 		}
+
 	}
 
-	public function actionAssign() 
-	{
-		Relation::handleAjaxRequest($_POST);
-	}
-
+	/**
+	 * Edits a User.
+	 */
 	public function actionEdit()
 	{
 		$model=User::model()->findByPk(Yii::app()->user->id);
@@ -301,19 +325,26 @@ class UserController extends Controller
 		}
 
 		$this->render('/user/profile-edit',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
+					'model'=>$model,
+					'profile'=>$profile,
+					));
+
 	}
 
+	/**
+	 * Displays a User
+	 */
 	public function actionView()
 	{
-		$model = $this->loadModel();
+		$model = $this->loadUser();
 		$this->render('/user/view',array(
-			'model'=>$model,
-		));
+					'model'=>$model,
+					));
 	}
 
+	/**
+	 * Creates a new User.
+	 */
 	public function actionCreate()
 	{
 		$model=new User;
@@ -337,9 +368,10 @@ class UserController extends Controller
 		}
 
 		$this->render('/user/create',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
+					'model'=>$model,
+					'profile'=>$profile,
+					));
+
 	}
 
 	public function actionUpdate()
@@ -366,14 +398,16 @@ class UserController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
-
 		$this->render('/user/update',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
+					'model'=>$model,
+					'profile'=>$profile,
+					));
 	}
 
 
+	/**
+	 * Deletes a User
+	 */
 	public function actionDelete()
 	{
 		if(Yii::app()->request->isPostRequest)
@@ -385,56 +419,42 @@ class UserController extends Controller
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+
 	}
 
-	public function actionIndex()
+	public function actionList()
 	{
-		$dataProvider=new CActiveDataProvider('User', array(
-			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
-			),
-		));
-
-		$this->render('/user/index',array(
-			'dataProvider'=>$dataProvider,
-		));
 	}
 
 	public function actionAdmin()
 	{
 		$dataProvider=new CActiveDataProvider('User', array(
-			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
-			),
-		));
+					'pagination'=>array(
+						'pageSize'=>self::PAGE_SIZE,
+						),
+					));
 
 		$this->render('/user/admin',array(
-			'dataProvider'=>$dataProvider,
-		));
+					'dataProvider'=>$dataProvider,
+					));
+
 	}
 
-	public function loadModel()
+	/**
+	 * Loads the User Object instance
+	 */
+	public function loadUser($uid = 0)
 	{
-		if($this->_model===null)
+		if($this->_model === null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=User::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
+				$this->_model = User::model()->findByPk($_GET['id']);
+			if($uid != 0)
+				$this->_model = User::model()->findByPk($uid);
+			if($this->_model === null)
+				throw new CHttpException(404,'The requested User does not exist.');
 		}
 		return $this->_model;
 	}
 
-
-	public function loadUser($id=null)
-	{
-		if($this->_model===null)
-		{
-			if($id!==null || isset($_GET['id']))
-				$this->_model=User::model()->findbyPk($id!==null ? $id : $_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
-	}
 }
