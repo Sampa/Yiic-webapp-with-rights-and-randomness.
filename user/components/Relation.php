@@ -337,13 +337,13 @@ class Relation extends CWidget
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
-		else if(strcasecmp($this->style, "ListBox") == 0) 
+		else if(strcasecmp($this->style, "listbox") == 0)
 			echo CHtml::ActiveListBox($this->_Model, 
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
-		else if(strcasecmp($this->style, "CheckBox") == 0) 
-			echo CHtml::ActiveCheckBoxList($this->_Model, 
+		else if(strcasecmp($this->style, "checkbox") == 0)
+			echo CHtml::ActiveCheckBoxList($this->_Model,
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
@@ -353,8 +353,21 @@ class Relation extends CWidget
 	public function renderManyManySelection() {
 		if(strcasecmp($this->style, 'twopane') == 0) 
 			$this->renderTwoPaneSelection();
-		else
+		else if(strcasecmp($this->style, 'checkbox') == 0)
+			$this->renderCheckBoxListSelection();
+		  else
 			$this->renderOnePaneSelection();
+	}
+
+
+	public function renderCheckBoxListSelection()
+	{
+		$keys =	array_keys($this->getAssignedObjects());
+
+		echo CHtml::CheckBoxList($this->getListBoxName(),
+					$keys,
+					$this->getRelatedData());
+
 	}
 
 

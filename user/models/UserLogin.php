@@ -3,7 +3,7 @@
 /**
  * LoginForm class.
  * LoginForm is the data structure for keeping
- * user login form data. It is used by the 'login' action of 'SiteController'.
+ * user login form data. It is used by the 'login' action of 'UserController'.
  */
 class UserLogin extends CFormModel
 {
@@ -28,15 +28,19 @@ class UserLogin extends CFormModel
 		);
 	}
 
-	/**
-	 * Declares attribute labels.
-	 */
 	public function attributeLabels()
 	{
+	if(Yii::app()->controller->module->loginType == 0)
+		$username = Yii::t("UserModule.user", "username");
+	else if(Yii::app()->controller->module->loginType == 1)
+		$username = Yii::t("UserModule.user", "email address");
+	else if(Yii::app()->controller->module->loginType == 2)
+		$username = Yii::t("UserModule.user", "username or email");
+
 		return array(
-			'rememberMe'=>Yii::t("UserModule.user", "Remember me next time"),
-			'username'=>Yii::t("UserModule.user", "username or email"),
+			'username'=>$username,
 			'password'=>Yii::t("UserModule.user", "password"),
+			'rememberMe'=>Yii::t("UserModule.user", "Remember me next time"),
 		);
 	}
 

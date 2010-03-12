@@ -1,33 +1,46 @@
 <?php
 
-Yii::import('application.modules.user.models.*');
-
 class UserIdentity extends CUserIdentity
 {
 	private $id;
 	const ERROR_EMAIL_INVALID=3;
-	const ERROR_STATUS_NOTACTIV=4;
-	const ERROR_STATUS_BAN=5;
+	const ERROR_STATUS_NOTACTIVE=4;
+	const ERROR_STATUS_BANNED=5;
 
 	public function authenticate()
 	{
-		if (strpos($this->username,"@")) {
-			$user=User::model()->findByAttributes(array('email'=>$this->username));
-		} else {
-			$user=User::model()->findByAttributes(array('username'=>$this->username));
+		$loginType = Yii::app()->controller->module->loginType; 
+
+		if ($loginType == 0) 
+		{
+			$user = User::model()->findByAttributes(array('username'=>$this->username));
 		}
+		else if ($loginType == 1) 
+		{
+			$user = User::model()->findByAttributes(array('email'=>$this->username));
+		}
+		else if ($loginType == 2) 
+		{
+			$user=User::model()->findByAttributes(array('username'=>$this->username));
+			if(!is_object($user)) 
+				$user=User::model()->findByAttributes(array('email'=>$this->username));
+		}
+
 		if($user===null)
-			if (strpos($this->username,"@")) {
+			if ($logintype == 1) 
+			{
 				$this->errorCode=self::ERROR_EMAIL_INVALID;
-			} else {
+			}
+			else 
+			{
 				$this->errorCode=self::ERROR_USERNAME_INVALID;
 			}
 		else if(User::encrypting($this->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-		else if($user->status==0&&Yii::app()->user->loginNotActive==false)
-			$this->errorCode=self::ERROR_STATUS_NOTACTIV;
+		else if($user->status == 0 && Yii::app()->user->loginNotActive==false)
+			$this->errorCode=self::ERROR_STATUS_NOTACTIVE;
 		else if($user->status==-1)
-			$this->errorCode=self::ERROR_STATUS_BAN;
+			$this->errorCode=self::ERROR_STATUS_BANNED;
 		else {
 			$this->id=$user->id;
 			$this->setState('id', $user->id);
@@ -36,10 +49,10 @@ class UserIdentity extends CUserIdentity
 		}
 		return !$this->errorCode;
 	}
-    
-    /**
-    * @return integer the ID of the user record
-    */
+
+	/**
+	 * @return integer the ID of the user record
+	 */
 	public function getId()
 	{
 		return $this->id;

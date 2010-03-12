@@ -12,21 +12,13 @@ class ProfileField extends CActiveRecord
 		return parent::model($className);
 	}
 
-	/**
-	 * @return string the associated database table name
-	 */
 	public function tableName()
 	{
 		return Yii::app()->controller->module->profileFieldsTable;
 	}
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
 		return array(
 			array('varname, title, field_type', 'required'),
 			array('varname', 'match', 'pattern' => '/^[a-z_0-9]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (a-z)")),
@@ -37,20 +29,11 @@ class ProfileField extends CActiveRecord
 		);
 	}
 
-	/**
-	 * @return array relational rules.
-	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-		);
+		return array();
 	}
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
 	public function attributeLabels()
 	{
 		return array(

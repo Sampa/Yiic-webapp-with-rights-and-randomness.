@@ -7,19 +7,20 @@
 class RegistrationForm extends User {
 	public $verifyPassword;
 	public $verifyCode;
-	
-	public function rules() {
+
+	public function rules() 
+	{
 		return array(
-			array('username, password, verifyPassword, email', 'required'),
-			array('username', 'length', 'max'=>20, 'min' => 3,'message' => Yii::t("UserModule.user", "Incorrect username (length between 3 and 20 characters).")),
-			array('password', 'length', 'max'=>128, 'min' => 4,'message' => Yii::t("UserModule.user", "Incorrect password (minimal length 4 symbols).")),
-			array('email', 'email'),
-			array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user\'s name already exists.")),
-			array('email', 'unique', 'message' => Yii::t("UserModule.user", "This user\'s email adress already exists.")),
-			array('password', 'compare', 'compareAttribute'=>'verifyPassword', 'message' => Yii::t("UserModule.user", "Retype Password is incorrect.")),
-			array('verifyCode', 'captcha', 'allowEmpty'=>!extension_loaded('gd')),
-			array('username', 'match', 'pattern' => '/^[A-Za-z0-9\s,]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)")),
-		);
+				array('username, password, verifyPassword, email', 'required'),
+				array('username', 'length', 'max'=>20, 'min' => 3,'message' => Yii::t("UserModule.user", "Incorrect username (length between 3 and 20 characters).")),
+				array('password', 'length', 'max'=>128, 'min' => 4,'message' => Yii::t("UserModule.user", "Incorrect password (minimal length 4 symbols).")),
+				array('email', 'email'),
+				array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user\'s name already exists.")),
+				array('email', 'unique', 'message' => Yii::t("UserModule.user", "This user\'s email adress already exists.")),
+				array('password', 'compare', 'compareAttribute'=>'verifyPassword', 'message' => Yii::t("UserModule.user", "Retype Password is incorrect.")),
+				array('verifyCode', 'captcha', 'allowEmpty'=>!extension_loaded('gd')),
+				array('username', 'match', 'pattern' => '/^[A-Za-z0-9\s,]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)")),
+				);
 	}
-	
+
 }

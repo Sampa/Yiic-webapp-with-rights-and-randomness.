@@ -10,4 +10,4 @@ New in 0.4:
 - Created WebUser class to tie in the cookie based user management features to the DB. (zephca)
 - Fixed some references to unset objects (zephca)
 - Changed directory permissions to 755 and file permissions to 644 so it works better with Git source control (zephca)
-- User can log in by username, E-Mail or both depending on loginType 
+- User can log in by username, E-Mail or both depending on loginType (thyseus) 

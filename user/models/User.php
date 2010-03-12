@@ -50,6 +50,7 @@ class User extends CActiveRecord implements IBehavior
 		return parent::model($className);
 	}
 
+
 	public function behaviors() {
 		return array( 'CAdvancedArBehavior' => array(
 			'class' => 'application.modules.user.components.CAdvancedArBehavior'));
@@ -124,7 +125,8 @@ class User extends CActiveRecord implements IBehavior
 	/**
 	 * @return hash string.
 	 */
-	public static function encrypting($string="") {
+	public static function encrypting($string="")
+	{
 		$hash = self::$hash;
 		if ($hash=="md5")
 			return md5($string);
@@ -135,22 +137,22 @@ class User extends CActiveRecord implements IBehavior
 	}
 	
 	public function scopes()
-    {
-        return array(
-            'active'=>array(
-                'condition'=>'status='.self::STATUS_ACTIVE,
-            ),
-            'notactive'=>array(
-                'condition'=>'status='.self::STATUS_NOACTIVE,
-            ),
-            'banned'=>array(
-                'condition'=>'status='.self::STATUS_BANNED,
-            ),
-            'superuser'=>array(
-                'condition'=>'superuser=1',
-            ),
-        );
-    }
+    	{
+		return array(
+	            'active'=>array(
+	                'condition'=>'status='.self::STATUS_ACTIVE,
+       		     ),
+	            'notactive'=>array(
+	                'condition'=>'status='.self::STATUS_NOACTIVE,
+	            ),
+	            'banned'=>array(
+	                'condition'=>'status='.self::STATUS_BANNED,
+	            ),
+	            'superuser'=>array(
+	                'condition'=>'superuser=1',
+    		     ),
+	        );
+    	}
 	
 	public static function itemAlias($type,$code=NULL) {
 		$_items = array(

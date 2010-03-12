@@ -66,7 +66,7 @@ if ($profileFields)
 		$this->widget('application.modules.user.components.Relation',
 			array('model' => $model,
 			'relation' => 'roles',
-			//'style' => 'twopane',
+//			'style' => 'checkbox',
 			'fields' => 'title',
 			'hideAddButton' => true
 		));  ?>

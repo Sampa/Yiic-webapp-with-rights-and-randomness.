@@ -1,7 +1,5 @@
 <?php
 
-Yii::import('application.modules.user.models.*');
-
 class UserController extends Controller
 {
 	const PAGE_SIZE=10;
@@ -77,7 +75,7 @@ class UserController extends Controller
 			if(isset($_POST['RegistrationForm'])) 
 			{
 				$model->attributes=$_POST['RegistrationForm'];
-				$profile->attributes=$_POST['Profile'];
+				//$profile->attributes=$_POST['Profile'];
 				if($model->validate()&&$profile->validate())
 				{
 					$sourcePassword = $model->password;
@@ -378,7 +376,7 @@ class UserController extends Controller
 
 	public function actionUpdate()
 	{
-		$model=$this->loadModel();
+		$model=$this->loadUser();
 		if(!$profile=$model->profile) 
 			$profile = new Profile();
 
@@ -414,7 +412,7 @@ class UserController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
-			$model = $this->loadModel();
+			$model = $this->loadUser();
 			$model->delete();
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('index'));
