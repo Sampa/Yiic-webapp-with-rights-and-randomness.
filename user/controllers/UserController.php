@@ -32,7 +32,7 @@ class UserController extends Controller
 					'users'=>array('@'),
 					),
 				array('allow', 
-					'actions'=>array('admin','delete','create','update', 'list'),
+					'actions'=>array('admin','delete','create','update', 'list', 'assign'),
 					'users'=>User::getAdmins(),
 					),
 				array('deny',  // deny all other users
@@ -66,7 +66,7 @@ class UserController extends Controller
 	{
 		$model = new RegistrationForm;
 		$profile = new Profile;
-		if ($uid = Yii::app()->user->id) 
+		if (($uid = Yii::app()->user->id) === true) 
 		{
 			$this->redirect(Yii::app()->homeUrl);
 		} 
@@ -192,7 +192,7 @@ class UserController extends Controller
 	 */
 	public function actionChangepassword() {
 		$form = new UserChangePassword;
-		if ($uid = Yii::app()->user->id) 
+		if (($uid = Yii::app()->user->id) === true) 
 		{
 			if(isset($_POST['UserChangePassword'])) 
 			{
@@ -218,7 +218,7 @@ class UserController extends Controller
 	 */
 	public function actionRecovery () {
 		$form = new UserRecoveryForm;
-		if ($uid = Yii::app()->user->id) 
+		if (($uid = Yii::app()->user->id) === true) 
 		{
 			$this->redirect(Yii::app()->user->returnUrl);
 		} 
@@ -352,6 +352,7 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
+			$model->roles = $_POST['User']['Role'];
 			$model->activkey=Yii::app()->user->encrypting(microtime().$model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
@@ -377,7 +378,7 @@ class UserController extends Controller
 	public function actionUpdate()
 	{
 		$model=$this->loadUser();
-		if(!$profile=$model->profile) 
+		if(($profile=$model->profile) === false) 
 			$profile = new Profile();
 
 		if(isset($_POST['User']))
@@ -456,10 +457,10 @@ class UserController extends Controller
 	{
 		if($this->_model === null)
 		{
-			if(isset($_GET['id']))
-				$this->_model = User::model()->findByPk($_GET['id']);
 			if($uid != 0)
 				$this->_model = User::model()->findByPk($uid);
+			elseif(isset($_GET['id']))
+				$this->_model = User::model()->findByPk($_GET['id']);
 			if($this->_model === null)
 				throw new CHttpException(404,'The requested User does not exist.');
 		}

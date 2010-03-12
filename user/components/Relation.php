@@ -158,7 +158,7 @@ class Relation extends CWidget
 				case 'CBelongsToRelation':
 				case 'CHasOneRelation':
 					$this->_foreignModel = new $value[1];
-					if(!isset($field)) 
+					if(!isset($this->field)) 
 					{
 						$this->field = $value[2];
 					} 
@@ -306,7 +306,7 @@ class Relation extends CWidget
 			$attributeValues[$object->primaryKey] = $objects->{$this->fields};
 		}
 
-		return $attributeValues ? $attributeValues : array();
+		return isset($attributeValues) ? $attributeValues : array();
 	}
 
 	/*
@@ -412,8 +412,8 @@ class Relation extends CWidget
 
 		echo  CHtml::ajaxSubmitButton('>>',
 			array('assign','revoke'=>1),
-			$ajax,
-			$data['revoke']); 
+			$ajax);//,
+			//$data['revoke']); 
 
 
 		echo CHtml::ListBox('not_' . $this->getListBoxName(),
