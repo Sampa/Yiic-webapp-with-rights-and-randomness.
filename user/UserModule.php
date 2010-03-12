@@ -2,7 +2,6 @@
 
 class UserModule extends CWebModule
 {
-	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 	
 	public $version = '0.4';
 	public $debug = false;
@@ -14,6 +13,14 @@ class UserModule extends CWebModule
 	public $userRoleTable = "user_has_role";
 	public $installDemoData = true;
 	public $layout = 'column2';
+	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
+
+	// LoginType :
+  // 0: Allow login only by Username
+  // 1: Allow login only by E-Mail
+  // 2: Allow login by E-Mail or Username
+  // 3: Allow login only by OpenID 
+	public $loginType = 2;
 
 	public function init()
 	{

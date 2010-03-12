@@ -1,11 +1,10 @@
 <?php
 
-
 class MessagesController extends Controller
 {
 	private $_model;
 
-	public function beforeAction() 
+	public function beforeAction($action) 
 	{
 		$this->layout = Yii::app()->controller->module->layout;
 		return true;
@@ -73,10 +72,7 @@ class MessagesController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
-			// we only allow deletion via POST request
 			$this->loadModel()->delete();
-
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('index'));
 		}
@@ -86,16 +82,17 @@ class MessagesController extends Controller
 
 	public function actionIndex()
 	{
-				 
-				 
-	   $uid = Yii::app()->user->id;
+		$uid = Yii::app()->user->id;
 		$this->render('index',array(
-			//'models'=>Messages::model()->findAll('to = :uid', array(':uid' => $uid)),
-			'dataProvider'=>new CActiveDataProvider('Messages', array(
-			'criteria' => array(
-			'condition' => 'to_user_id = '. $uid
-			)))
-		));
+					//'models'=>Messages::model()->findAll('to = :uid', array(':uid' => $uid)),
+					'dataProvider'=>new CActiveDataProvider('Messages', array(
+							'criteria' => array(
+								'condition' => 'to_user_id = '. $uid
+								)
+							)
+						)
+					)
+				);
 	}
 
 

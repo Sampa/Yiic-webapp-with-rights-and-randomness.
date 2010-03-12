@@ -75,12 +75,6 @@ User::hasRole() in your Code. It is wise to let this line occur as the first
 included Model, so you can overwrite the User-Model with your own in your
 Application models/ Directory if you like.
 
- At the time of this writing you have to copy over the UserIdentity.php
- of the User Module to your Application components directory manually.
- This will be automated in later versions. Do it like this:
- 
- $ cp protected/modules/user/components/UserIdentity.php protected/components
-
 6.) Run the User Management Installer in your Web-Browser:
 
 http://localhost/testdrive/index.php/user/install
@@ -168,5 +162,16 @@ $installDemoData = true;
   The Layout used. This is the default Layout of the skeleton App.
   Replace it with the used layout of your Web Application:
 $layout = 'column2';
+
+Since Version 0.4 you can define whether the user can login 
+with his username, his E-Mail address or both with the 'loginType' 
+attribute like this:
+
+   0: Allow login only by Username
+   1: Allow login only by E-Mail
+   2: Allow login by E-Mail or Username
+   3: Allow login only by OpenID 
+
+OpenID will be implemented in further Versions
 
 

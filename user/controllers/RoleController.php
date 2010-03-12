@@ -4,7 +4,7 @@ class RoleController extends Controller
 {
 	private $_model;
 
-	public function beforeAction() 
+	public function beforeAction($action) 
 	{
 		$this->layout = Yii::app()->controller->module->layout;
 		return true;
@@ -67,10 +67,8 @@ class RoleController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
-			// we only allow deletion via POST request
 			$this->loadModel()->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('index'));
 		}

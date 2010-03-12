@@ -1,6 +1,6 @@
 In order to check whether a User belongs to a Role, use this function:
 
-if(Yii::app()->user->hasRole('role')) 
+if(User::hasRole('role')) 
 {
  // user is allowed
 }

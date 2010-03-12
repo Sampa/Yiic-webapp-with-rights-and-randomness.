@@ -6,7 +6,7 @@ class ProfileFieldController extends Controller
 
 	private $_model;
 
-	public function beforeAction() 
+	public function beforeAction($action) 
 	{
 		$this->layout = Yii::app()->controller->module->layout;
 		return true;
@@ -16,27 +16,22 @@ class ProfileFieldController extends Controller
 	public function filters()
 	{
 		return array(
-			'accessControl', // perform access control for CRUD operations
+			'accessControl', 
 		);
 	}
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
+			array('allow',  
 				'actions'=>array('*'),
 				'users'=>array('*'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+			array('allow', 
 				'actions'=>array('*'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			array('allow', 
 				'actions'=>array('index', 'create','update','view','admin','delete'),
 				'users'=>User::getAdmins(),
 			),
@@ -46,9 +41,6 @@ class ProfileFieldController extends Controller
 		);
 	}
 
-	/**
-	 * Displays a particular model.
-	 */
 	public function actionView()
 	{
 		$this->render('view',array(
@@ -56,18 +48,15 @@ class ProfileFieldController extends Controller
 		));
 	}
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
 	public function actionCreate()
 	{
 		$model=new ProfileField;
 		if(isset($_POST['ProfileField']))
 		{
 			$model->attributes=$_POST['ProfileField'];
-			
-			if($model->validate()) {
+
+			if($model->validate()) 
+			{
 				$sql = 'ALTER TABLE '.Profile::tableName().' ADD `'.$model->varname.'` ';
 				$sql .= $model->field_type;
 				if ($model->field_type!='TEXT'&&$model->field_type!='DATE')
@@ -77,7 +66,7 @@ class ProfileFieldController extends Controller
 					$sql .= " DEFAULT '".$model->default."'";
 				else
 					$sql .= (($model->field_type=='TEXT'||$model->field_type=='VARCHAR')?" DEFAULT ''":" DEFAULT 0");
-				
+
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();
 				$this->redirect(array('view','id'=>$model->id));
@@ -85,14 +74,10 @@ class ProfileFieldController extends Controller
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
-		));
+					'model'=>$model,
+					));
 	}
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 */
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
@@ -111,10 +96,6 @@ class ProfileFieldController extends Controller
 		));
 	}
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
-	 */
 	public function actionDelete()
 	{
 		if(Yii::app()->request->isPostRequest)
@@ -125,9 +106,7 @@ class ProfileFieldController extends Controller
 			if ($model->dbConnection->createCommand($sql)->execute()) {
 				$model->delete();
 			}
-			// ALTER TABLE `profiles` DROP `field`
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('index'));
 		}
@@ -135,9 +114,6 @@ class ProfileFieldController extends Controller
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 
-	/**
-	 * Lists all models.
-	 */
 	public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('ProfileField', array(
@@ -154,9 +130,6 @@ class ProfileFieldController extends Controller
 		));
 	}
 
-	/**
-	 * Manages all models.
-	 */
 	public function actionAdmin()
 	{
 		$dataProvider=new CActiveDataProvider('ProfileField', array(
@@ -173,10 +146,6 @@ class ProfileFieldController extends Controller
 		));
 	}
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 */
 	public function loadModel()
 	{
 		if($this->_model===null)
