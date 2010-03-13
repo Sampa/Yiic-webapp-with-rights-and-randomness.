@@ -7,6 +7,12 @@ class Role extends CActiveRecord
 		return parent::model($className);
 	}
 
+	public function behaviors() {
+		return array( 'CAdvancedArBehavior' => array(
+			'class' => 'application.modules.user.components.CAdvancedArBehavior'));
+	}
+
+
 	public function tableName()
 	{
 		if(is_object(Yii::app()->controller->module)) {
@@ -21,7 +27,7 @@ class Role extends CActiveRecord
 	{
 		return array(
 				array('title', 'required'),
-				array('title, description', 'length', 'max' => '255')
+				array('title, description', 'length', 'max' => '255'),
 				);
 	}
 

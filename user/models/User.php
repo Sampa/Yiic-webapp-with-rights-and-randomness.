@@ -2,7 +2,7 @@
 
 class User extends CActiveRecord implements IBehavior
 {
-	const STATUS_NOACTIVE=0;
+	const STATUS_NOTACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
 	
@@ -125,7 +125,7 @@ class User extends CActiveRecord implements IBehavior
 	/**
 	 * @return hash string.
 	 */
-	public static function encrypting($string="")
+	public static function encrypt($string="")
 	{
 		$hash = self::$hash;
 		if ($hash=="md5")
@@ -143,7 +143,7 @@ class User extends CActiveRecord implements IBehavior
 	                'condition'=>'status='.self::STATUS_ACTIVE,
        		     ),
 	            'notactive'=>array(
-	                'condition'=>'status='.self::STATUS_NOACTIVE,
+	                'condition'=>'status='.self::STATUS_NOTACTIVE,
 	            ),
 	            'banned'=>array(
 	                'condition'=>'status='.self::STATUS_BANNED,

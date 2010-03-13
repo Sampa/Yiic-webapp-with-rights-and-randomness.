@@ -11,15 +11,15 @@ class UserIdentity extends CUserIdentity
 	{
 		$loginType = Yii::app()->controller->module->loginType; 
 
-		if ($loginType == 0) 
+		if ($loginType == 0) // Only check for username
 		{
 			$user = User::model()->findByAttributes(array('username'=>$this->username));
 		}
-		else if ($loginType == 1) 
+		else if ($loginType == 1) // Only check for E-Mail address
 		{
 			$user = User::model()->findByAttributes(array('email'=>$this->username));
 		}
-		else if ($loginType == 2) 
+		else if ($loginType == 2) // Check for E-Mail address or username
 		{
 			$user=User::model()->findByAttributes(array('username'=>$this->username));
 			if(!is_object($user)) 

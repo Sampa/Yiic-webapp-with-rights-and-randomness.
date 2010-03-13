@@ -33,13 +33,17 @@ class RoleController extends Controller
 
 	public function actionUpdate()
 	{
-		$model=$this->loadModel();
+		$model = $this->loadModel();
 
 	 $this->performAjaxValidation($model);
 
 		if(isset($_POST['Role']))
 		{
-			$model->attributes=$_POST['Role'];
+			$model->title = $_POST['Role']['title'];
+			$model->description = $_POST['Role']['description'];
+			$model->users = $_POST['Role']['User'];
+
+		if($model->validate())
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

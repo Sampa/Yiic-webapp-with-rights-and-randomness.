@@ -356,11 +356,14 @@ class UserController extends Controller
 			$model->activkey=Yii::app()->user->encrypting(microtime().$model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
-			if( isset($_POST['Profile']) ) $profile->attributes=$_POST['Profile'];
-			$profile->user_id=0;
-			if($model->validate()&&$profile->validate()) {
+
+			if( isset($_POST['Profile']) ) 
+				$profile->attributes=$_POST['Profile'];
+			$profile->user_id = 0;
+			if($model->validate() && $profile->validate()) {
 				$model->password=Yii::app()->user->encrypting($model->password);
-				if($model->save()) {
+				if($model->save()) 
+				{
 					$profile->user_id=$model->id;
 					$profile->save();
 				}
@@ -377,28 +380,33 @@ class UserController extends Controller
 
 	public function actionUpdate()
 	{
-		$model=$this->loadUser();
+		$model = $this->loadUser();
+
 		if(($profile=$model->profile) === false) 
 			$profile = new Profile();
 
 		if(isset($_POST['User']))
 		{
-			$model->attributes=$_POST['User'];
+			$model->attributes = $_POST['User'];
 			$model->roles = $_POST['User']['Role'];
-			if(isset($_POST['Profile'])) 
-				$profile->attributes=$_POST['Profile'];
 
-			if($model->validate() && $profile->validate()) {
+			if(isset($_POST['Profile'])) 
+				$profile->attributes = $_POST['Profile'];
+
+			if($model->validate() && $profile->validate()) 
+			{
 				$old_password = User::model()->findByPk($model->id);
-				if ($old_password->password!=$model->password) {
-					$model->password=Yii::app()->user->encrypting($model->password);
-					$model->activkey=Yii::app()->user->encrypting(microtime().$model->password);
+				if ($old_password->password!=$model->password) 
+				{
+					$model->password = Yii::app()->user->encrypting($model->password);
+					$model->activkey = Yii::app()->user->encrypting(microtime().$model->password);
 				}
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
+
 		$this->render('/user/update',array(
 					'model'=>$model,
 					'profile'=>$profile,
