@@ -154,25 +154,26 @@ class Relation extends CWidget
 				// $value[0] = Type of the Relation
 				// $value[1] = Related Model
 				// $value[2] = Related Field or Many_Many Table
-				switch($value[0]) {
-				case 'CBelongsToRelation':
-				case 'CHasOneRelation':
-					$this->_foreignModel = new $value[1];
-					if(!isset($this->field)) 
-					{
-						$this->field = $value[2];
-					} 
-					break;
-				case 'CManyManyRelation':
-					preg_match_all('/^.*\(/', $value[2], $matches);
-					$this->manyManyTable = substr($matches[0][0], 0, strlen($matches[0][0]) -1);
-					preg_match_all('/\(.*,/', $value[2], $matches);
-					$this->manyManyTableLeft = substr($matches[0][0], 1, strlen($matches[0][0]) - 2);
-					preg_match_all('/,.*\)/', $value[2], $matches);
-					$this->manyManyTableRight = substr($matches[0][0], 2, strlen($matches[0][0]) - 3);
+				switch($value[0]) 
+				{
+					case 'CBelongsToRelation':
+					case 'CHasOneRelation':
+						$this->_foreignModel = new $value[1];
+						if(!isset($this->field)) 
+						{
+							$this->field = $value[2];
+						} 
+						break;
+					case 'CManyManyRelation':
+						preg_match_all('/^.*\(/', $value[2], $matches);
+						$this->manyManyTable = substr($matches[0][0], 0, strlen($matches[0][0]) -1);
+						preg_match_all('/\(.*,/', $value[2], $matches);
+						$this->manyManyTableLeft = substr($matches[0][0], 1, strlen($matches[0][0]) - 2);
+						preg_match_all('/,.*\)/', $value[2], $matches);
+						$this->manyManyTableRight = substr($matches[0][0], 2, strlen($matches[0][0]) - 3);
 
-					$this->_foreignModel = new $value[1];
-					break;
+						$this->_foreignModel = new $value[1];
+						break;
 				}
 			}
 		}				
@@ -180,9 +181,9 @@ class Relation extends CWidget
 		if(!is_object($this->_foreignModel))	
 			throw new CException(Yii::t('yii','Widget "Relation" can not find the given Relation('.$this->relation.')'));
 
-		if(!isset($this->foreignFieldPk) || $this->foreignFieldPk == "") 
-		{
-			$this->foreignFieldPk = $this->_foreignModel->tableSchema->primaryKey;
+					if(!isset($this->foreignFieldPk) || $this->foreignFieldPk == "") 
+					{
+					$this->foreignFieldPk = $this->_foreignModel->tableSchema->primaryKey;
 		}
 
 		if(!isset($this->fields) || $this->fields == "" || $this->fields == array())
@@ -202,43 +203,51 @@ class Relation extends CWidget
 		return $value;
 	}
 
+	/**
+	* This function fetches all needed data of the related Object and returns them
+	* in an array that is prepared for use in ListData.
+	*/
 	public function getRelatedData() 
 	{
 		/* At first we determine, if we want to display all parent Objects, or
 		 * if the User supplied an list of Objects */
-		if(is_object($this->parentObjects)) 
-		{ // a single Element
-			$parentobjects = array($this->parentObjects);
+		if(is_object($this->parentObjects)) // a single Element
+		{
+ 			$parentobjects = array($this->parentObjects);
 		}	
-		else if(is_array($this->parentObjects)) 
-		{ // Only show this elements
+		else if(is_array($this->parentObjects))  // Only show this elements
+		{
 			$parentobjects = $this->parentObjects;
 		} 
-		else 
-		{ // Show all Parent elements
+		else  // Show all Parent elements
+		{ 
 			$parentobjects = CActiveRecord::model(get_class($this->_foreignModel))->findAll();
 		} 
 
+		// Set the emptyString to let the user choose no value.
 		if($this->allowEmpty)
 			$dataArray[0] = $this->emptyString;
 
-		foreach($parentobjects as $obj)	{
+		foreach($parentobjects as $obj)	{ // Display only 1 field:
 			if(is_string($this->fields)) 
-			{ // Display only 1 field:
+			{ 				
 				$value = $this->getModelData($obj, $this->fields);
 			}
-			else if(is_array($this->fields)) 
-			{ // Display more than 1 field:
-				$value = '';
+			else if(is_array($this->fields)) // Display more than 1 field:
+			{
+ 				$value = '';
 				foreach($this->fields as $field) 
 				{
 					$value .= $this->getModelData($obj, $field) . $this->delimiter;
 				}
 			}
 
-			if($this->groupParentBy != '') {
+			if($this->groupParentBy != '') 
+			{
 				$dataArray[$obj->{$this->groupParentBy}][$obj->{$this->foreignFieldPk}] = $value;
-			} else {
+			}
+			else 
+			{
 				$dataArray[$obj->{$this->foreignFieldPk}] = $value;
 			}	
 		}
@@ -310,7 +319,7 @@ class Relation extends CWidget
 	}
 
 	/*
-	 * How should the Listbox of the MANY_MANY Assignment be called? 
+	 * How will the Listbox of the MANY_MANY Assignment be called? 
 	 */
 	public function getListBoxName($ajax = false) 
 	{
@@ -320,7 +329,6 @@ class Relation extends CWidget
 				get_class($this->_Model),
 				get_class($this->_foreignModel)
 			);  
-
 		}
 		else 
 		{

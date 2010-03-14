@@ -41,10 +41,10 @@ class RoleController extends Controller
 		{
 			$model->title = $_POST['Role']['title'];
 			$model->description = $_POST['Role']['description'];
-			$model->users = $_POST['Role']['User'];
+			if(isset($_POST['Role']['User'])) 
+				$model->users = $_POST['Role']['User'];
 
-		if($model->validate())
-			if($model->save())
+		if($model->validate() && $model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
 

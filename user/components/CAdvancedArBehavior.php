@@ -72,7 +72,8 @@
 
 class CAdvancedArbehavior extends CActiveRecordBehavior
 {
-	public function afterSave($on) {
+	public function afterSave($on) 
+	{
 		$this->writeManyManyTables();
 		return TRUE;
 	}
@@ -84,7 +85,8 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 	 * to add up the needed Data to the MANY_MANY-Table given in the relation
 	 * settings.
 	 */
-	public function writeManyManyTables() {
+	public function writeManyManyTables() 
+	{
 		Yii::trace('writing MANY_MANY data for '.get_class($this->owner),'system.db.ar.CActiveRecord');
 
 		foreach($this->owner->relations() as $key => $relation)

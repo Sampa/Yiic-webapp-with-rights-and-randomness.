@@ -144,7 +144,9 @@ class InstallController extends Controller
 
 					// Victory
 					$this->render('success');
-				} else {
+				} 
+				else 
+				{
 					throw new CException(Yii::t('UserModule.user', 'Database Connection is not working'));	
 				}
 			}
