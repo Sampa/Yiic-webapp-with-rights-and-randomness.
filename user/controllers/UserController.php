@@ -192,7 +192,7 @@ class UserController extends Controller
 	 */
 	public function actionChangepassword() {
 		$form = new UserChangePassword;
-		if (($uid = Yii::app()->user->id) === true) 
+		if (isset(Yii::app()->user->id)) 
 		{
 			if(isset($_POST['UserChangePassword'])) 
 			{
@@ -208,6 +208,9 @@ class UserController extends Controller
 				}
 			} 
 			$this->render('/user/changepassword',array('form'=>$form));
+		} else {
+			// No id was set. An error has occured. (should never get here)
+			$this->redirect(array("/"));
 		}
 
 	}

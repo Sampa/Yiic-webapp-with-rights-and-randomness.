@@ -59,8 +59,8 @@ class User extends CActiveRecord implements IBehavior
 
 	public function tableName()
 	{
-		return isset(Yii::app()->controller->module->usersTable)
-			? Yii::app()->controller->module->usersTable
+		return isset(Yii::App()->modules['user']['usersTable'])
+			? Yii::App()->modules['user']['usersTable']
 			: 'users';
 	}
 
@@ -84,7 +84,7 @@ class User extends CActiveRecord implements IBehavior
 	{
 		return array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
-			'roles'=>array(self::MANY_MANY, 'Role', 'user_has_role(user_id, role_id)'),
+			'roles'=>array(self::MANY_MANY, 'Role', Yii::App()->modules['user']['userRoleTable'] .'(user_id, role_id)'),
 		);
 	}
 

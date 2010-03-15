@@ -12,16 +12,12 @@ class Role extends CActiveRecord
 			'class' => 'application.modules.user.components.CAdvancedArBehavior'));
 	}
 
-
-	public function tableName()
-	{
-		if(is_object(Yii::app()->controller->module)) {
-			return isset(Yii::app()->controller->module->rolesTable)
-				? Yii::app()->controller->module->rolesTable
-				: 'roles';
-		} else
-			return 'roles';
-	}
+  public function tableName()
+  {
+    return isset(Yii::App()->modules['user']['rolesTable'])
+      ? Yii::App()->modules['user']['rolesTable']
+      : 'roles';
+  }
 
 	public function rules()
 	{
@@ -34,7 +30,7 @@ class Role extends CActiveRecord
 	public function relations()
 	{
 		return array(
-				'users'=>array(self::MANY_MANY, 'User', 'user_has_role(role_id, user_id)'),
+				'users'=>array(self::MANY_MANY, 'User', Yii::App()->modules['user']['userRoleTable'] .'(role_id, user_id)'),
 				);
 	}
 
