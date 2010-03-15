@@ -40,7 +40,7 @@ if(Yii::app()->user->isAdmin()) {
 	array_push($attributes,
 		'password',
 		'email',
-		'activkey',
+		'activationKey',
 		array(
 			'name' => 'createtime',
 			'value' => date(UserModule::$dateFormat,$model->createtime),

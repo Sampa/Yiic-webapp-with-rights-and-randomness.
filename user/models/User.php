@@ -123,7 +123,7 @@ class User extends CActiveRecord implements IBehavior
 			'email'=>Yii::t("UserModule.user", "E-mail"),
 			'verifyCode'=>Yii::t("UserModule.user", "Verification Code"),
 			'id' => 'Id',
-			'activkey' => Yii::t("UserModule.user", "activation key"),
+			'activationKey' => Yii::t("UserModule.user", "activation key"),
 			'createtime' => Yii::t("UserModule.user", "Registration date"),
 			'lastvisit' => Yii::t("UserModule.user", "Last visit"),
 			'superuser' => Yii::t("UserModule.user", "Superuser"),

@@ -2,6 +2,8 @@
 
 return array(
 	'Create' => 'Anlegen',
+	'Your Account has been activated. Thank you for your registration.' =>
+	'Ihr Account wurde aktiviert. Danke für ihre Anmeldung. ',
 	'Registration' => 'Registrierung',
 	'This users have been assigned to this Role', 'Diese Nutzer gehören dieser Rolle an: ',
 	'Edit this Role' => 'Diese Rolle bearbeiten',

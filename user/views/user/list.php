@@ -23,8 +23,8 @@ array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin')),
 <?php echo CHtml::encode($model->getAttributeLabel('email')); ?>:
 <?php echo CHtml::encode($model->email); ?>
 <br/>
-<?php echo CHtml::encode($model->getAttributeLabel('activkey')); ?>:
-<?php echo CHtml::encode($model->activkey); ?>
+<?php echo CHtml::encode($model->getAttributeLabel('activationKey')); ?>:
+<?php echo CHtml::encode($model->activationKey); ?>
 <br/>
 <?php echo CHtml::encode($model->getAttributeLabel('createtime')); ?>:
 <?php echo CHtml::encode($model->createtime); ?>

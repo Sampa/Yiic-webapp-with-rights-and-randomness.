@@ -35,7 +35,7 @@ class InstallController extends Controller
 						`username` varchar(20) NOT NULL,
 						`password` varchar(128) NOT NULL,
 						`email` varchar(128) NOT NULL,
-						`activkey` varchar(128) NOT NULL default '',
+						`activationKey` varchar(128) NOT NULL default '',
 						`createtime` int(10) NOT NULL default '0',
 						`lastvisit` int(10) NOT NULL default '0',
 						`superuser` int(1) NOT NULL default '0',
@@ -128,7 +128,7 @@ class InstallController extends Controller
 
 					if($this->module->installDemoData) 
 					{
-						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `email`, `activkey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
+						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `email`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
 							(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'webmaster@example.com', '', 0, 1266571424, 1, 1),
 							(2, 'demo', 'fe01ce2a7fbac8fafaed7c982a04e229', 'demo@example.com', '', 0, 1266543330, 0, 1)";
 						$db->createCommand($sql)->execute();

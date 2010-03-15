@@ -3,7 +3,7 @@
 class UserModule extends CWebModule
 {
 	
-	public $version = '0.4';
+	public $version = '0.5';
 	public $debug = false;
 	public $usersTable = "users";
 	public $messagesTable = "messages";
@@ -12,6 +12,7 @@ class UserModule extends CWebModule
 	public $rolesTable = "roles";
 	public $userRoleTable = "user_has_role";
 	public $installDemoData = true;
+	public $disableEmailActivation = false;
 	public $layout = 'column2';
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 
@@ -21,6 +22,7 @@ class UserModule extends CWebModule
   // 2: Allow login by E-Mail or Username
   // 3: Allow login only by OpenID 
 	public $loginType = 2;
+
 
 	public function init()
 	{
