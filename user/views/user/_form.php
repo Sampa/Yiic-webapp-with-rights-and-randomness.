@@ -60,7 +60,7 @@ if ($profileFields)
 ?>
 
 <div class="row">
-<p> <?php echo Yii::t('UserModule.user', 'User belongs to Roles'); ?>: </p>
+<p> <?php echo Yii::t('UserModule.user', 'User belongs to these Roles'); ?>: </p>
 
 <?php 
 		$this->widget('application.modules.user.components.Relation',

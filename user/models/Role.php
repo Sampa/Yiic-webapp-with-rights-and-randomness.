@@ -2,6 +2,9 @@
 
 class Role extends CActiveRecord
 {
+	private $_tableName;
+	private $_userRoleTable;
+
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -14,9 +17,12 @@ class Role extends CActiveRecord
 
   public function tableName()
   {
-    return isset(Yii::App()->modules['user']['rolesTable'])
-      ? Yii::App()->modules['user']['rolesTable']
-      : 'roles';
+		if (isset(Yii::app()->controller->module->rolesTable))
+			$this->_tableName = Yii::app()->controller->module->rolesTable;
+		else
+			$this->_tableName = 'roles';
+
+		return $this->_tableName;
   }
 
 	public function rules()
@@ -29,8 +35,13 @@ class Role extends CActiveRecord
 
 	public function relations()
 	{
+		if (isset(Yii::app()->controller->module->userRoleTable))
+			$this->_userRoleTable = Yii::app()->controller->module->userRoleTable;
+		else
+			$this->_userRoleTable = 'user_has_role';
+
 		return array(
-				'users'=>array(self::MANY_MANY, 'User', Yii::App()->modules['user']['userRoleTable'] .'(role_id, user_id)'),
+				'users'=>array(self::MANY_MANY, 'User', $this->_userRoleTable .'(role_id, user_id)'),
 				);
 	}
 

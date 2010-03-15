@@ -97,9 +97,10 @@ if(Yii::app()->user->isAdmin()) {
 	));
 }
 ?>
+
 <hr />
 
-<?php echo Yii::t('UserModule.User', 'This User belongs to this roles:');  ?>
+<?php echo Yii::t('UserModule.User', 'This User belongs to these roles:');  ?>
 
 <?php 
 if($model->roles) {

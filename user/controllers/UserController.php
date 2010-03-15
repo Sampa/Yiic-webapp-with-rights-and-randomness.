@@ -210,7 +210,7 @@ class UserController extends Controller
 			$this->render('/user/changepassword',array('form'=>$form));
 		} else {
 			// No id was set. An error has occured. (should never get here)
-			$this->redirect(array("/"));
+			$this->redirect(Yii::app()->user->returnUrl);
 		}
 
 	}

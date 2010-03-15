@@ -19,6 +19,8 @@ class User extends CActiveRecord implements IBehavior
 	public $loginUrl = array("user/login");
 	public $returnUrl = array("user/profile");
 	public $returnLogoutUrl = array("user/login");
+	private $_tableName;
+	private $_userRoleTable;
 	
 	// IBehavior
 	private $_enabled;
@@ -50,18 +52,20 @@ class User extends CActiveRecord implements IBehavior
 		return parent::model($className);
 	}
 
-
 	public function behaviors() {
 		return array( 'CAdvancedArBehavior' => array(
-			'class' => 'application.modules.user.components.CAdvancedArBehavior'));
+					'class' => 'application.modules.user.components.CAdvancedArBehavior'));
 	}
-
 
 	public function tableName()
 	{
-		return isset(Yii::App()->modules['user']['usersTable'])
-			? Yii::App()->modules['user']['usersTable']
-			: 'users';
+		if (isset(Yii::app()->controller->module->usersTable))
+			$this->_tableName = Yii::app()->controller->module->usersTable;
+		else
+			$this->_tableName = 'users';
+
+
+		return $this->_tableName;
 	}
 
 	public function rules()
@@ -82,9 +86,14 @@ class User extends CActiveRecord implements IBehavior
 
 	public function relations()
 	{
+		if (isset(Yii::app()->controller->module->userRoleTable))
+			$this->_userRoleTable = Yii::app()->controller->module->userRoleTable;
+		else
+			$this->_userRoleTable = 'user_has_role';
+
 		return array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
-			'roles'=>array(self::MANY_MANY, 'Role', Yii::App()->modules['user']['userRoleTable'] .'(user_id, role_id)'),
+			'roles'=>array(self::MANY_MANY, 'Role', $this->_userRoleTable . '(user_id, role_id)'),
 		);
 	}
 
