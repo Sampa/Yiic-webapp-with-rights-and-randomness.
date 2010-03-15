@@ -80,11 +80,11 @@ class UserController extends Controller
 					if($model->validate()&&$profile->validate())
 					{
 						$sourcePassword = $model->password;
-						$model->password = Yii::app()->user->encrypt($model->password);
-						$model->verifyPassword = Yii::app()->user->encrypt($model->verifyPassword);
-						$model->activationKey = Yii::app()->user->encrypt(microtime().$model->password);
+						$model->password = User::encrypt($model->password);
+						$model->verifyPassword = User::encrypt($model->verifyPassword);
+						$model->activationKey = User::encrypt(microtime().$model->password);
 						$model->createtime = time();
-						$model->lastvisit = ((Yii::app()->user->autoLogin && Yii::app()->user->loginNotActive) ? time() : 0);
+						$model->lastvisit = ((Yii::app()->user->allowAutoLogin && UserModule::$allowInactiveAcctLogin) ? time() : 0);
 						$model->superuser = 0;
 
 						if(Yii::app()->controller->module->disableEmailActivation == true) 
@@ -114,14 +114,14 @@ class UserController extends Controller
 								mail($model->email,"You registered from " . Yii::app()->name,"Please activate your account go to $activation_url.",$headers);
 							}
 
-							if (Yii::app()->user->loginNotActive) 
+							if (UserModule::$allowInactiveAcctLogin) 
 							{
-								if (Yii::app()->user->autoLogin) 
+								if (Yii::app()->user->allowAutoLogin) 
 								{
 									$identity = new UserIdentity($model->username,$sourcePassword);
 									$identity->authenticate();
 									Yii::app()->user->login($identity, 0);
-									$this->redirect(Yii::app()->user->returnUrl);
+									$this->redirect(UserModule::$returnUrl);
 								} 
 								else 
 								{
@@ -157,7 +157,7 @@ class UserController extends Controller
 				$lastVisit = User::model()->findByPk(Yii::app()->user->id);
 				$lastVisit->lastvisit = time();
 				$lastVisit->save();
-				$this->redirect(Yii::app()->User->returnUrl);
+				$this->redirect(UserModule::$returnUrl);
 			}
 		}
 		// display the login form
@@ -167,7 +167,7 @@ class UserController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->user->returnLogoutUrl);
+		$this->redirect(UserModule::$returnLogoutUrl);
 
 	}
 
@@ -186,7 +186,7 @@ class UserController extends Controller
 			} 
 			elseif($find->activationKey==$activationKey) 
 			{
-				$find->activationKey = Yii::app()->user->encrypt(microtime());
+				$find->activationKey = User::encrypt(microtime());
 				$find->status = 1;
 				$find->save();
 				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Your account has been activated.")));
@@ -216,8 +216,8 @@ class UserController extends Controller
 				if($form->validate()) 
 				{
 					$new_password = User::model()->findByPk(Yii::app()->user->id);
-					$new_password->password = Yii::app()->user->encrypt($form->password);
-					$new_password->activationKey=Yii::app()->user->encrypt(microtime().$form->password);
+					$new_password->password = User::encrypt($form->password);
+					$new_password->activationKey=User::encrypt(microtime().$form->password);
 					$new_password->save();
 					Yii::app()->user->setFlash('profileMessage',Yii::t("user", "Your new password has been saved."));
 					$this->redirect(array("user/profile"));
@@ -226,7 +226,7 @@ class UserController extends Controller
 			$this->render('/user/changepassword',array('form'=>$form));
 		} else {
 			// No id was set. An error has occured. (should never get here)
-			$this->redirect(Yii::app()->user->returnUrl);
+			$this->redirect(UserModule::$returnUrl);
 		}
 
 	}
@@ -239,7 +239,7 @@ class UserController extends Controller
 		$form = new UserRecoveryForm;
 		if (($uid = Yii::app()->user->id) === true) 
 		{
-			$this->redirect(Yii::app()->user->returnUrl);
+			$this->redirect(UserModule::$returnUrl);
 		} 
 		else 
 		{
@@ -255,8 +255,8 @@ class UserController extends Controller
 						$form2->attributes=$_POST['UserChangePassword'];
 						if($form2->validate()) 
 						{
-							$find->password = Yii::app()->user->encrypt($form2->password);
-							$find->activationKey=Yii::app()->user->encrypt(microtime().$form2->password);
+							$find->password = User::encrypt($form2->password);
+							$find->activationKey=User::encrypt(microtime().$form2->password);
 							$find->save();
 							Yii::app()->user->setFlash('loginMessage',Yii::t("user", "Your new password has been saved."));
 							$this->redirect(array("user/login"));
@@ -372,7 +372,7 @@ class UserController extends Controller
 		{
 			$model->attributes=$_POST['User'];
 			$model->roles = $_POST['User']['Role'];
-			$model->activationKey=Yii::app()->user->encrypt(microtime().$model->password);
+			$model->activationKey=User::encrypt(microtime().$model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
 
@@ -380,7 +380,7 @@ class UserController extends Controller
 				$profile->attributes=$_POST['Profile'];
 			$profile->user_id = 0;
 			if($model->validate() && $profile->validate()) {
-				$model->password=Yii::app()->user->encrypt($model->password);
+				$model->password=User::encrypt($model->password);
 				if($model->save()) 
 				{
 					$profile->user_id=$model->id;
@@ -417,8 +417,8 @@ class UserController extends Controller
 				$old_password = User::model()->findByPk($model->id);
 				if ($old_password->password!=$model->password) 
 				{
-					$model->password = Yii::app()->user->encrypt($model->password);
-					$model->activationKey = Yii::app()->user->encrypt(microtime().$model->password);
+					$model->password = User::encrypt($model->password);
+					$model->activationKey = User::encrypt(microtime().$model->password);
 				}
 				$model->save();
 				$profile->save();

@@ -1,6 +1,6 @@
 <?php
 
-class User extends CActiveRecord implements IBehavior
+class User extends CActiveRecord
 {
 	const STATUS_NOTACTIVE=0;
 	const STATUS_ACTIVE=1;
@@ -11,41 +11,8 @@ class User extends CActiveRecord implements IBehavior
 	public $username;
 	public $password;
 	public $email;
-	public $sendActivationMail=true;
-	public $loginNotActive=false;
-	public $autoLogin=true;
-	public $registrationUrl = array("user/registration");
-	public $recoveryUrl = array("user/recovery");
-	public $loginUrl = array("user/login");
-	public $returnUrl = array("user/profile");
-	public $returnLogoutUrl = array("user/login");
 	private $_tableName;
 	private $_userRoleTable;
-	
-	// IBehavior
-	private $_enabled;
-	private $_owner;
-	
-	public function attach($owner)
-	{
-		$this->_owner=$owner;
-	}
-	
-	public function detach($owner)
-	{
-		$this->_owner=null;
-	}
-	
-	public function getEnabled()
-	{
-		return $this->_enabled;
-	}
-
-	public function setEnabled($value)
-	{
-		$this->_enabled=$value;
-	}
-	// IBehavior end
 	
 	public static function model($className=__CLASS__)
 	{
@@ -193,18 +160,4 @@ class User extends CActiveRecord implements IBehavior
 		return $return_name;
 	}
 	
-	/**
-	 * Return admin status.
-	 * @return boolean
-	 */
-	public static function isAdmin() {
-		if(Yii::app()->user->isGuest)
-			return false;
-		else {
-			if(User::model()->active()->superuser()->findbyPk(Yii::app()->user->id))
-				return true;
-			else
-				return false;
-		}
-	}
 }

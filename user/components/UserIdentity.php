@@ -37,7 +37,7 @@ class UserIdentity extends CUserIdentity
 			}
 		else if(User::encrypt($this->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-		else if($user->status == 0 && Yii::app()->user->loginNotActive==false)
+		else if($user->status == 0 && UserModule::$allowInactiveAcctLogin==false)
 			$this->errorCode=self::ERROR_STATUS_NOTACTIVE;
 		else if($user->status==-1)
 			$this->errorCode=self::ERROR_STATUS_BANNED;

@@ -14,8 +14,18 @@ class UserModule extends CWebModule
 	public $installDemoData = true;
 	public $disableEmailActivation = false;
 	public $layout = 'column2';
+	
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
+	public static $allowInactiveAcctLogin=false;
 
+	public static $registrationUrl = array("user/registration");
+	public static $recoveryUrl = array("user/recovery");
+	public static $loginUrl = array("user/login");
+	public static $returnUrl = array("user/profile");		// Page to go to after registration, login etc.
+	public static $returnLogoutUrl = array("user/login");
+	
+	
+	
 	// LoginType :
   // 0: Allow login only by Username
   // 1: Allow login only by E-Mail
@@ -41,4 +51,26 @@ class UserModule extends CWebModule
 		else
 			return false;
 	}
+	
+	/**
+	 * Configures the module with the specified configuration.
+	 * Override base class implementation to allow static variables.
+	 * @param array the configuration array
+	 */
+	public function configure($config)
+	{
+		if(is_array($config))
+		{
+			foreach($config as $key=>$value)
+			{
+				if(isset(UserModule::${$key}))
+				{
+					UserModule::${$key} = $value;
+				}
+				else 
+					$this->$key=$value;
+			}
+		}
+	}
+
 }
