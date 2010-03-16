@@ -64,85 +64,87 @@ class UserController extends Controller
 
 	public function actionRegistration() 
 	{
-			$model = new RegistrationForm;
-			$profile = new Profile;
+		$form = new RegistrationForm;
 
-			if (($uid = Yii::app()->user->id) === true) 
+		// User is already logged in?
+		if (($uid = Yii::app()->user->id) === true) 
+		{
+			$this->redirect(Yii::app()->homeUrl);
+		} 
+		else 
+		{
+			if(isset($_POST['RegistrationForm'])) 
 			{
-				$this->redirect(Yii::app()->homeUrl);
-			} 
-			else 
-			{
-				if(isset($_POST['RegistrationForm'])) 
+				$form->attributes = $_POST['RegistrationForm'];
+
+				if($form->validate())
 				{
-					$model->attributes=$_POST['RegistrationForm'];
-					//$profile->attributes=$_POST['Profile'];
-					if($model->validate()&&$profile->validate())
+					$user = new User();
+
+					if ($user->register($form->username, $form->password, $form->email))
 					{
-						$sourcePassword = $model->password;
-						$model->password = User::encrypt($model->password);
-						$model->verifyPassword = User::encrypt($model->verifyPassword);
-						$model->activationKey = User::encrypt(microtime().$model->password);
-						$model->createtime = time();
-						$model->lastvisit = ((Yii::app()->user->allowAutoLogin && UserModule::$allowInactiveAcctLogin) ? time() : 0);
-						$model->superuser = 0;
-
 						if(Yii::app()->controller->module->disableEmailActivation == true) 
-							$model->status = User::STATUS_ACTIVE;
-						else
-							$model->status = User::STATUS_NOTACTIVE;
-
-						if ($model->save()) 
 						{
-							$profile->user_id = $model->id;
-							$profile->save();
+							Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
+										"Your Account has been activated. Thank you for your registration."));
+							$this->refresh();
+						}
+						else
+						{
+							$this->sendRegistrationEmail($user);
+						}
 
-							if(Yii::app()->controller->module->disableEmailActivation == true) 
+						if (UserModule::$allowInactiveAcctLogin) 
+						{
+							if (Yii::app()->user->allowAutoLogin) 
 							{
-								Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
-											"Your Account has been activated. Thank you for your registration."));
-								$this->refresh();
-							}
-							else
-							{
-								$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-								$activation_url = 'http://' .
-									$_SERVER['HTTP_HOST'] .
-									$this->createUrl('user/activation',array(
-												"activationKey" => $model->activationKey, "email" => $model->email)
-											);
-								mail($model->email,"You registered from " . Yii::app()->name,"Please activate your account go to $activation_url.",$headers);
-							}
-
-							if (UserModule::$allowInactiveAcctLogin) 
-							{
-								if (Yii::app()->user->allowAutoLogin) 
-								{
-									$identity = new UserIdentity($model->username,$sourcePassword);
-									$identity->authenticate();
-									Yii::app()->user->login($identity, 0);
-									$this->redirect(UserModule::$returnUrl);
-								} 
-								else 
-								{
-									Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
-												"Thank you for your registration. Please check your email or login."));
-									$this->refresh();
-								}
+								$identity = new UserIdentity($model->username,$sourcePassword);
+								$identity->authenticate();
+								Yii::app()->user->login($identity, 0);
+								$this->redirect(UserModule::$returnUrl);
 							} 
 							else 
 							{
-								Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
-											"Thank you for your registration. Please check your email."));
+								Yii::app()->user->setFlash('registration',
+										Yii::t("UserModule.user",
+											"Thank you for your registration. Please check your email or login."));
 								$this->refresh();
 							}
+						} 
+						else 
+						{
+							Yii::app()->user->setFlash('registration',
+									Yii::t("UserModule.user",
+										"Thank you for your registration. Please check your email."));
+							$this->refresh();
 						}
+					} 
+					else
+					{
+						Yii::app()->user->setFlash('registration',
+								Yii::t("UserModule.user",
+									"Your Registration didn't work. Please contact our System Administrator."));
+						$this->refresh();
+
 					}
 				}
-				$this->render('/user/registration',array('form'=>$model,'profile'=>$profile));
 			}
+			$this->render('/user/registration',array('form'=>$form));
+		}
 	}
 
+	public function sendRegistrationEmail($user)
+	{
+		$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+		$activation_url = 'http://' .
+			$_SERVER['HTTP_HOST'] .
+			$this->createUrl('user/activation',array(
+						"activationKey" => $user->activationKey, "email" => $user->email)
+					);
+		mail($user->email,"You registered from " . Yii::app()->name,"Please activate your account go to $activation_url.",$headers);
+
+		return true;
+	}
 
 	public function actionLogin()
 	{
@@ -182,14 +184,18 @@ class UserController extends Controller
 			$find = User::model()->findByAttributes(array('email'=>$email));
 			if ($find->status) 
 			{
-				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Your account has been activated.")));
+				$this->render('/user/message', array(
+							'title'=>Yii::t("user", "User activation"),
+							'content'=>Yii::t("user", "Your account has been activated.")));
 			} 
 			elseif($find->activationKey==$activationKey) 
 			{
 				$find->activationKey = User::encrypt(microtime());
 				$find->status = 1;
 				$find->save();
-				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Your account has been activated.")));
+				$this->render('/user/message',array(
+							'title'=>Yii::t("user", "User activation"),
+							'content'=>Yii::t("user", "Your account has been activated.")));
 			}
 			else 
 			{
@@ -219,7 +225,9 @@ class UserController extends Controller
 					$new_password->password = User::encrypt($form->password);
 					$new_password->activationKey=User::encrypt(microtime().$form->password);
 					$new_password->save();
-					Yii::app()->user->setFlash('profileMessage',Yii::t("user", "Your new password has been saved."));
+
+					Yii::app()->user->setFlash('profileMessage',
+							Yii::t("UserModule.user", "Your new password has been saved."));
 					$this->redirect(array("user/profile"));
 				}
 			} 

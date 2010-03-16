@@ -18,7 +18,6 @@ $this->breadcrumbs=array(
 	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with <span class="required">*</span> are required.'); ?></p>
 	
 	<?php echo CHtml::errorSummary($form); ?>
-	<?php echo CHtml::errorSummary($profile); ?>
 	
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($form,'username'); ?>
@@ -43,26 +42,6 @@ $this->breadcrumbs=array(
 	<?php echo CHtml::activeTextField($form,'email'); ?>
 	</div>
 	
-<?php 
-		$profileFields=ProfileField::model()->forRegistration()->sort()->findAll();
-		if ($profileFields) {
-			foreach($profileFields as $field) {
-			?>
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($profile,$field->varname); ?>
-		<?php 
-		if ($field->field_type=="TEXT") {
-			echo CHtml::activeTextArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
-		} else {
-			echo CHtml::activeTextField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
-		}
-		 ?>
-		<?php echo CHtml::error($profile,$field->varname); ?>
-	</div>	
-			<?php
-			}
-		}
-?>
 	<?php if(extension_loaded('gd')): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>
