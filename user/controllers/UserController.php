@@ -178,35 +178,18 @@ class UserController extends Controller
 	 */
 	public function actionActivation () 
 	{
-		$email = $_GET['email'];
-		$activationKey = $_GET['activationKey'];
-		if ($email&&$activationKey) {
-			$find = User::model()->findByAttributes(array('email'=>$email));
-			if ($find->status) 
-			{
-				$this->render('/user/message', array(
-							'title'=>Yii::t("user", "User activation"),
-							'content'=>Yii::t("user", "Your account has been activated.")));
-			} 
-			elseif($find->activationKey==$activationKey) 
-			{
-				$find->activationKey = User::encrypt(microtime());
-				$find->status = 1;
-				$find->save();
-				$this->render('/user/message',array(
-							'title'=>Yii::t("user", "User activation"),
-							'content'=>Yii::t("user", "Your account has been activated.")));
-			}
-			else 
-			{
-				$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Incorrect activation URL.")));
-			}
-		}
+		if(User::activate($_GET['email'], $_GET['activationKey']))
+		{
+			$this->render('/user/message', array(
+						'title'=>Yii::t("UserModule.user", "User activation"),
+						'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
+		} 
 		else 
 		{
-			$this->render('/user/message',array('title'=>Yii::t("user", "User activation"),'content'=>Yii::t("user", "Incorrect activation URL.")));
+			$this->render('/user/message',array(
+						'title'=>Yii::t("UserModule.user", "User activation"),
+						'content'=>Yii::t("UserModule.user", "Incorrect activation URL.")));
 		}
-
 	}
 
 	/**

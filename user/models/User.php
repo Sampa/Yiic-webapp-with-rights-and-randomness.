@@ -61,15 +61,75 @@ class User extends CActiveRecord
 		return array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
 			'roles'=>array(self::MANY_MANY, 'Role', $this->_userRoleTable . '(user_id, role_id)'),
-		);
+			);
 	}
 
-	public static function hasRole($role)
+	public function register($username, $password, $email)
 	{
+		// Password equality is checked in Registration Form
+		$this->username = $username;
+		$this->password = $this->encrypt($password);
+		$this->email = $email;
+		$this->activationKey = $this->encrypt(microtime() . $password);
+		$this->createtime = time();
+		$this->superuser = 0;
+
+		if(Yii::app()->controller->module->disableEmailActivation == true) 
+			$this->status = User::STATUS_ACTIVE;
+		else
+			$this->status = User::STATUS_NOTACTIVE;
+
+		$this->lastvisit = ((Yii::app()->user->allowAutoLogin &&
+					UserModule::$allowInactiveAcctLogin) ? time() : 0);
+
+		if($this->save()) 
+		{
+			$profile = new Profile();
+			$profile->user_id = $this->id;
+			$profile->save();
+			return true;
+		} 
+		else
+			return false;
+
+	}
+
+	/**
+	 * Activation of an user account
+	 */
+	public function activate($email, $activationKey)
+	{
+		$find = User::model()->findByAttributes(array('email'=>$email));
+		if ($find->status) 
+		{
+			return true;
+		} 
+		elseif($find->activationKey == $activationKey) 
+		{
+			$find->activationKey = User::encrypt(microtime());
+			$find->status = 1;
+			$find->save();
+			return true;
+		}
+		else
+			return false;
+	}
+
+	/**
+	* Checks if the user has the given Role)
+	* @mixed Role string or array of strings that should be checked
+	* @int (optional) id of the user that should be checked 
+	* @return bool Return value tells if the User has access or hasn't access.
+	*/
+	public static function hasRole($role, $uid = 0)
+	{
+		if($uid == 0)
+			$uid = Yii::app()->user->getId();
+
 		if(!is_array($role))
 			$role = array ($role);
 
-		$user = CActiveRecord::model('User')->findByPk(Yii::app()->user->getId());
+		$user = CActiveRecord::model('User')->findByPk($uid);
 		if(isset($user->roles)) 
 			foreach($user->roles as $roleobj) 
 			{
@@ -99,9 +159,10 @@ class User extends CActiveRecord
 	}
 	
 	/**
+	 * This function is used for password encryption.
 	 * @return hash string.
 	 */
-	public static function encrypt($string="")
+	public static function encrypt($string = "")
 	{
 		$hash = self::$hash;
 		if ($hash=="md5")
@@ -113,35 +174,36 @@ class User extends CActiveRecord
 	}
 	
 	public function scopes()
-    	{
+	{
 		return array(
-	            'active'=>array(
-	                'condition'=>'status='.self::STATUS_ACTIVE,
-       		     ),
-	            'notactive'=>array(
-	                'condition'=>'status='.self::STATUS_NOTACTIVE,
-	            ),
-	            'banned'=>array(
-	                'condition'=>'status='.self::STATUS_BANNED,
-	            ),
-	            'superuser'=>array(
-	                'condition'=>'superuser=1',
-    		     ),
-	        );
-    	}
-	
-	public static function itemAlias($type,$code=NULL) {
+				'active'=>array(
+					'condition'=>'status='.self::STATUS_ACTIVE,
+					),
+				'notactive'=>array(
+					'condition'=>'status='.self::STATUS_NOTACTIVE,
+					),
+				'banned'=>array(
+					'condition'=>'status='.self::STATUS_BANNED,
+					),
+				'superuser'=>array(
+					'condition'=>'superuser=1',
+					),
+				);
+	}
+
+	public static function itemAlias($type,$code=NULL) 
+	{
 		$_items = array(
-			'UserStatus' => array(
-				'0' => Yii::t("UserModule.user", 'Not active'),
-				'1' => Yii::t("UserModule.user", 'Active'),
-				'-1'=> Yii::t("UserModule.user", 'Banned'),
-			),
-			'AdminStatus' => array(
-				'0' => Yii::t("UserModule.user", 'No'),
-				'1' => Yii::t("UserModule.user", 'Yes'),
-			),
-		);
+				'UserStatus' => array(
+					'0' => Yii::t("UserModule.user", 'Not active'),
+					'1' => Yii::t("UserModule.user", 'Active'),
+					'-1'=> Yii::t("UserModule.user", 'Banned'),
+					),
+				'AdminStatus' => array(
+					'0' => Yii::t("UserModule.user", 'No'),
+					'1' => Yii::t("UserModule.user", 'Yes'),
+					),
+				);
 		if (isset($code))
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
 		else
@@ -154,10 +216,10 @@ class User extends CActiveRecord
 	 */	
 	public static function getAdmins() {
 		$admins = User::model()->active()->superuser()->findAll();
-		$return_name = array();
+		$returnarray = array();
 		foreach ($admins as $admin)
-			array_push($return_name,$admin->username);
-		return $return_name;
+			array_push($returnarray, $admin->username);
+		return $returnarray;
 	}
 	
 }
