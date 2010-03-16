@@ -27,7 +27,7 @@ class UserIdentity extends CUserIdentity
 		}
 
 		if($user===null)
-			if ($logintype == 1) 
+			if ($loginType == 1) 
 			{
 				$this->errorCode=self::ERROR_EMAIL_INVALID;
 			}
