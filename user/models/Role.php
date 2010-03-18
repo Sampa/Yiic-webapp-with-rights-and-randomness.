@@ -17,10 +17,12 @@ class Role extends CActiveRecord
 
   public function tableName()
   {
-		if (isset(Yii::app()->controller->module->rolesTable))
-			$this->_tableName = Yii::app()->controller->module->rolesTable;
-		else
-			$this->_tableName = 'roles';
+    if (isset(Yii::app()->controller->module->rolesTable))
+      $this->_tableName = Yii::app()->controller->module->rolesTable;
+    elseif (isset(Yii::App()->modules['user']['rolesTable'])) 
+      $this->_tableName = Yii::App()->modules['user']['rolesTable'];
+    else
+      $this->_tableName = 'roles';
 
 		return $this->_tableName;
   }
@@ -35,10 +37,12 @@ class Role extends CActiveRecord
 
 	public function relations()
 	{
-		if (isset(Yii::app()->controller->module->userRoleTable))
-			$this->_userRoleTable = Yii::app()->controller->module->userRoleTable;
-		else
-			$this->_userRoleTable = 'user_has_role';
+    if (isset(Yii::app()->controller->module->userRoleTable))
+      $this->_userRoleTable = Yii::app()->controller->module->userRoleTable;
+    elseif (isset(Yii::App()->modules['user']['userRoleTable'])) 
+      $this->_tableName = Yii::App()->modules['user']['userRoleTable'];
+    else
+      $this->_userRoleTable = 'user_has_role';
 
 		return array(
 				'users'=>array(self::MANY_MANY, 'User', $this->_userRoleTable .'(role_id, user_id)'),
