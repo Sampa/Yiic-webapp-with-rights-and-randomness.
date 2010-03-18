@@ -6,6 +6,7 @@ class ProfileField extends CActiveRecord
 	const VISIBLE_REGISTER_USER=2;
 	const VISIBLE_ONLY_OWNER=1;
 	const VISIBLE_NO=0;
+	private $_tableName;
 
 	public static function model($className=__CLASS__)
 	{

@@ -2,6 +2,8 @@
 
 class Messages extends CActiveRecord
 {
+	private $_tableName;
+
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
