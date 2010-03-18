@@ -19,10 +19,10 @@ class Role extends CActiveRecord
   {
     if (isset(Yii::app()->controller->module->rolesTable))
       $this->_tableName = Yii::app()->controller->module->rolesTable;
-    elseif (isset(Yii::App()->modules['user']['rolesTable'])) 
-      $this->_tableName = Yii::App()->modules['user']['rolesTable'];
+    elseif (isset(Yii::app()->modules['user']['rolesTable'])) 
+      $this->_tableName = Yii::app()->modules['user']['rolesTable'];
     else
-      $this->_tableName = 'roles';
+      $this->_tableName = 'roles'; // fallback if nothing is set
 
 		return $this->_tableName;
   }

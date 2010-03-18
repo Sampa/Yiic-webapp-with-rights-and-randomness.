@@ -201,17 +201,26 @@ class UserController extends Controller
 		{
 			if(isset($_POST['UserChangePassword'])) 
 			{
-				$form->attributes=$_POST['UserChangePassword'];
+				$form->attributes = $_POST['UserChangePassword'];
 				if($form->validate()) 
 				{
 					$new_password = User::model()->findByPk(Yii::app()->user->id);
 					$new_password->password = User::encrypt($form->password);
-					$new_password->activationKey=User::encrypt(microtime().$form->password);
-					$new_password->save();
+					$new_password->activationKey = User::encrypt(microtime().$form->password);
 
-					Yii::app()->user->setFlash('profileMessage',
-							Yii::t("UserModule.user", "Your new password has been saved."));
-					$this->redirect(array("user/profile"));
+					if($new_password->save()) 
+					{
+
+						Yii::app()->user->setFlash('profileMessage',
+								Yii::t("UserModule.user", "Your new password has been saved."));
+						$this->redirect(array("user/profile"));
+					}
+					else
+					{
+						Yii::app()->user->setFlash('profileMessage',
+								Yii::t("UserModule.user", "There was an error saving your password."));
+						$this->redirect(array("user/profile"));
+					}
 				}
 			} 
 			$this->render('/user/changepassword',array('form'=>$form));
@@ -219,7 +228,6 @@ class UserController extends Controller
 			// No id was set. An error has occured. (should never get here)
 			$this->redirect(UserModule::$returnUrl);
 		}
-
 	}
 
 
@@ -228,6 +236,8 @@ class UserController extends Controller
 	 */
 	public function actionRecovery () {
 		$form = new UserRecoveryForm;
+
+		// User is already logged in
 		if (($uid = Yii::app()->user->id) === true) 
 		{
 			$this->redirect(UserModule::$returnUrl);
@@ -359,6 +369,7 @@ class UserController extends Controller
 	{
 		$model=new User;
 		$profile=new Profile;
+
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];

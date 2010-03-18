@@ -28,11 +28,10 @@ class User extends CActiveRecord
 	{
     if (isset(Yii::app()->controller->module->usersTable))
       $this->_tableName = Yii::app()->controller->module->usersTable;
-    elseif (isset(Yii::App()->modules['user']['usersTable'])) 
-      $this->_tableName = Yii::App()->modules['user']['usersTable'];
+    elseif (isset(Yii::app()->modules['user']['usersTable'])) 
+      $this->_tableName = Yii::app()->modules['user']['usersTable'];
     else
-      $this->_tableName = 'users';
-
+      $this->_tableName = 'users'; // fallback if nothing is set
 
 		return $this->_tableName;
 	}
@@ -168,6 +167,8 @@ class User extends CActiveRecord
 	 */
 	public static function encrypt($string = "")
 	{
+		$salt = Yii::app()->controller->module->salt;
+		$string = sprintf("%s%s%s", $salt, $string, $salt);
 		$hash = self::$hash;
 		if ($hash=="md5")
 			return md5($string);

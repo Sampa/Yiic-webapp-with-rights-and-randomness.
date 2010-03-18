@@ -7,12 +7,17 @@ class Messages extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function tableName()
-	{
-		return isset( Yii::app()->controller->module->messagesTable )
-			? Yii::app()->controller->module->messagesTable
-			: 'messages';
-	}
+  public function tableName()
+  {
+    if (isset(Yii::app()->controller->module->messagesTable))
+      $this->_tableName = Yii::app()->controller->module->messagesTable;
+    elseif (isset(Yii::app()->modules['user']['messagesTable'])) 
+      $this->_tableName = Yii::app()->modules['user']['messagesTable'];
+    else
+      $this->_tableName = 'messages'; // fallback if nothing is set
+
+		return $this->_tableName;
+  }
 
 	public function rules()
 	{

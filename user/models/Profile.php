@@ -7,10 +7,17 @@ class Profile extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function tableName()
-	{
-		return Yii::app()->controller->module->profileTable;
-	}
+  public function tableName()
+  {
+    if (isset(Yii::app()->controller->module->profileTable))
+      $this->_tableName = Yii::app()->controller->module->profileTable;
+    elseif (isset(Yii::app()->modules['user']['profileTable'])) 
+      $this->_tableName = Yii::app()->modules['user']['profileTable'];
+    else
+      $this->_tableName = 'profile'; // fallback if nothing is set
+
+		return $this->_tableName;
+  }
 
 	public function rules()
 	{

@@ -14,6 +14,7 @@ class UserModule extends CWebModule
 	public $installDemoData = true;
 	public $disableEmailActivation = false;
 	public $layout = 'column2';
+	public $salt = '';
 	
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 	public static $allowInactiveAcctLogin=false;

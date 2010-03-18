@@ -12,10 +12,18 @@ class ProfileField extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function tableName()
-	{
-		return Yii::app()->controller->module->profileFieldsTable;
-	}
+
+  public function tableName()
+  {
+    if (isset(Yii::app()->controller->module->profileFieldsTable))
+      $this->_tableName = Yii::app()->controller->module->profileFieldsTable;
+    elseif (isset(Yii::app()->modules['user']['profileFieldsTable'])) 
+      $this->_tableName = Yii::app()->modules['user']['profileFieldsTable'];
+    else
+      $this->_tableName = 'profileFields'; // fallback if nothing is set
+
+		return $this->_tableName;
+  }
 
 	public function rules()
 	{
@@ -77,7 +85,7 @@ class ProfileField extends CActiveRecord
     }
 
 	
-	public function itemAlias($type,$code=NULL) {
+	public static function itemAlias($type,$code=NULL) {
 		$_items = array(
 			'field_type' => array(
 				'INTEGER' => Yii::t("UserModule.user", 'INTEGER'),

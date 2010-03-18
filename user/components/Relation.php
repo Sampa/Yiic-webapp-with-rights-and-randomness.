@@ -79,7 +79,7 @@
   an SQL Query.
  
   The parentObjects can be grouped, for example,  with 
-  'groupParentBy' => 'city'
+  'groupParentsBy' => 'city'
  
    Use the option 'htmlOptions' to pass any html Options to the 
   Selectbox/Listbox form element.
@@ -128,7 +128,8 @@ class Relation extends CWidget
 	public $createAction = "create";
 	public $htmlOptions = array();
 	public $parentObjects = 0;
-	public $groupParentBy = 0;
+	public $orderParentsBy = 0;
+	public $groupParentsBy = 0;
 	public $manyManyTable = '';
 	public $manyManyTableLeft = '';
 	public $manyManyTableRight = '';
@@ -228,23 +229,28 @@ class Relation extends CWidget
 		if($this->allowEmpty)
 			$dataArray[0] = $this->emptyString;
 
-		foreach($parentobjects as $obj)	{ // Display only 1 field:
+		foreach($parentobjects as $obj)	
+		{
 			if(is_string($this->fields)) 
 			{ 				
+				// Display only 1 field:
+
 				$value = $this->getModelData($obj, $this->fields);
 			}
-			else if(is_array($this->fields)) // Display more than 1 field:
+			else if(is_array($this->fields)) 		
 			{
- 				$value = '';
+				// Display more than 1 field:
+
+				$value = '';
 				foreach($this->fields as $field) 
 				{
 					$value .= $this->getModelData($obj, $field) . $this->delimiter;
-				}
 			}
+		}
 
-			if($this->groupParentBy != '') 
+		if($this->groupParentsBy != '') 
 			{
-				$dataArray[$obj->{$this->groupParentBy}][$obj->{$this->foreignFieldPk}] = $value;
+				$dataArray[$obj->{$this->groupParentsBy}][$obj->{$this->foreignFieldPk}] = $value;
 			}
 			else 
 			{
@@ -363,7 +369,7 @@ class Relation extends CWidget
 			$this->renderTwoPaneSelection();
 		else if(strcasecmp($this->style, 'checkbox') == 0)
 			$this->renderCheckBoxListSelection();
-		  else
+		else
 			$this->renderOnePaneSelection();
 	}
 
@@ -374,8 +380,8 @@ class Relation extends CWidget
 
 		echo CHtml::CheckBoxList($this->getListBoxName(),
 					$keys,
-					$this->getRelatedData());
-
+					$this->getRelatedData(),
+				 	$this->htmlOptions);
 	}
 
 
