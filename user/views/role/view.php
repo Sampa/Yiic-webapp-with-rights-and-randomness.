@@ -10,6 +10,11 @@ $this->menu = array(
 array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('admin')),
 array('label'=>Yii::t('UserModule.user', 'Manage Users'), 'url'=>array('user/admin')),
 array('label'=>Yii::t('UserModule.user', 'Create Role'), 'url'=>array('create')),
+array(
+	'label'=>Yii::t('UserModule.user', 'Edit this Role'),
+	'url'=>array('update', 'id' => $model->id),
+	'visibility' => Yii::app()->user->isAdmin()
+	),
 );
 ?>
 

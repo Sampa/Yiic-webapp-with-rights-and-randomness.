@@ -3,12 +3,11 @@
  The Relation widget is used in forms, where the User can choose
  between a selection of model elements, that this models belongs to.
 
- Since version 0.8 it is able to handle BELONGS_TO, HAS_ONE and 
- MANY_MANY Relations. The Relation type is detected automatically from
- the Model 'relations()' section. 
+ It is able to handle BELONGS_TO, HAS_ONE and MANY_MANY Relations. The Relation 
+type is detected automatically from the Model 'relations()' section. 
 
- Since 1.0RC it can render HAS_MANY and MANY_MANY selections as a Checkbox
- with the 'style' => 'checkbox' option
+ The Widget has different styles in which it can render the possible choices.
+ Use the 'style' option to set the appropriate style.
  
  The following example shows how to use Relation with a minimal config, 
  assuming we have a Model "Post" and "User", where one User belongs 
@@ -22,7 +21,7 @@
   ));
   </pre>
   
-  Results in a selectbox in which the user can choose between
+  Results in a drop down list in which the user can choose between
   all available Users in the Database. The shown field of the
   Table "User" is "username" in this example. 
 
@@ -41,16 +40,17 @@
   that represents the foreign model is called different than in the
   relation
  
-  Use 'foreignFieldPk' => 'id_of_user' if the primary Key of the Foreign
+  Use 'relatedPk' => 'id_of_user' if the primary Key of the Foreign
   Model differs from the one given in the relation.
  
   Normally you shouldn´t use this fields cause the Widget get the relations
   automatically from the relation.
    
-  Use 'allowEmpty' to let the user be able to choose no parent. The
-  string assigned to 'emptyString' will be displayed.
+  Use 'allowEmpty' to let the user be able to choose no parent. If you 
+  set this to a string, this string will be displayed with the available
+	choices.
  
-  With 'hideAddButton' => 'true' you can hide the 'create new Foreignkey'
+  With 'showAddButton' => 'false' you can disable the 'create new Foreignkey'
   Button generated beside the Selectbox.
  
   Define the AddButtonString with 'addButtonString' => 'Add...'. This string
@@ -69,7 +69,7 @@
   Using the 'style' option we can configure how our Widget gets rendered.
   The following styles are available:
   Selectbox (default), Listbox, Checkbox and in MANY_MANY relations 'twopane'
-	The style is case insensitive so one can use SelectBox or selectbox.
+	The style is case insensitive so one can use dropdownlist or dropDownList.
  
   Use the option 'createAction' if the action to add additional foreign Model
   options differs from 'create'.
@@ -93,7 +93,7 @@
    'parentObjects' => Parentmodel::model()->findAll('userid = 17'),
    'groupParentsBy' => 'city',
    'relation' => 'user',
-   'foreignFieldPk' => 'id_of_user',
+   'relatedPk' => 'id_of_user',
    'fields' => array( 'username', 'username.group.groupid' ),
    'delimiter' => ' -> ', // default: ' | '
    'returnTo' => 'model/create',
@@ -111,25 +111,51 @@
 
 class Relation extends CWidget
 {
-	protected $_Model;
-	protected $_foreignModel;
+	// this Variable holds an instance of the Object
+	protected $_model;
+
+	// this Variable holds an instance of the related Object
+	protected $_relatedModel;
+
+	// draw the relation of which model?	
 	public $model;
+
+	// which relation should be rendered?
 	public $relation;
+
 	public $field;
-	public $foreignFieldPk;
+
+	// the Primary Key of the foreign Model
+	public $relatedPk;
+
+	// a field or an array of fields that determine which field values
+  // should be rendered in the selection
 	public $fields;
-	public $allowEmpty;
-	public $emptyString = "None";
-	public $hideAddButton;
-	public $addButtonString = "+";
+
+	// if this is set, the User is able to select no related model
+  // if this is set to a string, this string will be presented
+	public $allowEmpty = 0;
+
+	// disable this to hide the Add Button
+	// set this to a string to set the String to be displayed
+	public $showAddButton = true;
+
+	// use this to set the link where the user should return to after
+  // clicking the add Button
 	public $returnLink;
+
+	// how should multiple fields be delimited
 	public $delimiter = " | ";
-	public $style = "selectbox";
+
+  // style of the selection Widget
+	public $style = "dropDownList";
 	public $createAction = "create";
 	public $htmlOptions = array();
 	public $parentObjects = 0;
 	public $orderParentsBy = 0;
 	public $groupParentsBy = 0;
+
+	// override this for complicated MANY_MANY relations:
 	public $manyManyTable = '';
 	public $manyManyTableLeft = '';
 	public $manyManyTableRight = '';
@@ -138,16 +164,17 @@ class Relation extends CWidget
 	{
 		if(!is_object($this->model)) 
 		{
-			if(!$this->_Model = new $this->model) 
-				throw new CException(Yii::t('yii','Widget "Relation" can not instantiate Model'));
+			if(!$this->_model = new $this->model) 
+				throw new CException(
+						Yii::t('yii','Relation widget is not able to instantiate the given Model'));
 		} 
 		else 
 		{
-			$this->_Model = $this->model;
+			$this->_model = $this->model;
 		}
 
 		// Instantiate Model and related Model
-		foreach($this->_Model->relations() as $key => $value) 
+		foreach($this->_model->relations() as $key => $value) 
 		{
 			if(strcmp($this->relation,$key) == 0) 
 			{
@@ -159,7 +186,7 @@ class Relation extends CWidget
 				{
 					case 'CBelongsToRelation':
 					case 'CHasOneRelation':
-						$this->_foreignModel = new $value[1];
+						$this->_relatedModel = new $value[1];
 						if(!isset($this->field)) 
 						{
 							$this->field = $value[2];
@@ -173,18 +200,19 @@ class Relation extends CWidget
 						preg_match_all('/,.*\)/', $value[2], $matches);
 						$this->manyManyTableRight = substr($matches[0][0], 2, strlen($matches[0][0]) - 3);
 
-						$this->_foreignModel = new $value[1];
+						$this->_relatedModel = new $value[1];
 						break;
 				}
 			}
 		}				
 
-		if(!is_object($this->_foreignModel))	
-			throw new CException(Yii::t('yii','Widget "Relation" can not find the given Relation('.$this->relation.')'));
+		if(!is_object($this->_relatedModel))	
+			throw new CException(
+					Yii::t('yii','Relation widget cannot find the given Relation('.$this->relation.')'));
 
-					if(!isset($this->foreignFieldPk) || $this->foreignFieldPk == "") 
+					if(!isset($this->relatedPk) || $this->relatedPk == "") 
 					{
-					$this->foreignFieldPk = $this->_foreignModel->tableSchema->primaryKey;
+					$this->relatedPk = $this->_relatedModel->tableSchema->primaryKey;
 		}
 
 		if(!isset($this->fields) || $this->fields == "" || $this->fields == array())
@@ -220,14 +248,17 @@ class Relation extends CWidget
 		{
 			$parentobjects = $this->parentObjects;
 		} 
-		else  // Show all Parent elements
+		else  		
 		{ 
-			$parentobjects = CActiveRecord::model(get_class($this->_foreignModel))->findAll();
+			// Show all Parent elements
+			$parentobjects = CActiveRecord::model(get_class($this->_relatedModel))->findAll();
 		} 
 
-		// Set the emptyString to let the user choose no value.
 		if($this->allowEmpty)
-			$dataArray[0] = $this->emptyString;
+			if(is_string($this->allowEmpty))
+				$dataArray[0] = $this->allowEmpty;
+			else
+				$dataArray[0] = Yii::t('app', 'None');
 
 		foreach($parentobjects as $obj)	
 		{
@@ -250,11 +281,11 @@ class Relation extends CWidget
 
 		if($this->groupParentsBy != '') 
 			{
-				$dataArray[$obj->{$this->groupParentsBy}][$obj->{$this->foreignFieldPk}] = $value;
+				$dataArray[$obj->{$this->groupParentsBy}][$obj->{$this->relatedPk}] = $value;
 			}
 			else 
 			{
-				$dataArray[$obj->{$this->foreignFieldPk}] = $value;
+				$dataArray[$obj->{$this->relatedPk}] = $value;
 			}	
 		}
 		if(!isset($dataArray) || !is_array($dataArray))
@@ -269,19 +300,19 @@ class Relation extends CWidget
 	 */
 	public function getAssignedObjects() 
 	{
-		if(!$this->_Model->id)
+		if(!$this->_model->id)
 			return array();
 
 		$sql = sprintf("select * from %s where %s = %s",
 			$this->manyManyTable,
 			$this->manyManyTableLeft,
-			$this->_Model->{$this->_Model->tableSchema->primaryKey});
+			$this->_model->{$this->_model->tableSchema->primaryKey});
 
 		$result = Yii::app()->db->createCommand($sql)->queryAll();
 
 		foreach($result as $foreignObject) {
 			$id = $foreignObject[$this->manyManyTableRight];
-			$objects[$id] = $this->_foreignModel->findByPk($id); 
+			$objects[$id] = $this->_relatedModel->findByPk($id); 
 		}
 
 		return isset($objects) ? $objects : array();
@@ -297,7 +328,7 @@ class Relation extends CWidget
 		{
 			if(!array_key_exists($key, $this->getAssignedObjects())) 
 			{
-				$objects[$key] = $this->_foreignModel->findByPk($key);
+				$objects[$key] = $this->_relatedModel->findByPk($key);
 			}
 		}
 
@@ -332,32 +363,32 @@ class Relation extends CWidget
 		if($ajax) 
 		{
 			return	sprintf('%s_%s',
-				get_class($this->_Model),
-				get_class($this->_foreignModel)
+				get_class($this->_model),
+				get_class($this->_relatedModel)
 			);  
 		}
 		else 
 		{
 			return	sprintf('%s[%s]',
-				get_class($this->_Model),
-				get_class($this->_foreignModel)
+				get_class($this->_model),
+				get_class($this->_relatedModel)
 			);  
 		}
 	}
 
 	public function renderBelongsToSelection() {
-		if(strcasecmp($this->style, "selectbox") == 0) 
-			echo CHtml::ActiveDropDownList($this->_Model, 
+		if(strcasecmp($this->style, "dropDownList") == 0) 
+			echo CHtml::ActiveDropDownList($this->_model, 
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
 		else if(strcasecmp($this->style, "listbox") == 0)
-			echo CHtml::ActiveListBox($this->_Model, 
+			echo CHtml::ActiveListBox($this->_model, 
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
 		else if(strcasecmp($this->style, "checkbox") == 0)
-			echo CHtml::ActiveCheckBoxList($this->_Model,
+			echo CHtml::ActiveCheckBoxList($this->_model,
 			$this->field, 
 			$this->getRelatedData(), 
 			$this->htmlOptions);
@@ -369,14 +400,89 @@ class Relation extends CWidget
 			$this->renderTwoPaneSelection();
 		else if(strcasecmp($this->style, 'checkbox') == 0)
 			$this->renderCheckBoxListSelection();
+		else if(strcasecmp($this->style, 'dropDownList') == 0)
+			$this->renderManyManyDropDownListSelection();
 		else
 			$this->renderOnePaneSelection();
 	}
 
 
-	public function renderCheckBoxListSelection()
+	/* 
+	 * Renders one dropDownList per selectable related Element.
+   * The users can add additional entries with the + and remove entries
+   * with the - Button .
+   */
+	public function renderManyManyDropDownListSelection()
 	{
-		$keys =	array_keys($this->getAssignedObjects());
+		$i = 0;
+		foreach($this->_relatedModel->findAll() as $obj)
+		{ 
+			$i++;
+			$isAssigned = $this->isAssigned($obj->id);
+
+			echo CHtml::openTag('div', array(
+						'id' => 'div' . $i,
+						'style' => $isAssigned ? '' : 'display:none;',
+						));
+			echo CHtml::dropDownList('rel-' . $obj->id . "-" . $this->getListBoxName(),
+					$isAssigned ? $obj->id : 0,
+					CHtml::listData(
+						array_merge(
+							array('0' => $this->allowEmpty),
+							$this->_relatedModel->findAll()),
+						$this->relatedPk,
+						$this->fields
+						)
+					);
+			echo CHtml::closeTag('div');
+		}
+
+		$jsadd = '
+			i = 1;
+		maxi = '.$i.';
+		$(\'#add\').click(function() {
+$(\'#div\' + i).show();
+if(i <= maxi) ++i;
+});
+';
+
+		$jssub = '
+$(\'#sub\').click(function() {
+if(i > 2) --i;
+$(\'#div\' + i).hide();
+});
+';
+
+		Yii::app()->clientScript->registerScript('addbutton', $jsadd); 
+		Yii::app()->clientScript->registerScript('subbutton', $jssub); 
+
+		echo CHtml::button('+', array('id' => 'add'));
+		echo CHtml::button('-', array('id' => 'sub'));
+		}
+
+	public function isAssigned($id) 
+	{
+		return in_array($id, array_keys($this->getAssignedObjects()));
+	}
+
+	public static function retrieveValues($data, $field) 
+	{
+		foreach($data as $key => $value) 
+		{
+			if(strpos($key, 'rel') !== false)
+			{
+				if($value[$field] != "")
+				$returnArray[] = $value[$field];
+			}
+		}
+	
+		return $returnArray;
+	}
+
+
+public function renderCheckBoxListSelection()
+{
+	$keys =	array_keys($this->getAssignedObjects());
 
 		echo CHtml::CheckBoxList($this->getListBoxName(),
 					$keys,
@@ -444,14 +550,16 @@ class Relation extends CWidget
 		else
 			$this->renderBelongsToSelection();
 
-		if(!$this->hideAddButton) 
+		if($this->showAddButton !== false) 
 		{
 			if(!isset($this->returnLink) or $this->returnLink == "")
 				$this->returnLink = $this->model->tableSchema->name . "/create";
 
-			echo CHtml::Link($this->addButtonString, array(
-				$this->_foreignModel->tableSchema->name . "/" . $this->createAction, 
-				'returnTo' => $this->returnLink)); 
+			echo CHtml::Link(
+					is_string($this->showAddButton) ?
+					$this->showAddButton : 'New' , array(
+						$this->_relatedModel->tableSchema->name . "/" . $this->createAction, 
+						'returnTo' => $this->returnLink)); 
 		}
 	}
 

@@ -56,8 +56,8 @@ class User extends CActiveRecord
 	{
     if (isset(Yii::app()->controller->module->userRoleTable))
       $this->_userRoleTable = Yii::app()->controller->module->userRoleTable;
-    elseif (isset(Yii::App()->modules['user']['userRoleTable'])) 
-      $this->_tableName = Yii::App()->modules['user']['userRoleTable'];
+    elseif (isset(Yii::app()->modules['user']['userRoleTable'])) 
+      $this->_tableName = Yii::app()->modules['user']['userRoleTable'];
     else
       $this->_userRoleTable = 'user_has_role';
 

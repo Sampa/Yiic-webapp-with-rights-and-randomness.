@@ -18,6 +18,19 @@
 		<?php echo CHtml::error($model,'description'); ?>
 	</div>	
 
+<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this Role:'); ?> </p>
+
+<?php 
+		$this->widget('application.modules.user.components.Relation',
+			array('model' => $model,
+			'relation' => 'users',
+			'style' => 'dropdownlist',
+			'fields' => 'username',
+			'showAddButton' => false
+		));  ?>
+
+
+
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord 
 		? Yii::t('UserModule.user', 'Create') 

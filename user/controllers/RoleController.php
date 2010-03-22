@@ -24,6 +24,7 @@ class RoleController extends Controller
 		$this->performAjaxValidation($model);
 		if(isset($_POST['Role'])) {
 			$model->attributes = $_POST['Role'];
+			$model->users = Relation::retrieveValues($_POST, 'User');
 			if($model->save())
 				$this->redirect(array('admin'));
 
@@ -41,8 +42,7 @@ class RoleController extends Controller
 		{
 			$model->title = $_POST['Role']['title'];
 			$model->description = $_POST['Role']['description'];
-			if(isset($_POST['Role']['User'])) 
-				$model->users = $_POST['Role']['User'];
+			$model->users = Relation::retrieveValues($_POST, 'User');
 
 		if($model->validate() && $model->save())
 				$this->redirect(array('view','id'=>$model->id));
