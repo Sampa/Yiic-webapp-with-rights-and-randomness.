@@ -402,6 +402,7 @@ class UserController extends Controller
 	public function actionUpdate()
 	{
 		$model = $this->loadUser();
+		$model->password = '';
 
 		if(($profile=$model->profile) === false) 
 			$profile = new Profile();
@@ -416,12 +417,17 @@ class UserController extends Controller
 
 			if($model->validate() && $profile->validate()) 
 			{
-				$old_password = User::model()->findByPk($model->id);
-				if ($old_password->password!=$model->password) 
+				$old_password = User::model()->findByPk($model->id)->password;
+				if ($model->password != '') 
 				{
 					$model->password = User::encrypt($model->password);
 					$model->activationKey = User::encrypt(microtime().$model->password);
 				}
+				else
+				{
+					$model->password = $old_password;
+				}
+				
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));

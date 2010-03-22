@@ -1,6 +1,7 @@
 Changelog for Yii User Management Module since Version 0.3
 
 New in Next release
+- Password should not be pre-populated in user update form (darek.krk)
 - Fixed profile table name get method when creating or deleting profile fields (darek.krk)
 
 New in 0.5:

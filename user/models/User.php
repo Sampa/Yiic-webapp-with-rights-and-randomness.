@@ -40,14 +40,15 @@ class User extends CActiveRecord
 	{
 		return array(
 			array('username', 'length', 'max'=>20, 'min' => 3,'message' => Yii::t("UserModule.user", "Incorrect username (length between 3 and 20 characters).")),
-			array('password', 'length', 'max'=>128, 'min' => 4,'message' => Yii::t("UserModule.user", "Incorrect password (minimal length 4 symbols).")),
+			array('password', 'length', 'max'=>128, 'min' => 4, 'message' => Yii::t("UserModule.user", "Incorrect password (minimal length 4 symbols).")),
 			array('email', 'email'),
 			array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists.")),
 			array('email', 'unique', 'message' => Yii::t("UserModule.user", "This user's email adress already exists.")),
 			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)")),
 			array('status', 'in', 'range'=>array(0,1,-1)),
 			array('superuser', 'in', 'range'=>array(0,1)),
-			array('username, password, email, createtime, lastvisit, superuser, status', 'required'),
+			array('username, email, createtime, lastvisit, superuser, status', 'required'),
+			array('password', 'required', 'on'=>array('insert')),
 			array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true),
 		);
 	}
