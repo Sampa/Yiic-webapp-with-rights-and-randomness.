@@ -57,7 +57,7 @@ class ProfileFieldController extends Controller
 
 			if($model->validate()) 
 			{
-				$sql = 'ALTER TABLE '.Profile::tableName().' ADD `'.$model->varname.'` ';
+				$sql = 'ALTER TABLE '.Profile::model()->tableName().' ADD `'.$model->varname.'` ';
 				$sql .= $model->field_type;
 				if ($model->field_type!='TEXT'&&$model->field_type!='DATE')
 					$sql .= '('.$model->field_size.')';
@@ -102,7 +102,7 @@ class ProfileFieldController extends Controller
 		{
 			// we only allow deletion via POST request
 			$model = $this->loadModel();
-			$sql = 'ALTER TABLE '.Profile::tableName().' DROP `'.$model->varname.'`';
+			$sql = 'ALTER TABLE '.Profile::model()->tableName().' DROP `'.$model->varname.'`';
 			if ($model->dbConnection->createCommand($sql)->execute()) {
 				$model->delete();
 			}

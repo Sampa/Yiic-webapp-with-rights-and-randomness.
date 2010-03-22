@@ -1,5 +1,8 @@
 Changelog for Yii User Management Module since Version 0.3
 
+New in Next release
+- Fixed profile table name get method when creating or deleting profile fields (darek.krk)
+
 New in 0.5:
 - Updated french translation Messages (christophe.hurpeau)
 - Added optional salt to Password encryption (darek.krk)
