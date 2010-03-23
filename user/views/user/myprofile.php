@@ -35,7 +35,7 @@ if($this->module->hasModule('messages'))
 
 <?php
 if($this->module->hasModule('messages'))  
-		$this->renderPartial('/messages/newMessages');
+		$this->renderPartial('newMessages');
 ?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>

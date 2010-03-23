@@ -26,8 +26,6 @@ class UserModule extends CWebModule
 	public static $returnUrl = array("user/profile");		// Page to go to after registration, login etc.
 	public static $returnLogoutUrl = array("user/login");
 	
-	
-	
 	// LoginType :
   // 0: Allow login only by Username
   // 1: Allow login only by E-Mail
@@ -41,6 +39,7 @@ class UserModule extends CWebModule
 		$this->setImport(array(
 			'user.models.*',
 			'user.components.*',
+			'user.controllers.*',
 		));
 	}
 

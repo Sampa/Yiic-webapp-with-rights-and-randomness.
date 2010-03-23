@@ -34,7 +34,7 @@ $this->menu = array(
 
 	$this->menu[] =		array(
 			'label' => Yii::t("UserModule.user", 'Manage Roles'), 
-			'url' =>array('role/admin')
+			'url' =>array('role/role/admin')
 			);
 }
 

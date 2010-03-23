@@ -18,7 +18,7 @@
 		<?php echo CHtml::error($model,'description'); ?>
 	</div>	
 
-<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this Role:'); ?> </p>
+<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this Role'); ?> </p>
 
 <?php 
 		$this->widget('application.modules.user.components.Relation',

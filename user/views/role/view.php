@@ -24,7 +24,7 @@ array(
 
 <hr />
 
-<?php echo Yii::t('UserModule.User', 'This users belong to this Role : '); ?>
+<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this Role'); ?> </p>
 
 <?php 
 if($model->users) {
