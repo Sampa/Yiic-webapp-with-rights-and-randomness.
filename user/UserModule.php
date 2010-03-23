@@ -15,6 +15,7 @@ class UserModule extends CWebModule
 	public $disableEmailActivation = false;
 	public $layout = 'column2';
 	public $salt = '';
+	public $hashFunc = 'md5'; // valid callback function for password hashing ie. sha1
 	
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 	public static $allowInactiveAcctLogin=false;

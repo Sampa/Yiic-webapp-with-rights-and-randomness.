@@ -1,6 +1,7 @@
 Changelog for Yii User Management Module since Version 0.3
 
 New in Next release
+- It is possible to pass valid callback function for passwords hashing in module configuraction (as default md5 will be used) (darek.krk) 
 - Password should not be pre-populated in user update form (darek.krk)
 - Fixed profile table name get method when creating or deleting profile fields (darek.krk)
 

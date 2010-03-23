@@ -5,8 +5,6 @@ class User extends CActiveRecord
 	const STATUS_NOTACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
-	
-	public static $hash='md5';
 
 	public $username;
 	public $password;
@@ -169,14 +167,13 @@ class User extends CActiveRecord
 	public static function encrypt($string = "")
 	{
 		$salt = Yii::app()->controller->module->salt;
+		$hashFunc = Yii::app()->controller->module->hashFunc;
 		$string = sprintf("%s%s%s", $salt, $string, $salt);
-		$hash = self::$hash;
-		if ($hash=="md5")
-			return md5($string);
-		if ($hash=="sha1")
-			return sha1($string);
-		else
-			return hash($hash,$string);
+		
+		if(!function_exists($hashFunc))
+			throw new CException('Function `'.$hashFunc.'` is not a valid callback for hashing algorithm.');
+		
+		return $hashFunc($string);
 	}
 	
 	public function scopes()
