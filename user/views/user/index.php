@@ -9,9 +9,14 @@ $this->breadcrumbs=array(
 $this->menu = array(
 array('label'=>Yii::t('UserModule.user', 'Create User'), 'url'=>array('create')),
 array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin')),
-array('label'=>Yii::t('UserModule.user', 'Manage Role'), 'url'=>array('role/admin')),
 array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profileField/admin')),
 );
+
+
+if($this->module->hasModule('role'))
+{
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin'));
+}
 ?>
 
 	<h1> <?php echo Yii::t('UserModule.user', 'Users: '); ?></h1>

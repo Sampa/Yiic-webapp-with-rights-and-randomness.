@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login"); ?>
+<?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Messages"); ?>
 
 <h1><?php echo $title; ?></h1>
 

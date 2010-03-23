@@ -59,6 +59,8 @@ if ($profileFields)
 		}
 ?>
 
+
+<?php if($this->module->hasModule('role')): ?>
 <div class="row">
 <p> <?php echo Yii::t('UserModule.user', 'User belongs to these Roles'); ?>: </p>
 
@@ -72,6 +74,8 @@ if ($profileFields)
 		));  ?>
 
 </div>
+
+<?php endif; ?>
 
 
 <div class="row buttons">

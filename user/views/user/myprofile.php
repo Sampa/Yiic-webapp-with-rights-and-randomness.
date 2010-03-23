@@ -11,21 +11,32 @@ $this->breadcrumbs=array(
 <?php
 
 $this->menu=array(
-	array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin'), 'visible' => Yii::app()->user->isAdmin()),
-	array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin'), 'visible' => Yii::app()->user->isAdmin()),
-	array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index'), 'visible' => !Yii::app()->user->isAdmin()),
-	array('label'=>Yii::t('UserModule.user', 'Profile'), 'url'=>array('profile')),
-	array('label'=>Yii::t('UserModule.user', 'Edit'), 'url'=>array('edit')),
-	array('label'=>Yii::t('UserModule.user', 'Change password'), 'url'=>array('changepassword')),
-	array('label'=>Yii::t('UserModule.user', 'My Inbox'), 'url'=>array('messages/index')),
-	array('label'=>Yii::t('UserModule.user', 'Compose a Message'), 'url'=>array('messages/compose')),
-	array('label'=>Yii::t('UserModule.user', 'Logout'), 'url'=>array('logout')),
-	
-);
+		array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin'), 'visible' => Yii::app()->user->isAdmin()),
+		array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index'), 'visible' => !Yii::app()->user->isAdmin()),
+		array('label'=>Yii::t('UserModule.user', 'Profile'), 'url'=>array('profile')),
+		array('label'=>Yii::t('UserModule.user', 'Edit'), 'url'=>array('edit')),
+		array('label'=>Yii::t('UserModule.user', 'Change password'), 'url'=>array('changepassword')),
+		array('label'=>Yii::t('UserModule.user', 'Logout'), 'url'=>array('logout')),
+		);
+
+if($this->module->hasModule('role')) 
+{
+		$this->menu[] =	array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin'), 'visible' => Yii::app()->user->isAdmin());
+}
+
+if($this->module->hasModule('messages')) 
+{
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'My Inbox'), 'url'=>array('messages/messages/index'));
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Compose a Message'), 'url'=>array('messages/messages/compose'));
+}
 
 ?>
 
-<?php $this->renderPartial('/messages/newMessages') ?>
+
+<?php
+if($this->module->hasModule('messages'))  
+		$this->renderPartial('/messages/newMessages');
+?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">

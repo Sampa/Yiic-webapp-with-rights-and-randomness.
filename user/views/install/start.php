@@ -40,10 +40,6 @@ in this directory when you want to use the Role Manager of yii-user. </p>
 <p> To set the language of this Module, set the 'language' config param of
 your Yii Web Application </p>
 
-<p> Don't forget to copy overwrite your UserIdentity.php with 
- modules/user/components/UserIdentity.php, so your Webapp uses the User
-Module Authentification. </p> 
-
 </div>
 
 <div class="span-11 last">
@@ -59,24 +55,57 @@ Module Authentification. </p>
 <td> Table for Users </td>
 <td> <?php echo CHtml::textField('usersTable', Yii::app()->controller->module->usersTable); ?> </td> </tr>
 <tr> 
-<td> Table for Messages </td>
-
-<td> <?php echo CHtml::textField('messagesTable', Yii::app()->controller->module->messagesTable); ?> </td> </tr>
 <tr> 
 <td> Table for the Profile Fields </td>
 <td> <?php echo CHtml::textField('profileFieldsTable', Yii::app()->controller->module->profileFieldsTable); ?> </td> </tr>
 <tr> 
 <td> Table for the Profiles </td>
 <td> <?php echo CHtml::textField('profileTable', Yii::app()->controller->module->profileTable); ?> </td> </tr>
-<tr> 
-<td> Table for the Roles </td>
-<td> <?php echo CHtml::textField('rolesTable', Yii::app()->controller->module->rolesTable); ?> </td> </tr>
-<tr> 
-<td> Table for the Role Assignment(user_has_role)</td>
-<td> <?php echo CHtml::textField('userRoleTable', Yii::app()->controller->module->userRoleTable); ?> </td> </tr>
 </table>
 
 <div style="clear:both;"> </div>
+
+<label for="installRole"> Install Role Management submodule </label>
+<?php echo CHtml::checkBox('installRole', true); ?>
+
+<div id="roles">
+<table>
+<tr>
+<td> Table for the Roles </td>
+<td> <?php echo CHtml::textField('rolesTable', Yii::app()->controller->module->rolesTable); ?> </td> 
+</tr>
+<tr>
+<td> Table for the Role Assignment </td>
+<td> <?php echo CHtml::textField('userRoleTable', Yii::app()->controller->module->userRoleTable); ?> </td> </tr>
+</table>
+</div>
+
+<br />
+
+<label for="installMessages"> Install Messages submodule </label>
+<?php echo CHtml::checkBox('installMessages', true); ?>
+<div id="messages">
+<table>
+<td> Table for Messages </td>
+<td> <?php echo CHtml::textField('messagesTable', Yii::app()->controller->module->messagesTable); ?> </td> 
+</tr>
+</table>
+</div>
+
+<br />
+<br />
+
+<?php 
+$js = "
+$('#installRole').click(function() {
+$('#roles').toggle();
+});
+$('#installMessages').click(function() {
+$('#messages').toggle();
+});
+
+";
+Yii::app()->clientScript->registerScript('install', $js); ?>
 
 <?php echo CHtml::submitButton(Yii::t('UserModule.user', 'Install Module')); ?>
 <?php echo CHtml::endForm(); ?>

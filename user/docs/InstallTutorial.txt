@@ -31,12 +31,19 @@ $ [youreditor] protected/config/main.php
 
 Add this lines:
 
-'modules' => array(
-    'user' => array(
-      'debug' => true
-    ),
+	'modules' => array(
+				'user' => array(
+					'modules' => array(
+						'role',
+						'messages',
+						),
+					'debug' => 'true',
+					)
+				),
 
-in your Application Configuration
+
+in your Application Configuration. You can enable and disable Submodules of the 
+User Management Module with the 'modules' array. 
 
 4.) The Yii User Management Module needs a Database Connection to work. You 
 now have to setup your SQlite or MySQL Database and insert the connection

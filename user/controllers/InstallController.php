@@ -12,18 +12,18 @@ class InstallController extends Controller
 					$transaction = $db->beginTransaction();
 
 					$usersTable = $_POST['usersTable'];
-					$messagesTable = $_POST['messagesTable'];
 					$profileFieldsTable = $_POST['profileFieldsTable'];
 					$profileTable = $_POST['profileTable'];
+					$messagesTable = $_POST['messagesTable'];
 					$rolesTable = $_POST['rolesTable'];
 					$userRoleTable = $_POST['userRoleTable'];
 
 					// Clean up existing Installation
 					$db->createCommand(sprintf('drop table if exists %s, %s, %s, %s, %s, %s',
 								$usersTable,
-								$messagesTable, 
 								$profileFieldsTable, 
 								$profileTable,
+								$messagesTable,
 								$rolesTable,
 								$userRoleTable
 								)
@@ -49,24 +49,6 @@ class InstallController extends Controller
 
 
 					$db->createCommand($sql)->execute();
-
-					// Create Messages Table
-					$sql = "
-						CREATE TABLE IF NOT EXISTS `" . $messagesTable . "` (
-								`id` int(11) NOT NULL auto_increment,
-								`from_user_id` int(11) NOT NULL,
-								`to_user_id` int(11) NOT NULL,
-								`title` varchar(45) NOT NULL,
-								`message` text,
-								`message_read` tinyint(1) NOT NULL,
-								`draft` tinyint(1) default NULL,
-								PRIMARY KEY  (`id`),
-								KEY `fk_messages_users` (`from_user_id`),
-								KEY `fk_messages_users1` (`to_user_id`)
-								) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
-
-					$db->createCommand($sql)->execute();
-
 
 					// Create Profile Fields Table
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
@@ -105,26 +87,51 @@ class InstallController extends Controller
 
 					$db->createCommand($sql)->execute();
 
-					// Create Roles Table
-					$sql = "CREATE TABLE IF NOT EXISTS `".$rolesTable."` (
-						`id` INT NOT NULL AUTO_INCREMENT ,
-						`title` VARCHAR(255) NOT NULL ,
-						`description` VARCHAR(255) NULL ,
-						PRIMARY KEY (`id`)) 
-							ENGINE = InnoDB; ";
+					if(isset($_POST['installRole']))  
+					{
+						// Create Roles Table
+						$sql = "CREATE TABLE IF NOT EXISTS `".$rolesTable."` (
+							`id` INT NOT NULL AUTO_INCREMENT ,
+							`title` VARCHAR(255) NOT NULL ,
+							`description` VARCHAR(255) NULL ,
+							PRIMARY KEY (`id`)) 
+								ENGINE = InnoDB; ";
 
-					$db->createCommand($sql)->execute();
+						$db->createCommand($sql)->execute();
 
-					// Create User_has_role Table
+						// Create User_has_role Table
 
-					$sql = "CREATE TABLE IF NOT EXISTS `".$userRoleTable."` (
-						`id` int(11) NOT NULL auto_increment,
-						`user_id` int(11) NOT NULL,
-						`role_id` int(11) NOT NULL,
-						PRIMARY KEY  (`id`)
-							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+						$sql = "CREATE TABLE IF NOT EXISTS `".$userRoleTable."` (
+							`id` int(11) NOT NULL auto_increment,
+							`user_id` int(11) NOT NULL,
+							`role_id` int(11) NOT NULL,
+							PRIMARY KEY  (`id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
-					$db->createCommand($sql)->execute();
+						$db->createCommand($sql)->execute();
+					}
+
+					if(isset($_POST['installMessages'])) 
+					{
+						// Create Messages Table
+						$sql = "
+							CREATE TABLE IF NOT EXISTS `" . $messagesTable . "` (
+									`id` int(11) NOT NULL auto_increment,
+									`from_user_id` int(11) NOT NULL,
+									`to_user_id` int(11) NOT NULL,
+									`title` varchar(45) NOT NULL,
+									`message` text,
+									`message_read` tinyint(1) NOT NULL,
+									`draft` tinyint(1) default NULL,
+									PRIMARY KEY  (`id`),
+									KEY `fk_messages_users` (`from_user_id`),
+									KEY `fk_messages_users1` (`to_user_id`)
+									) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"; 
+
+							$db->createCommand($sql)->execute();
+					}
+
+
 
 					if($this->module->installDemoData) 
 					{

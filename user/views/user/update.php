@@ -18,10 +18,6 @@ $this->menu = array(
 			'url' =>array('admin')
 			),
 		array(
-			'label' => Yii::t("UserModule.user", 'Manage Roles'), 
-			'url' =>array('role/admin')
-			),
-		array(
 			'label' => Yii::t("UserModule.user", 'View User'), 
 			'url' =>array('view', 'id' => $model->id)
 			),
@@ -33,6 +29,14 @@ $this->menu = array(
 
 		);
 
+		if($this->module->hasModule('role')) 
+{
+
+	$this->menu[] =		array(
+			'label' => Yii::t("UserModule.user", 'Manage Roles'), 
+			'url' =>array('role/admin')
+			);
+}
 
 ?>
 

@@ -10,9 +10,12 @@ $this->breadcrumbs=array(
 $this->menu = array(
 array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index')),
 array('label'=>Yii::t('UserModule.user', 'Create User'), 'url'=>array('create')),
-array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin')),
-array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profileField/admin')),
 );
+if($this->module->hasModule('role'))
+{
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin'));
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profileField/admin'));
+}
 ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(

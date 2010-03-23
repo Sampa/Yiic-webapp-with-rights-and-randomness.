@@ -373,7 +373,11 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
-			$model->roles = Relation::retrieveValues($_POST, 'Role');
+
+			if(in_array('role', $this->controller->module->modules)) 
+			{
+				$model->roles = Relation::retrieveValues($_POST, 'Role');
+			}
 			$model->activationKey=User::encrypt(microtime().$model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
@@ -410,7 +414,11 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes = $_POST['User'];
-			$model->roles = Relation::retrieveValues($_POST, 'Role');
+
+			if(in_array('role', $this->controller->module->modules)) 
+			{
+				$model->roles = Relation::retrieveValues($_POST, 'Role');
+			}
 
 			if(isset($_POST['Profile'])) 
 				$profile->attributes = $_POST['Profile'];

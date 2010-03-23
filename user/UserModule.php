@@ -44,6 +44,7 @@ class UserModule extends CWebModule
 		));
 	}
 
+
 	public function beforeControllerAction($controller, $action)
 	{
 		if(parent::beforeControllerAction($controller, $action))
@@ -53,7 +54,7 @@ class UserModule extends CWebModule
 		else
 			return false;
 	}
-	
+
 	/**
 	 * Configures the module with the specified configuration.
 	 * Override base class implementation to allow static variables.
@@ -74,5 +75,14 @@ class UserModule extends CWebModule
 			}
 		}
 	}
+
+	/** 
+	 * Checks if the requested module is a submodule of the user module 
+	 */
+	public function hasModule($module)
+	{
+		return in_array($module, array_keys($this->getModules()));
+	}
+
 
 }

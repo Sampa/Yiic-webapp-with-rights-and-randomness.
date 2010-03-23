@@ -11,11 +11,18 @@ echo $model->username; ?> </h2>
 
 <?php
 $this->menu=array(
-	array('label'=>Yii::t('UserModule.user', 'Send a message to this User'), 'url'=>array('messages/compose', 'to_user_id' => $model->id)),
-	array('label'=>Yii::t('UserModule.user', 'Back to my Profile'), 'url'=>array('profile')),
-	array('label'=>Yii::t('UserModule.user', 'Logout'), 'url'=>array('logout')),
-);
+		array('label'=>Yii::t('UserModule.user', 'Back to my Profile'), 'url'=>array('profile')),
+		array('label'=>Yii::t('UserModule.user', 'Logout'), 'url'=>array('logout')),
+		);
 
+if($this->module->hasModule('messages'))
+{ 
+
+	$this->menu[] = array(
+			'label'=>Yii::t('UserModule.user', 'Send a message to this User'),
+			'url'=>array('messages/compose', 'to_user_id' => $model->id)
+			);
+}
 ?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
