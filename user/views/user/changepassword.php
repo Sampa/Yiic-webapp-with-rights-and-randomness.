@@ -1,7 +1,7 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Change Password");
+<?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Change password");
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", "Profile") => array('/user/profile'),
-	Yii::t("UserModule.user", "Change Password"),
+	Yii::t("UserModule.user", "Change password"),
 	);
 ?>
 
@@ -15,7 +15,7 @@ $this->menu = array(
 
 ?>
 
-<h1><?php echo Yii::t("UserModule.user", "Change Password"); ?></h1>
+<h1><?php echo Yii::t("UserModule.user", "Change password"); ?></h1>
 
 
 <div class="form">
