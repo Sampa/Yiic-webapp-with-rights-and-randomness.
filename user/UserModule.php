@@ -27,11 +27,11 @@ class UserModule extends CWebModule
 	public static $returnLogoutUrl = array("user/login");
 	
 	// LoginType :
-  // 0: Allow login only by Username
-  // 1: Allow login only by E-Mail
-  // 2: Allow login by E-Mail or Username
-  // 3: Allow login only by OpenID 
-	public $loginType = 2;
+	const LOGIN_USERNAME		= 0; // 0: Allow login only by Username
+	const LOGIN_EMAIL			= 1; // 1: Allow login only by E-Mail
+	const	LOGIN_NAMEMAIL		= 2; // 2: Allow login by E-Mail or Username
+	//const LOGIN_OPENID		= 4; // 3: Allow login only by OpenID (will be implemented) 
+	public $loginType = self::LOGIN_NAMEMAIL;
 
 
 	public function init()
