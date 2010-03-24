@@ -136,8 +136,8 @@ class InstallController extends Controller
 					if($this->module->installDemoData) 
 					{
 						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `email`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
-							(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'webmaster@example.com', '', 0, 1266571424, 1, 1),
-							(2, 'demo', 'fe01ce2a7fbac8fafaed7c982a04e229', 'demo@example.com', '', 0, 1266543330, 0, 1)";
+							(1, 'admin', '".User::encrypt('admin')."', 'webmaster@example.com', '', 0, 1266571424, 1, 1),
+							(2, 'demo', '".User::encrypt('demo')."', 'demo@example.com', '', 0, 1266543330, 0, 1)";
 						$db->createCommand($sql)->execute();
 						$sql = "INSERT INTO `".$profileTable."` (`profile_id`, `user_id`, `lastname`, `firstname`) VALUES
 							(1, 1, 'admin','admin'),
