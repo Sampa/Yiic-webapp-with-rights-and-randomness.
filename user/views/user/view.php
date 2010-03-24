@@ -12,9 +12,19 @@ array('label'=>Yii::t('UserModule.user', 'Create User'), 'url'=>array('create'))
 array('label'=>Yii::t('UserModule.user', 'Update User'), 'url'=>array('update','id'=>$model->id)),
 //array('label'=>Yii::t('UserModule.user', 'Delete User'), 'url'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t("UserModule.user", 'Are you sure to delete this item?'))),
 array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin')),
-array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin')),
-array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profileField/admin')),
 ); 
+
+if($this->module->hasModule('profiles'))
+{
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profiles/fields/admin'));
+}
+
+if($this->module->hasModule('role'))
+{
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/role/admin'));
+}
+
+
 ?>
 
 <h1><?php echo Yii::t("UserModule.user", 'View User').' "'.$model->username.'"'; ?></h1>

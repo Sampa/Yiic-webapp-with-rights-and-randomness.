@@ -1,6 +1,6 @@
 <?php
 
-class ProfileFieldController extends Controller
+class FieldsController extends Controller
 {
 	const PAGE_SIZE=10;
 

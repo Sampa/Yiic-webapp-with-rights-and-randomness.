@@ -5,6 +5,9 @@ return array(
 	'Your Account has been activated. Thank you for your registration.' =>
 	'Ihr Account wurde aktiviert. Danke für ihre Anmeldung. ',
 	'Registration' => 'Registrierung',
+	'Manage Profile Fields' => 'Profilfelder verwalten',
+	'Manage Profile Field' => 'Profilfeld verwalten',
+	'Create Profile Field' => 'Profilfeld anlegen',
 	'This users have been assigned to this Role' => 'Diese Nutzer gehören dieser Rolle an: ',
 	'Edit this Role' => 'Diese Rolle bearbeiten',
 	'Update' => 'Bearbeiten',
@@ -13,6 +16,7 @@ return array(
 	'View' => 'Anzeigen',
 	'This User belongs to these roles: ', 'Benutzer gehört diesen Rollen an:',
 	'User belongs to Roles' => 'Benutzer gehört diesen Rollen an',
+  'This users have been assigned to this Role' => 'Dieser Rolle gehören diese Benutzer an',
 	'Login' => 'Login',
 	'Users: ' => 'Benutzer: ',
 	'Changes are saved' => 'Änderungen wurden gespeichert.',

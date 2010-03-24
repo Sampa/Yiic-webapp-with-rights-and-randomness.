@@ -3,13 +3,13 @@ $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Profile Fields')=>array('admin'),
 	Yii::t("UserModule.user", 'Manage'),
 );
+
+$this->menu = array(
+array('label' => Yii::t("UserModule.user", 'Manage User'), 'url' => array('/user/user/admin')),
+array('label' => Yii::t("UserModule.user", 'Create Profile Field'), 'url' => array('create')),
+)
 ?>
 <h1><?php echo Yii::t("UserModule.user", 'Manage Profile Fields'); ?></h1>
-
-<ul class="actions">
-	<li><?php echo CHtml::link(Yii::t("UserModule.user", 'Manage User'),array('user/admin')); ?></li>
-	<li><?php echo CHtml::link(Yii::t("UserModule.user", 'Create Profile Field'),array('create')); ?></li>
-</ul><!-- actions -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,

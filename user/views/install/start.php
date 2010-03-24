@@ -54,13 +54,6 @@ your Yii Web Application </p>
 <tr> 
 <td> Table for Users </td>
 <td> <?php echo CHtml::textField('usersTable', Yii::app()->controller->module->usersTable); ?> </td> </tr>
-<tr> 
-<tr> 
-<td> Table for the Profile Fields </td>
-<td> <?php echo CHtml::textField('profileFieldsTable', Yii::app()->controller->module->profileFieldsTable); ?> </td> </tr>
-<tr> 
-<td> Table for the Profiles </td>
-<td> <?php echo CHtml::textField('profileTable', Yii::app()->controller->module->profileTable); ?> </td> </tr>
 </table>
 
 <div style="clear:both;"> </div>
@@ -93,6 +86,22 @@ your Yii Web Application </p>
 </div>
 
 <br />
+
+<label for="installRole"> Install Profiles submodule </label>
+<?php echo CHtml::checkBox('installProfiles', true); ?>
+
+<div id="profiles">
+<table>
+<tr> 
+<td> Table for the Profile Fields </td>
+<td> <?php echo CHtml::textField('profileFieldsTable', Yii::app()->controller->module->profileFieldsTable); ?> </td> </tr>
+<tr> 
+<td> Table for the Profiles </td>
+<td> <?php echo CHtml::textField('profileTable', Yii::app()->controller->module->profileTable); ?> </td> </tr>
+</table>
+</div>
+
+
 <br />
 
 <?php 
@@ -102,6 +111,9 @@ $('#roles').toggle();
 });
 $('#installMessages').click(function() {
 $('#messages').toggle();
+});
+$('#installProfiles').click(function() {
+$('#profiles').toggle();
 });
 
 ";

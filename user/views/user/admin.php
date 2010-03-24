@@ -11,10 +11,15 @@ $this->menu = array(
 array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index')),
 array('label'=>Yii::t('UserModule.user', 'Create User'), 'url'=>array('create')),
 );
+
 if($this->module->hasModule('role'))
 {
 	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/role/admin'));
-	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profileField/admin'));
+}
+
+if($this->module->hasModule('profiles'))
+{
+	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profiles/fields/admin'));
 }
 ?>
 

@@ -26,7 +26,7 @@ $this->menu=array(
 		array(
 			'type' => 'raw',
 			'name' => Yii::t('UserModule.user', 'from'),
-			'value' => 'CHtml::link($data->from_user->username, array("user/profile", "id" => $data->from_user_id))'
+			'value' => 'CHtml::link($data->from_user->username, array("/user/user/profile", "id" => $data->from_user_id))'
 		),
 		array(
 			'type' => 'raw',

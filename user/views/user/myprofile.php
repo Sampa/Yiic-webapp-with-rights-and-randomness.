@@ -19,9 +19,14 @@ $this->menu=array(
 		array('label'=>Yii::t('UserModule.user', 'Logout'), 'url'=>array('logout')),
 		);
 
+if($this->module->hasModule('profiles')) 
+{
+		$this->menu[] =	array('label'=>Yii::t('UserModule.user', 'Manage Profile Fields'), 'url'=>array('profiles/fields/admin'), 'visible' => Yii::app()->user->isAdmin());
+}
+
 if($this->module->hasModule('role')) 
 {
-		$this->menu[] =	array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/admin'), 'visible' => Yii::app()->user->isAdmin());
+		$this->menu[] =	array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/role/admin'), 'visible' => Yii::app()->user->isAdmin());
 }
 
 if($this->module->hasModule('messages')) 
