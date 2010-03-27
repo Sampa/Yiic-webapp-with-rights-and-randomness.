@@ -54,12 +54,6 @@ if($this->module->hasModule('messages'))
 ?>
 </tr>
 <tr>
-	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('email')); ?>
-</th>
-    <td><?php echo CHtml::encode($model->email); ?>
-</td>
-</tr>
-<tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('createtime')); ?>
 </th>
     <td><?php echo date(UserModule::$dateFormat,$model->createtime); ?>

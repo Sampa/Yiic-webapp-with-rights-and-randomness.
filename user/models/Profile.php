@@ -27,7 +27,6 @@ class Profile extends CActiveRecord
 		$numerical = array();           
 		$rules = array();
 
-
 		$model=ProfileField::model()->forOwner()->findAll();
 
 		foreach ($model as $field) 

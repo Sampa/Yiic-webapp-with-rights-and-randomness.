@@ -34,7 +34,6 @@ class InstallController extends Controller
 						`id` int(11) NOT NULL auto_increment,
 						`username` varchar(20) NOT NULL,
 						`password` varchar(128) NOT NULL,
-						`email` varchar(128) NOT NULL,
 						`activationKey` varchar(128) NOT NULL default '',
 						`createtime` int(10) NOT NULL default '0',
 						`lastvisit` int(10) NOT NULL default '0',
@@ -42,13 +41,16 @@ class InstallController extends Controller
 						`status` int(1) NOT NULL default '0',
 						PRIMARY KEY  (`id`),
 						UNIQUE KEY `username` (`username`),
-						UNIQUE KEY `email` (`email`),
 						KEY `status` (`status`),
 						KEY `superuser` (`superuser`)
 							) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 
 					$db->createCommand($sql)->execute();
+
+					
+					if(isset($_POST['installProfiles']))  
+{
 
 					// Create Profile Fields Table
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
@@ -79,6 +81,7 @@ class InstallController extends Controller
 						`user_id` int(11) NOT NULL,
 						`lastname` varchar(50) NOT NULL default '',
 						`firstname` varchar(50) NOT NULL default '',
+						`email` varchar(255) NOT NULL default '',
 						`about` text,
 						`street` varchar(255),
 						PRIMARY KEY  (`profile_id`),
@@ -86,6 +89,7 @@ class InstallController extends Controller
 							) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 					$db->createCommand($sql)->execute();
+}
 
 					if(isset($_POST['installRole']))  
 					{
@@ -135,14 +139,22 @@ class InstallController extends Controller
 
 					if($this->module->installDemoData) 
 					{
-						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `email`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
-							(1, 'admin', '".User::encrypt('admin')."', 'webmaster@example.com', '', 0, 1266571424, 1, 1),
-							(2, 'demo', '".User::encrypt('demo')."', 'demo@example.com', '', 0, 1266543330, 0, 1)";
+						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
+							(1, 'admin', '".User::encrypt('admin')."', '', 0, 1266571424, 1, 1),
+							(2, 'demo', '".User::encrypt('demo')."', '', 0, 1266543330, 0, 1)";
 						$db->createCommand($sql)->execute();
-						$sql = "INSERT INTO `".$profileTable."` (`profile_id`, `user_id`, `lastname`, `firstname`) VALUES
-							(1, 1, 'admin','admin'),
-							(2, 2, 'demo','demo')";
-						$db->createCommand($sql)->execute();
+
+						if(isset($_POST['installProfiles']))
+						{
+							$sql = "INSERT INTO `".$profileTable."` (`profile_id`, `user_id`, `lastname`, `firstname`) VALUES
+								(1, 1, 'admin','admin'),
+								(2, 2, 'demo','demo')";
+							$db->createCommand($sql)->execute();
+
+							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2)";
+
+							$db->createCommand($sql)->execute();
+						}
 
 					}
 

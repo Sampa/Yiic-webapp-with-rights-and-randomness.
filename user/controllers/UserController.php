@@ -328,20 +328,24 @@ class UserController extends Controller
 	public function actionEdit()
 	{
 		$model=User::model()->findByPk(Yii::app()->user->id);
-		if(!$profile=$model->profile)
-			$profile = new Profile();
+		$profile = new Profile();
 
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
-			$profile->attributes=$_POST['Profile'];
-
-			if($model->validate()&&$profile->validate()) {
-				$model->save();
-				$profile->save();
-				Yii::app()->user->setFlash('profileMessage',Yii::t("user", "Changes are saved."));
-				$this->redirect(array('profile','id'=>$model->id));
+			if(isset($_POST['Profile']))  
+			{
+				$profile->attributes=$_POST['Profile'];
+				$profile->user_id = $model->id;
 			}
+
+				if($model->save() && $profile->save() ) 
+					Yii::app()->user->setFlash('profileMessage',
+							Yii::t("UserModule.user", "Your changes have been saved"));
+				else
+					Yii::app()->user->setFlash('profileMessage',
+							Yii::t("UserModule.user", "An Error occured while saving your changes"));
+				$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
 		$this->render('/user/profile-edit',array(

@@ -11,6 +11,7 @@ New in 0.5:
 - fixed the way Models retrieve their tablename so it works even when not
 - in module context (steve, thyseus)
 - started to begin submodularized infrastructure. see docs/submodules.txt (thyseus)
+- Profile submodule now allows to have multiple profiles for an user, with the last one being the default.
 
 New in 0.4:
 

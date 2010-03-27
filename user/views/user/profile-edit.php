@@ -23,10 +23,6 @@ $this->menu = array(
 			'label'=> Yii::t('UserModule.user', 'Profile'),
 			'url'=>array('profile')
 			),
-		array(
-			'label' => Yii::t('UserModule.user', 'Edit'),
-			'url'=>array('edit')
-			), 
 		array (
 			'label' => Yii::t('UserModule.user', 'Change password'),
 			'url'=>array('changepassword')
@@ -75,12 +71,6 @@ $this->menu = array(
 		<?php echo CHtml::activeLabelEx($model,'username'); ?>
 		<?php echo CHtml::activeTextField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo CHtml::error($model,'username'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'email'); ?>
-		<?php echo CHtml::activeTextField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo CHtml::error($model,'email'); ?>
 	</div>
 
 	<div class="row buttons">

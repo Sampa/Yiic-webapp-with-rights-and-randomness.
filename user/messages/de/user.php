@@ -5,6 +5,8 @@ return array(
 	'Your Account has been activated. Thank you for your registration.' =>
 	'Ihr Account wurde aktiviert. Danke für ihre Anmeldung. ',
 	'Registration' => 'Registrierung',
+	'Your changes have been saved' => 'Ihre Änderungen wurden gespeichert',
+	'An error occured while saving your changes' =>  'Es ist ein Fehler aufgetreten.',
 	'Manage Profile Fields' => 'Profilfelder verwalten',
 	'Manage Profile Field' => 'Profilfeld verwalten',
 	'Create Profile Field' => 'Profilfeld anlegen',

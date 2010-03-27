@@ -11,29 +11,45 @@ $this->breadcrumbs=array(
 <?php
 
 $this->menu=array(
-		array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin'), 'visible' => Yii::app()->user->isAdmin()),
-		array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index'), 'visible' => !Yii::app()->user->isAdmin()),
-		array('label'=>Yii::t('UserModule.user', 'Profile'), 'url'=>array('profile')),
-		array('label'=>Yii::t('UserModule.user', 'Edit'), 'url'=>array('edit')),
-		array('label'=>Yii::t('UserModule.user', 'Change password'), 'url'=>array('changepassword')),
-		array('label'=>Yii::t('UserModule.user', 'Logout'), 'url'=>array('logout')),
+		array(
+			'label'=>Yii::t('UserModule.user', 'Manage User'),
+			'url'=>array('admin'),
+			'visible' => Yii::app()->user->isAdmin()),
+		array(
+			'label'=>Yii::t('UserModule.user', 'List User'),
+			'url'=>array('index'),
+			'visible' => !Yii::app()->user->isAdmin()),
+		array(
+			'label'=>Yii::t('UserModule.user', 'Profile'),
+			'url'=>array('profile'),
+			'visible' => $this->module->hasModule('profiles')),
+		array('label'=>Yii::t('UserModule.user', 'Edit'),
+			'url'=>array('edit'),
+			'visible' => $this->module->hasModule('profiles')),
+		array(
+			'label'=>Yii::t('UserModule.user', 'Manage Profile Fields'),
+			'url'=>array('profiles/fields/admin'),
+			'visible' => Yii::app()->user->isAdmin() 
+			&& $this->module->hasModule('profiles')),
+		array(
+			'label'=>Yii::t('UserModule.user', 'Manage Roles'),
+			'url'=>array('role/role/admin'),
+			'visible' => Yii::app()->user->isAdmin() 
+			&& $this->module->hasModule('role')),
+		array(
+				'label'=>Yii::t('UserModule.user', 'My Inbox'),
+				'url'=>array('messages/messages/index'),
+				'visible' => $this->module->hasModule('messages')),
+		array(
+				'label'=>Yii::t('UserModule.user', 'Compose a Message'),
+				'url'=>array('messages/messages/compose'),
+				'visible' => $this->module->hasModule('messages')),
+		array(
+				'label'=>Yii::t('UserModule.user', 'Change password'),
+				'url'=>array('changepassword')),
+		array('label'=>Yii::t('UserModule.user', 'Logout'),
+				'url'=>array('logout')),
 		);
-
-if($this->module->hasModule('profiles')) 
-{
-		$this->menu[] =	array('label'=>Yii::t('UserModule.user', 'Manage Profile Fields'), 'url'=>array('profiles/fields/admin'), 'visible' => Yii::app()->user->isAdmin());
-}
-
-if($this->module->hasModule('role')) 
-{
-		$this->menu[] =	array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/role/admin'), 'visible' => Yii::app()->user->isAdmin());
-}
-
-if($this->module->hasModule('messages')) 
-{
-	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'My Inbox'), 'url'=>array('messages/messages/index'));
-	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Compose a Message'), 'url'=>array('messages/messages/compose'));
-}
 
 ?>
 
@@ -74,12 +90,6 @@ if($this->module->hasModule('messages'))
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('password')); ?>
 </th>
     <td><?php echo CHtml::link(Yii::t("UserModule.user", "Change password"),array("changepassword")); ?>
-</td>
-</tr>
-<tr>
-	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('email')); ?>
-</th>
-    <td><?php echo CHtml::encode($model->email); ?>
 </td>
 </tr>
 <tr>
