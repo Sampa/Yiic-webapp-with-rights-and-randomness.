@@ -344,7 +344,7 @@ class UserController extends Controller
 							Yii::t("UserModule.user", "Your changes have been saved"));
 				else
 					Yii::app()->user->setFlash('profileMessage',
-							Yii::t("UserModule.user", "An Error occured while saving your changes"));
+							Yii::t("UserModule.user", "An error occured while saving your changes"));
 				$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
@@ -378,7 +378,8 @@ class UserController extends Controller
 		{
 			$model->attributes=$_POST['User'];
 
-			if(in_array('role', $this->controller->module->modules)) 
+
+			if($this->module->hasModule('role')) 
 			{
 				$model->roles = Relation::retrieveValues($_POST, 'Role');
 			}
