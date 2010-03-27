@@ -37,11 +37,6 @@ $this->breadcrumbs=array(
 	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
 	</div>
 	
-	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'email'); ?>
-	<?php echo CHtml::activeTextField($form,'email'); ?>
-	</div>
-	
 	<?php if(extension_loaded('gd')): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>

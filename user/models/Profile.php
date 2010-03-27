@@ -16,7 +16,7 @@ class Profile extends CActiveRecord
     elseif (isset(Yii::app()->modules['user']['profileTable'])) 
       $this->_tableName = Yii::app()->modules['user']['profileTable'];
     else
-      $this->_tableName = 'profile'; // fallback if nothing is set
+      $this->_tableName = 'profiles'; // fallback if nothing is set
 
 		return $this->_tableName;
   }
@@ -71,6 +71,7 @@ class Profile extends CActiveRecord
 
 		array_push($rules,array(implode(',',$required), 'required'));
 		array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
+
 		return $rules;
 	}
 

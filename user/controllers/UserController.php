@@ -328,7 +328,7 @@ class UserController extends Controller
 	public function actionEdit()
 	{
 		$model=User::model()->findByPk(Yii::app()->user->id);
-		$profile = new Profile();
+		$profile = $model->profile;
 
 		if(isset($_POST['User']))
 		{

@@ -5,9 +5,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu = array(
-array('label' => Yii::t("UserModule.user", 'Manage User'), 'url' => array('/user/user/admin')),
-array('label' => Yii::t("UserModule.user", 'Create Profile Field'), 'url' => array('create')),
-)
+		array('label' => Yii::t("UserModule.user", 'Manage User'),
+			'url' => array('/user/user/admin')),
+		array('label' => Yii::t("UserModule.user", 'Create Profile Field'),
+			'url' => array('create')),
+		)
 ?>
 <h1><?php echo Yii::t("UserModule.user", 'Manage Profile Fields'); ?></h1>
 
