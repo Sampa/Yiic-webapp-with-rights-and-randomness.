@@ -415,7 +415,7 @@ class UserController extends Controller
 		{
 			$model->attributes = $_POST['User'];
 
-			if(in_array('role', $this->controller->module->modules)) 
+			if($this->module->hasModule('role')) 
 			{
 				$model->roles = Relation::retrieveValues($_POST, 'Role');
 			}
