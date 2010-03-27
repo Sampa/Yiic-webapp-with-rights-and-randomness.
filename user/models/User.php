@@ -117,32 +117,6 @@ class User extends CActiveRecord
 			return false;
 	}
 
-	/**
-	* Checks if the user has the given Role)
-	* @mixed Role string or array of strings that should be checked
-	* @int (optional) id of the user that should be checked 
-	* @return bool Return value tells if the User has access or hasn't access.
-	*/
-	public static function hasRole($role, $uid = 0)
-	{
-		if($uid == 0)
-			$uid = Yii::app()->user->getId();
-
-		if(!is_array($role))
-			$role = array ($role);
-
-		$user = CActiveRecord::model('User')->findByPk($uid);
-		if(isset($user->roles)) 
-			foreach($user->roles as $roleobj) 
-			{
-				if(in_array($roleobj->title, $role) ||
-				  in_array($roleobj->id, $role))
-					return true;
-			}
-		return false;
-	}
-
-
 	public function attributeLabels()
 	{
 		return array(

@@ -467,6 +467,8 @@ $(\'#div\' + i).hide();
 
 	public static function retrieveValues($data, $field) 
 	{
+		$returnArray = array();
+
 		foreach($data as $key => $value) 
 		{
 			if(strpos($key, 'rel') !== false)
