@@ -146,12 +146,12 @@ class InstallController extends Controller
 
 						if(isset($_POST['installProfiles']))
 						{
-							$sql = "INSERT INTO `".$profileTable."` (`profile_id`, `user_id`, `lastname`, `firstname`) VALUES
-								(1, 1, 'admin','admin'),
-								(2, 2, 'demo','demo')";
+							$sql = "INSERT INTO `".$profileTable."` (`profile_id`, `user_id`, `lastname`, `firstname`, `email`) VALUES
+								(1, 1, 'admin','admin','webmaster@example.com'),
+								(2, 2, 'demo','demo','demo@example.com')";
 							$db->createCommand($sql)->execute();
 
-							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2)";
+							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2), ('firstname', 'First name', 'VARCHAR', 255, 1, 2), ('lastname', 'Last name', 'VARCHAR', 255, 1, 2)";
 
 							$db->createCommand($sql)->execute();
 						}

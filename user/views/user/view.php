@@ -49,7 +49,6 @@ if(Yii::app()->user->isAdmin()) {
 	
 	array_push($attributes,
 		'password',
-		'email',
 		'activationKey',
 		array(
 			'name' => 'createtime',

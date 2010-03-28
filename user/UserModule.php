@@ -26,6 +26,11 @@ class UserModule extends CWebModule
 	public static $returnUrl = array("user/profile");		// Page to go to after registration, login etc.
 	public static $returnLogoutUrl = array("user/login");
 
+	// Activate profile History (profiles are kept always, and when the 
+  // user changes his profile, it gets added to the database rather than
+  // updated.
+	public $profileHistory = true;
+
 	// LoginType :
 	// 0: Allow login only by Username
 	const LOGIN_BY_USERNAME		= 0;

@@ -37,11 +37,6 @@ if($this->module->hasModule('profiles'))
 			'value' => 'CHtml::link(CHtml::encode($data->username),array("user/view","id"=>$data->id))',
 		),
 		array(
-			'name'=>'email',
-			'type'=>'raw',
-			'value'=>'CHtml::link(CHtml::encode($data->email), "mailto:".$data->email)',
-		),
-		array(
 			'name' => 'createtime',
 			'value' => 'date(UserModule::$dateFormat,$data->createtime)',
 		),

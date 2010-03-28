@@ -333,6 +333,9 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
+      if($this->module->profileHistory == true) 
+				$profile = new Profile();
+
 			if(isset($_POST['Profile']))  
 			{
 				$profile->attributes=$_POST['Profile'];

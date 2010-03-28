@@ -20,12 +20,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'email'); ?>
-		<?php echo CHtml::activeTextField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo CHtml::error($model,'email'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'superuser'); ?>
 		<?php echo CHtml::activeDropDownList($model,'superuser',User::itemAlias('AdminStatus')); ?>
 		<?php echo CHtml::error($model,'superuser'); ?>
