@@ -2,9 +2,9 @@
 
 class User extends CActiveRecord
 {
-	const STATUS_NOTACTIVE=0;
-	const STATUS_ACTIVE=1;
-	const STATUS_BANNED=-1;
+	const STATUS_NOTACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	const STATUS_BANNED = -1;
 
 	public $username;
 	public $password;
@@ -17,7 +17,8 @@ class User extends CActiveRecord
 		return parent::model($className);
 	}
 
-	public function behaviors() {
+	public function behaviors() 
+	{
 		return array( 'CAdvancedArBehavior' => array(
 					'class' => 'application.modules.user.components.CAdvancedArBehavior'));
 	}

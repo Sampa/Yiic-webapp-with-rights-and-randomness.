@@ -339,6 +339,7 @@ class UserController extends Controller
 			if(isset($_POST['Profile']))  
 			{
 				$profile->attributes=$_POST['Profile'];
+				$profile->timestamp = time();
 				$profile->user_id = $model->id;
 			}
 

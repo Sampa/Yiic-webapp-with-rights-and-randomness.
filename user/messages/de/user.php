@@ -11,6 +11,7 @@ return array(
 	'Profile Fields' => 'Profilfelder',
 	'Manage Profile Fields' => 'Profilfelder verwalten',
 	'Manage Profile Field' => 'Profilfeld verwalten',
+	'Your new password has been saved.' => 'Ihr Passwort wurde gespeichert.',
 	'Create Profile Field' => 'Profilfeld anlegen',
 	'This users have been assigned to this Role' => 'Diese Nutzer gehören dieser Rolle an: ',
 	'Edit this Role' => 'Diese Rolle bearbeiten',

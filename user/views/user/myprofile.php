@@ -29,13 +29,13 @@ $this->menu=array(
 		array(
 			'label'=>Yii::t('UserModule.user', 'Manage Profile Fields'),
 			'url'=>array('profiles/fields/admin'),
-			'visible' => Yii::app()->user->isAdmin() 
-			&& $this->module->hasModule('profiles')),
+			'visible' => (Yii::app()->user->isAdmin() 
+			&& $this->module->hasModule('profiles'))),
 		array(
 			'label'=>Yii::t('UserModule.user', 'Manage Roles'),
 			'url'=>array('role/role/admin'),
-			'visible' => Yii::app()->user->isAdmin() 
-			&& $this->module->hasModule('role')),
+			'visible' => (Yii::app()->user->isAdmin() 
+			&& $this->module->hasModule('role'))),
 		array(
 				'label'=>Yii::t('UserModule.user', 'My Inbox'),
 				'url'=>array('messages/messages/index'),
