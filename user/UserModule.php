@@ -56,14 +56,6 @@ class UserModule extends CWebModule
 	{
 		if(parent::beforeControllerAction($controller, $action))
 		{
-			if(Yii::app()->controller->module->debug) 
-			{
-				echo	CHtml::openTag('div', array('class' => 'hint'));
-				echo 'You are running the Yii User Management Module ' .
-					Yii::app()->controller->module->version .
-					' in Debug Mode!';
-				echo CHtml::closeTag('div');
-			}
 			return true;
 		}
 		else

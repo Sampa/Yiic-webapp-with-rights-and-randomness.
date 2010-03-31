@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Users"),
-);
+		Yii::t("UserModule.user", "Users"),
+		);
 ?>
 
 <?php
@@ -22,16 +22,29 @@ $this->menu = array(
 		array('label'=>Yii::t('UserModule.user', 'Manage Roles'),
 			'url'=>array('role/role/admin'),
 			'visible' => $this->module->hasModule('role')
-		&& Yii::app()->user->isAdmin())
+			&& Yii::app()->user->isAdmin())
 		);
 
 ?>
 
-	<h1> <?php echo Yii::t('UserModule.user', 'Users: '); ?></h1>
+
+	<?php
+if(Yii::app()->controller->module->debug === true) 
+{
+	echo	CHtml::openTag('div', array('class' => 'hint'));
+	echo 'You are running the Yii User Management Module ' .
+		Yii::app()->controller->module->version .
+		' in Debug Mode!';
+	echo CHtml::closeTag('div'); 
+}
+
+?>
+
+<h1> <?php echo Yii::t('UserModule.user', 'Users: '); ?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'dataProvider'=>$dataProvider,
-	'columns'=>array(
+			'dataProvider'=>$dataProvider,
+			'columns'=>array(
 		array(
 			'name' => 'username',
 			'type'=>'raw',
