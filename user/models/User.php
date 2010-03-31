@@ -11,6 +11,7 @@ class User extends CActiveRecord
 	public $email;
 	private $_tableName;
 	private $_userRoleTable;
+	private $_userUserTable;
 	
 	public static function model($className=__CLASS__)
 	{
@@ -59,9 +60,17 @@ class User extends CActiveRecord
     else
       $this->_userRoleTable = 'user_has_role';
 
+    if (isset(Yii::app()->controller->module->userUserTable))
+      $this->_userUserTable = Yii::app()->controller->module->userUserTable;
+    elseif (isset(Yii::app()->modules['user']['userUserTable'])) 
+      $this->_tableName = Yii::app()->modules['user']['userUserTable'];
+    else
+      $this->_userRoleTable = 'user_has_user';
+
 		return array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id', 'order' => 'profile.profile_id DESC'),
 			'roles'=>array(self::MANY_MANY, 'Role', $this->_userRoleTable . '(user_id, role_id)'),
+			'users'=>array(self::MANY_MANY, 'User', $this->_userUserTable . '(owner_id, slave_id)'),
 			);
 	}
 

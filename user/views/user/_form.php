@@ -69,6 +69,21 @@ if ($profileFields)
 
 </div>
 
+<div class="row">
+<p> <?php echo Yii::t('UserModule.user', 'This user can administrate this users'); ?>: </p>
+
+<?php 
+		$this->widget('application.modules.user.components.Relation',
+			array('model' => $model,
+			'relation' => 'users',
+			'style' => 'listbox',
+			'fields' => 'username',
+			'showAddButton' => false
+		));  ?>
+
+</div>
+
+
 <?php endif; ?>
 
 

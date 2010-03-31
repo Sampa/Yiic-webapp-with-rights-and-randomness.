@@ -35,6 +35,14 @@ class UserController extends Controller
 					'actions'=>array('admin','delete','create','update', 'list', 'assign'),
 					'users'=>User::getAdmins(),
 					),
+				array('allow',
+					'actions' => array('admin'),
+					'expression' => "Yii::app()->user->hasUsers()",
+					),
+				array('allow',
+					'actions' => array('update'),
+					'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
+					),
 				array('deny',  // deny all other users
 					'users'=>array('*'),
 					),
@@ -55,11 +63,17 @@ class UserController extends Controller
 	public function actionIndex()
 	{
 		if(Yii::app()->user->isGuest) 
+		{
 			$this->actionLogin();
-		else if(Yii::app()->user->isAdmin())
-			$this->actionList();
-		else 
+		}
+		else if(isset($_GET['id']) || isset ($_GET['user_id']))
+		{
 			$this->actionProfile(); 
+		}
+		else 
+		{
+			$this->actionList();
+		}
 	}
 
 	public function actionRegistration() 
@@ -426,7 +440,15 @@ class UserController extends Controller
 
 			if($this->module->hasModule('role')) 
 			{
+				// Assign the roles and slave Users to the model
+				if(!isset($_POST['User']['Role']))
+					$_POST['User']['Role'] = array();
+
+				if(!isset($_POST['User']['User']))
+					$_POST['User']['User'] = array();
+
 				$model->roles = Relation::retrieveValues($_POST, 'Role');
+				$model->users = $_POST['User']['User'];
 			}
 
 			if(isset($_POST['Profile'])) 

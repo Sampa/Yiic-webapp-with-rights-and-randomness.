@@ -6,24 +6,27 @@ $this->breadcrumbs=array(
 ?>
 
 <?php
- $this->menu = array(
-array('label'=>Yii::t('UserModule.user', 'List User'), 'url'=>array('index')),
-array('label'=>Yii::t('UserModule.user', 'Create User'), 'url'=>array('create')),
-array('label'=>Yii::t('UserModule.user', 'Update User'), 'url'=>array('update','id'=>$model->id)),
-//array('label'=>Yii::t('UserModule.user', 'Delete User'), 'url'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t("UserModule.user", 'Are you sure to delete this item?'))),
-array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin')),
-); 
-
-if($this->module->hasModule('profiles'))
-{
-	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'), 'url'=>array('profiles/fields/admin'));
-}
-
-if($this->module->hasModule('role'))
-{
-	$this->menu[] = array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('role/role/admin'));
-}
-
+$this->menu = array(
+		array('label'=>Yii::t('UserModule.user', 'List User'),
+			'url'=>array('index')
+			),
+		array('label'=>Yii::t('UserModule.user', 'Create User'),
+			'url'=>array('create')
+			),
+		array('label'=>Yii::t('UserModule.user', 'Update User'),
+			'url'=>array('update','id'=>$model->id)
+			),
+		array('label'=>Yii::t('UserModule.user', 'Manage User'),
+			'url'=>array('admin')
+			),
+		array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'),
+			'url'=>array('profiles/fields/admin'),
+			'visible' => $this->module->hasModule('profiles')
+			),
+		array('label'=>Yii::t('UserModule.user', 'Manage Roles'),
+			'url'=>array('role/role/admin'),
+			'visible' => $this->module->hasModule('role'))
+		); 
 
 ?>
 
@@ -109,13 +112,40 @@ if(Yii::app()->user->isAdmin()) {
 
 <hr />
 
-<?php echo Yii::t('UserModule.User', 'This User belongs to these roles:');  ?>
+<?php 
+
+echo Yii::t('UserModule.User', 'This User belongs to these roles:');  ?>
 
 <?php 
 if($model->roles) {
 	echo "<ul>";
 	foreach($model->roles as $role) {
-		printf("<li>%s</li>", CHtml::link($role->title, array('role/view', 'id' => $role->id)));
+		printf("<li>%s</li>", CHtml::link($role->title,
+					array('role/view',
+						'id' => $role->id)));
+	}
+	echo "</ul>";
+}
+else 
+{
+	echo '<p> None </p>';
+}
+
+?>
+
+<hr />
+
+<?php
+
+echo Yii::t('UserModule.User', 'This User can administrate this Users:');  ?>
+
+<?php 
+if($model->users) {
+	echo "<ul>";
+	foreach($model->users as $user) {
+		printf("<li>%s</li>",
+				CHtml::link($user->username,
+					array('user/view', 'id' => $user->id)));
 	}
 	echo "</ul>";
 }

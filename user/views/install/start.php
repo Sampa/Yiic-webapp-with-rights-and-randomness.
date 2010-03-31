@@ -70,7 +70,12 @@ your Yii Web Application </p>
 <tr>
 <td> Table for the Role Assignment </td>
 <td> <?php echo CHtml::textField('userRoleTable', Yii::app()->controller->module->userRoleTable); ?> </td> </tr>
+<tr>
+<td> This table holds the assignment, which user can administrate which other users </td>
+<td> <?php echo CHtml::textField('userUserTable', Yii::app()->controller->module->userUserTable); ?> </td> </tr>
+
 </table>
+
 </div>
 
 <br />

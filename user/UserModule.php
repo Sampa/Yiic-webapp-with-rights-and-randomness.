@@ -11,6 +11,7 @@ class UserModule extends CWebModule
 	public $profileTable = "profiles";
 	public $rolesTable = "roles";
 	public $userRoleTable = "user_has_role";
+	public $userUserTable = "user_has_user";
 	public $installDemoData = true;
 	public $disableEmailActivation = false;
 	public $layout = 'column2';
@@ -37,7 +38,7 @@ class UserModule extends CWebModule
 	// 1: Allow login only by E-Mail (needs profile module)
 	const LOGIN_BY_EMAIL			= 1; 
 	// 2: Allow login by E-Mail or Username (needs profile module)
-	const	LOGIN_BY_NAME_EMAIL	= 2; 
+	const	LOGIN_BY_USERNAME_OR_EMAIL	= 2; 
 	// 3: Allow login only by OpenID (will be implemented) 
 	//const LOGIN_OPENID		= 4;
 	public $loginType = self::LOGIN_BY_USERNAME;
@@ -55,6 +56,14 @@ class UserModule extends CWebModule
 	{
 		if(parent::beforeControllerAction($controller, $action))
 		{
+			if(Yii::app()->controller->module->debug) 
+			{
+				echo	CHtml::openTag('div', array('class' => 'hint'));
+				echo 'You are running the Yii User Management Module ' .
+					Yii::app()->controller->module->version .
+					' in Debug Mode!';
+				echo CHtml::closeTag('div');
+			}
 			return true;
 		}
 		else

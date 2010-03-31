@@ -25,7 +25,49 @@ class WebUser extends CWebUser
 	}
 
 	/**
-	* Checks if the user has the given Role)
+	 * Checks if this (non-admin) User can administrate some users
+	 */
+	public static function hasUsers($uid = 0)
+	{
+		if($uid == 0)
+			$uid = Yii::app()->user->getId();
+
+		$user = CActiveRecord::model('User')->findByPk($uid);
+
+		return ($user->users != array());
+	}
+
+/**
+	 * Checks if this (non-admin) User can administrate the given user
+	 */
+	public static function hasUser($username, $uid = 0)
+	{
+
+		if($uid == 0)
+			$uid = Yii::app()->user->getId();
+
+		// Every user can modify himself
+		if($username == $uid)
+			return true;
+
+		$user = CActiveRecord::model('User')->findByPk($uid);
+
+		if(!is_array($username))
+			$username = array ($username);
+
+		if(isset($user->users)) 
+			foreach($user->users as $userobj) 
+			{
+				if(in_array($userobj->username, $username) ||
+				  in_array($userobj->id, $username))
+					return true;
+			}
+		return false;
+	}
+
+
+	/**
+	* Checks if the user has the given Role
 	* @mixed Role string or array of strings that should be checked
 	* @int (optional) id of the user that should be checked 
 	* @return bool Return value tells if the User has access or hasn't access.
@@ -48,9 +90,6 @@ class WebUser extends CWebUser
 			}
 		return false;
 	}
-
-
-
 
 	/**
 	 * Return admin status.
