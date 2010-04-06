@@ -65,7 +65,7 @@ class User extends CActiveRecord
     elseif (isset(Yii::app()->modules['user']['userUserTable'])) 
       $this->_tableName = Yii::app()->modules['user']['userUserTable'];
     else
-      $this->_userRoleTable = 'user_has_user';
+      $this->_userUserTable = 'user_has_user';
 
 		return array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id', 'order' => 'profile.profile_id DESC'),
