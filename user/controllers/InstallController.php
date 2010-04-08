@@ -45,14 +45,13 @@ class InstallController extends Controller
 						UNIQUE KEY `username` (`username`),
 						KEY `status` (`status`),
 						KEY `superuser` (`superuser`)
-							) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 
 					$db->createCommand($sql)->execute();
 
 					if(isset($_POST['installProfiles']))  
 					{
-
 						// Create Profile Fields Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
 							`id` int(10) NOT NULL auto_increment,
@@ -76,22 +75,22 @@ class InstallController extends Controller
 						$db->createCommand($sql)->execute();
 
 
-					// Create Profiles Table
-					$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
-						`profile_id` int(11) NOT NULL auto_increment,
-						`user_id` int(11) NOT NULL,
-						`timestamp` int(11) NOT NULL,
-						`lastname` varchar(50) NOT NULL default '',
-						`firstname` varchar(50) NOT NULL default '',
-						`email` varchar(255) NOT NULL default '',
-						`about` text,
-						`street` varchar(255),
-						PRIMARY KEY  (`profile_id`),
-						KEY `fk_profiles_users` (`user_id`)
-							) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+						// Create Profiles Table
+						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
+							`profile_id` int(11) NOT NULL auto_increment,
+							`user_id` int(11) NOT NULL,
+							`timestamp` int(11) NOT NULL,
+							`lastname` varchar(50) NOT NULL default '',
+							`firstname` varchar(50) NOT NULL default '',
+							`email` varchar(255) NOT NULL default '',
+							`about` text,
+							`street` varchar(255),
+							PRIMARY KEY  (`profile_id`),
+							KEY `fk_profiles_users` (`user_id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
-					$db->createCommand($sql)->execute();
-}
+						$db->createCommand($sql)->execute();
+					}
 
 					if(isset($_POST['installRole']))  
 					{
@@ -101,7 +100,7 @@ class InstallController extends Controller
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL ,
 							PRIMARY KEY (`id`)) 
-								ENGINE = InnoDB; ";
+								ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
 
@@ -144,14 +143,12 @@ class InstallController extends Controller
 									PRIMARY KEY  (`id`),
 									KEY `fk_messages_users` (`from_user_id`),
 									KEY `fk_messages_users1` (`to_user_id`)
-									) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"; 
+									) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"; 
 
 							$db->createCommand($sql)->execute();
 					}
 
-
-
-					if($this->module->installDemoData) 
+					if(isset($_POST['installDemoData'])) 
 					{
 						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
 							(1, 'admin', '".User::encrypt('admin')."', '', 0, 1266571424, 1, 1),

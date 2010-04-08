@@ -104,8 +104,13 @@ your Yii Web Application </p>
 <td> Table for the Profiles </td>
 <td> <?php echo CHtml::textField('profileTable', Yii::app()->controller->module->profileTable); ?> </td> </tr>
 </table>
+
 </div>
 
+<br />
+
+<label for="installDemoData"> Install Demo data? </label>
+<?php echo CHtml::checkBox('installDemoData', true); ?>
 
 <br />
 
