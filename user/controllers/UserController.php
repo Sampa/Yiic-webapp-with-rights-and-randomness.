@@ -11,7 +11,6 @@ class UserController extends Controller
 		return true;
 	}
 
-
 	public function filters()
 	{
 		return array(
@@ -97,6 +96,14 @@ class UserController extends Controller
 
 					if ($user->register($form->username, $form->password, $form->email))
 					{
+						if(isset($_POST['Profile'])) 
+						{
+							$profile = new Profile();
+							$profile->attributes = $_POST['Profile'];
+							$profile->user_id = $user->id;
+							$profile->save();
+						}
+
 						if(Yii::app()->controller->module->disableEmailActivation == true) 
 						{
 							Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
@@ -481,20 +488,31 @@ class UserController extends Controller
 
 
 	/**
-	 * Deletes a User
+	 * Deletes a User, and if profile History is deactivated, deletes all
+   * profiles.
 	 */
 	public function actionDelete()
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
 			$model = $this->loadUser();
+
+			if(is_array($model->profile))
+			{
+				foreach($model->profile as $profile) 
+				{
+					$profile->delete();
+				}
+			}
+			else if (is_object($model->profile))
+			{
+				$model->profile->delete();
+			}
+
 			$model->delete();
-			if(!isset($_POST['ajax']))
-				$this->redirect(array('index'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-
 	}
 
 	public function actionList()

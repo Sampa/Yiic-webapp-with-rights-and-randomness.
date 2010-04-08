@@ -79,7 +79,6 @@ class User extends CActiveRecord
 		// Password equality is checked in Registration Form
 		$this->username = $username;
 		$this->password = $this->encrypt($password);
-		$this->profile->email = $email;
 		$this->activationKey = $this->encrypt(microtime() . $password);
 		$this->createtime = time();
 		$this->superuser = 0;

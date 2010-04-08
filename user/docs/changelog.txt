@@ -13,7 +13,9 @@ New in 0.5:
 - started to begin submodularized infrastructure. see docs/submodules.txt (thyseus)
 - Profile submodule now allows to have multiple profiles for an user, with the last one being the default.
 - Role submodule now has the possibility to assing 'slave' users to users. This way you can define an user hierarchy that defines which users can administrate which users (thyseus)
-- Added a checkbox whether to install Demo Data in installation Form
+- Added a checkbox whether to install Demo Data in installation Form (thyseus)
+- Deleting users now deletes profiles, too (reported by rmlodzki) (thyseus)
+- Repaired registration process (thyseus)
 
 New in 0.4:
 

@@ -53,7 +53,7 @@ your Yii Web Application </p>
 <table>
 <tr> 
 <td> Table for Users </td>
-<td> <?php echo CHtml::textField('usersTable', Yii::app()->controller->module->usersTable); ?> </td> </tr>
+<td> <?php echo CHtml::textField('usersTable', $this->module->usersTable); ?> </td> </tr>
 </table>
 
 <div style="clear:both;"> </div>
@@ -65,14 +65,14 @@ your Yii Web Application </p>
 <table>
 <tr>
 <td> Table for the Roles </td>
-<td> <?php echo CHtml::textField('rolesTable', Yii::app()->controller->module->rolesTable); ?> </td> 
+<td> <?php echo CHtml::textField('rolesTable', $this->module->rolesTable); ?> </td> 
 </tr>
 <tr>
 <td> Table for the Role Assignment </td>
-<td> <?php echo CHtml::textField('userRoleTable', Yii::app()->controller->module->userRoleTable); ?> </td> </tr>
+<td> <?php echo CHtml::textField('userRoleTable', $this->module->userRoleTable); ?> </td> </tr>
 <tr>
 <td> This table holds the assignment, which user can administrate which other users </td>
-<td> <?php echo CHtml::textField('userUserTable', Yii::app()->controller->module->userUserTable); ?> </td> </tr>
+<td> <?php echo CHtml::textField('userUserTable', $this->module->userUserTable); ?> </td> </tr>
 
 </table>
 
@@ -85,7 +85,7 @@ your Yii Web Application </p>
 <div id="messages">
 <table>
 <td> Table for Messages </td>
-<td> <?php echo CHtml::textField('messagesTable', Yii::app()->controller->module->messagesTable); ?> </td> 
+<td> <?php echo CHtml::textField('messagesTable', $this->module->messagesTable); ?> </td> 
 </tr>
 </table>
 </div>
@@ -97,12 +97,19 @@ your Yii Web Application </p>
 
 <div id="profiles">
 <table>
-<tr> 
-<td> Table for the Profile Fields </td>
-<td> <?php echo CHtml::textField('profileFieldsTable', Yii::app()->controller->module->profileFieldsTable); ?> </td> </tr>
-<tr> 
-<td> Table for the Profiles </td>
-<td> <?php echo CHtml::textField('profileTable', Yii::app()->controller->module->profileTable); ?> </td> </tr>
+	<tr> 
+		<td> Table for the Profile Fields </td>
+		<td> 
+<?php 
+echo CHtml::textField('profileFieldsTable', $this->module->profileFieldsTable);
+?>
+		</td> 
+	</tr>
+	<tr> 
+		<td> Table for the Profiles </td>
+		<td> <?php echo CHtml::textField('profileTable', $this->module->profileTable); ?> 
+		</td> 
+	</tr>
 </table>
 
 </div>
@@ -110,7 +117,7 @@ your Yii Web Application </p>
 <br />
 
 <label for="installDemoData"> Install Demo data? </label>
-<?php echo CHtml::checkBox('installDemoData', true); ?>
+<?php echo CHtml::checkBox('installDemoData', $this->module->installDemoData); ?>
 
 <br />
 

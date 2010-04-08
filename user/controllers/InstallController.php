@@ -4,7 +4,7 @@ class InstallController extends Controller
 {
 	public function actionInstall() 
 	{
-		if($this->module->debug) 
+		if($this->module->debug == true) 
 		{
 			if(Yii::app()->request->isPostRequest) 
 			{
@@ -20,7 +20,7 @@ class InstallController extends Controller
 					$userUserTable = $_POST['userUserTable'];
 
 					// Clean up existing Installation
-					$db->createCommand(sprintf('drop table if exists %s, %s, %s, %s, %s, %s',
+					$db->createCommand(sprintf('drop table if exists %s, %s, %s, %s, %s, %s, %s',
 								$usersTable,
 								$profileFieldsTable, 
 								$profileTable,

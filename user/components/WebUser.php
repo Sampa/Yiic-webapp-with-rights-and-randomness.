@@ -4,7 +4,6 @@ class WebUser extends CWebUser
 {
 	public $loginUrl=array('/user/user/login');
 
-
 	/**
 	 * Performs access check for this user.
 	 * @param string the name of the role that need access check.
@@ -33,8 +32,8 @@ class WebUser extends CWebUser
 			$uid = Yii::app()->user->getId();
 
 		$user = CActiveRecord::model('User')->findByPk($uid);
-
-		return ($user->users != array());
+		
+		return isset($user->users);
 	}
 
 /**

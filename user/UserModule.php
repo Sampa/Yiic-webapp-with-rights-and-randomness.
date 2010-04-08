@@ -24,7 +24,9 @@ class UserModule extends CWebModule
 	public static $registrationUrl = array("user/registration");
 	public static $recoveryUrl = array("user/recovery");
 	public static $loginUrl = array("user/login");
-	public static $returnUrl = array("user/profile");		// Page to go to after registration, login etc.
+
+	// Page to go to after registration, login etc.
+	public static $returnUrl = array("user/profile");	
 	public static $returnLogoutUrl = array("user/login");
 
 	// Activate profile History (profiles are kept always, and when the 
