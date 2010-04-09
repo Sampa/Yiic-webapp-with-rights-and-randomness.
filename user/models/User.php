@@ -70,7 +70,7 @@ class User extends CActiveRecord
 		return array(
 			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id', 'order' => 'profile.profile_id DESC'),
 			'roles'=>array(self::MANY_MANY, 'Role', $this->_userRoleTable . '(user_id, role_id)'),
-			'users'=>array(self::MANY_MANY, 'User', $this->_userUserTable . '(owner_id, slave_id)'),
+			'users'=>array(self::MANY_MANY, 'User', $this->_userUserTable . '(owner_id, child_id)'),
 			);
 	}
 

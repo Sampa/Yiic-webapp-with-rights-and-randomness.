@@ -15,12 +15,18 @@ $this->menu = array(
 			'visible' => Yii::app()->user->isAdmin()
 			), 
 		array(
+			'label'=>Yii::t('UserModule.user', 'Manage Roles'), 
+			'url'=>array('role/role/admin'),
+			'visible' => Yii::app()->user->isAdmin() &&
+			$this->module->hasModule('role')
+			), 
+		array(
 			'label'=> Yii::t('UserModule.user', 'List User'),
 			'url'=>array('list'),
 			'visible' => !Yii::app()->user->isAdmin()
 			), 
 		array(
-			'label'=> Yii::t('UserModule.user', 'Profile'),
+			'label'=> Yii::t('UserModule.user', 'Back to Profile'),
 			'url'=>array('profile')
 			),
 		array (
@@ -50,18 +56,27 @@ $this->menu = array(
 		  echo CHtml::errorSummary($profile); ?>
 
 <?php 
-		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
-		if ($profileFields) {
-			foreach($profileFields as $field) {
+$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+
+if ($profileFields) 
+{
+	foreach($profileFields as $field) 
+	{
 			?>
 	<div class="row">
-		<?php echo CHtml::activeLabelEx($profile,$field->varname);
-		if ($field->field_type=="TEXT") {
-			echo CHtml::activeTextArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
-		} else {
-			echo CHtml::activeTextField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
-		}
-		echo CHtml::error($profile,$field->varname); ?>
+	<?php echo CHtml::activeLabelEx($profile,$field->varname);
+			if ($field->field_type=="TEXT") {
+				echo CHtml::activeTextArea($profile,
+						$field->varname,
+						array('rows'=>6, 'cols'=>50));
+			} 
+			else 
+			{
+				echo CHtml::activeTextField($profile,
+						$field->varname,
+						array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
+			}
+			echo CHtml::error($profile,$field->varname); ?>
 	</div>	
 			<?php
 			}
@@ -72,6 +87,22 @@ $this->menu = array(
 		<?php echo CHtml::activeTextField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo CHtml::error($model,'username'); ?>
 	</div>
+
+	<div class="row">
+		<?php 
+		echo CHtml::activeLabelEx($profile,'privacy'); 
+		echo CHtml::activeDropDownList($profile, 'privacy',
+				array(
+					'protected' => Yii::t('UserModule.user', 'protected'),
+					'private' => Yii::t('UserModule.user', 'private'),
+					'public' => Yii::t('UserModule.user', 'public'),
+					)
+); 
+				echo CHtml::error($profile,'privacy'); 
+?>
+		</div>
+
+
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t("UserModule.user", 'Create') : Yii::t("UserModule.user", 'Save')); ?>

@@ -15,8 +15,9 @@ $this->breadcrumbs=array(
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with <span class="required">*</span> are required.'); ?></p>
-	
+<p class="note"><?php echo Yii::t("UserModule.user",
+		'Fields with <span class="required">*</span> are required.'); ?></p>
+
 	<?php echo CHtml::errorSummary($form); ?>
 	
 	<div class="row">
@@ -36,7 +37,48 @@ $this->breadcrumbs=array(
 	<?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
 	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
 	</div>
-	
+
+	<?php 
+	$profileFields=ProfileField::model()->forRegistration()->sort()->findAll();
+
+if ($profileFields) 
+{
+	$profile = new Profile();
+
+	foreach($profileFields as $field) 
+	{
+		?>
+			<div class="row">
+			<?php echo CHtml::activeLabelEx($profile, $field->varname); ?>
+			<?php 
+			if ($field->range) 
+			{
+				echo CHtml::activeDropDownList($profile,
+						$field->varname,
+						Profile::range($field->range));
+			}
+		elseif ($field->field_type == "TEXT") 
+		{
+			echo CHtml::activeTextArea($profile,
+					$field->varname, 
+					array('rows'=>6, 'cols'=>50));
+		}
+			else 
+			{
+				echo CHtml::activeTextField($profile,
+						$field->varname,
+						array(
+							'size'=>60,
+							'maxlength'=>(($field->field_size)?$field->field_size:255)));
+			}
+		?>
+			<?php echo CHtml::error($profile,$field->varname); ?>
+			</div>  
+			<?php
+	}
+}
+?>
+
 	<?php if(extension_loaded('gd')): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>

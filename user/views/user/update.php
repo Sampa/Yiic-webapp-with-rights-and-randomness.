@@ -22,21 +22,23 @@ $this->menu = array(
 			'url' =>array('view', 'id' => $model->id)
 			),
 		array(
-			'label' => Yii::t("UserModule.user", 'Manage Profile Field'), 
-			'url' =>array('profileField/admin')
+			'label' => Yii::t("UserModule.user", 'Manage Roles'), 
+			'url' =>array('role/role/admin'),
+			'visible' => $this->module->hasModule('role'),
 			),
+		array(
+				'label' => Yii::t("UserModule.user", 'Manage this Profile'), 
+				'url' =>array('user/edit', 'id' => $model->id),
+				'visible' => $this->module->hasModule('profiles'),
+				),
+		array(
+				'label' => Yii::t("UserModule.user", 'Manage Profile Field'), 
+				'url' =>array('profileField/admin'),
+				'visible' => $this->module->hasModule('profiles'),
+				),
 
 
 		);
-
-		if($this->module->hasModule('role')) 
-{
-
-	$this->menu[] =		array(
-			'label' => Yii::t("UserModule.user", 'Manage Roles'), 
-			'url' =>array('role/role/admin')
-			);
-}
 
 ?>
 

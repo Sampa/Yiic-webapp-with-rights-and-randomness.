@@ -31,8 +31,16 @@ class UserModule extends CWebModule
 
 	// Activate profile History (profiles are kept always, and when the 
   // user changes his profile, it gets added to the database rather than
-  // updated.
+  // updated).
 	public $profileHistory = true;
+	
+	// When readOnlyProfiles is set, only administrators can update Profile
+  // Information
+	public $readOnlyProfiles = false;
+
+	// When forceProtectedProfiles is set, only administrators and the user 
+  // himself can view the profile 
+	public $forceProtectedProfiles = false;
 
 	// LoginType :
 	// 0: Allow login only by Username
@@ -41,7 +49,7 @@ class UserModule extends CWebModule
 	const LOGIN_BY_EMAIL			= 1; 
 	// 2: Allow login by E-Mail or Username (needs profile module)
 	const	LOGIN_BY_USERNAME_OR_EMAIL	= 2; 
-	// 3: Allow login only by OpenID (will be implemented) 
+	// 3: Allow login only by OpenID (TODO FIXME needs to be implemented) 
 	//const LOGIN_OPENID		= 4;
 	public $loginType = self::LOGIN_BY_USERNAME;
 

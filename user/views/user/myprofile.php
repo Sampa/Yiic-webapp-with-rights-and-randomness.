@@ -14,7 +14,8 @@ $this->menu=array(
 		array(
 			'label'=>Yii::t('UserModule.user', 'Manage my Users'),
 			'url'=>array('admin'),
-			'visible' => Yii::app()->user->hasUsers()),
+			'visible' => Yii::app()->user->hasUsers() &&
+			!Yii::app()->user->isAdmin()),
 		array(
 			'label'=>Yii::t('UserModule.user', 'Manage User'),
 			'url'=>array('admin'),

@@ -80,6 +80,7 @@ class InstallController extends Controller
 							`profile_id` int(11) NOT NULL auto_increment,
 							`user_id` int(11) NOT NULL,
 							`timestamp` int(11) NOT NULL,
+							`privacy` ENUM('protected', 'private', 'public') NOT NULL,
 							`lastname` varchar(50) NOT NULL default '',
 							`firstname` varchar(50) NOT NULL default '',
 							`email` varchar(255) NOT NULL default '',
@@ -120,7 +121,7 @@ class InstallController extends Controller
 						$sql = "CREATE TABLE IF NOT EXISTS `".$userUserTable."` (
 							`id` int(11) NOT NULL auto_increment,
 							`owner_id` int(11) NOT NULL,
-							`slave_id` int(11) NOT NULL,
+							`child_id` int(11) NOT NULL,
 							PRIMARY KEY  (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 

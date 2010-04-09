@@ -40,16 +40,18 @@ if(Yii::app()->user->isAdmin()) {
 	);
 	
 	$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
-	if ($profileFields) {
-		foreach($profileFields as $field) {
+	if ($profileFields && $model->profile) 
+	{
+		foreach($profileFields as $field) 
+		{
 			array_push($attributes,array(
-					'label' => Yii::t("UserModule.user", $field->title),
-					'name' => $field->varname,
-					'value' => $model->profile->getAttribute($field->varname),
-				));
+						'label' => Yii::t("UserModule.user", $field->title),
+						'name' => $field->varname,
+						'value' => $model->profile->getAttribute($field->varname),
+						));
 		}
 	}
-	
+
 	array_push($attributes,
 		'password',
 		'activationKey',

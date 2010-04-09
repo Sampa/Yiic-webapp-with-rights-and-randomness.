@@ -16,6 +16,12 @@ New in 0.5:
 - Added a checkbox whether to install Demo Data in installation Form (thyseus)
 - Deleting users now deletes profiles, too (reported by rmlodzki) (thyseus)
 - Repaired registration process (thyseus)
+- Added Profile Privacy field (protected/private/public) (thyseus)
+- Added $readOnlyProfiles to UserModule configuration. If this is set, only the
+administrators of the given user can update the profile (thyseus)
+- Added $forceProtectedProfiles to UserModule configuration. If this is set,
+every profile will be protected, regardless what is set in the profile 
+privacy field (thyseus)
 
 New in 0.4:
 

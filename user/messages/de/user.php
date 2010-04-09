@@ -8,8 +8,12 @@ return array(
 	'Your Account has been activated. Thank you for your registration.' =>
 	'Ihr Account wurde aktiviert. Danke für ihre Anmeldung. ',
 	'Registration' => 'Registrierung',
+	'protected' => 'Geschützt',
+	'private' => 'Privat',
+	'public' => 'Öffentlich',
 	'Your changes have been saved' => 'Ihre Änderungen wurden gespeichert',
 	'Update Profile Field' => 'Profilfeld bearbeiten',
+	'You are not allowed to view this profile.' => 'Sie dürfen dieses Profil nicht ansehen.',
 	'An error occured while saving your changes' =>  'Es ist ein Fehler aufgetreten.',
 	'Profile Fields' => 'Profilfelder',
 	'Manage Profile Fields' => 'Profilfelder verwalten',

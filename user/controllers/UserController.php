@@ -321,11 +321,12 @@ class UserController extends Controller
 	public function actionProfile()
 	{
 		// Display my own profile:
-		if(!isset($_GET['id'])) 
+		if(!isset($_GET['id']) || $_GET['id'] == Yii::app()->user->id) 
 		{
 			if (Yii::app()->user->id) 
 			{
 				$model = $this->loadUser(Yii::app()->user->id);
+
 				$this->render('/user/myprofile',array(
 							'model'=>$model,
 							'profile'=>$model->profile,
@@ -333,21 +334,44 @@ class UserController extends Controller
 			}
 		} 
 		else 
-		{ // Display a foreign profile:
+		{ 
+			// Display a foreign profile:
+
 			$model = $this->loadUser($uid = $_GET['id']);
-			$this->render('/user/foreignprofile',array(
-						'model'=>$model,
-						'profile'=>$model->profile,
-						));
+
+			if($this->module->forceProtectedProfiles == true ||
+					$model->profile->privacy == 'protected' ||
+					$model->profile->privacy == 'private')
+			{
+					$this->render('/user/profilenotallowed');
+			}
+			else 
+			{ 
+				$this->render('/user/foreignprofile',array(
+							'model'=>$model,
+							'profile'=>$model->profile,
+							));
+			}
 		}
 
 	}
 
 	/**
-	 * Edits a User.
+	 * Edits a User profile.
 	 */
 	public function actionEdit()
 	{
+
+		if($this->module->readOnlyProfiles == true) 
+		{
+			Yii::app()->user->setFlash('profileMessage',
+					Yii::t("UserModule.user",
+						"You are not allowed to edit your own profile.
+						Please contact your System Administrator."));
+
+			$this->redirect(array('profile', 'id'=>$model->id));
+		}
+
 		$model=User::model()->findByPk(Yii::app()->user->id);
 		$profile = $model->profile;
 
@@ -361,6 +385,7 @@ class UserController extends Controller
 			{
 				$profile->attributes=$_POST['Profile'];
 				$profile->timestamp = time();
+				$profile->privacy = $_POST['Profile']['privacy'];
 				$profile->user_id = $model->id;
 			}
 
@@ -438,7 +463,7 @@ class UserController extends Controller
 		$model = $this->loadUser();
 		$model->password = '';
 
-		if(($profile=$model->profile) === false) 
+		if(($profile = $model->profile) === false) 
 			$profile = new Profile();
 
 		if(isset($_POST['User']))
