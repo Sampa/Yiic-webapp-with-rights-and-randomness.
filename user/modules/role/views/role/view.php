@@ -7,15 +7,21 @@ $this->breadcrumbs=array(
 
 <?php
 $this->menu = array(
-array('label'=>Yii::t('UserModule.user', 'Manage Roles'), 'url'=>array('admin')),
-array('label'=>Yii::t('UserModule.user', 'Manage Users'), 'url'=>array('user/admin')),
-array('label'=>Yii::t('UserModule.user', 'Create Role'), 'url'=>array('create')),
-array(
-	'label'=>Yii::t('UserModule.user', 'Edit this Role'),
-	'url'=>array('update', 'id' => $model->id),
-	'visibility' => Yii::app()->user->isAdmin()
-	),
-);
+		array('label'=>Yii::t('UserModule.user', 'Manage Roles'),
+			'url'=>array('admin')
+			),
+		array('label'=>Yii::t('UserModule.user', 'Manage Users'),
+			'url'=>array('/user/user/admin')
+			),
+		array('label'=>Yii::t('UserModule.user', 'Create Role'),
+			'url'=>array('create')
+			),
+		array(
+			'label'=>Yii::t('UserModule.user', 'Edit this Role'),
+			'url'=>array('update', 'id' => $model->id),
+			'visibility' => Yii::app()->user->isAdmin()
+			),
+		);
 ?>
 
 
@@ -24,10 +30,15 @@ array(
 
 <hr />
 
-<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this Role'); ?> </p>
-
+<p> 
 <?php 
-if($model->users) {
+echo Yii::t('UserModule.user',
+		'This users have been assigned to this Role'); ?> 
+</p>
+
+	<?php 
+if($model->users) 
+{
 	foreach($model->users as $user) {
 		printf("<li>%s</li>", CHtml::link($user->username, array('user/view', 'id' => $user->id)));
 

@@ -116,7 +116,7 @@ echo CHtml::textField('profileFieldsTable', $this->module->profileFieldsTable);
 
 <br />
 
-<label for="installDemoData"> Install Demo data? </label>
+<label for="installDemoData"> Install Demo data (recommended) ? </label>
 <?php echo CHtml::checkBox('installDemoData', $this->module->installDemoData); ?>
 
 <br />

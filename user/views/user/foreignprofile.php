@@ -1,35 +1,35 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.
+<?php 
+$this->pageTitle=Yii::app()->name . ' - '.
 Yii::t("UserModule.user", "Profile");
 
 $this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Profile"),
-	$model->username,
-);
-?><h2><?php 
-echo Yii::t("UserModule.user", 'Profile of ') ;
-echo $model->username; ?> </h2> 
+		Yii::t("UserModule.user", "Profile"), $model->username,); 
 
-<?php
 $this->menu=array(
-		array('label'=>Yii::t('UserModule.user', 'Back to my Profile'), 'url'=>array('profile')),
-		array('label'=>Yii::t('UserModule.user', 'Logout'), 'url'=>array('logout')),
-		);
-
-if($this->module->hasModule('messages'))
-{ 
-
-	$this->menu[] = array(
+		array('label'=>Yii::t('UserModule.user', 'Back to my Profile'),
+			'url'=>array('profile')
+			),
+		array('label'=>Yii::t('UserModule.user', 'Logout'),
+			'url'=>array('logout')
+			),
+		array(
 			'label'=>Yii::t('UserModule.user', 'Send a message to this User'),
-			'url'=>array('messages/compose', 'to_user_id' => $model->id)
-			);
-}
+			'url'=>array('messages/messages/compose', 'to_user_id' => $model->id),
+			'visible' => $this->module->hasModule('messages')
+			),
+		);
 ?>
+
+<h2><?php echo Yii::t("UserModule.user", 'Profile of ') . $model->username; ?> 
+</h2> 
+
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">
 <?php echo Yii::app()->user->getFlash('profileMessage'); ?>
 </div>
 <?php endif; ?>
+
 <table class="dataGrid">
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('username')); ?>

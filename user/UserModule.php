@@ -16,18 +16,21 @@ class UserModule extends CWebModule
 	public $disableEmailActivation = false;
 	public $layout = 'column2';
 	public $salt = '';
-	public $hashFunc = 'md5'; // valid callback function for password hashing ie. sha1
-	
+	 // valid callback function for password hashing ie. sha1
+	public $hashFunc = 'md5';	
+
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
+
+	// Allow login of inactive User Account
 	public static $allowInactiveAcctLogin=false;
 
-	public static $registrationUrl = array("user/registration");
-	public static $recoveryUrl = array("user/recovery");
-	public static $loginUrl = array("user/login");
+	public $registrationUrl = array("user/registration");
+	public $recoveryUrl = array("user/recovery");
+	public $loginUrl = array("user/login");
 
 	// Page to go to after registration, login etc.
-	public static $returnUrl = array("user/profile");	
-	public static $returnLogoutUrl = array("user/login");
+	public $returnUrl = array("user/profile");	
+	public $returnLogoutUrl = array("user/login");
 
 	// Activate profile History (profiles are kept always, and when the 
   // user changes his profile, it gets added to the database rather than

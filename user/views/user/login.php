@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1><?php echo Yii::t("UserModule.user", "Login"); ?></h1>
+<h1> <?php echo Yii::t("UserModule.user", "Login"); ?> </h1>
 
 <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
@@ -18,13 +18,19 @@ $this->breadcrumbs=array(
 
 <?php endif; ?>
 
-<p><?php echo Yii::t("UserModule.user", "Please fill out the following form with your login credentials:"); ?></p>
+<p>
+<?php 
+echo Yii::t("UserModule.user",
+		"Please fill out the following form with your login credentials:"); ?></p>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with <span class="required">*</span> are required.'); ?></p>
-	
+	<p class="note">
+	<?php 
+	echo Yii::t("UserModule.user",
+			'Fields with <span class="required">*</span> are required.'); ?></p>
+
 	<?php echo CHtml::errorSummary($model); ?>
 	
 	<div class="row">
@@ -38,11 +44,16 @@ $this->breadcrumbs=array(
 	</div>
 	
 	<div class="row">
-		<p class="hint">
-		<?php echo CHtml::link(Yii::t("UserModule.user", "Registration"),UserModule::$registrationUrl); ?> |
-		<?php echo CHtml::link(Yii::t("UserModule.user", "Lost Password?"),UserModule::$recoveryUrl); ?>
-		</p>
-	</div>
+	<p class="hint">
+	<?php 
+	printf("%s | %s",
+			CHtml::link(Yii::t("UserModule.user", "Registration"),
+				$this->module->registrationUrl),
+			CHtml::link(Yii::t("UserModule.user", "Lost Password?"),
+				$this->module->recoveryUrl));
+?>
+</p>
+</div>
 	
 	<div class="row rememberMe">
 		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>

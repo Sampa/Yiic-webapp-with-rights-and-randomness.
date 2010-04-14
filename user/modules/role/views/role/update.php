@@ -15,7 +15,7 @@ $this->menu = array(
 			),
 		array(
 			'label' => Yii::t("UserModule.user", 'Manage Users'), 
-			'url' =>array('user/admin')
+			'url' =>array('/user/user/admin')
 			),
 
 		);
