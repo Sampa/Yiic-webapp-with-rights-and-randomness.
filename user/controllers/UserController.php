@@ -190,7 +190,7 @@ class UserController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->module->returnLogoutUrl);
+    $this->redirect(Yii::app()->controller->module->returnLogoutUrl);
 	}
 
 	/**
@@ -497,7 +497,7 @@ class UserController extends Controller
 				{
 					$model->password = $old_password;
 				}
-				
+
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));
