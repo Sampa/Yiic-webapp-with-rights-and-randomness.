@@ -5,7 +5,7 @@ class UserController extends Controller
 	const PAGE_SIZE=10;
 	private $_model;
 
-	public function beforeAction($action) 
+	public function beforeAction($action)
 	{
 		$this->layout = Yii::app()->controller->module->layout;
 		return true;
@@ -14,23 +14,23 @@ class UserController extends Controller
 	public function filters()
 	{
 		return array(
-				'accessControl', 
+				'accessControl',
 				);
 	}
 
 	public function accessRules()
 	{
 		return array(
-				array('allow',  
+				array('allow',
 					'actions'=>array('index','view','registration',
 						'captcha','login', 'recovery', 'activation'),
 					'users'=>array('*'),
 					),
-				array('allow', 
+				array('allow',
 					'actions'=>array('profile', 'edit', 'logout', 'changepassword'),
 					'users'=>array('@'),
 					),
-				array('allow', 
+				array('allow',
 					'actions'=>array('admin','delete','create','update', 'list', 'assign'),
 					'users'=>User::getAdmins(),
 					),
@@ -61,32 +61,32 @@ class UserController extends Controller
 
 	public function actionIndex()
 	{
-		if(Yii::app()->user->isGuest) 
+		if(Yii::app()->user->isGuest)
 		{
 			$this->actionLogin();
 		}
 		else if(isset($_GET['id']) || isset ($_GET['user_id']))
 		{
-			$this->actionProfile(); 
+			$this->actionProfile();
 		}
-		else 
+		else
 		{
 			$this->actionList();
 		}
 	}
 
-	public function actionRegistration() 
+	public function actionRegistration()
 	{
 		$form = new RegistrationForm;
 
 		// User is already logged in?
-		if (($uid = Yii::app()->user->id) === true) 
+		if (($uid = Yii::app()->user->id) === true)
 		{
 			$this->redirect(Yii::app()->homeUrl);
-		} 
-		else 
+		}
+		else
 		{
-			if(isset($_POST['RegistrationForm'])) 
+			if(isset($_POST['RegistrationForm']))
 			{
 				$form->attributes = $_POST['RegistrationForm'];
 
@@ -96,7 +96,7 @@ class UserController extends Controller
 
 					if ($user->register($form->username, $form->password, $form->email))
 					{
-						if(isset($_POST['Profile'])) 
+						if(isset($_POST['Profile']))
 						{
 							$profile = new Profile();
 							$profile->attributes = $_POST['Profile'];
@@ -104,7 +104,7 @@ class UserController extends Controller
 							$profile->save();
 						}
 
-						if(Yii::app()->controller->module->disableEmailActivation == true) 
+						if(Yii::app()->controller->module->disableEmailActivation == true)
 						{
 							Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
 										"Your Account has been activated. Thank you for your registration."));
@@ -115,31 +115,31 @@ class UserController extends Controller
 							$this->sendRegistrationEmail($user);
 						}
 
-						if (UserModule::$allowInactiveAcctLogin) 
+						if (UserModule::$allowInactiveAcctLogin)
 						{
-							if (Yii::app()->user->allowAutoLogin) 
+							if (Yii::app()->user->allowAutoLogin)
 							{
 								$identity = new UserIdentity($model->username,$sourcePassword);
 								$identity->authenticate();
 								Yii::app()->user->login($identity, 0);
-								$this->redirect(UserModule::$returnUrl);
-							} 
-							else 
+								$this->redirect(Yii::app()->controller->module->returnUrl);
+							}
+							else
 							{
 								Yii::app()->user->setFlash('registration',
 										Yii::t("UserModule.user",
 											"Thank you for your registration. Please check your email or login."));
 								$this->refresh();
 							}
-						} 
-						else 
+						}
+						else
 						{
 							Yii::app()->user->setFlash('registration',
 									Yii::t("UserModule.user",
 										"Thank you for your registration. Please check your email."));
 							$this->refresh();
 						}
-					} 
+					}
 					else
 					{
 						Yii::app()->user->setFlash('registration',
@@ -175,12 +175,12 @@ class UserController extends Controller
 		{
 			$model->attributes=$_POST['UserLogin'];
 			// validate user input and redirect to previous page if valid
-			if($model->validate()) 
+			if($model->validate())
 			{
 				$lastVisit = User::model()->findByPk(Yii::app()->user->id);
 				$lastVisit->lastvisit = time();
 				$lastVisit->save();
-				$this->redirect(UserModule::$returnUrl);
+				$this->redirect(Yii::app()->controller->module->returnUrl);
 			}
 		}
 		// display the login form
@@ -190,22 +190,21 @@ class UserController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(UserModule::$returnLogoutUrl);
-
+		$this->redirect(Yii::app()->module->returnLogoutUrl);
 	}
 
 	/**
 	 * Activation of an user account
 	 */
-	public function actionActivation () 
+	public function actionActivation ()
 	{
 		if(User::activate($_GET['email'], $_GET['activationKey']))
 		{
 			$this->render('/user/message', array(
 						'title'=>Yii::t("UserModule.user", "User activation"),
 						'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
-		} 
-		else 
+		}
+		else
 		{
 			$this->render('/user/message',array(
 						'title'=>Yii::t("UserModule.user", "User activation"),
@@ -218,18 +217,18 @@ class UserController extends Controller
 	 */
 	public function actionChangepassword() {
 		$form = new UserChangePassword;
-		if (isset(Yii::app()->user->id)) 
+		if (isset(Yii::app()->user->id))
 		{
-			if(isset($_POST['UserChangePassword'])) 
+			if(isset($_POST['UserChangePassword']))
 			{
 				$form->attributes = $_POST['UserChangePassword'];
-				if($form->validate()) 
+				if($form->validate())
 				{
 					$new_password = User::model()->findByPk(Yii::app()->user->id);
 					$new_password->password = User::encrypt($form->password);
 					$new_password->activationKey = User::encrypt(microtime().$form->password);
 
-					if($new_password->save()) 
+					if($new_password->save())
 					{
 
 						Yii::app()->user->setFlash('profileMessage',
@@ -243,11 +242,11 @@ class UserController extends Controller
 						$this->redirect(array("user/profile"));
 					}
 				}
-			} 
+			}
 			$this->render('/user/changepassword',array('form'=>$form));
 		} else {
 			// No id was set. An error has occured. (should never get here)
-			$this->redirect(UserModule::$returnUrl);
+			$this->redirect(Yii::app()->controller->module->returnUrl);
 		}
 	}
 
@@ -259,23 +258,23 @@ class UserController extends Controller
 		$form = new UserRecoveryForm;
 
 		// User is already logged in
-		if (($uid = Yii::app()->user->id) === true) 
+		if (($uid = Yii::app()->user->id) === true)
 		{
-			$this->redirect(UserModule::$returnUrl);
-		} 
-		else 
+			$this->redirect(Yii::app()->controller->module->returnUrl);
+		}
+		else
 		{
 			if (isset($_GET['email']) && isset($_GET['activationKey'])) {
 				$email = $_GET['email'];
 				$activationKey = $_GET['activationKey'];
 				$form2 = new UserChangePassword;
 				$find = User::model()->findByAttributes(array('email'=>$email));
-				if($find->activationKey==$activationKey) 
+				if($find->activationKey==$activationKey)
 				{
-					if(isset($_POST['UserChangePassword'])) 
+					if(isset($_POST['UserChangePassword']))
 					{
 						$form2->attributes=$_POST['UserChangePassword'];
-						if($form2->validate()) 
+						if($form2->validate())
 						{
 							$find->password = User::encrypt($form2->password);
 							$find->activationKey=User::encrypt(microtime().$form2->password);
@@ -283,7 +282,7 @@ class UserController extends Controller
 							Yii::app()->user->setFlash('loginMessage',Yii::t("user", "Your new password has been saved."));
 							$this->redirect(array("user/login"));
 						}
-					} 
+					}
 					$this->render('/user/changepassword',array('form'=>$form2));
 				}
 				else
@@ -294,10 +293,10 @@ class UserController extends Controller
 			}
 			else
 			{
-				if(isset($_POST['UserRecoveryForm'])) 
+				if(isset($_POST['UserRecoveryForm']))
 				{
 					$form->attributes=$_POST['UserRecoveryForm'];
-					if($form->validate()) 
+					if($form->validate())
 					{
 						$user = User::model()->findbyPk($form->user_id);
 						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
@@ -312,7 +311,7 @@ class UserController extends Controller
 		}
 	}
 
-	public function actionAssign() 
+	public function actionAssign()
 	{
 		Relation::handleAjaxRequest($_POST);
 	}
@@ -321,9 +320,9 @@ class UserController extends Controller
 	public function actionProfile()
 	{
 		// Display my own profile:
-		if(!isset($_GET['id']) || $_GET['id'] == Yii::app()->user->id) 
+		if(!isset($_GET['id']) || $_GET['id'] == Yii::app()->user->id)
 		{
-			if (Yii::app()->user->id) 
+			if (Yii::app()->user->id)
 			{
 				$model = $this->loadUser(Yii::app()->user->id);
 
@@ -332,9 +331,9 @@ class UserController extends Controller
 							'profile'=>$model->profile,
 							));
 			}
-		} 
-		else 
-		{ 
+		}
+		else
+		{
 			// Display a foreign profile:
 
 			$model = $this->loadUser($uid = $_GET['id']);
@@ -345,8 +344,8 @@ class UserController extends Controller
 			{
 					$this->render('/user/profilenotallowed');
 			}
-			else 
-			{ 
+			else
+			{
 				$this->render('/user/foreignprofile',array(
 							'model'=>$model,
 							'profile'=>$model->profile,
@@ -362,7 +361,7 @@ class UserController extends Controller
 	public function actionEdit()
 	{
 
-		if($this->module->readOnlyProfiles == true) 
+		if($this->module->readOnlyProfiles == true)
 		{
 			Yii::app()->user->setFlash('profileMessage',
 					Yii::t("UserModule.user",
@@ -378,10 +377,10 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
-      if($this->module->profileHistory == true) 
+      if($this->module->profileHistory == true)
 				$profile = new Profile();
 
-			if(isset($_POST['Profile']))  
+			if(isset($_POST['Profile']))
 			{
 				$profile->attributes=$_POST['Profile'];
 				$profile->timestamp = time();
@@ -389,7 +388,7 @@ class UserController extends Controller
 				$profile->user_id = $model->id;
 			}
 
-				if($model->save() && $profile->save() ) 
+				if($model->save() && $profile->save() )
 					Yii::app()->user->setFlash('profileMessage',
 							Yii::t("UserModule.user", "Your changes have been saved"));
 				else
@@ -429,7 +428,7 @@ class UserController extends Controller
 			$model->attributes=$_POST['User'];
 
 
-			if($this->module->hasModule('role')) 
+			if($this->module->hasModule('role'))
 			{
 				$model->roles = Relation::retrieveValues($_POST, 'Role');
 			}
@@ -437,12 +436,12 @@ class UserController extends Controller
 			$model->createtime=time();
 			$model->lastvisit=time();
 
-			if( isset($_POST['Profile']) ) 
+			if( isset($_POST['Profile']) )
 				$profile->attributes=$_POST['Profile'];
 			$profile->user_id = 0;
 			if($model->validate() && $profile->validate()) {
 				$model->password=User::encrypt($model->password);
-				if($model->save()) 
+				if($model->save())
 				{
 					$profile->user_id=$model->id;
 					$profile->save();
@@ -463,14 +462,14 @@ class UserController extends Controller
 		$model = $this->loadUser();
 		$model->password = '';
 
-		if(($profile = $model->profile) === false) 
+		if(($profile = $model->profile) === false)
 			$profile = new Profile();
 
 		if(isset($_POST['User']))
 		{
 			$model->attributes = $_POST['User'];
 
-			if($this->module->hasModule('role')) 
+			if($this->module->hasModule('role'))
 			{
 				// Assign the roles and slave Users to the model
 				if(!isset($_POST['User']['Role']))
@@ -483,13 +482,13 @@ class UserController extends Controller
 				$model->users = $_POST['User']['User'];
 			}
 
-			if(isset($_POST['Profile'])) 
+			if(isset($_POST['Profile']))
 				$profile->attributes = $_POST['Profile'];
 
-			if($model->validate() && $profile->validate()) 
+			if($model->validate() && $profile->validate())
 			{
 				$old_password = User::model()->findByPk($model->id)->password;
-				if ($model->password != '') 
+				if ($model->password != '')
 				{
 					$model->password = User::encrypt($model->password);
 					$model->activationKey = User::encrypt(microtime().$model->password);
@@ -524,7 +523,7 @@ class UserController extends Controller
 
 			if(is_array($model->profile))
 			{
-				foreach($model->profile as $profile) 
+				foreach($model->profile as $profile)
 				{
 					$profile->delete();
 				}

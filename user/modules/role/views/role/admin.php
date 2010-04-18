@@ -24,15 +24,15 @@ $this->menu = array(
 	'columns'=>array(
 		array(
 			'name' => 'id',
-			'type'=>'raw',
-			'value' => 'CHtml::link(CHtml::encode($data->id),
-				array("role/role/update","id"=>$data->id))',
+			'type' => 'raw',
+			'value'=> 'CHtml::link(CHtml::encode($data->id),
+				array("role/update","id"=>$data->id))',
 		),
 		array(
 			'name' => 'title',
-			'type'=>'raw',
-			'value' => 'CHtml::link(CHtml::encode($data->title),
-				array("role/role/view","id"=>$data->id))',
+			'type' => 'raw',
+			'value'=> 'CHtml::link(CHtml::encode($data->title),
+				array("role/view","id"=>$data->id))',
 		),
 		array(
 			'class'=>'CButtonColumn',

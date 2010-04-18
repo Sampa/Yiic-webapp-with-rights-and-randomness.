@@ -18,10 +18,10 @@ class ProfileField extends CActiveRecord
   {
     if (isset(Yii::app()->controller->module->profileFieldsTable))
       $this->_tableName = Yii::app()->controller->module->profileFieldsTable;
-    elseif (isset(Yii::app()->modules['user']['profileFieldsTable'])) 
+    elseif (isset(Yii::app()->modules['user']['profileFieldsTable']))
       $this->_tableName = Yii::app()->modules['user']['profileFieldsTable'];
     else
-      $this->_tableName = 'profileFields'; // fallback if nothing is set
+      $this->_tableName = 'profile_fields'; // fallback if nothing is set
 
 		return $this->_tableName;
   }
