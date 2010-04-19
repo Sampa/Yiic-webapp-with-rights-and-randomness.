@@ -1,14 +1,14 @@
 To test the new submodules, please use this in your Application Configuration:
 
-	'modules' => array(
+  'modules' => array(
     'user' => array(
-    	'modules' => array(
-    		'role',
-    		'profiles',
-    		'messages',
-    		),
+      'modules' => array(
+        'role',
+        'profiles',
+        'messages',
+        ),
       'debug' => 'true',
-    	)
+      )
     ),
 
 If you require custom table names and other specific submodule configuration,
@@ -26,7 +26,7 @@ please refer to the following example:
           'profileFieldsTable' => 'custom_profile_fields_table',
         ),
         'messages' => array(
-          'messagesTable' => 'custom_messages',
+          'messagesTable' => 'custom_messages_table',
         ),
       ),
       'debug'                 => false,
