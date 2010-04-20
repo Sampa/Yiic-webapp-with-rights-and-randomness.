@@ -2,6 +2,21 @@
 
 class InstallController extends Controller
 {
+	public function actionStart()
+	{
+		$this->actionInstall();
+	}
+
+	public function actionInstaller()
+	{
+		$this->actionInstall();
+	}
+
+	public function actionInstallation()
+	{
+		$this->actionInstall();
+	}
+
 	public function actionInstall() 
 	{
 		if($this->module->debug == true) 
