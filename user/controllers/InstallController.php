@@ -2,6 +2,8 @@
 
 class InstallController extends Controller
 {
+	public $layout = 'install';
+
 	public function actionStart()
 	{
 		$this->actionInstall();
