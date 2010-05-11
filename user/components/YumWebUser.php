@@ -1,6 +1,6 @@
 <?php
 
-class WebUser extends CWebUser
+class YumWebUser extends CWebUser
 {
 	public $loginUrl=array('/user/user/login');
 
@@ -31,7 +31,7 @@ class WebUser extends CWebUser
 		if($uid == 0)
 			$uid = Yii::app()->user->getId();
 
-		$user = CActiveRecord::model('User')->findByPk($uid);
+		$user = YumUser::model()->findByPk($uid);
 		
 		return isset($user->users);
 	}
@@ -49,7 +49,7 @@ class WebUser extends CWebUser
 		if($username == $uid)
 			return true;
 
-		$user = CActiveRecord::model('User')->findByPk($uid);
+		$user = YumUser::model()->findByPk($uid);
 
 		if(!is_array($username))
 			$username = array ($username);
@@ -79,7 +79,7 @@ class WebUser extends CWebUser
 		if(!is_array($role))
 			$role = array ($role);
 
-		$user = CActiveRecord::model('User')->findByPk($uid);
+		$user = YumUser::model()->findByPk($uid);
 		if(isset($user->roles)) 
 			foreach($user->roles as $roleobj) 
 			{
@@ -98,7 +98,7 @@ class WebUser extends CWebUser
 		if($this->isGuest)
 			return false;
 		else {
-			if(User::model()->active()->superuser()->findbyPk(Yii::app()->user->id))
+			if(YumUser::model()->active()->superuser()->findbyPk(Yii::app()->user->id))
 				return true;
 			else
 				return false;

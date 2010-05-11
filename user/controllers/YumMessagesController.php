@@ -1,13 +1,20 @@
 <?php
 
-class MessagesController extends Controller
+class YumMessagesController extends YumController
 {
-	private $_model;
-
-	public function beforeAction($action) 
+	private $_model; 
+	
+	public function accessRules()
 	{
-		$this->layout = Yii::app()->controller->module->layout;
-		return true;
+		return array(
+			array('allow',
+				'users'=>array('@')
+			),
+			#deny all other users
+			array('deny',
+				'users'=>array('*')
+			)
+		);
 	}
 
 	public function actionView()
@@ -23,15 +30,15 @@ class MessagesController extends Controller
 
 	public function actionCompose()
 	{
-		$model=new Messages;
+		$model=new YumMessages;
 
-	  $this->performAjaxValidation($model);
+	  	$this->performAjaxValidation($model);
 
-		if(isset($_POST['Messages']))
+		if(isset($_POST['YumMessages']))
 		{
-			foreach($_POST['Messages']['to_user_id'] as $user_id) {
+			foreach($_POST['YumMessages']['to_user_id'] as $user_id) {
 				$model = new Messages;
-				$model->attributes=$_POST['Messages'];
+				$model->attributes=$_POST['YumMessages'];
 				$model->to_user_id = $user_id;
 				$model->save();
 			}
@@ -56,9 +63,9 @@ class MessagesController extends Controller
 
 	 $this->performAjaxValidation($model);
 
-		if(isset($_POST['Messages']))
+		if(isset($_POST['YumMessages']))
 		{
-			$model->attributes=$_POST['Messages'];
+			$model->attributes=$_POST['YumMessages'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -84,8 +91,8 @@ class MessagesController extends Controller
 	{
 		$uid = Yii::app()->user->id;
 		$this->render('index',array(
-					//'models'=>Messages::model()->findAll('to = :uid', array(':uid' => $uid)),
-					'dataProvider'=>new CActiveDataProvider('Messages', array(
+					//'models'=>YumMessages::model()->findAll('to = :uid', array(':uid' => $uid)),
+					'dataProvider'=>new CActiveDataProvider('YumMessages', array(
 							'criteria' => array(
 								'condition' => 'to_user_id = '. $uid
 								)
@@ -96,12 +103,15 @@ class MessagesController extends Controller
 	}
 
 
+	/**
+	 * @return Messages
+	 */
 	public function loadModel()
 	{
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=Messages::model()->findbyPk($_GET['id']);
+				$this->_model=YumMessages::model()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,Yii::t('App', 'The requested page does not exist.'));
 		}
@@ -110,7 +120,7 @@ class MessagesController extends Controller
 
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='messages-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='yum-messages-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

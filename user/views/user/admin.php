@@ -55,11 +55,11 @@ $this->menu = array(
 					),
 				array(
 						'name'=>'status',
-						'value'=>'User::itemAlias("UserStatus",$data->status)',
+						'value'=>'YumUser::itemAlias("UserStatus",$data->status)',
 						),
 				array(
 						'name'=>'superuser',
-						'value'=>'User::itemAlias("AdminStatus",$data->superuser)',
+						'value'=>'YumUser::itemAlias("AdminStatus",$data->superuser)',
 						),
 				array(
 						'class'=>'CButtonColumn',

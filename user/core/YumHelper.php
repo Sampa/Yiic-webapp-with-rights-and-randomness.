@@ -3,7 +3,7 @@
  * Helper class
  * @author tomasz.suchanek@gmail.com
  * @since 0.6
- * @package Yum
+ * @package Yum.core
  *
  */
 class YumHelper

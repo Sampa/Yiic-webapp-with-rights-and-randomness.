@@ -68,7 +68,7 @@ Authentification Method in the Application Configuration:
 
  'components'=>array(
  'user'=>array(
-      'class' => 'application.modules.user.components.WebUser',
+      'class' => 'application.modules.user.components.YumWebUser',
       'allowAutoLogin'=>true,
       'loginUrl' => array('/user/user/login'),
       [...]
@@ -167,12 +167,12 @@ $version = '0.5';
 $debug = false; 
   
   Table Names:
-$usersTable = "users";
-$messagesTable = "messages";
-$profileFieldsTable = "profile_fields";
-$profileTable = "profiles";
-$rolesTable = "roles";
-$userRoleTable = "user_has_role";
+$usersTable = "{{users}}";
+$messagesTable = "{{messages}}";
+$profileFieldsTable = "{{profile_fields}}";
+$profileTable = "{{profiles}}";
+$rolesTable = "{{roles}}";
+$userRoleTable = "{{user_has_role}}";
   
   Should there be installed the demo Data? :
 $installDemoData = true;

@@ -21,17 +21,17 @@
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'superuser'); ?>
-		<?php echo CHtml::activeDropDownList($model,'superuser',User::itemAlias('AdminStatus')); ?>
+		<?php echo CHtml::activeDropDownList($model,'superuser',YumUser::itemAlias('AdminStatus')); ?>
 		<?php echo CHtml::error($model,'superuser'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'status'); ?>
-		<?php echo CHtml::activeDropDownList($model,'status',User::itemAlias('UserStatus')); ?>
+		<?php echo CHtml::activeDropDownList($model,'status',YumUser::itemAlias('UserStatus')); ?>
 		<?php echo CHtml::error($model,'status'); ?>
 	</div>
 <?php 
-		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+		$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
 if ($profileFields) 
 {
 	foreach($profileFields as $field) 
@@ -73,7 +73,7 @@ if ($profileFields)
 <p> <?php echo Yii::t('UserModule.user', 'This user can administrate this users'); ?>: </p>
 
 <?php 
-		$this->widget('application.modules.user.components.Relation',
+		$this->widget('YumModule.components.Relation',
 			array('model' => $model,
 			'relation' => 'users',
 			'style' => 'listbox',

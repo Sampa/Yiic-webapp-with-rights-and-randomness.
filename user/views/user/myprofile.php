@@ -77,7 +77,7 @@ if($this->module->hasModule('messages'))
 </td>
 </tr>
 <?php 
-		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+		$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>
@@ -112,7 +112,7 @@ if($this->module->hasModule('messages'))
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('status')); ?>
 </th>
-    <td><?php echo CHtml::encode(User::itemAlias("UserStatus",$model->status));
+    <td><?php echo CHtml::encode(YumUser::itemAlias("UserStatus",$model->status));
     ?>
 </td>
 </tr>

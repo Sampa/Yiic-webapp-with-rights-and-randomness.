@@ -1,6 +1,6 @@
 <?php
 
-class ProfileField extends CActiveRecord
+class YumProfileField extends YumActiveRecord
 {
 	const VISIBLE_ALL=3;
 	const VISIBLE_REGISTER_USER=2;

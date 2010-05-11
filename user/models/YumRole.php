@@ -1,6 +1,6 @@
 <?php
 
-class Role extends CActiveRecord
+class YumRole extends YumActiveRecord
 {
 	private $_tableName;
 	private $_userRoleTable;
@@ -8,11 +8,6 @@ class Role extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-
-	public function behaviors() {
-		return array( 'CAdvancedArBehavior' => array(
-			'class' => 'application.modules.user.components.CAdvancedArBehavior'));
 	}
 
 	/**
@@ -54,7 +49,7 @@ class Role extends CActiveRecord
     #resolve table name to use it in relations definition      
 	$relationTableName=YumHelper::resolveTableName($this->_userRoleTable,$this->getDbConnection());
 		return array(
-			'users'=>array(self::MANY_MANY, 'User', $relationTableName .'(role_id, user_id)'),
+			'users'=>array(self::MANY_MANY, 'YumUser', $relationTableName .'(role_id, user_id)'),
 		);
 	}
 

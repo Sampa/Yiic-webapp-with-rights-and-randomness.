@@ -1,10 +1,32 @@
-Changelog for Yii User Management Module since Version 0.3
+Changelog for Yii User Management Module (Yum) since Version 0.3
 
 New in 0.6:
 Features:
 - Added Layout for installation
 - Added YumHelper class (tomasz.suchanek)
+- Added allowCaptcha property to UserModule, to controle whether Captcha is required
 - Bug #35, #40: Usign table prefixes doesn't break relation definitions (tomasz.suchanek)
+- Fixed bug 'Trying to get property of non-object' when typing not existing username/email in login form 
+- Yum can by used as submodule. To avoid names confict all models are renamed:
+ * Messages => YumMessages,
+ * Profile => YumProfile,
+ * ProfileField => YumProfileField,
+ * RegistrationForm => YumRegistrationForm,
+ * Role => YumRole
+ * User => YumUser,
+ * UserChangePassword => YumUserChangePassword,
+ * UserLogin => YumUserLogin,
+ * UserRecoveryForm => YumUserRecoveryForm.
+ .. following components:
+ * UserIdentity => YumUserIdentity,
+ * WebUser => YumWebUser, 
+ .. following controllers
+ * DefaultController => YumDefaultController,
+ * InstallController => YumInstallcontroller,
+ * MessageController => YumMessageController,
+ * RoleController => YumRoleController,
+ * UserController => YumUserController,  
+Note that this change may break the code.
 
 Bug Fixes:
 - Changed UserModule::$returnUrl UserModule::$returnLogoutUrl calls to Yii::app()->controller->module->returnUrl/returnLogoutUrl (steve)
@@ -19,8 +41,7 @@ New in 0.5:
 - Updated french translation Messages (christophe.hurpeau)
 - Added optional salt to Password encryption (darek.krk)
 - Refactored User registration and Password recovery Process (thyseus)
-- fixed the way Models retrieve their tablename so it works even when not
-- in module context (steve, thyseus)
+- fixed the way Models retrieve their tablename so it works even when not in module context (steve, thyseus)
 - started to begin submodularized infrastructure. see docs/submodules.txt (thyseus)
 - Profile submodule now allows to have multiple profiles for an user, with the last one being the default.
 - Role submodule now has the possibility to assing 'slave' users to users. This way you can define an user hierarchy that defines which users can administrate which users (thyseus)

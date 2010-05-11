@@ -26,7 +26,7 @@
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_type'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'field_type',array('size'=>60,'maxlength'=>50,'readonly'=>true)):CHtml::activeDropDownList($model,'field_type',ProfileField::itemAlias('field_type'))); ?>
+		<?php echo (($model->id)?CHtml::activeTextField($model,'field_type',array('size'=>60,'maxlength'=>50,'readonly'=>true)):CHtml::activeDropDownList($model,'field_type',YumProfileField::itemAlias('field_type'))); ?>
 		<?php echo CHtml::error($model,'field_type'); ?>
 		<p class="hint">
 		<?php echo Yii::t("UserModule.user", 'Column Field type in the database.'); ?>
@@ -55,7 +55,7 @@ echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'required'); ?>
-		<?php echo CHtml::activeDropDownList($model,'required',ProfileField::itemAlias('required')); ?>
+		<?php echo CHtml::activeDropDownList($model,'required',YumProfileField::itemAlias('required')); ?>
 		<?php echo CHtml::error($model,'required'); ?>
 		<p class="hint"><?php echo Yii::t("UserModule.user",'Required field (form validator).'); ?></p>
 	</div>
@@ -106,7 +106,7 @@ echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'visible'); ?>
-		<?php echo CHtml::activeDropDownList($model,'visible',ProfileField::itemAlias('visible')); ?>
+		<?php echo CHtml::activeDropDownList($model,'visible',YumProfileField::itemAlias('visible')); ?>
 		<?php echo CHtml::error($model,'visible'); ?>
 	</div>
 

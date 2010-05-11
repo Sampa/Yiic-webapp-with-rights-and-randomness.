@@ -1,6 +1,6 @@
 <?php
 if(!isset($model)) 
-	$model = new UserLogin();
+	$model = newYumUserLogin();
 
 $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login");
 $this->breadcrumbs=array(

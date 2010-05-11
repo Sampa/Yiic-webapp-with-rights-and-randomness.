@@ -1,6 +1,6 @@
 <?php
 
-class RoleController extends Controller
+class YumRoleController extends YumController
 {
 	private $_model;
 
@@ -20,11 +20,11 @@ class RoleController extends Controller
 	public function actionCreate() 
 	{
 
-		$model = new Role();
+		$model = new YumRole();
 		$this->performAjaxValidation($model);
-		if(isset($_POST['Role'])) {
-			$model->attributes = $_POST['Role'];
-			$model->users = Relation::retrieveValues($_POST, 'User');
+		if(isset($_POST['YumRole'])) {
+			$model->attributes = $_POST['YumRole'];
+			$model->users = YumRelation::retrieveValues($_POST, 'YumUser');
 			if($model->save())
 				$this->redirect(array('admin'));
 
@@ -38,11 +38,11 @@ class RoleController extends Controller
 
 	 $this->performAjaxValidation($model);
 
-		if(isset($_POST['Role']))
+		if(isset($_POST['YumRole']))
 		{
-			$model->title = $_POST['Role']['title'];
-			$model->description = $_POST['Role']['description'];
-			$model->users = Relation::retrieveValues($_POST, 'User');
+			$model->title = $_POST['YumRole']['title'];
+			$model->description = $_POST['YumRole']['description'];
+			$model->users = Relation::retrieveValues($_POST, 'YumUser');
 
 		if($model->validate() && $model->save())
 				$this->redirect(array('view','id'=>$model->id));
@@ -55,7 +55,7 @@ class RoleController extends Controller
 
 	public function actionAdmin() 
 	{
-		$dataProvider=new CActiveDataProvider('Role', array(
+		$dataProvider=new CActiveDataProvider('YumRole', array(
 			'pagination'=>array(
 				'pageSize'=>20,
 			),
@@ -86,12 +86,15 @@ class RoleController extends Controller
 	}
 
 
+	/**
+	 * @return YumRole
+	 */
 	public function loadModel()
 	{
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=Role::model()->findbyPk($_GET['id']);
+				$this->_model=YumRole::model()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,Yii::t('App', 'The requested page does not exist.'));
 		}
@@ -100,7 +103,7 @@ class RoleController extends Controller
 
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='role-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='yum-role-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

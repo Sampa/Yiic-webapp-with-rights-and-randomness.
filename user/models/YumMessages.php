@@ -1,9 +1,13 @@
 <?php
 
-class Messages extends CActiveRecord
+class YumMessages extends YumActiveRecord
 {
 	private $_tableName;
 
+	/**
+	 * @param string $className
+	 * @return YumMessage
+	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -50,8 +54,8 @@ class Messages extends CActiveRecord
 	public function relations()
 	{
 		return array(
-				'from_user' => array(self::BELONGS_TO, 'User', 'from_user_id'),
-				'to_user' => array(self::BELONGS_TO, 'User', 'to_user_id'),
+				'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
+				'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
 				);
 	}
 

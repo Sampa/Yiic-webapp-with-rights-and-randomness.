@@ -27,7 +27,7 @@ $this->menu = array(
 		//'field_size_min',
 		array(
 			'name'=>'required',
-			'value'=>'ProfileField::itemAlias("required",$data->required)',
+			'value'=>'YumProfileField::itemAlias("required",$data->required)',
 		),
 		//'match',
 		//'range',
@@ -37,7 +37,7 @@ $this->menu = array(
 		'position',
 		array(
 			'name'=>'visible',
-			'value'=>'ProfileField::itemAlias("visible",$data->visible)',
+			'value'=>'YumProfileField::itemAlias("visible",$data->visible)',
 		),
 		//*/
 		array(

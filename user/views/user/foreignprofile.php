@@ -38,7 +38,7 @@ $this->menu=array(
 </td>
 </tr>
 <?php 
-		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+		$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>

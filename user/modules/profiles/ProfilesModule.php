@@ -1,5 +1,7 @@
 <?php
 
+Yii::setPathOfAlias( 'YumProfileModule' , dirname(__FILE__) );
+
 class ProfilesModule extends CWebModule
 {
 	
@@ -8,13 +10,20 @@ class ProfilesModule extends CWebModule
 	public $profileFieldsTable = "{{profile_fields}}";
 	public $profileTable = "{{profiles}}";
 	public $installDemoData = true;
+	
+	public $controllerMap=array(
+		'fields'=>array('class'=>'YumProfileModule.controllers.YumFieldsController'),
+	);	
 
 	public function init()
 	{
-		$this->setImport(array(
-			'user.models.*',
-			'user.components.*',
-		));
+		$parentImport=$this->getParentModule() instanceof UserModule 
+			? array(
+				'YumModule.models.*',
+			)
+			: array();
+		$import=array('YumProfileModule.models*');
+		$this->setImport(CMap::mergeArray($parentImport,$import));
 	}
 
 

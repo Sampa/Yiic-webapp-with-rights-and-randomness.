@@ -15,7 +15,7 @@ $this->menu = array(
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'messages-form',
+	'id'=>'yum-messages-form',
 	'enableAjaxValidation'=>true,
 )); ?>
 
@@ -31,7 +31,7 @@ $this->menu = array(
 
 <?php 
 		echo CHtml::ListBox('Messages[to_user_id]', isset($_GET['to_user_id'])?$_GET['to_user_id']:"", CHtml::listData( 
-		User::model()->active()->findAll(), 'id', 'username'),
+		YumUser::model()->active()->findAll(), 'id', 'username'),
 			array('multiple' => 'multiple'));
 		?>
 		<?php echo $form->error($model,'to_user_id'); ?>

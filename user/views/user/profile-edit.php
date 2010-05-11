@@ -56,7 +56,7 @@ $this->menu = array(
 		  echo CHtml::errorSummary($profile); ?>
 
 <?php 
-$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
 
 if ($profileFields) 
 {

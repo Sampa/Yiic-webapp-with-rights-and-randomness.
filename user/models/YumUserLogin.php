@@ -3,9 +3,9 @@
 /**
  * LoginForm class.
  * LoginForm is the data structure for keeping
- * user login form data. It is used by the 'login' action of 'UserController'.
+ * user login form data. It is used by the 'login' action of 'YumUserController'.
  */
-class UserLogin extends CFormModel
+class YumUserLogin extends YumFormModel
 {
 	public $username;
 	public $password;
@@ -52,27 +52,27 @@ class UserLogin extends CFormModel
 	{
 		if(!$this->hasErrors())  // we only want to authenticate when no input errors
 		{
-			$identity=new UserIdentity($this->username,$this->password);
+			$identity=new YumUserIdentity($this->username,$this->password);
 			$identity->authenticate();
 			switch($identity->errorCode)
 			{
-				case UserIdentity::ERROR_NONE:
+				case YumUserIdentity::ERROR_NONE:
 					$duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
 					Yii::app()->user->login($identity,$duration);
 					break;
-				case UserIdentity::ERROR_EMAIL_INVALID:
+				case YumUserIdentity::ERROR_EMAIL_INVALID:
 					$this->addError("username",Yii::t("UserModule.user", "Email is incorrect."));
 					break;
-				case UserIdentity::ERROR_USERNAME_INVALID:
+				case YumUserIdentity::ERROR_USERNAME_INVALID:
 					$this->addError("username",Yii::t("UserModule.user", "Username is incorrect."));
 					break;
-				case UserIdentity::ERROR_STATUS_NOTACTIVE:
+				case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
 					$this->addError("status",Yii::t("UserModule.user", "You account is not activated."));
 					break;
-				case UserIdentity::ERROR_STATUS_BANNED:
+				case YumUserIdentity::ERROR_STATUS_BANNED:
 					$this->addError("status",Yii::t("UserModule.user", "You account is blocked."));
 					break;
-				case UserIdentity::ERROR_PASSWORD_INVALID:
+				case YumUserIdentity::ERROR_PASSWORD_INVALID:
 					$this->addError("password",Yii::t("UserModule.user", "Password is incorrect."));
 					break;
 			}

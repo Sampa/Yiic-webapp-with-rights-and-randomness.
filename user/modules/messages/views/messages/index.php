@@ -20,7 +20,7 @@ $this->menu=array(
 <h1> <?php echo Yii::t('UserModule.user', 'My Inbox');?> </h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'messages-grid',
+	'id'=>'yum-messages-grid',
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(
 		array(

@@ -1,5 +1,7 @@
 <?php
 
+Yii::setPathOfAlias( 'YumRoleModule' , dirname(__FILE__) );
+
 class RoleModule extends CWebModule
 {
 	
@@ -9,10 +11,14 @@ class RoleModule extends CWebModule
 	public $userRoleTable = "{{user_has_role}}";
 	public $installDemoData = true;
 	
+	public $controllerMap=array(
+		'role'=>array('class'=>'YumMessagesModule.controllers.YumRoleController'),
+	);	
+	
 	public function init()
 	{
 		$this->setImport(array(
-			'user.modules.role.models.*',
+			'YumRoleModule.models.*',
 		));
 	}
 

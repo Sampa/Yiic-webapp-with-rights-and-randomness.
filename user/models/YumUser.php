@@ -1,6 +1,6 @@
 <?php
 
-class User extends CActiveRecord
+class YumUser extends YumActiveRecord
 {
 	const STATUS_NOTACTIVE = 0;
 	const STATUS_ACTIVE = 1;
@@ -16,12 +16,6 @@ class User extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-
-	public function behaviors() 
-	{
-		return array( 'CAdvancedArBehavior' => array(
-					'class' => 'application.modules.user.components.CAdvancedArBehavior'));
 	}
 
 	/**
@@ -80,9 +74,9 @@ class User extends CActiveRecord
     $relationUHUTableName=YumHelper::resolveTableName($this->_userUserTable,$this->getDbConnection());
 
 	return array(
-		'profile'=>array(self::HAS_ONE, 'Profile', 'user_id', 'order' => 'profile.profile_id DESC'),
-		'roles'=>array(self::MANY_MANY, 'Role', $relationUHRTableName . '(user_id, role_id)'),
-		'users'=>array(self::MANY_MANY, 'User', $relationUHUTableName . '(owner_id, child_id)'),
+		'profile'=>array(self::HAS_ONE, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
+		'roles'=>array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
+		'users'=>array(self::MANY_MANY, 'YumUser', $relationUHUTableName . '(owner_id, child_id)'),
 	);
 	}
 
@@ -96,16 +90,16 @@ class User extends CActiveRecord
 		$this->superuser = 0;
 
 		if(Yii::app()->controller->module->disableEmailActivation == true) 
-			$this->status = User::STATUS_ACTIVE;
+			$this->status = YumUser::STATUS_ACTIVE;
 		else
-			$this->status = User::STATUS_NOTACTIVE;
+			$this->status = YumUser::STATUS_NOTACTIVE;
 
 		$this->lastvisit = ((Yii::app()->user->allowAutoLogin &&
-					UserModule::$allowInactiveAcctLogin) ? time() : 0);
+			UserModule::$allowInactiveAcctLogin) ? time() : 0);
 
 		if($this->save()) 
 		{
-			$profile = new Profile();
+			$profile = new YumProfile();
 			$profile->user_id = $this->id;
 			$profile->save();
 			return true;
@@ -120,14 +114,14 @@ class User extends CActiveRecord
 	 */
 	public function activate($email, $activationKey)
 	{
-		$find = Profile::model()->findByAttributes(array('email'=>$email))->user;
+		$find = YumProfile::model()->findByAttributes(array('email'=>$email))->user;
 		if ($find->status) 
 		{
 			return true;
 		} 
 		elseif($find->activationKey == $activationKey) 
 		{
-			$find->activationKey = User::encrypt(microtime());
+			$find->activationKey = YumUser::encrypt(microtime());
 			$find->status = 1;
 			$find->save();
 			return true;
@@ -210,7 +204,7 @@ class User extends CActiveRecord
 	 * @return array syperusers names
 	 */	
 	public static function getAdmins() {
-		$admins = User::model()->active()->superuser()->findAll();
+		$admins = YumUser::model()->active()->superuser()->findAll();
 		$returnarray = array();
 		foreach ($admins as $admin)
 			array_push($returnarray, $admin->username);

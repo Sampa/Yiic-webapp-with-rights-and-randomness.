@@ -1,24 +1,10 @@
 <?php
 
-class FieldsController extends Controller
+class YumFieldsController extends YumController
 {
 	const PAGE_SIZE=10;
 
 	private $_model;
-
-	public function beforeAction($action) 
-	{
-		$this->layout = Yii::app()->controller->module->layout;
-		return true;
-	}
-
-
-	public function filters()
-	{
-		return array(
-			'accessControl', 
-		);
-	}
 
 	public function accessRules()
 	{
@@ -33,7 +19,7 @@ class FieldsController extends Controller
 			),
 			array('allow', 
 				'actions'=>array('index', 'create','update','view','admin','delete'),
-				'users'=>User::getAdmins(),
+				'users'=>YumUser::getAdmins(),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -50,14 +36,14 @@ class FieldsController extends Controller
 
 	public function actionCreate()
 	{
-		$model=new ProfileField;
-		if(isset($_POST['ProfileField']))
+		$model=new YumProfileField;
+		if(isset($_POST['YumProfileField']))
 		{
-			$model->attributes=$_POST['ProfileField'];
+			$model->attributes=$_POST['YumProfileField'];
 
 			if($model->validate()) 
 			{
-				$sql = 'ALTER TABLE '.Profile::model()->tableName().' ADD `'.$model->varname.'` ';
+				$sql = 'ALTER TABLE '.YumProfile::model()->tableName().' ADD `'.$model->varname.'` ';
 				$sql .= $model->field_type;
 				if ($model->field_type!='TEXT'&&$model->field_type!='DATE')
 					$sql .= '('.$model->field_size.')';
@@ -81,9 +67,9 @@ class FieldsController extends Controller
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
-		if(isset($_POST['ProfileField']))
+		if(isset($_POST['YumProfileField']))
 		{
-			$model->attributes=$_POST['ProfileField'];
+			$model->attributes=$_POST['YumProfileField'];
 			
 			// ALTER TABLE `test` CHANGE `profiles` `field` INT( 10 ) NOT NULL 
 			// ALTER TABLE `test` CHANGE `profiles` `description` INT( 1 ) NOT NULL DEFAULT '0'
@@ -102,7 +88,7 @@ class FieldsController extends Controller
 		{
 			// we only allow deletion via POST request
 			$model = $this->loadModel();
-			$sql = 'ALTER TABLE '.Profile::model()->tableName().' DROP `'.$model->varname.'`';
+			$sql = 'ALTER TABLE '.YumProfile::model()->tableName().' DROP `'.$model->varname.'`';
 			if ($model->dbConnection->createCommand($sql)->execute()) {
 				$model->delete();
 			}
@@ -116,7 +102,7 @@ class FieldsController extends Controller
 
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('ProfileField', array(
+		$dataProvider=new CActiveDataProvider('YumProfileField', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,
 			),
@@ -132,7 +118,7 @@ class FieldsController extends Controller
 
 	public function actionAdmin()
 	{
-		$dataProvider=new CActiveDataProvider('ProfileField', array(
+		$dataProvider=new CActiveDataProvider('YumProfileField', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,
 			),
@@ -146,12 +132,15 @@ class FieldsController extends Controller
 		));
 	}
 
+	/**
+	 * @return YumProfileField
+	 */
 	public function loadModel()
 	{
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=ProfileField::model()->findbyPk($_GET['id']);
+				$this->_model=YumProfileField::model()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 		}

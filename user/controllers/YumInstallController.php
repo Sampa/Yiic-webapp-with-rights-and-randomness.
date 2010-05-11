@@ -1,8 +1,28 @@
 <?php
 
-class InstallController extends Controller
+class YumInstallController extends YumController
 {
 	public $layout = 'install';
+	
+	/**
+	 * Default action: install
+	 * @var string
+	 */
+	public $defaultAction='install';
+	
+	/**
+	 * @return array
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('allow',
+				'actions'=>array('index, start, installer, installation, install, index'),
+				'users'=>array('*')),
+			#deny all other users			
+			
+		);
+	}
 
 	public function actionStart()
 	{
@@ -169,8 +189,8 @@ class InstallController extends Controller
 					if(isset($_POST['installDemoData'])) 
 					{
 						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
-							(1, 'admin', '".User::encrypt('admin')."', '', 0, 1266571424, 1, 1),
-							(2, 'demo', '".User::encrypt('demo')."', '', 0, 1266543330, 0, 1)";
+							(1, 'admin', '".YumUser::encrypt('admin')."', '', 0, 1266571424, 1, 1),
+							(2, 'demo', '".YumUser::encrypt('demo')."', '', 0, 1266543330, 0, 1)";
 						$db->createCommand($sql)->execute();
 
 						if(isset($_POST['installRole']))

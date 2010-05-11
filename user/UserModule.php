@@ -1,5 +1,7 @@
 <?php
 
+Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) );
+
 class UserModule extends CWebModule
 {
 	
@@ -55,12 +57,35 @@ class UserModule extends CWebModule
 	// 3: Allow login only by OpenID (TODO FIXME needs to be implemented) 
 	//const LOGIN_OPENID		= 4;
 	public $loginType = self::LOGIN_BY_USERNAME;
+	
+	/**
+	 * Whether to use captcha e.g. in registration process
+	 * @var boolean
+	 */
+	public $allowCaptcha=true;
+	
+	/**
+	 * Controller map
+	 * @var array
+	 */
+	public $controllerMap=array(
+		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
+		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
+		'user'=>array('class'=>'YumModule.controllers.YumUserController'),
+		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),
+		'profileField'=>array('class'=>'YumModule.controllers.YumProfileFieldController'),
+		'profileFieldGroup'=>array('class'=>'YumModule.controllers.YumProfileFieldGroupController'),
+		'profileFieldValidator'=>array('class'=>'YumModule.controllers.YumProfileFieldValidatorController'),	
+	);
 
 	public function init()
 	{
 		$this->setImport(array(
 			'user.models.*',
 			'user.components.*',
+			'user.core.YumActiveRecord',
+			'user.core.YumController',
+			'user.core.YumFormModel',
 			'user.core.YumHelper',
 		));
 	}

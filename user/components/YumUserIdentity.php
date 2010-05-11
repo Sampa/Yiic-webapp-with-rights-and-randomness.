@@ -1,6 +1,6 @@
 <?php
 
-class UserIdentity extends CUserIdentity
+class YumUserIdentity extends CUserIdentity
 {
 	private $id;
 	const ERROR_EMAIL_INVALID=3;
@@ -13,17 +13,18 @@ class UserIdentity extends CUserIdentity
 
 		if ($loginType == UserModule::LOGIN_BY_USERNAME)
 		{
-			$user = User::model()->findByAttributes(array('username'=>$this->username));
+			$user = YumUser::model()->findByAttributes(array('username'=>$this->username));
 		}
 		else if ($loginType == UserModule::LOGIN_BY_EMAIL) 
 		{
-			$user = Profile::model()->findByAttributes(array('email'=>$this->username))->user;
+			$user = YumProfile::model()->findByAttributes(array('email'=>$this->username))->user;
 		}
 		else if ($loginType == UserModule::LOGIN_BY_USERNAME_OR_EMAIL) 
 		{
-			$user=User::model()->findByAttributes(array('username'=>$this->username));
+			$user=YumUser::model()->findByAttributes(array('username'=>$this->username));
 			if(!is_object($user)) 
-				$user=Profile::model()->findByAttributes(array('email'=>$this->username))->user;
+				if(($profile=YumProfile::model()->findByAttributes(array('email'=>$this->username))) instanceof YumProfile)
+					$user=$profile->user;
 		}
 
 		if($user===null)
@@ -35,7 +36,7 @@ class UserIdentity extends CUserIdentity
 			{
 				$this->errorCode=self::ERROR_USERNAME_INVALID;
 			}
-		else if(User::encrypt($this->password)!==$user->password)
+		else if(YumUser::encrypt($this->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else if($user->status == 0 && UserModule::$allowInactiveAcctLogin==false)
 			$this->errorCode=self::ERROR_STATUS_NOTACTIVE;

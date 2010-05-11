@@ -6,7 +6,7 @@
  * of 'UserController'.
  */
 
-class UserChangePassword extends CFormModel 
+class YumUserChangePassword extends YumFormModel 
 {
 	public $password;
 	public $verifyPassword;

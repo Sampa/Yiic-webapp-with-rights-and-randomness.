@@ -1,47 +1,38 @@
 <?php
 
-class UserController extends Controller
+class YumUserController extends YumController
 {
 	const PAGE_SIZE=10;
 	private $_model;
-
-	public function beforeAction($action)
-	{
-		$this->layout = Yii::app()->controller->module->layout;
-		return true;
-	}
-
-	public function filters()
-	{
-		return array(
-				'accessControl',
-				);
-	}
 
 	public function accessRules()
 	{
 		return array(
 				array('allow',
-					'actions'=>array('index','view','registration',
-						'captcha','login', 'recovery', 'activation'),
+					'actions'=>array('index','view','registration','login', 'recovery', 'activation'),
 					'users'=>array('*'),
-					),
+				),
+				array('allow',
+					'actions'=>array('captcha'),
+					'users'=>array('*'),
+					'expression'=>'Yii::app()->controller->module->allowCaptcha',
+				),
 				array('allow',
 					'actions'=>array('profile', 'edit', 'logout', 'changepassword'),
 					'users'=>array('@'),
-					),
+				),
 				array('allow',
 					'actions'=>array('admin','delete','create','update', 'list', 'assign'),
-					'users'=>User::getAdmins(),
-					),
+					'users'=>YumUser::getAdmins(),
+				),
 				array('allow',
 					'actions' => array('admin'),
 					'expression' => "Yii::app()->user->hasUsers()",
-					),
+				),
 				array('allow',
 					'actions' => array('update'),
 					'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
-					),
+				),
 				array('deny',  // deny all other users
 					'users'=>array('*'),
 					),
@@ -51,12 +42,14 @@ class UserController extends Controller
 
 	public function actions()
 	{
-		return array(
+		return Yii::app()->controller->module->allowCaptcha 
+			? array(
 				'captcha'=>array(
 					'class'=>'CCaptchaAction',
 					'backColor'=>0xFFFFFF,
-					),
-				);
+				),
+			)
+			: array();
 	}
 
 	public function actionIndex()
@@ -77,7 +70,7 @@ class UserController extends Controller
 
 	public function actionRegistration()
 	{
-		$form = new RegistrationForm;
+		$form = new YumRegistrationForm;
 
 		// User is already logged in?
 		if (($uid = Yii::app()->user->id) === true)
@@ -86,20 +79,20 @@ class UserController extends Controller
 		}
 		else
 		{
-			if(isset($_POST['RegistrationForm']))
+			if(isset($_POST['YumRegistrationForm']))
 			{
-				$form->attributes = $_POST['RegistrationForm'];
+				$form->attributes = $_POST['YumRegistrationForm'];
 
 				if($form->validate())
 				{
-					$user = new User();
+					$user = new YumUser();
 
 					if ($user->register($form->username, $form->password, $form->email))
 					{
-						if(isset($_POST['Profile']))
+						if(isset($_POST['YumProfile']))
 						{
-							$profile = new Profile();
-							$profile->attributes = $_POST['Profile'];
+							$profile = new YumProfile();
+							$profile->attributes = $_POST['YumProfile'];
 							$profile->user_id = $user->id;
 							$profile->save();
 						}
@@ -107,7 +100,7 @@ class UserController extends Controller
 						if(Yii::app()->controller->module->disableEmailActivation == true)
 						{
 							Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
-										"Your Account has been activated. Thank you for your registration."));
+								"Your Account has been activated. Thank you for your registration."));
 							$this->refresh();
 						}
 						else
@@ -119,7 +112,7 @@ class UserController extends Controller
 						{
 							if (Yii::app()->user->allowAutoLogin)
 							{
-								$identity = new UserIdentity($model->username,$sourcePassword);
+								$identity = new YumUserIdentity($model->username,$sourcePassword);
 								$identity->authenticate();
 								Yii::app()->user->login($identity, 0);
 								$this->redirect(Yii::app()->controller->module->returnUrl);
@@ -127,24 +120,24 @@ class UserController extends Controller
 							else
 							{
 								Yii::app()->user->setFlash('registration',
-										Yii::t("UserModule.user",
-											"Thank you for your registration. Please check your email or login."));
+									Yii::t("UserModule.user",
+										"Thank you for your registration. Please check your email or login."));
 								$this->refresh();
 							}
 						}
 						else
 						{
 							Yii::app()->user->setFlash('registration',
-									Yii::t("UserModule.user",
-										"Thank you for your registration. Please check your email."));
+								Yii::t("UserModule.user",
+									"Thank you for your registration. Please check your email."));
 							$this->refresh();
 						}
 					}
 					else
 					{
 						Yii::app()->user->setFlash('registration',
-								Yii::t("UserModule.user",
-									"Your Registration didn't work. Please contact our System Administrator."));
+							Yii::t("UserModule.user",
+								"Your Registration didn't work. Please contact our System Administrator."));
 						$this->refresh();
 
 					}
@@ -169,15 +162,15 @@ class UserController extends Controller
 
 	public function actionLogin()
 	{
-		$model=new UserLogin;
+		$model=new YumUserLogin;
 		// collect user input data
-		if(isset($_POST['UserLogin']))
+		if(isset($_POST['YumUserLogin']))
 		{
-			$model->attributes=$_POST['UserLogin'];
+			$model->attributes=$_POST['YumUserLogin'];
 			// validate user input and redirect to previous page if valid
 			if($model->validate())
 			{
-				$lastVisit = User::model()->findByPk(Yii::app()->user->id);
+				$lastVisit = YumUser::model()->findByPk(Yii::app()->user->id);
 				$lastVisit->lastvisit = time();
 				$lastVisit->save();
 				$this->redirect(Yii::app()->controller->module->returnUrl);
@@ -190,7 +183,7 @@ class UserController extends Controller
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-    $this->redirect(Yii::app()->controller->module->returnLogoutUrl);
+    	$this->redirect(Yii::app()->controller->module->returnLogoutUrl);
 	}
 
 	/**
@@ -198,17 +191,17 @@ class UserController extends Controller
 	 */
 	public function actionActivation ()
 	{
-		if(User::activate($_GET['email'], $_GET['activationKey']))
+		if(YumUser::activate($_GET['email'], $_GET['activationKey']))
 		{
 			$this->render('/user/message', array(
-						'title'=>Yii::t("UserModule.user", "User activation"),
-						'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
+				'title'=>Yii::t("UserModule.user", "User activation"),
+				'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
 		}
 		else
 		{
 			$this->render('/user/message',array(
-						'title'=>Yii::t("UserModule.user", "User activation"),
-						'content'=>Yii::t("UserModule.user", "Incorrect activation URL.")));
+				'title'=>Yii::t("UserModule.user", "User activation"),
+				'content'=>Yii::t("UserModule.user", "Incorrect activation URL.")));
 		}
 	}
 
@@ -216,29 +209,29 @@ class UserController extends Controller
 	 * Change password
 	 */
 	public function actionChangepassword() {
-		$form = new UserChangePassword;
+		$form = new YumUserChangePassword;
 		if (isset(Yii::app()->user->id))
 		{
-			if(isset($_POST['UserChangePassword']))
+			if(isset($_POST['YumUserChangePassword']))
 			{
-				$form->attributes = $_POST['UserChangePassword'];
+				$form->attributes = $_POST['YumUserChangePassword'];
 				if($form->validate())
 				{
-					$new_password = User::model()->findByPk(Yii::app()->user->id);
-					$new_password->password = User::encrypt($form->password);
-					$new_password->activationKey = User::encrypt(microtime().$form->password);
+					$new_password = YumUser::model()->findByPk(Yii::app()->user->id);
+					$new_password->password = YumUser::encrypt($form->password);
+					$new_password->activationKey = YumUser::encrypt(microtime().$form->password);
 
 					if($new_password->save())
 					{
 
 						Yii::app()->user->setFlash('profileMessage',
-								Yii::t("UserModule.user", "Your new password has been saved."));
+							Yii::t("UserModule.user", "Your new password has been saved."));
 						$this->redirect(array("user/profile"));
 					}
 					else
 					{
 						Yii::app()->user->setFlash('profileMessage',
-								Yii::t("UserModule.user", "There was an error saving your password."));
+							Yii::t("UserModule.user", "There was an error saving your password."));
 						$this->redirect(array("user/profile"));
 					}
 				}
@@ -255,7 +248,7 @@ class UserController extends Controller
 	 * Recover password
 	 */
 	public function actionRecovery () {
-		$form = new UserRecoveryForm;
+		$form = new YumUserRecoveryForm;
 
 		// User is already logged in
 		if (($uid = Yii::app()->user->id) === true)
@@ -267,17 +260,17 @@ class UserController extends Controller
 			if (isset($_GET['email']) && isset($_GET['activationKey'])) {
 				$email = $_GET['email'];
 				$activationKey = $_GET['activationKey'];
-				$form2 = new UserChangePassword;
-				$find = User::model()->findByAttributes(array('email'=>$email));
+				$form2 = new YumUserChangePassword;
+				$find = YumUser::model()->findByAttributes(array('email'=>$email));
 				if($find->activationKey==$activationKey)
 				{
-					if(isset($_POST['UserChangePassword']))
+					if(isset($_POST['YumUserChangePassword']))
 					{
-						$form2->attributes=$_POST['UserChangePassword'];
+						$form2->attributes=$_POST['YumUserChangePassword'];
 						if($form2->validate())
 						{
-							$find->password = User::encrypt($form2->password);
-							$find->activationKey=User::encrypt(microtime().$form2->password);
+							$find->password=YumUser::encrypt($form2->password);
+							$find->activationKey=YumUser::encrypt(microtime().$form2->password);
 							$find->save();
 							Yii::app()->user->setFlash('loginMessage',Yii::t("user", "Your new password has been saved."));
 							$this->redirect(array("user/login"));
@@ -293,12 +286,12 @@ class UserController extends Controller
 			}
 			else
 			{
-				if(isset($_POST['UserRecoveryForm']))
+				if(isset($_POST['YumUserRecoveryForm']))
 				{
-					$form->attributes=$_POST['UserRecoveryForm'];
+					$form->attributes=$_POST['YumUserRecoveryForm'];
 					if($form->validate())
 					{
-						$user = User::model()->findbyPk($form->user_id);
+						$user = YumUser::model()->findbyPk($form->user_id);
 						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 						$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery',array("activationKey" => $user->activationKey, "email" => $user->email));
 						mail($user->email,"You have requested to be reset. To receive a new password, go to $activation_url.",$headers);
@@ -364,36 +357,36 @@ class UserController extends Controller
 		if($this->module->readOnlyProfiles == true)
 		{
 			Yii::app()->user->setFlash('profileMessage',
-					Yii::t("UserModule.user",
-						"You are not allowed to edit your own profile.
-						Please contact your System Administrator."));
+				Yii::t("UserModule.user",
+					"You are not allowed to edit your own profile.
+					Please contact your System Administrator."));
 
 			$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
-		$model=User::model()->findByPk(Yii::app()->user->id);
+		$model=YumUser::model()->findByPk(Yii::app()->user->id);
 		$profile = $model->profile;
 
-		if(isset($_POST['User']))
+		if(isset($_POST['YumUser']))
 		{
-			$model->attributes=$_POST['User'];
+			$model->attributes=$_POST['YumUser'];
       if($this->module->profileHistory == true)
-				$profile = new Profile();
+			$profile = new YumProfile();
 
-			if(isset($_POST['Profile']))
+			if(isset($_POST['YumProfile']))
 			{
-				$profile->attributes=$_POST['Profile'];
+				$profile->attributes=$_POST['YumProfile'];
 				$profile->timestamp = time();
-				$profile->privacy = $_POST['Profile']['privacy'];
+				$profile->privacy = $_POST['YumProfile']['privacy'];
 				$profile->user_id = $model->id;
 			}
 
 				if($model->save() && $profile->save() )
 					Yii::app()->user->setFlash('profileMessage',
-							Yii::t("UserModule.user", "Your changes have been saved"));
+						Yii::t("UserModule.user", "Your changes have been saved"));
 				else
 					Yii::app()->user->setFlash('profileMessage',
-							Yii::t("UserModule.user", "An error occured while saving your changes"));
+						Yii::t("UserModule.user", "An error occured while saving your changes"));
 				$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
@@ -420,27 +413,27 @@ class UserController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new User;
-		$profile=new Profile;
+		$model=new YumUser;
+		$profile=new YumProfile;
 
-		if(isset($_POST['User']))
+		if(isset($_POST['YumUser']))
 		{
-			$model->attributes=$_POST['User'];
+			$model->attributes=$_POST['YumUser'];
 
 
 			if($this->module->hasModule('role'))
 			{
-				$model->roles = Relation::retrieveValues($_POST, 'Role');
+				$model->roles = YumRelation::retrieveValues($_POST, 'YumRole');
 			}
-			$model->activationKey=User::encrypt(microtime().$model->password);
+			$model->activationKey=YumUser::encrypt(microtime().$model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
 
-			if( isset($_POST['Profile']) )
-				$profile->attributes=$_POST['Profile'];
+			if( isset($_POST['YumProfile']) )
+				$profile->attributes=$_POST['YumProfile'];
 			$profile->user_id = 0;
 			if($model->validate() && $profile->validate()) {
-				$model->password=User::encrypt($model->password);
+				$model->password=YumUser::encrypt($model->password);
 				if($model->save())
 				{
 					$profile->user_id=$model->id;
@@ -463,35 +456,35 @@ class UserController extends Controller
 		$model->password = '';
 
 		if(($profile = $model->profile) === false)
-			$profile = new Profile();
+			$profile = new YumProfile();
 
-		if(isset($_POST['User']))
+		if(isset($_POST['YumUser']))
 		{
-			$model->attributes = $_POST['User'];
+			$model->attributes = $_POST['YumUser'];
 
 			if($this->module->hasModule('role'))
 			{
 				// Assign the roles and slave Users to the model
-				if(!isset($_POST['User']['Role']))
-					$_POST['User']['Role'] = array();
+				if(!isset($_POST['YumUser']['Role']))
+					$_POST['YumUser']['Role'] = array();
 
-				if(!isset($_POST['User']['User']))
-					$_POST['User']['User'] = array();
+				if(!isset($_POST['YumUser']['User']))
+					$_POST['YumUser']['User'] = array();
 
-				$model->roles = Relation::retrieveValues($_POST, 'Role');
-				$model->users = $_POST['User']['User'];
+				$model->roles = Relation::retrieveValues($_POST, 'YumRole');
+				$model->users = $_POST['YumUser']['User'];
 			}
 
-			if(isset($_POST['Profile']))
-				$profile->attributes = $_POST['Profile'];
+			if(isset($_POST['YumProfile']))
+				$profile->attributes = $_POST['YumProfile'];
 
 			if($model->validate() && $profile->validate())
 			{
-				$old_password = User::model()->findByPk($model->id)->password;
+				$old_password = YumUser::model()->findByPk($model->id)->password;
 				if ($model->password != '')
 				{
-					$model->password = User::encrypt($model->password);
-					$model->activationKey = User::encrypt(microtime().$model->password);
+					$model->password = YumUser::encrypt($model->password);
+					$model->activationKey = YumUser::encrypt(microtime().$model->password);
 				}
 				else
 				{
@@ -541,7 +534,7 @@ class UserController extends Controller
 
 	public function actionList()
 	{
-		$dataProvider=new CActiveDataProvider('User', array(
+		$dataProvider=new CActiveDataProvider('YumUser', array(
 			'pagination'=>array(
 					'pageSize'=>self::PAGE_SIZE,
 					),
@@ -554,7 +547,7 @@ class UserController extends Controller
 
 	public function actionAdmin()
 	{
-		$dataProvider=new CActiveDataProvider('User', array(
+		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'pagination'=>array(
 						'pageSize'=>self::PAGE_SIZE,
 						),
@@ -568,15 +561,16 @@ class UserController extends Controller
 
 	/**
 	 * Loads the User Object instance
+	 * @return YumUser
 	 */
 	public function loadUser($uid = 0)
 	{
 		if($this->_model === null)
 		{
 			if($uid != 0)
-				$this->_model = User::model()->findByPk($uid);
+				$this->_model = YumUser::model()->findByPk($uid);
 			elseif(isset($_GET['id']))
-				$this->_model = User::model()->findByPk($_GET['id']);
+				$this->_model = YumUser::model()->findByPk($_GET['id']);
 			if($this->_model === null)
 				throw new CHttpException(404,'The requested User does not exist.');
 		}

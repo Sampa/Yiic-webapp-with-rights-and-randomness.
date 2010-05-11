@@ -21,7 +21,7 @@
 <p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this Role'); ?> </p>
 
 <?php 
-		$this->widget('application.modules.user.components.Relation',
+		$this->widget('YumModule.components.Relation',
 			array('model' => $model,
 			'relation' => 'users',
 			'style' => 'dropdownlist',
@@ -35,8 +35,8 @@
 <?php echo CHtml::submitButton($model->isNewRecord 
 		? Yii::t('UserModule.user', 'Create') 
 		: Yii::t('UserModule.user', 'Save')); ?>
-		</div>
+</div>
 
-		<?php echo CHtml::endForm(); ?>
+<?php echo CHtml::endForm(); ?>
 
-		</div><!-- form -->
+</div><!-- form -->

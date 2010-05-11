@@ -1,9 +1,13 @@
 <?php
 
-class Profile extends CActiveRecord
+class YumProfile extends YumActiveRecord
 {
 	private $_tableName;
 
+	/**
+	 * @param string $className
+	 * @return YumProfile
+	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -35,7 +39,7 @@ class Profile extends CActiveRecord
 		$numerical = array();           
 		$rules = array();
 
-		$model = ProfileField::model()->forOwner()->findAll();
+		$model = YumProfileField::model()->forOwner()->findAll();
 
 		foreach ($model as $field) 
 		{
@@ -119,7 +123,7 @@ class Profile extends CActiveRecord
 	public function relations()
 	{
 		return array(
-				'user' => array(self::BELONGS_TO, 'User', 'user_id')
+				'user' => array(self::BELONGS_TO, 'YumUser', 'user_id')
 				);
 	}
 
@@ -129,7 +133,7 @@ class Profile extends CActiveRecord
 				'user_id' => Yii::t("UserModule.user", 'User ID'),
 				'profile_id' => Yii::t("UserModule.user", 'Profile ID'),
 				);
-		$model=ProfileField::model()->forOwner()->findAll();
+		$model=YumProfileField::model()->forOwner()->findAll();
 
 		foreach ($model as $field)
 			$labels[$field->varname] = Yii::t("UserModule.user", $field->title);

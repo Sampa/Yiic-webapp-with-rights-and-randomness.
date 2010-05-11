@@ -39,7 +39,7 @@ if(Yii::app()->user->isAdmin()) {
 		'username',
 	);
 	
-	$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+	$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
 	if ($profileFields && $model->profile) 
 	{
 		foreach($profileFields as $field) 
@@ -65,11 +65,11 @@ if(Yii::app()->user->isAdmin()) {
 		),
 		array(
 			'name' => 'superuser',
-			'value' => User::itemAlias("AdminStatus",$model->superuser),
+			'value' => YumUser::itemAlias("AdminStatus",$model->superuser),
 		),
 		array(
 			'name' => 'status',
-			'value' => User::itemAlias("UserStatus",$model->status),
+			'value' => YumUser::itemAlias("UserStatus",$model->status),
 		)
 	);
 	
@@ -81,10 +81,10 @@ if(Yii::app()->user->isAdmin()) {
 } else {
 // For all users
 	$attributes = array(
-			'username',
+		'username',
 	);
 	
-	$profileFields=ProfileField::model()->forAll()->sort()->findAll();
+	$profileFields=YumProfileField::model()->forAll()->sort()->findAll();
 	if ($profileFields) {
 		foreach($profileFields as $field) {
 			array_push($attributes,array(

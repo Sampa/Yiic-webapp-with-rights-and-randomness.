@@ -3,9 +3,9 @@
 /**
  * UserRecoveryForm class.
  * UserRecoveryForm is the data structure for keeping
- * user recovery form data. It is used by the 'recovery' action of 'UserController'.
+ * user recovery form data. It is used by the 'recovery' action of 'YumUserController'.
  */
-class UserRecoveryForm extends CFormModel {
+class YumUserRecoveryForm extends YumFormModel {
 	public $login_or_email, $user_id;
 	
 	/**
@@ -37,10 +37,10 @@ class UserRecoveryForm extends CFormModel {
 		if(!$this->hasErrors())  // we only want to authenticate when no input errors
 		{
 			if (strpos($this->login_or_email,"@")) {
-				$user=User::model()->findByAttributes(array('email'=>$this->login_or_email));
+				$user=YumUser::model()->findByAttributes(array('email'=>$this->login_or_email));
 				$this->user_id=$user->id;
 			} else {
-				$user=User::model()->findByAttributes(array('username'=>$this->login_or_email));
+				$user=YumUser::model()->findByAttributes(array('username'=>$this->login_or_email));
 				$this->user_id=$user->id;
 			}
 			

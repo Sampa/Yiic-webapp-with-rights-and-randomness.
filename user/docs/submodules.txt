@@ -42,6 +42,9 @@ please refer to the following example:
     ),
   ),
 
+ 
+If you would are using table prefixes you can define table names using Yii convention {{custom_table_name}} as well.
+
 You can toggle submodules within the 'modules' array. In order to check if a submodule
 is activated in the configuration, use $this->module->hasModule('submodule');
 

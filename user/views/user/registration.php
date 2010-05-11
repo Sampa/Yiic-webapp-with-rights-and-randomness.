@@ -39,11 +39,11 @@ $this->breadcrumbs=array(
 	</div>
 
 	<?php 
-	$profileFields=ProfileField::model()->forRegistration()->sort()->findAll();
+	$profileFields=YumProfileField::model()->forRegistration()->sort()->findAll();
 
 if ($profileFields) 
 {
-	$profile = new Profile();
+	$profile = new YumProfile();
 
 	foreach($profileFields as $field) 
 	{
@@ -79,7 +79,7 @@ if ($profileFields)
 }
 ?>
 
-	<?php if(extension_loaded('gd')): ?>
+	<?php if(extension_loaded('gd') && Yii::app()->controller->module->allowCaptcha): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>
 		<div>
