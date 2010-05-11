@@ -15,7 +15,7 @@ $this->menu = array(
 			'visible' => Yii::app()->user->isAdmin()
 			),
 		array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'),
-			'url'=>array('profileField/admin'),
+			'url' =>array('profiles/fields/admin'),
 			'visible' => $this->module->hasModule('profiles')
 			&& Yii::app()->user->isAdmin()
 			),

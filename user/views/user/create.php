@@ -15,7 +15,7 @@ $this->menu = array(
 			),
 		array(
 			'label' => Yii::t("UserModule.user", 'Manage Profile Field'), 
-			'url' =>array('profileField/admin')
+			'url' =>array('profiles/fields/admin')			
 			),
 
 
