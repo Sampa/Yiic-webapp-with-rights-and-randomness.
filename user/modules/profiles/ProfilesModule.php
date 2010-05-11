@@ -5,8 +5,8 @@ class ProfilesModule extends CWebModule
 	
 	public $version = '0.5';
 	public $debug = false;
-	public $profileFieldsTable = "profile_fields";
-	public $profileTable = "profiles";
+	public $profileFieldsTable = "{{profile_fields}}";
+	public $profileTable = "{{profiles}}";
 	public $installDemoData = true;
 
 	public function init()

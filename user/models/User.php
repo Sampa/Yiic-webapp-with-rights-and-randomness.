@@ -24,16 +24,24 @@ class User extends CActiveRecord
 					'class' => 'application.modules.user.components.CAdvancedArBehavior'));
 	}
 
+	/**
+	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
+	 * Following algorith of searching valid table name is implemented:
+	 *  - try to find out table name stored in currently used module
+	 *  - if not found try to get table name from UserModule configuration
+	 *  - if not found user default {{users}} table name
+	 * @return string
+	 */			
 	public function tableName()
 	{
-    if (isset(Yii::app()->controller->module->usersTable))
-      $this->_tableName = Yii::app()->controller->module->usersTable;
-    elseif (isset(Yii::app()->modules['user']['usersTable'])) 
-      $this->_tableName = Yii::app()->modules['user']['usersTable'];
-    else
-      $this->_tableName = 'users'; // fallback if nothing is set
+    	if (isset(Yii::app()->controller->module->usersTable))
+      		$this->_tableName = Yii::app()->controller->module->usersTable;
+    	elseif (isset(Yii::app()->modules['user']['usersTable'])) 
+      		$this->_tableName = Yii::app()->modules['user']['usersTable'];
+    	else
+      		$this->_tableName = '{{users}}'; // fallback if nothing is set
 
-		return $this->_tableName;
+		return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
 	}
 
 	public function rules()
@@ -58,20 +66,24 @@ class User extends CActiveRecord
     elseif (isset(Yii::app()->modules['user']['userRoleTable'])) 
       $this->_tableName = Yii::app()->modules['user']['userRoleTable'];
     else
-      $this->_userRoleTable = 'user_has_role';
+      $this->_userRoleTable = '{{user_has_role}}';
 
     if (isset(Yii::app()->controller->module->userUserTable))
       $this->_userUserTable = Yii::app()->controller->module->userUserTable;
     elseif (isset(Yii::app()->modules['user']['userUserTable'])) 
       $this->_tableName = Yii::app()->modules['user']['userUserTable'];
     else
-      $this->_userUserTable = 'user_has_user';
+      $this->_userUserTable = '{{user_has_user}}';
+      
+    #resolve table names to use them in relations definition
+    $relationUHRTableName=YumHelper::resolveTableName($this->_userRoleTable,$this->getDbConnection());      
+    $relationUHUTableName=YumHelper::resolveTableName($this->_userUserTable,$this->getDbConnection());
 
-		return array(
-			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id', 'order' => 'profile.profile_id DESC'),
-			'roles'=>array(self::MANY_MANY, 'Role', $this->_userRoleTable . '(user_id, role_id)'),
-			'users'=>array(self::MANY_MANY, 'User', $this->_userUserTable . '(owner_id, child_id)'),
-			);
+	return array(
+		'profile'=>array(self::HAS_ONE, 'Profile', 'user_id', 'order' => 'profile.profile_id DESC'),
+		'roles'=>array(self::MANY_MANY, 'Role', $relationUHRTableName . '(user_id, role_id)'),
+		'users'=>array(self::MANY_MANY, 'User', $relationUHUTableName . '(owner_id, child_id)'),
+	);
 	}
 
 	public function register($username, $password, $email)

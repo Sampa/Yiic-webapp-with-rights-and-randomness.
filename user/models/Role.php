@@ -15,16 +15,23 @@ class Role extends CActiveRecord
 			'class' => 'application.modules.user.components.CAdvancedArBehavior'));
 	}
 
-  public function tableName()
-  {
-    if (isset(Yii::app()->controller->module->rolesTable))
-      $this->_tableName = Yii::app()->controller->module->rolesTable;
-    elseif (isset(Yii::app()->modules['user']['rolesTable'])) 
-      $this->_tableName = Yii::app()->modules['user']['rolesTable'];
-    else
-      $this->_tableName = 'roles'; // fallback if nothing is set
-
-		return $this->_tableName;
+	/**
+	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
+	 * Following algorith of searching valid table name is implemented:
+	 *  - try to find out table name stored in currently used module
+	 *  - if not found try to get table name from UserModule configuration
+	 *  - if not found user default {{roles}} table name
+	 * @return string
+	 */		
+  	public function tableName()
+  	{
+  		if (isset(Yii::app()->controller->module->rolesTable))
+      		$this->_tableName = Yii::app()->controller->module->rolesTable;
+    	elseif (isset(Yii::app()->modules['user']['rolesTable'])) 
+      		$this->_tableName = Yii::app()->modules['user']['rolesTable'];
+    	else
+      		$this->_tableName = '{{roles}}'; // fallback if nothing is set
+    	return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
   }
 
 	public function rules()
@@ -42,11 +49,13 @@ class Role extends CActiveRecord
     elseif (isset(Yii::app()->modules['user']['userRoleTable'])) 
       $this->_tableName = Yii::app()->modules['user']['userRoleTable'];
     else
-      $this->_userRoleTable = 'user_has_role';
-
+      $this->_userRoleTable = '{{user_has_role}}';
+      
+    #resolve table name to use it in relations definition      
+	$relationTableName=YumHelper::resolveTableName($this->_userRoleTable,$this->getDbConnection());
 		return array(
-				'users'=>array(self::MANY_MANY, 'User', $this->_userRoleTable .'(role_id, user_id)'),
-				);
+			'users'=>array(self::MANY_MANY, 'User', $relationTableName .'(role_id, user_id)'),
+		);
 	}
 
 	public function attributeLabels()

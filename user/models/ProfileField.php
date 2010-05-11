@@ -14,17 +14,25 @@ class ProfileField extends CActiveRecord
 	}
 
 
-  public function tableName()
-  {
-    if (isset(Yii::app()->controller->module->profileFieldsTable))
-      $this->_tableName = Yii::app()->controller->module->profileFieldsTable;
-    elseif (isset(Yii::app()->modules['user']['profileFieldsTable']))
-      $this->_tableName = Yii::app()->modules['user']['profileFieldsTable'];
-    else
-      $this->_tableName = 'profile_fields'; // fallback if nothing is set
+	/**
+	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
+	 * Following algorith of searching valid table name is implemented:
+	 *  - try to find out table name stored in currently used module
+	 *  - if not found try to get table name from UserModule configuration
+	 *  - if not found user default {{profile_fields}} table name
+	 * @return string
+	 */	
+  	public function tableName()
+  	{
+    	if (isset(Yii::app()->controller->module->profileFieldsTable))
+      		$this->_tableName = Yii::app()->controller->module->profileFieldsTable;
+    	elseif (isset(Yii::app()->modules['user']['profileFieldsTable']))
+      		$this->_tableName = Yii::app()->modules['user']['profileFieldsTable'];
+    	else
+      		$this->_tableName = '{{profile_fields}}'; // fallback if nothing is set
 
-		return $this->_tableName;
-  }
+    	return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
+  	}
 
 	public function rules()
 	{

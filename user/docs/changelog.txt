@@ -3,6 +3,8 @@ Changelog for Yii User Management Module since Version 0.3
 New in 0.6:
 Features:
 - Added Layout for installation
+- Added YumHelper class (tomasz.suchanek)
+- Bug #35, #40: Usign table prefixes doesn't break relation definitions (tomasz.suchanek)
 
 Bug Fixes:
 - Changed UserModule::$returnUrl UserModule::$returnLogoutUrl calls to Yii::app()->controller->module->returnUrl/returnLogoutUrl (steve)

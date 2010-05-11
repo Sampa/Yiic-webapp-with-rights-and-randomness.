@@ -5,7 +5,7 @@ class MessagesModule extends CWebModule
 	
 	public $version = '0.5';
 	public $debug = false;
-	public $messagesTable = "messages";
+	public $messagesTable = "{{messages}}";
 	public $installDemoData = true;
 	
 	public function init()

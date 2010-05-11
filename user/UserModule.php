@@ -5,13 +5,13 @@ class UserModule extends CWebModule
 	
 	public $version = '0.5';
 	public $debug = false;
-	public $usersTable = "users";
-	public $messagesTable = "messages";
-	public $profileFieldsTable = "profile_fields";
-	public $profileTable = "profiles";
-	public $rolesTable = "roles";
-	public $userRoleTable = "user_has_role";
-	public $userUserTable = "user_has_user";
+	public $usersTable = "{{users}}";
+	public $messagesTable = "{{messages}}";
+	public $profileFieldsTable = "{{profile_fields}}";
+	public $profileTable = "{{profiles}}";
+	public $rolesTable = "{{roles}}";
+	public $userRoleTable = "{{user_has_role}}";
+	public $userUserTable = "{{user_has_user}}";
 	public $installDemoData = true;
 	public $disableEmailActivation = false;
 	public $layout = 'column2';
@@ -61,6 +61,7 @@ class UserModule extends CWebModule
 		$this->setImport(array(
 			'user.models.*',
 			'user.components.*',
+			'user.core.YumHelper',
 		));
 	}
 
