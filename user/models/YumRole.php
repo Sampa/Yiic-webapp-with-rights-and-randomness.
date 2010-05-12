@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * This is the model class for table "{{roles}}".
+ *
+ * The followings are the available columns in table '{{roles}}':
+ * @property integer $id
+ * @property string $title
+ * @property string $description
+ */
 class YumRole extends YumActiveRecord
 {
 	private $_tableName;

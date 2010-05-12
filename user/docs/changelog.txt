@@ -4,9 +4,8 @@ New in 0.6:
 Features:
 - Added Layout for installation
 - Added YumHelper class (tomasz.suchanek)
-- Added allowCaptcha property to UserModule, to controle whether Captcha is required
-- Bug #35, #40: Usign table prefixes doesn't break relation definitions (tomasz.suchanek)
-- Fixed bug 'Trying to get property of non-object' when typing not existing username/email in login form 
+- Added allowCaptcha property to UserModule, to controle whether Captcha is required (tomasz.suchanek)
+- Updated AR models documentation with phpdoc @property improve code usage (tomasz.suchanek)
 - Yum can by used as submodule. To avoid names confict all models are renamed:
  * Messages => YumMessages,
  * Profile => YumProfile,
@@ -32,6 +31,8 @@ Bug Fixes:
 - Changed UserModule::$returnUrl UserModule::$returnLogoutUrl calls to Yii::app()->controller->module->returnUrl/returnLogoutUrl (steve)
 - Fixed the fallback table name in the ProfileField Model (steve)
 - Fixed the incorrect URL generations in user/modules/role/views/role/admin.php view (steve)
+- Fixed bug #35, #40: Usign table prefixes doesn't break relation definitions (tomasz.suchanek)
+- Fixed bug 'Trying to get property of non-object' when typing not existing username/email in login form (tomasz.suchanek) 
 
 New in 0.5:
 - Added Polish messages translaction (Beta, please submit mistakes) (darek.krk)

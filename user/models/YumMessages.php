@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * This is the model class for table "{{messages}}".
+ *
+ * The followings are the available columns in table '{{messages}}':
+ * @property integer $id
+ * @property integer $from_user_id
+ * @property integer $to_user_id
+ * @property string $title
+ * @property string $message
+ * @property integer $message_read
+ * @property integer $draft
+ */
 class YumMessages extends YumActiveRecord
 {
 	private $_tableName;

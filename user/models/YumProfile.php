@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * This is the model class for table "{{profiles}}".
+ *
+ * The followings are the available columns in table '{{profiles}}':
+ * @property integer $profile_id
+ * @property integer $user_id
+ * @property integer $timestamp
+ * @property string $privacy
+ * @property string $lastname
+ * @property string $firstname
+ * @property string $email
+ * @property string $about
+ * @property string $street
+ */
 class YumProfile extends YumActiveRecord
 {
 	private $_tableName;

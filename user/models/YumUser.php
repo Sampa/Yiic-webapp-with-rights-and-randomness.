@@ -1,5 +1,17 @@
 <?php
-
+/**
+ * This is the model class for table "{{users}}".
+ *
+ * The followings are the available columns in table '{{users}}':
+ * @property integer $id
+ * @property string $username
+ * @property string $password
+ * @property string $activationKey
+ * @property integer $createtime
+ * @property integer $lastvisit
+ * @property integer $superuser
+ * @property integer $status
+ */
 class YumUser extends YumActiveRecord
 {
 	const STATUS_NOTACTIVE = 0;

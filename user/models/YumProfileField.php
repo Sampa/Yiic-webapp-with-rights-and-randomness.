@@ -1,5 +1,23 @@
 <?php
-
+/**
+ * This is the model class for table "{{profile_fields}}".
+ *
+ * The followings are the available columns in table '{{profile_fields}}':
+ * @property integer $id
+ * @property string $varname
+ * @property string $title
+ * @property string $field_type
+ * @property integer $field_size
+ * @property integer $field_size_min
+ * @property integer $required
+ * @property string $match
+ * @property string $range
+ * @property string $error_message
+ * @property string $other_validator
+ * @property string $default
+ * @property integer $position
+ * @property integer $visible
+ */
 class YumProfileField extends YumActiveRecord
 {
 	const VISIBLE_ALL=3;
