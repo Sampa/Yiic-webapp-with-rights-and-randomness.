@@ -9,6 +9,8 @@
 abstract class YumActiveRecord extends CActiveRecord
 {
 	
+	protected $_tableName;
+	
 	/**
 	 * @return array
 	 */
@@ -17,6 +19,21 @@ abstract class YumActiveRecord extends CActiveRecord
 			'class' => 'YumModule.components.CAdvancedArBehavior'
 		));
 	}	
+	
+	/**
+	 * @return CActiveRecordMetaData the meta for this AR class.
+	 */	
+	public function getMetaData( )
+	{
+		$md = parent::getMetaData( );
+		if($this->getScenario()==='search')
+		{
+			#don't set default attributed
+	 		$md->attributeDefaults  = array ();
+		}
+
+	 	return $md;
+	}
 	
 }
 ?>

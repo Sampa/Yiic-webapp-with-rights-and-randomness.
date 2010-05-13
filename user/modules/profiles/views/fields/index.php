@@ -4,13 +4,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu = array(
-		array('label' => Yii::t("UserModule.user", 'Create Profile Field'), 
-			'url' => array('create')),
-		array('label' => Yii::t("UserModule.user", 'Manage Profile Fields'), 
-			'url' => array('admin')),
-		);
-
-
+	YumMenuItemHelper::createField(),
+	YumMenuItemHelper::manageFields(),
+	YumMenuItemHelper::manageFieldsGroups(),	
+);
 ?>
 
 <h1><?php echo Yii::t("UserModule.user", 'List Profile Field'); ?></h1>

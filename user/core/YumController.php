@@ -17,8 +17,7 @@ abstract class YumController extends CController
 	public function beforeAction($action) 
 	{
 		$allowedByParent=parent::beforeAction($action);
-			
-			$this->layout = Yii::app()->controller->module->layout;
+		$this->layout = Yii::app()->controller->module->layout;
 		return $allowedByParent && true;
 	}	
  	
@@ -29,7 +28,7 @@ abstract class YumController extends CController
 	public function filters()
 	{
 		return array(
-				'accessControl',
+			'accessControl',
 		);
 	}	
 	

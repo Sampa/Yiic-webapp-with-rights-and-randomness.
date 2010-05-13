@@ -21,7 +21,6 @@ class YumUser extends YumActiveRecord
 	public $username;
 	public $password;
 	public $email;
-	private $_tableName;
 	private $_userRoleTable;
 	private $_userUserTable;
 	

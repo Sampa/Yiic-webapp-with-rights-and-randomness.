@@ -2,7 +2,7 @@
 
 Yii::setPathOfAlias( 'YumMessagesModule' , dirname(__FILE__) );
 
-class MessagesModule extends CWebModule
+class MessagesModule extends YumWebModule
 {
 	
 	public $version = '0.5';

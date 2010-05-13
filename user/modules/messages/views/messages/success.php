@@ -6,13 +6,9 @@ $this->breadcrumbs=array(
 
 
 $this->menu = array(
-		array(
-			'label'=>Yii::t('UserModule.user', 'Write another Message'),
-			'url'=>array('compose')),
-		array(
-			'label'=>Yii::t('UserModule.user', 'Back to Inbox'),
-			'url'=>array('index')),
-		);
+	YumMenuItemHelper::composeMessage(array(),'Write another message'),
+	YumMenuItemHelper::backToInbox()
+);
 ?>
 
 <p> <?php echo Yii::t('UserModule.User', 'Your Message has been sent.'); ?> </p>

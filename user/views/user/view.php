@@ -7,27 +7,13 @@ $this->breadcrumbs=array(
 
 <?php
 $this->menu = array(
-		array('label'=>Yii::t('UserModule.user', 'List User'),
-			'url'=>array('index')
-			),
-		array('label'=>Yii::t('UserModule.user', 'Create User'),
-			'url'=>array('create')
-			),
-		array('label'=>Yii::t('UserModule.user', 'Update User'),
-			'url'=>array('update','id'=>$model->id)
-			),
-		array('label'=>Yii::t('UserModule.user', 'Manage User'),
-			'url'=>array('admin')
-			),
-		array('label'=>Yii::t('UserModule.user', 'Manage profile Fields'),
-			'url'=>array('profiles/fields/admin'),
-			'visible' => $this->module->hasModule('profiles')
-			),
-		array('label'=>Yii::t('UserModule.user', 'Manage Roles'),
-			'url'=>array('role/role/admin'),
-			'visible' => $this->module->hasModule('role'))
-		); 
-
+	YumMenuItemHelper::manageUsers(),
+	YumMenuItemHelper::listUsers(),
+	YumMenuItemHelper::createUser(),
+	YumMenuItemHelper::updateUser(array('id'=>$model->id)),
+	YumMenuItemHelper::manageFields(),
+	YumMenuItemHelper::manageRoles(),
+);
 ?>
 
 <h1><?php echo Yii::t("UserModule.user", 'View User').' "'.$model->username.'"'; ?></h1>
@@ -122,9 +108,8 @@ echo Yii::t('UserModule.User', 'This User belongs to these roles:');  ?>
 if($model->roles) {
 	echo "<ul>";
 	foreach($model->roles as $role) {
-		printf("<li>%s</li>", CHtml::link($role->title,
-					array('role/view',
-						'id' => $role->id)));
+		echo CHtml::tag('li',array(),CHtml::link(
+			$role->title,array(YumHelper::route('{roles}/role/view'),'id'=>$role->id)),true);
 	}
 	echo "</ul>";
 }
@@ -145,9 +130,8 @@ echo Yii::t('UserModule.User', 'This User can administrate this Users:');  ?>
 if($model->users) {
 	echo "<ul>";
 	foreach($model->users as $user) {
-		printf("<li>%s</li>",
-				CHtml::link($user->username,
-					array('user/view', 'id' => $user->id)));
+		echo CHtml::tag('li',array(),CHtml::link(
+			$user->username,array(YumHelper::route('{user}/view'),'id'=>$user->id)),true);		
 	}
 	echo "</ul>";
 }

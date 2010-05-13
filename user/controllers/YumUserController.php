@@ -4,41 +4,40 @@ class YumUserController extends YumController
 {
 	const PAGE_SIZE=10;
 	private $_model;
-
+	
 	public function accessRules()
 	{
 		return array(
-				array('allow',
-					'actions'=>array('index','view','registration','login', 'recovery', 'activation'),
-					'users'=>array('*'),
+			array('allow',
+				'actions'=>array('index','view','registration','login', 'recovery', 'activation'),
+				'users'=>array('*'),
+			),
+			array('allow',
+				'actions'=>array('captcha'),
+				'users'=>array('*'),
+				'expression'=>'Yii::app()->controller->module->allowCaptcha',
+			),
+			array('allow',
+				'actions'=>array('profile', 'edit', 'logout', 'changepassword'),
+				'users'=>array('@'),
+			),
+			array('allow',
+				'actions'=>array('admin','delete','create','update', 'list', 'assign'),
+				'users'=>YumUser::getAdmins(),
+			),
+			array('allow',
+				'actions' => array('admin'),
+				'expression' => "Yii::app()->user->hasUsers()",
+			),
+			array('allow',
+				'actions' => array('update'),
+				'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
+			),
+			array('deny',  // deny all other users
+				'users'=>array('*'),
 				),
-				array('allow',
-					'actions'=>array('captcha'),
-					'users'=>array('*'),
-					'expression'=>'Yii::app()->controller->module->allowCaptcha',
-				),
-				array('allow',
-					'actions'=>array('profile', 'edit', 'logout', 'changepassword'),
-					'users'=>array('@'),
-				),
-				array('allow',
-					'actions'=>array('admin','delete','create','update', 'list', 'assign'),
-					'users'=>YumUser::getAdmins(),
-				),
-				array('allow',
-					'actions' => array('admin'),
-					'expression' => "Yii::app()->user->hasUsers()",
-				),
-				array('allow',
-					'actions' => array('update'),
-					'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
-				),
-				array('deny',  // deny all other users
-					'users'=>array('*'),
-					),
-				);
+			);
 	}
-
 
 	public function actions()
 	{
@@ -55,17 +54,11 @@ class YumUserController extends YumController
 	public function actionIndex()
 	{
 		if(Yii::app()->user->isGuest)
-		{
 			$this->actionLogin();
-		}
 		else if(isset($_GET['id']) || isset ($_GET['user_id']))
-		{
 			$this->actionProfile();
-		}
 		else
-		{
 			$this->actionList();
-		}
 	}
 
 	public function actionRegistration()
@@ -193,13 +186,13 @@ class YumUserController extends YumController
 	{
 		if(YumUser::activate($_GET['email'], $_GET['activationKey']))
 		{
-			$this->render('/user/message', array(
+			$this->render('message', array(
 				'title'=>Yii::t("UserModule.user", "User activation"),
 				'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
 		}
 		else
 		{
-			$this->render('/user/message',array(
+			$this->render('message',array(
 				'title'=>Yii::t("UserModule.user", "User activation"),
 				'content'=>Yii::t("UserModule.user", "Incorrect activation URL.")));
 		}
@@ -236,7 +229,7 @@ class YumUserController extends YumController
 					}
 				}
 			}
-			$this->render('/user/changepassword',array('form'=>$form));
+			$this->render('changepassword',array('form'=>$form));
 		} else {
 			// No id was set. An error has occured. (should never get here)
 			$this->redirect(Yii::app()->controller->module->returnUrl);
@@ -273,10 +266,10 @@ class YumUserController extends YumController
 							$find->activationKey=YumUser::encrypt(microtime().$form2->password);
 							$find->save();
 							Yii::app()->user->setFlash('loginMessage',Yii::t("user", "Your new password has been saved."));
-							$this->redirect(array("user/login"));
+							$this->redirect(Yii::app()->controller->module->loginUrl);
 						}
 					}
-					$this->render('/user/changepassword',array('form'=>$form2));
+					$this->render('changepassword',array('form'=>$form2));
 				}
 				else
 				{
@@ -299,7 +292,7 @@ class YumUserController extends YumController
 						$this->refresh();
 					}
 				}
-				$this->render('/user/recovery',array('form'=>$form));
+				$this->render('recovery',array('form'=>$form));
 			}
 		}
 	}
@@ -319,10 +312,10 @@ class YumUserController extends YumController
 			{
 				$model = $this->loadUser(Yii::app()->user->id);
 
-				$this->render('/user/myprofile',array(
-							'model'=>$model,
-							'profile'=>$model->profile,
-							));
+				$this->render('myprofile',array(
+					'model'=>$model,
+					'profile'=>$model->profile,
+				));
 			}
 		}
 		else
@@ -332,17 +325,17 @@ class YumUserController extends YumController
 			$model = $this->loadUser($uid = $_GET['id']);
 
 			if($this->module->forceProtectedProfiles == true ||
-					$model->profile->privacy == 'protected' ||
-					$model->profile->privacy == 'private')
+				$model->profile->privacy == 'protected' ||
+				$model->profile->privacy == 'private')
 			{
-					$this->render('/user/profilenotallowed');
+				$this->render('profilenotallowed');
 			}
 			else
 			{
-				$this->render('/user/foreignprofile',array(
-							'model'=>$model,
-							'profile'=>$model->profile,
-							));
+				$this->render('foreignprofile',array(
+					'model'=>$model,
+					'profile'=>$model->profile,
+				));
 			}
 		}
 
@@ -390,10 +383,10 @@ class YumUserController extends YumController
 				$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
-		$this->render('/user/profile-edit',array(
-					'model'=>$model,
-					'profile'=>$profile,
-					));
+		$this->render('profile-edit',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
 
 	}
 
@@ -403,9 +396,9 @@ class YumUserController extends YumController
 	public function actionView()
 	{
 		$model = $this->loadUser();
-		$this->render('/user/view',array(
-					'model'=>$model,
-					));
+		$this->render('view',array(
+			'model'=>$model,
+		));
 	}
 
 	/**
@@ -423,7 +416,7 @@ class YumUserController extends YumController
 
 			if($this->module->hasModule('role'))
 			{
-				$model->roles = YumRelation::retrieveValues($_POST, 'YumRole');
+				$model->roles = Relation::retrieveValues($_POST, 'YumRole');
 			}
 			$model->activationKey=YumUser::encrypt(microtime().$model->password);
 			$model->createtime=time();
@@ -443,10 +436,10 @@ class YumUserController extends YumController
 			}
 		}
 
-		$this->render('/user/create',array(
-					'model'=>$model,
-					'profile'=>$profile,
-					));
+		$this->render('create',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
 
 	}
 
@@ -465,14 +458,14 @@ class YumUserController extends YumController
 			if($this->module->hasModule('role'))
 			{
 				// Assign the roles and slave Users to the model
-				if(!isset($_POST['YumUser']['Role']))
-					$_POST['YumUser']['Role'] = array();
+				if(!isset($_POST['YumUser']['YumRole']))
+					$_POST['YumUser']['YumRole'] = array();
 
-				if(!isset($_POST['YumUser']['User']))
-					$_POST['YumUser']['User'] = array();
+				if(!isset($_POST['YumUser']['YumUser']))
+					$_POST['YumUser']['YumUser'] = array();
 
 				$model->roles = Relation::retrieveValues($_POST, 'YumRole');
-				$model->users = $_POST['YumUser']['User'];
+				$model->users = $_POST['YumUser']['YumUser'];
 			}
 
 			if(isset($_POST['YumProfile']))
@@ -497,10 +490,10 @@ class YumUserController extends YumController
 			}
 		}
 
-		$this->render('/user/update',array(
-					'model'=>$model,
-					'profile'=>$profile,
-					));
+		$this->render('update',array(
+			'model'=>$model,
+			'profile'=>$profile,
+		));
 	}
 
 
@@ -536,26 +529,24 @@ class YumUserController extends YumController
 	{
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 			'pagination'=>array(
-					'pageSize'=>self::PAGE_SIZE,
-					),
-		));
+				'pageSize'=>self::PAGE_SIZE,
+		)));
 
-		$this->render('/user/index',array(
-					'dataProvider'=>$dataProvider,
-					));
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));
 	}
 
 	public function actionAdmin()
 	{
 		$dataProvider=new CActiveDataProvider('YumUser', array(
-					'pagination'=>array(
-						'pageSize'=>self::PAGE_SIZE,
-						),
-					));
+			'pagination'=>array(
+				'pageSize'=>self::PAGE_SIZE,
+		)));
 
-		$this->render('/user/admin',array(
-					'dataProvider'=>$dataProvider,
-					));
+		$this->render('admin',array(
+			'dataProvider'=>$dataProvider,
+		));
 
 	}
 

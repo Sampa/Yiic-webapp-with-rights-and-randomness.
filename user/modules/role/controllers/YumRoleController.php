@@ -4,13 +4,6 @@ class YumRoleController extends YumController
 {
 	private $_model;
 
-	public function beforeAction($action) 
-	{
-		$this->layout = Yii::app()->controller->module->layout;
-		return true;
-	}
-
-
 	public function actionView()
 	{
 		$model = $this->loadModel();
@@ -24,7 +17,7 @@ class YumRoleController extends YumController
 		$this->performAjaxValidation($model);
 		if(isset($_POST['YumRole'])) {
 			$model->attributes = $_POST['YumRole'];
-			$model->users = YumRelation::retrieveValues($_POST, 'YumUser');
+			$model->users = Relation::retrieveValues($_POST, 'YumUser');
 			if($model->save())
 				$this->redirect(array('admin'));
 

@@ -2,8 +2,8 @@
 
 <?php
 $this->menu = array(
-array('label'=>Yii::t('UserModule.user', 'New User'), 'url'=>array('create')),
-array('label'=>Yii::t('UserModule.user', 'Manage User'), 'url'=>array('admin')),
+	YumMenuItemHelper::createUser(),
+	YumMenuItemHelper::manageUsers(),
 );
 ?>
 

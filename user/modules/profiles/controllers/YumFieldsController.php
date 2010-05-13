@@ -37,6 +37,9 @@ class YumFieldsController extends YumController
 	public function actionCreate()
 	{
 		$model=new YumProfileField;
+		#add to group?
+		if(isset($_GET['in_group']))
+			$model->field_group_id=$_GET['in_group'];
 		if(isset($_POST['YumProfileField']))
 		{
 			$model->attributes=$_POST['YumProfileField'];

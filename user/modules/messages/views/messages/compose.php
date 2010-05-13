@@ -6,10 +6,8 @@ $this->breadcrumbs=array(
 
 
 $this->menu = array(
-		array(
-			'label'=>Yii::t('UserModule.user', 'Back to Inbox'),
-			'url'=>array('index')),
-		);
+	YumMenuItemHelper::backToInbox()
+);
 ?>
 
 <div class="form">
@@ -30,7 +28,7 @@ $this->menu = array(
 		'Select multiple recipients by holding the CTRL key'); ?> </p>
 
 <?php 
-		echo CHtml::ListBox('Messages[to_user_id]', isset($_GET['to_user_id'])?$_GET['to_user_id']:"", CHtml::listData( 
+		echo CHtml::ListBox('SendTo', isset($_GET['to_user_id'])?$_GET['to_user_id']:"", CHtml::listData( 
 		YumUser::model()->active()->findAll(), 'id', 'username'),
 			array('multiple' => 'multiple'));
 		?>

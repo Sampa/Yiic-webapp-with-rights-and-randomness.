@@ -2,7 +2,7 @@
 
 Yii::setPathOfAlias( 'YumRoleModule' , dirname(__FILE__) );
 
-class RoleModule extends CWebModule
+class RoleModule extends YumWebModule
 {
 	
 	public $version = '0.5';
@@ -12,7 +12,7 @@ class RoleModule extends CWebModule
 	public $installDemoData = true;
 	
 	public $controllerMap=array(
-		'role'=>array('class'=>'YumMessagesModule.controllers.YumRoleController'),
+		'role'=>array('class'=>'YumRoleModule.controllers.YumRoleController'),
 	);	
 	
 	public function init()

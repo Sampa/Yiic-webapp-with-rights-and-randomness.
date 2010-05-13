@@ -50,6 +50,7 @@ class YumInstallController extends YumController
 
 					$usersTable = $_POST['usersTable'];
 					$profileFieldsTable = $_POST['profileFieldsTable'];
+					$profileFieldsGroupTable = $_POST['profileFieldsGroupTable'];
 					$profileTable = $_POST['profileTable'];
 					$messagesTable = $_POST['messagesTable'];
 					$rolesTable = $_POST['rolesTable'];
@@ -57,9 +58,10 @@ class YumInstallController extends YumController
 					$userUserTable = $_POST['userUserTable'];
 
 					// Clean up existing Installation
-					$db->createCommand(sprintf('drop table if exists %s, %s, %s, %s, %s, %s, %s',
+					$db->createCommand(sprintf('drop table if exists %s, %s, %s, %s, %s, %s, %s, %s',
 								$usersTable,
 								$profileFieldsTable, 
+								$profileFieldsGroupTable,
 								$profileTable,
 								$messagesTable,
 								$rolesTable,
@@ -89,9 +91,22 @@ class YumInstallController extends YumController
 
 					if(isset($_POST['installProfiles']))  
 					{
+						
+						//Create Profile Fields Group Table
+						$sql = "CREATE  TABLE IF NOT EXISTS `" . $profileFieldsGroupTable . "` (
+							`id` INT(3) NOT NULL AUTO_INCREMENT ,
+							`group_name` VARCHAR(50) NOT NULL ,
+							`title` VARCHAR(255) NOT NULL ,
+							`position` INT(3) NOT NULL DEFAULT 0 ,
+							PRIMARY KEY (`id`) )
+							ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
+
+						$db->createCommand($sql)->execute();						
+						
 						// Create Profile Fields Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
 							`id` int(10) NOT NULL auto_increment,
+							`field_group_id` int(3) NOT NULL default '0',
 							`varname` varchar(50) NOT NULL,
 							`title` varchar(255) NOT NULL,
 							`field_type` varchar(50) NOT NULL,
@@ -110,7 +125,6 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
-
 
 						// Create Profiles Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
@@ -209,8 +223,8 @@ class YumInstallController extends YumController
 							$db->createCommand($sql)->execute();
 
 							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2), ('firstname', 'First name', 'VARCHAR', 255, 1, 2), ('lastname', 'Last name', 'VARCHAR', 255, 1, 2)";
-
 							$db->createCommand($sql)->execute();
+							
 						}
 
 					}

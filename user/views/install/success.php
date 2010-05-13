@@ -7,4 +7,7 @@ Configuration (for example, language). </p>
 <p> Please change the Administrator Password to something better than 
 the default password. </p>
 
-<p> <?php echo CHtml::link('Administrate your Users (use admin/admin)', array('user/admin')); ?> </p>
+<p><?php 
+	$route=YumHelper::route('{user}/admin'); 
+	echo CHtml::link("Administrate your Users (use {$route})",array($route)); 
+?></p>

@@ -15,7 +15,6 @@
  */
 class YumProfile extends YumActiveRecord
 {
-	private $_tableName;
 
 	/**
 	 * @param string $className
@@ -136,8 +135,8 @@ class YumProfile extends YumActiveRecord
 	public function relations()
 	{
 		return array(
-				'user' => array(self::BELONGS_TO, 'YumUser', 'user_id')
-				);
+			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id')
+		);
 	}
 
 	public function attributeLabels()

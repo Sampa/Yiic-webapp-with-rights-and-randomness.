@@ -1,8 +1,16 @@
 <?php
 
 Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) );
+Yii::import('YumModule.core.YumWebModule');
 
-class UserModule extends CWebModule
+/**
+ * @property string $registrationUrl
+ * @property string $recoveryUrl
+ * @property string $loginUrl
+ * @property string $returnUrl
+ * @property string $returnLogoutUrl
+ */
+class UserModule extends YumWebModule
 {
 	
 	public $version = '0.5';
@@ -10,6 +18,7 @@ class UserModule extends CWebModule
 	public $usersTable = "{{users}}";
 	public $messagesTable = "{{messages}}";
 	public $profileFieldsTable = "{{profile_fields}}";
+	public $profileFieldsGroupTable = "{{profile_fields_group}}";
 	public $profileTable = "{{profiles}}";
 	public $rolesTable = "{{roles}}";
 	public $userRoleTable = "{{user_has_role}}";
@@ -26,13 +35,14 @@ class UserModule extends CWebModule
 	// Allow login of inactive User Account
 	public static $allowInactiveAcctLogin=false;
 
-	public $registrationUrl = array("user/registration");
-	public $recoveryUrl = array("user/recovery");
-	public $loginUrl = array("user/login");
-
-	// Page to go to after registration, login etc.
-	public $returnUrl = array("user/profile");	
-	public $returnLogoutUrl = array("user/login");
+	private $_urls=array(
+		'registration'=>array('{user}/registration'),
+		'recovery'=>array('{user}/recovery'),
+		'login'=>array("{user}/login"),
+		'return'=>array("{user}/profile"),
+		// Page to go to after registration, login etc.	
+		'returnLogout'=>array("{user}/login"),
+	);
 
 	// Activate profile History (profiles are kept always, and when the 
   // user changes his profile, it gets added to the database rather than
@@ -71,12 +81,34 @@ class UserModule extends CWebModule
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
-		'user'=>array('class'=>'YumModule.controllers.YumUserController'),
-		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),
-		'profileField'=>array('class'=>'YumModule.controllers.YumProfileFieldController'),
-		'profileFieldGroup'=>array('class'=>'YumModule.controllers.YumProfileFieldGroupController'),
-		'profileFieldValidator'=>array('class'=>'YumModule.controllers.YumProfileFieldValidatorController'),	
+		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
 	);
+	
+	/**
+	 * Additionally implements support for getting URLs
+	 * @param string $name
+	 */
+	public function __get($name)
+	{
+		if(substr($name,-3)==='Url')
+			if(isset($this->_urls[substr($name,0,-3)]))
+				return YumHelper::route($this->_urls[substr($name,0,-3)]);
+				
+		return parent::__get($name);
+	}
+
+	/**
+	 * Additionally implements support for setting URLs
+	 * @param string $name
+	 * @param mixed $value
+	 */
+	public function __set($name,$value)
+	{
+		if(substr($name,-3)==='Url')
+			if(isset($this->_urls[substr($name,0,-3)]))
+				$this->_urls[substr($name,0,-3)]=$value;		
+		parent::__set($name,$value);
+	}
 
 	public function init()
 	{
@@ -87,6 +119,8 @@ class UserModule extends CWebModule
 			'user.core.YumController',
 			'user.core.YumFormModel',
 			'user.core.YumHelper',
+			'user.core.YumMenuItemHelper',
+			'user.core.YumWebModule',
 		));
 	}
 
@@ -121,14 +155,5 @@ class UserModule extends CWebModule
 			}
 		}
 	}
-
-	/** 
-	 * Checks if the requested module is a submodule of the user module 
-	 */
-	public function hasModule($module)
-	{
-		return in_array($module, array_keys($this->getModules()));
-	}
-
 
 }

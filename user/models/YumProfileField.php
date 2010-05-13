@@ -4,6 +4,7 @@
  *
  * The followings are the available columns in table '{{profile_fields}}':
  * @property integer $id
+ * @property integer $field_group_id
  * @property string $varname
  * @property string $title
  * @property string $field_type
@@ -24,7 +25,6 @@ class YumProfileField extends YumActiveRecord
 	const VISIBLE_REGISTER_USER=2;
 	const VISIBLE_ONLY_OWNER=1;
 	const VISIBLE_NO=0;
-	private $_tableName;
 
 	public static function model($className=__CLASS__)
 	{
@@ -59,20 +59,23 @@ class YumProfileField extends YumActiveRecord
 			array('varname', 'match', 'pattern' => '/^[a-z_0-9]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (a-z)")),
 			array('varname', 'unique', 'message' => Yii::t("UserModule.user", "This field already exists.")),
 			array('varname, field_type', 'length', 'max'=>50),
-			array('field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
+			array('field_group_id, field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
 			array('title, match, range, error_message, other_validator, default', 'length', 'max'=>255),
 		);
 	}
 
 	public function relations()
 	{
-		return array();
+		return array(
+			'group'=>array(self::BELONGS_TO, 'YumProfileFieldsGroup', 'field_group_id')
+		);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
 			'id' => Yii::t("UserModule.user", 'Id'),
+			'field_group_id' => Yii::t("UserModule.user", 'Field group'),
 			'varname' => Yii::t("UserModule.user", 'Variable name'),
 			'title' => Yii::t("UserModule.user", 'Title'),
 			'field_type' => Yii::t("UserModule.user", 'Field Type'),
@@ -105,7 +108,7 @@ class YumProfileField extends YumActiveRecord
                 'condition'=>'required>0',
             ),
             'sort'=>array(
-                'order'=>'position',
+                'order'=>'field_group_id ASC, position ASC',
             ),
             
         );

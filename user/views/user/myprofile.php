@@ -1,9 +1,7 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.
 Yii::t("UserModule.user", "Profile");
 
-$this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Profile"),
-);
+$this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
 ?>
 
 <h2><?php echo Yii::t("UserModule.user", 'Your profile'); ?></h2>
@@ -11,58 +9,23 @@ $this->breadcrumbs=array(
 <?php
 
 $this->menu=array(
-		array(
-			'label'=>Yii::t('UserModule.user', 'Manage my Users'),
-			'url'=>array('admin'),
-			'visible' => Yii::app()->user->hasUsers() &&
-			!Yii::app()->user->isAdmin()),
-		array(
-			'label'=>Yii::t('UserModule.user', 'Manage User'),
-			'url'=>array('admin'),
-			'visible' => Yii::app()->user->isAdmin()),
-		array(
-			'label'=>Yii::t('UserModule.user', 'List User'),
-			'url'=>array('/user/user/index'),
-			'visible' => !Yii::app()->user->isAdmin()),
-		array(
-			'label'=>Yii::t('UserModule.user', 'Profile'),
-			'url'=>array('profile'),
-			'visible' => $this->module->hasModule('profiles')),
-		array('label'=>Yii::t('UserModule.user', 'Edit'),
-			'url'=>array('edit'),
-			'visible' => $this->module->hasModule('profiles')),
-		array(
-			'label'=>Yii::t('UserModule.user', 'Manage Profile Fields'),
-			'url'=>array('profiles/fields/admin'),
-			'visible' => (Yii::app()->user->isAdmin() 
-			&& $this->module->hasModule('profiles'))),
-		array(
-			'label'=>Yii::t('UserModule.user', 'Manage Roles'),
-			'url'=>array('role/role/admin'),
-			'visible' => (Yii::app()->user->isAdmin() 
-			&& $this->module->hasModule('role'))),
-		array(
-				'label'=>Yii::t('UserModule.user', 'My Inbox'),
-				'url'=>array('messages/messages/index'),
-				'visible' => $this->module->hasModule('messages')),
-		array(
-				'label'=>Yii::t('UserModule.user', 'Compose a Message'),
-				'url'=>array('messages/messages/compose'),
-				'visible' => $this->module->hasModule('messages')),
-		array(
-				'label'=>Yii::t('UserModule.user', 'Change password'),
-				'url'=>array('changepassword')),
-		array('label'=>Yii::t('UserModule.user', 'Logout'),
-				'url'=>array('logout')),
-		);
-
+	YumMenuItemHelper::manageMyUsers(),
+	YumMenuItemHelper::manageUsers(),
+	YumMenuItemHelper::listUsers(),
+	YumMenuItemHelper::displayProfile(),
+	YumMenuItemHelper::updateProfile(),
+	YumMenuItemHelper::manageFields(),
+	YumMenuItemHelper::manageRoles(),
+	YumMenuItemHelper::listMessages(),
+	YumMenuItemHelper::composeMessage(),
+	YumMenuItemHelper::changePassword(),
+	YumMenuItemHelper::logout()
+);
 ?>
 
 
 <?php
-if($this->module->hasModule('messages'))  
-		$this->renderPartial('newMessages');
-?>
+if($this->module->hasModule('messages')) $this->renderPartial('newMessages');?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">
@@ -94,7 +57,7 @@ if($this->module->hasModule('messages'))
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('password')); ?>
 </th>
-    <td><?php echo CHtml::link(Yii::t("UserModule.user", "Change password"),array("changepassword")); ?>
+    <td><?php echo CHtml::link(Yii::t("UserModule.user", "Change password"),array(YumHelper::route('{user}/changepassword'))); ?>
 </td>
 </tr>
 <tr>

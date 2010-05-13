@@ -7,21 +7,11 @@ $this->breadcrumbs=array(
 
 <?php
 $this->menu = array(
-		array('label'=>Yii::t('UserModule.user', 'Manage Roles'),
-			'url'=>array('admin')
-			),
-		array('label'=>Yii::t('UserModule.user', 'Manage Users'),
-			'url'=>array('/user/user/admin')
-			),
-		array('label'=>Yii::t('UserModule.user', 'Create Role'),
-			'url'=>array('create')
-			),
-		array(
-			'label'=>Yii::t('UserModule.user', 'Edit this Role'),
-			'url'=>array('update', 'id' => $model->id),
-			'visibility' => Yii::app()->user->isAdmin()
-			),
-		);
+	YumMenuItemHelper::manageRoles(),
+	YumMenuItemHelper::manageUsers(),
+	YumMenuItemHelper::createRole(),
+	YumMenuItemHelper::updateRole(array('id'=>$model->id))
+);
 ?>
 
 
@@ -40,7 +30,7 @@ echo Yii::t('UserModule.user',
 if($model->users) 
 {
 	foreach($model->users as $user) {
-		printf("<li>%s</li>", CHtml::link($user->username, array('user/view', 'id' => $user->id)));
+		printf("<li>%s</li>", CHtml::link($user->username, array(YumHelper::route('{users}/view'), 'id' => $user->id)));
 
 	}
 }

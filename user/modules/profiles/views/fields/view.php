@@ -5,16 +5,12 @@ $this->breadcrumbs=array(
 );
 
 $this->menu = array(
-		array('label' => Yii::t("UserModule.user", 'Manage User'),
-			'url' => array('user/admin')),
-		array('label' => Yii::t("UserModule.user", 'Create Profile Field'),
-			'url' => array('create')),
-		array('label' => Yii::t("UserModule.user", 'Update Profile Field'),
-			'url' => array('update')),
-		array('label' => Yii::t("UserModule.user", 'Manage Profile Fields'),
-			'url' => array('admin')),
-
-		);
+	YumMenuItemHelper::manageUsers(),
+	YumMenuItemHelper::manageFields(),	
+	YumMenuItemHelper::createField(),
+	YumMenuItemHelper::updateField(),
+	YumMenuItemHelper::manageFieldsGroups(),	
+);
 
 ?>
 <h1><?php echo Yii::t("UserModule.user", 'View Profile Field #').$model->varname; ?></h1>

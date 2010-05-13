@@ -59,7 +59,7 @@ if ($profileFields)
 <p> <?php echo Yii::t('UserModule.user', 'User belongs to these Roles'); ?>: </p>
 
 <?php 
-		$this->widget('application.modules.user.components.Relation',
+		$this->widget('YumModule.components.Relation',
 			array('model' => $model,
 			'relation' => 'roles',
 			'style' => 'dropdownlist',

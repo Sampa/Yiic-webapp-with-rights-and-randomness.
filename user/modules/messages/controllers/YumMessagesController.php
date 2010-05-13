@@ -3,6 +3,19 @@
 class YumMessagesController extends YumController
 {
 	private $_model;
+	
+	public function accessRules()
+	{
+		return array(
+			array('allow',
+				'users'=>array('@')
+			),
+			#deny all other users
+			array('deny',
+				'users'=>array('*')
+			)
+		);
+	}	
 
 	public function actionView()
 	{
@@ -19,11 +32,11 @@ class YumMessagesController extends YumController
 	{
 		$model=new YumMessages;
 
-	  $this->performAjaxValidation($model);
+	  	$this->performAjaxValidation($model);
 
-		if(isset($_POST['Yumessages']))
-		{
-			foreach($_POST['YumMessages']['to_user_id'] as $user_id) {
+		if(isset($_POST['YumMessages']))
+		{			
+			foreach($_POST['SendTo'] as $user_id) {
 				$model = new YumMessages;
 				$model->attributes=$_POST['YumMessages'];
 				$model->to_user_id = $user_id;

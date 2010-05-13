@@ -4,6 +4,9 @@ New in 0.6:
 Features:
 - Added Layout for installation
 - Added YumHelper class (tomasz.suchanek)
+- Added YumMenuItemHelper class (tomasz.suchanek)
+- Added YumWebModule class (tomasz.suchanek)
+- Added profile field grouping functionality (tomasz.suchanek)
 - Added allowCaptcha property to UserModule, to controle whether Captcha is required (tomasz.suchanek)
 - Updated AR models documentation with phpdoc @property improve code usage (tomasz.suchanek)
 - Yum can by used as submodule. To avoid names confict all models are renamed:

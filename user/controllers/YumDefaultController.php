@@ -2,6 +2,8 @@
 
 class YumDefaultController extends YumController 
 {
+	
+	public $defaultAction = 'index';
 	/**
 	 * @return array of arrays
 	 */

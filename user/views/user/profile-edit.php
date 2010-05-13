@@ -9,35 +9,14 @@ $this->breadcrumbs=array(
 
 <?php
 $this->menu = array(
-		array(
-			'label'=>Yii::t('UserModule.user', 'Manage User'), 
-			'url'=>array('admin'),
-			'visible' => Yii::app()->user->isAdmin()
-			), 
-		array(
-			'label'=>Yii::t('UserModule.user', 'Manage Roles'), 
-			'url'=>array('role/role/admin'),
-			'visible' => Yii::app()->user->isAdmin() &&
-			$this->module->hasModule('role')
-			), 
-		array(
-			'label'=> Yii::t('UserModule.user', 'List User'),
-			'url'=>array('list'),
-			'visible' => !Yii::app()->user->isAdmin()
-			), 
-		array(
-			'label'=> Yii::t('UserModule.user', 'Back to Profile'),
-			'url'=>array('profile')
-			),
-		array (
-			'label' => Yii::t('UserModule.user', 'Change password'),
-			'url'=>array('changepassword')
-			),
-		array (
-				'label' => Yii::t('UserModule.user', 'Logout'),
-				'url'=>array('logout'))
-		);
-		?>
+	YumMenuItemHelper::manageUsers(),
+	YumMenuItemHelper::listUsers(),
+	YumMenuItemHelper::manageRoles(),
+	YumMenuItemHelper::backToProfile(),
+	YumMenuItemHelper::changePassword(),
+	YumMenuItemHelper::logout()
+);
+?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">

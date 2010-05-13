@@ -1,13 +1,4 @@
-<?php
-
-$this->menu = array(
-		array(
-			'label'=> Yii::t('UserModule.user', 'Back to Profile'),
-			'url'=>array('profile')
-			)
-		);
-
-?>
+<?php $this->menu = array(YumMenuItemHelper::backToProfile());?>
 
 <div class="hint">
 	<p> <?php echo Yii::t('UserModule.user',

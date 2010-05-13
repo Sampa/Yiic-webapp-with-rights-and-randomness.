@@ -5,11 +5,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu = array(
-		array('label' => Yii::t("UserModule.user", 'Manage User'),
-			'url' => array('/user/user/admin')),
-		array('label' => Yii::t("UserModule.user", 'Create Profile Field'),
-			'url' => array('create')),
-		)
+	YumMenuItemHelper::manageUsers(),
+	YumMenuItemHelper::manageFieldsGroups(),
+	YumMenuItemHelper::createField(),	
+);
 ?>
 <h1><?php echo Yii::t("UserModule.user", 'Manage Profile Fields'); ?></h1>
 
@@ -34,6 +33,10 @@ $this->menu = array(
 		//'error_message',
 		//'other_validator',
 		//'default',
+		array(
+			'name'=>'field_group_id',
+			'value'=>'$data->group instanceof YumProfileFieldsGroup ? Yii::t("UserModule.user",$data->group->title) : Yii::t("UserModule.user","Not assigned")'
+		),
 		'position',
 		array(
 			'name'=>'visible',

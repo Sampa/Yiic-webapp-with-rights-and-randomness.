@@ -14,8 +14,6 @@
  */
 class YumMessages extends YumActiveRecord
 {
-	private $_tableName;
-
 	/**
 	 * @param string $className
 	 * @return YumMessage

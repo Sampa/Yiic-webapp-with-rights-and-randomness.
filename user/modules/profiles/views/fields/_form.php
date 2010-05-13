@@ -8,49 +8,44 @@
 	
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'varname'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50,'readonly'=>true)):CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50))); ?>
+		<?php echo CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50,'readonly'=>!isset($model->id))); ?>
 		<?php echo CHtml::error($model,'varname'); ?>
 		<p class="hint"><?php echo Yii::t("UserModule.user","Allowed are lowercase letters and digits."); ?></p>
 	</div>
 
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($model,'title'); ?>
-	<?php 
-	echo CHtml::activeTextField($model,
-			'title',
-			array('size'=>60,'maxlength'=>255)); 
-	?>
+	<?php echo CHtml::activeTextField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
 	<?php echo CHtml::error($model,'title'); ?>
-<p class="hint"><?php echo Yii::t("UserModule.user",'Field name on the language of "sourceLanguage".'); ?></p>
+		<p class="hint"><?php echo Yii::t("UserModule.user",'Field name on the language of "sourceLanguage".'); ?></p>
 	</div>
-
-	<div class="row">
+	
+	<div lass="row">
+		<?php echo CHtml::activeLabelEx($model,'field_group_id'); ?>
+		<?php echo CHtml::activeDropDownList($model,'field_group_id',CHtml::listData(YumProfileFieldsGroup::model()->findAll(),'id','title')); ?>
+		<?php echo CHtml::error($model,'field_group_id'); ?>
+		<p class="hint"><?php echo Yii::t("UserModule.user", 'Select group where field belongs to or leave empty.'); ?></p>
+	</div>
+	
+	<div lass="row">
 		<?php echo CHtml::activeLabelEx($model,'field_type'); ?>
 		<?php echo (($model->id)?CHtml::activeTextField($model,'field_type',array('size'=>60,'maxlength'=>50,'readonly'=>true)):CHtml::activeDropDownList($model,'field_type',YumProfileField::itemAlias('field_type'))); ?>
 		<?php echo CHtml::error($model,'field_type'); ?>
-		<p class="hint">
-		<?php echo Yii::t("UserModule.user", 'Column Field type in the database.'); ?>
-		</p>
+		<p class="hint"><?php echo Yii::t("UserModule.user", 'Column Field type in the database.'); ?></p>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_size'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'field_size',array('readonly'=>true)):CHtml::activeTextField($model,'field_size')); ?>
+		<?php echo CHtml::activeTextField($model,'field_size',array('readonly'=>!isset($model->id))); ?>
 		<?php echo CHtml::error($model,'field_size'); ?>
-		<p class="hint">
-		<?php echo Yii::t("UserModule.user",'Field size in the database.'); ?>
-		</p>
-		</div>
+		<p class="hint"><?php echo Yii::t("UserModule.user",'Field size in the database.'); ?></p>
+	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_size_min'); ?>
 		<?php echo CHtml::activeTextField($model,'field_size_min'); ?>
 		<?php echo CHtml::error($model,'field_size_min'); ?>
-		<p class="hint">
-<?php 
-echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'); 
-?>
-</p>
+		<p class="hint"><?php echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'); ?></p>
 	</div>
 
 	<div class="row">
@@ -64,17 +59,14 @@ echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'
 		<?php echo CHtml::activeLabelEx($model,'match'); ?>
 		<?php echo CHtml::activeTextField($model,'match',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo CHtml::error($model,'match'); ?>
-		<p class="hint">
-<?php echo Yii::t("UserModule.user","Regular expression (example: '/^[A-Za-z0-9\s,]+$/u')."); ?>
-</p>
+		<p class="hint"><?php echo Yii::t("UserModule.user","Regular expression (example: '/^[A-Za-z0-9\s,]+$/u')."); ?></p>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'range'); ?>
 		<?php echo CHtml::activeTextField($model,'range',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo CHtml::error($model,'range'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",
-'Predefined values (example: 1, 2, 3, 4, 5;).'); ?></p>
+		<p class="hint"><?php echo Yii::t("UserModule.user",'Predefined values (example: 1, 2, 3, 4, 5;).'); ?></p>
 	</div>
 
 	<div class="row">
@@ -92,7 +84,7 @@ echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'default'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255,'readonly'=>true)):CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255))); ?>
+		<?php echo CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255,'readonly'=>!isset($model->id)));?>
 		<?php echo CHtml::error($model,'default'); ?>
 		<p class="hint"><?php echo Yii::t("UserModule.user",'The value of the default field (database).'); ?></p>
 	</div>
@@ -111,7 +103,9 @@ echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<?php echo CHtml::submitButton($model->isNewRecord 
+			? Yii::t('UserModule.user', 'Create') 
+			: Yii::t('UserModule.user', 'Save')); ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

@@ -11,7 +11,7 @@ if($newMessages) {
 
 	echo '<ul>';
 	foreach($newMessages as $message) {
-		printf("<li>%s</li>", CHtml::link($message->title, array('/user/messages/messages/view', 'id' => $message->id)));
+		printf("<li>%s</li>", CHtml::link($message->title, array(YumHelper::route('{messages}/messages/view'), 'id' => $message->id)));
 	}
 	echo '</ul>';
 	echo '</div>';

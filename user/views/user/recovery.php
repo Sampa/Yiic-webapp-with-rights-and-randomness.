@@ -1,6 +1,6 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Restore");
 $this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Login") => array('/user/user/login'),
+	Yii::t("UserModule.user", "Login") => array(YumHelper::route('{user}/login')),
 	Yii::t("UserModule.user", "Restore"),
 );
 ?>

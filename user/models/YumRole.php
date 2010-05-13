@@ -9,7 +9,6 @@
  */
 class YumRole extends YumActiveRecord
 {
-	private $_tableName;
 	private $_userRoleTable;
 
 	public static function model($className=__CLASS__)

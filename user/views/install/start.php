@@ -98,6 +98,10 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('profileFieldsTable', $this->module->profileFieldsTable);?> </td> 
 			</tr>
 			<tr> 
+				<td> Table for the Profile Fields Group</td>
+				<td> <?php echo CHtml::textField('profileFieldsGroupTable', $this->module->profileFieldsGroupTable);?> </td> 
+			</tr>			
+			<tr> 
 				<td> Table for the Profiles </td>
 				<td> <?php echo CHtml::textField('profileTable', $this->module->profileTable); ?> </td> 
 			</tr>

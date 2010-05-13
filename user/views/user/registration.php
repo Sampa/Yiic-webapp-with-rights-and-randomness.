@@ -55,7 +55,7 @@ if ($profileFields)
 			{
 				echo CHtml::activeDropDownList($profile,
 						$field->varname,
-						Profile::range($field->range));
+						YumProfile::range($field->range));
 			}
 		elseif ($field->field_type == "TEXT") 
 		{

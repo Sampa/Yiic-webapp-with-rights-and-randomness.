@@ -2,17 +2,19 @@
 
 Yii::setPathOfAlias( 'YumProfileModule' , dirname(__FILE__) );
 
-class ProfilesModule extends CWebModule
+class ProfilesModule extends YumWebModule
 {
 	
 	public $version = '0.5';
 	public $debug = false;
 	public $profileFieldsTable = "{{profile_fields}}";
+	public $profileFieldsGroupTable = "{{profile_fields_group}}";
 	public $profileTable = "{{profiles}}";
-	public $installDemoData = true;
+	public $installDemoData = true;	
 	
 	public $controllerMap=array(
 		'fields'=>array('class'=>'YumProfileModule.controllers.YumFieldsController'),
+		'fieldsGroup'=>array('class'=>'YumProfileModule.controllers.YumFieldsGroupController'),
 	);	
 
 	public function init()
