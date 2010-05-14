@@ -40,7 +40,7 @@ if($this->module->hasModule('messages')) $this->renderPartial('newMessages');?>
 </td>
 </tr>
 <?php 
-		$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
+		$profileFields=YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>

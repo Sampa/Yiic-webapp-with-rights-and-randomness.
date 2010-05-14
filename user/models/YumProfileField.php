@@ -3,6 +3,7 @@
  * This is the model class for table "{{profile_fields}}".
  *
  * The followings are the available columns in table '{{profile_fields}}':
+ * Fields:
  * @property integer $id
  * @property integer $field_group_id
  * @property string $varname
@@ -18,6 +19,16 @@
  * @property string $default
  * @property integer $position
  * @property integer $visible
+ * 
+ * Relations
+ * @property YumProfileFieldsGroup $group
+ * 
+ * Scopes:
+ * @method YumProfileField forAll
+ * @method YumProfileField forUser
+ * @method YumProfileField forOwner
+ * @method YumProfileField forRegistration
+ * @method YumProfileField sort
  */
 class YumProfileField extends YumActiveRecord
 {
@@ -26,6 +37,11 @@ class YumProfileField extends YumActiveRecord
 	const VISIBLE_ONLY_OWNER=1;
 	const VISIBLE_NO=0;
 
+	/**
+     * Returns the static model of the specified AR class.
+	 * @param string $className
+	 * @return YumProfileField
+	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -108,7 +124,7 @@ class YumProfileField extends YumActiveRecord
                 'condition'=>'required>0',
             ),
             'sort'=>array(
-                'order'=>'field_group_id ASC, position ASC',
+                'order'=>'field_group_id ASC, t.position ASC',
             ),
             
         );

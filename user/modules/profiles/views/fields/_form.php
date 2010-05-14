@@ -8,7 +8,7 @@
 	
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'varname'); ?>
-		<?php echo CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50,'readonly'=>!isset($model->id))); ?>
+		<?php echo CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50,$model->id!==null?'readonly':'')); ?>
 		<?php echo CHtml::error($model,'varname'); ?>
 		<p class="hint"><?php echo Yii::t("UserModule.user","Allowed are lowercase letters and digits."); ?></p>
 	</div>
@@ -36,7 +36,7 @@
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_size'); ?>
-		<?php echo CHtml::activeTextField($model,'field_size',array('readonly'=>!isset($model->id))); ?>
+		<?php echo CHtml::activeTextField($model,'field_size',array($model->id!==null?'readonly':'')); ?>
 		<?php echo CHtml::error($model,'field_size'); ?>
 		<p class="hint"><?php echo Yii::t("UserModule.user",'Field size in the database.'); ?></p>
 	</div>
@@ -84,7 +84,7 @@
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'default'); ?>
-		<?php echo CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255,'readonly'=>!isset($model->id)));?>
+		<?php echo CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255,$model->id!==null?'readonly':''));?>
 		<?php echo CHtml::error($model,'default'); ?>
 		<p class="hint"><?php echo Yii::t("UserModule.user",'The value of the default field (database).'); ?></p>
 	</div>

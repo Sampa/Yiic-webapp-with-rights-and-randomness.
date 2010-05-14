@@ -35,7 +35,7 @@ class YumHelper
 	 */
 	public static function route($url)
 	{
-		$yumBaseRoute=Yii::app()->controller->module->yumBaseRoute;
+		$yumBaseRoute=YumWebModule::yum()->yumBaseRoute;
 
 		$tr=array();
 		$tr['{yum}']=$yumBaseRoute;

@@ -63,8 +63,8 @@ class YumFieldsController extends YumController
 		}
 
 		$this->render('create',array(
-					'model'=>$model,
-					));
+			'model'=>$model,
+		));
 	}
 
 	public function actionUpdate()

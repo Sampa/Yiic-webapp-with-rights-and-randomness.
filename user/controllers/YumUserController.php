@@ -363,8 +363,8 @@ class YumUserController extends YumController
 		if(isset($_POST['YumUser']))
 		{
 			$model->attributes=$_POST['YumUser'];
-      if($this->module->profileHistory == true)
-			$profile = new YumProfile();
+      		if($this->module->profileHistory == true)
+				$profile = new YumProfile();
 
 			if(isset($_POST['YumProfile']))
 			{
