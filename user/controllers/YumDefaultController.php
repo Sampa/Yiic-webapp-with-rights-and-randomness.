@@ -23,7 +23,7 @@ class YumDefaultController extends YumController
 	
 	public function actionIndex() 
 	{
-		$this->redirect($this->module->returnUrl);
+		$this->redirect($this->module->returnLogoutUrl);
 	}
 }
 

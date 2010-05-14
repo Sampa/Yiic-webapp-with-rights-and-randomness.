@@ -13,7 +13,7 @@ Yii::import('YumModule.core.YumWebModule');
 class UserModule extends YumWebModule
 {
 	
-	public $version = '0.5';
+	public $version = '0.6';
 	public $debug = false;
 	public $usersTable = "{{users}}";
 	public $messagesTable = "{{messages}}";
@@ -29,6 +29,8 @@ class UserModule extends YumWebModule
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';	
+
+	public $yumBaseRoute = '/user';
 
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 
@@ -90,9 +92,9 @@ class UserModule extends YumWebModule
 	 */
 	public function __get($name)
 	{
-		if(substr($name,-3)==='Url')
-			if(isset($this->_urls[substr($name,0,-3)]))
-				return YumHelper::route($this->_urls[substr($name,0,-3)]);
+		if(substr($name,-3) === 'Url')
+			if(isset($this->_urls[substr($name, 0, -3)]))
+				return YumHelper::route($this->_urls[substr($name, 0, -3)]);
 				
 		return parent::__get($name);
 	}

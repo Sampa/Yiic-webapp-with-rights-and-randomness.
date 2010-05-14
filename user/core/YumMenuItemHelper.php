@@ -18,7 +18,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	protected static function users($label,$route,$visible=false,array $params=null)
+	protected static function users($label, $route, $visible=false,array $params=null)
 	{
 		$p=$params===null ? array() : $params;
 		$l=Yii::t('UserModule.user',$label); 
@@ -33,7 +33,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	public static function manageUsers(array $params=null,$label='Manage users')
+	public static function manageUsers(array $params=null, $label='Manage users')
 	{
 		return self::users($label,'admin',Yii::app()->user->isAdmin(),$params);
 	}
@@ -45,7 +45,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	public static function manageMyUsers(array $params=null,$label='Manage my users')
+	public static function manageMyUsers(array $params=null, $label='Manage my users')
 	{
 		return self::users(
 			$label,'admin',
@@ -61,7 +61,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	public static function listUsers(array $params=null,$label='List users')
+	public static function listUsers(array $params=null, $label='List users')
 	{
 		return self::users($label,'index',!Yii::app()->user->isAdmin(),$params);		
 	}
@@ -73,7 +73,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */	
-	public static function createUser(array $params=null,$label='Create user')
+	public static function createUser(array $params=null, $label='Create user')
 	{
 		return self::users(
 			$label,
@@ -90,7 +90,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */		
-	public static function updateUser(array $params=null,$label='Update user')
+	public static function updateUser(array $params=null, $label='Update user')
 	{
 		if(!isset($params['id']))
 			throw new CException(Yii::t('UserModule.user','Missing user ID.'));

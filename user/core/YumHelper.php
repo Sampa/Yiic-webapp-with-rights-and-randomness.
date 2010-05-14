@@ -35,10 +35,8 @@ class YumHelper
 	 */
 	public static function route($url)
 	{
-		if(!isset(Yii::app()->params['YumBaseRoute']))
-			throw new CException(Yii::t('UserModule.user','Missing application parameter {param}',array('{param}'=>'YumBaseRoute')));
-			
-		$yumBaseRoute=Yii::app()->params['YumBaseRoute'];
+		$yumBaseRoute=Yii::app()->controller->module->yumBaseRoute;
+
 		$tr=array();
 		$tr['{yum}']=$yumBaseRoute;
 		$tr['{messages}']=$yumBaseRoute.'/messages';
