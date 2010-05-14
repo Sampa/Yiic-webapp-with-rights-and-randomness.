@@ -11,6 +11,10 @@
  * @property string $message
  * @property integer $message_read
  * @property integer $draft
+ * 
+ * Relations:
+ * @property YumUser $to_user
+ * @property YumUser $from_user
  */
 class YumMessages extends YumActiveRecord
 {
@@ -46,11 +50,11 @@ class YumMessages extends YumActiveRecord
 	public function rules()
 	{
 		return array(
-				array('from_user_id, to_user_id, title', 'required'),
-				array('from_user_id, draft, message_read', 'numerical', 'integerOnly'=>true),
-				array('title', 'length', 'max'=>45),
-				array('message', 'safe'),
-				);
+			array('from_user_id, to_user_id, title', 'required'),
+			array('from_user_id, draft, message_read', 'numerical', 'integerOnly'=>true),
+			array('title', 'length', 'max'=>45),
+			array('message', 'safe'),
+		);
 	}
 
 	public function getTitle()
@@ -64,20 +68,20 @@ class YumMessages extends YumActiveRecord
 	public function relations()
 	{
 		return array(
-				'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
-				'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
-				);
+			'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
+			'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
+		);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
-				'id' => '#',
-				'from_user_id' => Yii::t('UserModule.user', 'From'),
-				'to_user_id' => Yii::t('UserModule.user', 'To'),
-				'title' => Yii::t('UserModule.user', 'Title'),
-				'message' => Yii::t('UserModule.user', 'Message'),
-				);
+			'id' => '#',
+			'from_user_id' => Yii::t('UserModule.user', 'From'),
+			'to_user_id' => Yii::t('UserModule.user', 'To'),
+			'title' => Yii::t('UserModule.user', 'Title'),
+			'message' => Yii::t('UserModule.user', 'Message'),
+		);
 	}
 
 }

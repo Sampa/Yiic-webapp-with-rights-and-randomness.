@@ -12,6 +12,9 @@
  * @property string $email
  * @property string $about
  * @property string $street
+ * 
+ * Relations:
+ * @property YumUser $user
  */
 class YumProfile extends YumActiveRecord
 {
@@ -142,9 +145,9 @@ class YumProfile extends YumActiveRecord
 	public function attributeLabels()
 	{
 		$labels = array(
-				'user_id' => Yii::t("UserModule.user", 'User ID'),
-				'profile_id' => Yii::t("UserModule.user", 'Profile ID'),
-				);
+			'user_id' => Yii::t("UserModule.user", 'User ID'),
+			'profile_id' => Yii::t("UserModule.user", 'Profile ID'),
+		);
 		$model=YumProfileField::model()->forOwner()->findAll();
 
 		foreach ($model as $field)

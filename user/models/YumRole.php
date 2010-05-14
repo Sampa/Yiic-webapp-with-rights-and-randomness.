@@ -6,6 +6,9 @@
  * @property integer $id
  * @property string $title
  * @property string $description
+ * 
+ * Relations
+ * @property array $users array of YumUser
  */
 class YumRole extends YumActiveRecord
 {
@@ -38,9 +41,9 @@ class YumRole extends YumActiveRecord
 	public function rules()
 	{
 		return array(
-				array('title', 'required'),
-				array('title, description', 'length', 'max' => '255'),
-				);
+			array('title', 'required'),
+			array('title, description', 'length', 'max' => '255'),
+		);
 	}
 
 	public function relations()
@@ -62,9 +65,9 @@ class YumRole extends YumActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-				'id'=>Yii::t("UserModule.user", "#"),
-				'title'=>Yii::t("UserModule.user", "Title"),
-				'description'=>Yii::t("UserModule.user", "Description"),
-				);
+			'id'=>Yii::t("UserModule.user", "#"),
+			'title'=>Yii::t("UserModule.user", "Title"),
+			'description'=>Yii::t("UserModule.user", "Description"),
+		);
 	}
 }

@@ -8,6 +8,9 @@
   * @property string $group_name
   * @property string $title
   * @property integer $position
+  * 
+  * Relations
+  * @property array $fields array of YumProfileField
   */
 class YumProfileFieldsGroup extends YumActiveRecord
 {

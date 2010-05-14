@@ -11,6 +11,18 @@
  * @property integer $lastvisit
  * @property integer $superuser
  * @property integer $status
+ * 
+ * Relations
+ * @property YumProfile $profile
+ * @property array $roles array of YumRole
+ * @property array $users array of YumUser
+ * 
+ * Scopes:
+ * @property YumUser $active
+ * @property YumUser $notactive
+ * @property YumUser $banned
+ * @property YumUser $superuser
+ * 
  */
 class YumUser extends YumActiveRecord
 {
@@ -176,34 +188,34 @@ class YumUser extends YumActiveRecord
 	public function scopes()
 	{
 		return array(
-				'active'=>array(
-					'condition'=>'status='.self::STATUS_ACTIVE,
-					),
-				'notactive'=>array(
-					'condition'=>'status='.self::STATUS_NOTACTIVE,
-					),
-				'banned'=>array(
-					'condition'=>'status='.self::STATUS_BANNED,
-					),
-				'superuser'=>array(
-					'condition'=>'superuser=1',
-					),
-				);
+			'active'=>array(
+				'condition'=>'status='.self::STATUS_ACTIVE,
+			),
+			'notactive'=>array(
+				'condition'=>'status='.self::STATUS_NOTACTIVE,
+			),
+			'banned'=>array(
+				'condition'=>'status='.self::STATUS_BANNED,
+			),
+			'superuser'=>array(
+				'condition'=>'superuser=1',
+			),
+		);
 	}
 
 	public static function itemAlias($type,$code=NULL) 
 	{
 		$_items = array(
-				'UserStatus' => array(
-					'0' => Yii::t("UserModule.user", 'Not active'),
-					'1' => Yii::t("UserModule.user", 'Active'),
-					'-1'=> Yii::t("UserModule.user", 'Banned'),
-					),
-				'AdminStatus' => array(
-					'0' => Yii::t("UserModule.user", 'No'),
-					'1' => Yii::t("UserModule.user", 'Yes'),
-					),
-				);
+			'UserStatus' => array(
+				'0' => Yii::t("UserModule.user", 'Not active'),
+				'1' => Yii::t("UserModule.user", 'Active'),
+				'-1'=> Yii::t("UserModule.user", 'Banned'),
+			),
+			'AdminStatus' => array(
+				'0' => Yii::t("UserModule.user", 'No'),
+				'1' => Yii::t("UserModule.user", 'Yes'),
+			),
+		);
 		if (isset($code))
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
 		else
