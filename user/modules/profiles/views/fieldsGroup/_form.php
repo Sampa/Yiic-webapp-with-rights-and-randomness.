@@ -27,7 +27,7 @@
 		<?php echo $form->labelEx($model,'position'); ?>
 		<?php echo $form->textField($model,'position'); ?>
 		<?php echo $form->error($model,'position'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Display order of grups.'); ?></p>
+		<p class="hint"><?php echo Yii::t("UserModule.user",'Display order of group.'); ?></p>
 	</div>
 
 	<div class="row buttons">

@@ -31,26 +31,26 @@
 		<?php echo CHtml::error($model,'status'); ?>
 	</div>
 <?php 
-		$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
+$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
 if ($profileFields) 
 {
 	foreach($profileFields as $field) 
 	{
-			?>
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($profile,$field->varname); ?>
-		<?php 
-		if ($field->field_type=="TEXT") {
-			echo CHtml::activeTextArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
-		} else {
-			echo CHtml::activeTextField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
-		}
-		 ?>
-		<?php echo CHtml::error($profile,$field->varname); ?>
-	</div>	
-			<?php
+		?>
+			<div class="row">
+			<?php echo CHtml::activeLabelEx($profile,$field->varname); ?>
+			<?php 
+			if ($field->field_type=="TEXT") {
+				echo CHtml::activeTextArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+			} else {
+				echo CHtml::activeTextField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
 			}
-		}
+		?>
+			<?php echo CHtml::error($profile,$field->varname); ?>
+			</div>	
+			<?php
+	}
+}
 ?>
 
 

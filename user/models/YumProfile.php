@@ -147,6 +147,7 @@ class YumProfile extends YumActiveRecord
 		$labels = array(
 			'user_id' => Yii::t("UserModule.user", 'User ID'),
 			'profile_id' => Yii::t("UserModule.user", 'Profile ID'),
+			'privacy' => Yii::t('UserModule.user', 'Privacy'),
 		);
 		$model=YumProfileField::model()->forOwner()->findAll();
 

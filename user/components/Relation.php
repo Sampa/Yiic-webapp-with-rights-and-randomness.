@@ -97,15 +97,15 @@ type is detected automatically from the Model 'relations()' section.
    'fields' => array( 'username', 'username.group.groupid' ),
    'delimiter' => ' -> ', // default: ' | '
    'returnTo' => 'model/create',
-   'createAction' => 'add', // default: 'create'
-   'addButtonString' => 'click here to add a new User', // default: ''
+   'addButtonLink' => 'othercontroller/otheraction', // default: ''
+   'showAddButton' => 'click here to add a new User', // default: ''
    'htmlOptions' => array('style' => 'width: 100px;')
   ));
   </pre>
   
  
   @author Herbert Maschke <thyseus@gmail.com>
-  @version 1.0rc
+  @version 1.0rc2
   @since 1.1
  */
 
@@ -139,17 +139,35 @@ class Relation extends CWidget
 	// disable this to hide the Add Button
 	// set this to a string to set the String to be displayed
 	public $showAddButton = true;
+	public $addButtonLink = '';
+	// Set this to false to generate a Link rather than a LinkButton
+	// This is useful when Javascript is not available
+	public $useLinkButton = true;
 
 	// use this to set the link where the user should return to after
   // clicking the add Button
 	public $returnLink;
+
+	// How should a data row be rendered. {id} will be replaced by the id of
+	// the model. You can also insert every field that is available in the
+	// parent object.
+	// Use {fields} to display all fields delimited by $this->delimiter
+	// Use {func0} to {funcX} to evaluate user-contributed functions with the
+	// $functions array. Example:
+	//
+	//  'functions' => array( "CHtml::checkBoxList('parent{id}', '',
+	//    CHtml::listData(Othermodel::model()->findAll(), 'id', 'title'));",),
+  // 'template' => '#{id} : {fields} ({title}) Allowed other Models: {func0}',
+	public $template = '{fields}';
+
+	// User-Contributed functions to be evaluated in template
+	public $functions = array();
 
 	// how should multiple fields be delimited
 	public $delimiter = " | ";
 
   // style of the selection Widget
 	public $style = "dropDownList";
-	public $createAction = "create";
 	public $htmlOptions = array();
 	public $parentObjects = 0;
 	public $orderParentsBy = 0;
@@ -244,13 +262,12 @@ class Relation extends CWidget
 		{
  			$parentobjects = array($this->parentObjects);
 		}	
-		else if(is_array($this->parentObjects))  // Only show this elements
+		else if(is_array($this->parentObjects)) // Only show this elements
 		{
 			$parentobjects = $this->parentObjects;
 		} 
-		else  		
+		else // Show all Parent elements
 		{ 
-			// Show all Parent elements
 			$parentobjects = CActiveRecord::model(get_class($this->_relatedModel))->findAll();
 		} 
 
@@ -262,24 +279,44 @@ class Relation extends CWidget
 
 		foreach($parentobjects as $obj)	
 		{
-			if(is_string($this->fields)) 
-			{ 				
-				// Display only 1 field:
+			if(!is_array($this->fields))
+				$this->fields = array($this->fields);
 
-				$value = $this->getModelData($obj, $this->fields);
-			}
-			else if(is_array($this->fields)) 		
+			$fields = '';
+			foreach($this->fields as $field)
 			{
-				// Display more than 1 field:
-
-				$value = '';
-				foreach($this->fields as $field) 
-				{
-					$value .= $this->getModelData($obj, $field) . $this->delimiter;
+				$rule = sprintf('{%s}',$field);
+				$rules[$rule] = $obj->$field;
+				$fields .= $this->getModelData($obj, $field);
+				if(count($this->fields) >1)  
+					$fields .= $this->delimiter;
 			}
-		}
 
-		if($this->groupParentsBy != '') 
+			$defaultrules = array(
+					'{fields}' => $fields,
+					'{id}' => $obj->id);
+
+			// Look for user-contributed functions and evaluate them
+			if($this->functions != array()) 
+			{
+				foreach($this->functions as $key => $function) 
+				{
+					$funcrules[sprintf('{func%d}', $key)] = CComponent::evaluateExpression(
+							strtr($function, $defaultrules));
+				}
+			}
+
+			// Merge the evaluated rules, if exist
+			if(isset($funcrules))
+				$rules = array_merge($rules, $funcrules);
+
+			// Merge the default rules into our ruleset
+			$rules = array_merge($rules, $defaultrules);
+
+			// Apply the rules to the template
+			$value = strtr($this->template, $rules);
+
+			if($this->groupParentsBy != '') 
 			{
 				$dataArray[$obj->{$this->groupParentsBy}][$obj->{$this->relatedPk}] = $value;
 			}
@@ -288,6 +325,7 @@ class Relation extends CWidget
 				$dataArray[$obj->{$this->relatedPk}] = $value;
 			}	
 		}
+
 		if(!isset($dataArray) || !is_array($dataArray))
 			$dataArray = array();
 
@@ -378,20 +416,23 @@ class Relation extends CWidget
 
 	public function renderBelongsToSelection() {
 		if(strcasecmp($this->style, "dropDownList") == 0) 
-			echo CHtml::ActiveDropDownList($this->_model, 
-			$this->field, 
-			$this->getRelatedData(), 
-			$this->htmlOptions);
+			echo CHtml::ActiveDropDownList(
+					$this->_model, 
+					$this->field, 
+					$this->getRelatedData(), 
+					$this->htmlOptions);
 		else if(strcasecmp($this->style, "listbox") == 0)
-			echo CHtml::ActiveListBox($this->_model, 
-			$this->field, 
-			$this->getRelatedData(), 
-			$this->htmlOptions);
+			echo CHtml::ActiveListBox(
+					$this->_model, 
+					$this->field, 
+					$this->getRelatedData(), 
+					$this->htmlOptions);
 		else if(strcasecmp($this->style, "checkbox") == 0)
-			echo CHtml::ActiveCheckBoxList($this->_model,
-			$this->field, 
-			$this->getRelatedData(), 
-			$this->htmlOptions);
+			echo CHtml::ActiveCheckBoxList(
+					$this->_model,
+					$this->field, 
+					$this->getRelatedData(), 
+					$this->htmlOptions);
 
 	}
 
@@ -457,7 +498,9 @@ $(\'#div\' + i).hide();
 		Yii::app()->clientScript->registerScript('subbutton', $jssub); 
 
 		echo CHtml::button('+', array('id' => 'add'));
+		echo '&nbsp;';
 		echo CHtml::button('-', array('id' => 'sub'));
+		echo '&nbsp;';
 		}
 
 	public function isAssigned($id) 
@@ -542,27 +585,46 @@ public function renderCheckBoxListSelection()
 			array(),
 			$this->getObjectValues($this->getNotAssignedObjects()), 
 			array('multiple' => 'multiple'));
-
 	}
 
-	public function run()
+public function run()
+{
+	if($this->manyManyTable != '')
+		$this->renderManyManySelection();
+	else
+		$this->renderBelongsToSelection();
+
+	if($this->showAddButton !== false) 
 	{
-		if($this->manyManyTable != '')
-			$this->renderManyManySelection();
-		else
-			$this->renderBelongsToSelection();
+		$this->renderAddButton();
+	}
+}
+protected function renderAddButton() 
+{
+	if(!isset($this->returnLink) or $this->returnLink == "")
+		$this->returnLink = $this->model->tableSchema->name . "/create";
 
-		if($this->showAddButton !== false) 
-		{
-			if(!isset($this->returnLink) or $this->returnLink == "")
-				$this->returnLink = $this->model->tableSchema->name . "/create";
+	if($this->addButtonLink != '')
+		$link = $this->addButtonLink;
+	else
+		$link = array(
+				$this->_relatedModel->tableSchema->name . "/create", 
+				'returnTo' => $this->returnLink); 
 
-			echo CHtml::Link(
-					is_string($this->showAddButton) ?
-					$this->showAddButton : 'New' , array(
-						$this->_relatedModel->tableSchema->name . "/" . $this->createAction, 
-						'returnTo' => $this->returnLink)); 
-		}
+
+	if(!$this->useLinkButton)
+	{
+		echo CHtml::Link(
+				is_string($this->showAddButton) ? $this->showAddButton : 'New', $link 
+				);  
+	}
+	else
+	{
+		echo CHtml::LinkButton(
+				is_string($this->showAddButton) ? $this->showAddButton : 'New',
+				array('submit' => $link));
 	}
 
 }
+}
+

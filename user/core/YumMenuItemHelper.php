@@ -20,9 +20,9 @@ class YumMenuItemHelper
 	 */
 	protected static function users($label, $route, $visible=false,array $params=null)
 	{
-		$p=$params===null ? array() : $params;
-		$l=Yii::t('UserModule.user',$label); 
-		$url=array_merge(array(YumHelper::route("{user}/{$route}")),$p);
+		$p = $params === null ? array() : $params;
+		$l = Yii::t('UserModule.user', $label); 
+		$url = array_merge(array(YumHelper::route("{user}/{$route}")), $p);
 		return array('label'=>$l,'url'=>$url,'visible'=>$visible);
 	}	
 	

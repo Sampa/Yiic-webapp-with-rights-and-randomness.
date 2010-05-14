@@ -69,7 +69,7 @@ if ($profileFields)
 
 	<div class="row">
 		<?php 
-		echo CHtml::activeLabelEx($profile,'privacy'); 
+		echo CHtml::activeLabelEx($profile, 'privacy'); 
 		echo CHtml::activeDropDownList($profile, 'privacy',
 				array(
 					'protected' => Yii::t('UserModule.user', 'protected'),

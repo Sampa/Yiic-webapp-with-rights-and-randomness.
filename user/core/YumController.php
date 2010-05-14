@@ -8,6 +8,9 @@
  */
 abstract class YumController extends CController
 {
+	public $breadcrumbs;
+	public $menu;
+
 	/**
 	 * Apply module layout if there is no layout specified
 	 * for particular controller

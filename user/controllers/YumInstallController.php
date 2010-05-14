@@ -241,7 +241,22 @@ class YumInstallController extends YumController
 				}
 			}
 			else {
-				$this->render('start');
+				if(isset(Yii::app()->db->tablePrefix))
+					$tp = Yii::app()->db->tablePrefix . '_';
+				else
+					$tp = '';	
+
+				$this->render('start', array(
+							'usersTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->usersTable),
+							'rolesTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->rolesTable),
+							'messagesTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->messagesTable),
+							'profileTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->profileTable),
+							'profileFieldsTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->profileFieldsTable),
+							'profileFieldsGroupTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->profileFieldsGroupTable),
+							'userRoleTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->userRoleTable),
+							'userUserTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->userUserTable),
+							)
+						);
 			}
 		} else {
 			throw new CException(Yii::t('UserModule.user', 'User management Module is not in Debug Mode'));	

@@ -1,4 +1,8 @@
-<h1> <?php echo Yii::t('UserModule.user', 'Yii User management Module Installation'); ?> </h1>
+<h1>
+ <?php 
+echo Yii::t('UserModule.user', 'Yii User management Module Installation'); 
+?> 
+</h1>
 
 <?php echo CHtml::beginForm(array('install')); ?>
 
@@ -47,7 +51,7 @@ your Yii Web Application </p>
 	<table>
 		<tr>
 			<td> Table for Users </td>
-			<td> <?php echo CHtml::textField('usersTable', $this->module->usersTable); ?> </td>
+			<td> <?php echo CHtml::textField('usersTable', $usersTable); ?> </td>
 		</tr>
 	</table	>
 
@@ -60,15 +64,15 @@ your Yii Web Application </p>
 		<table>
 			<tr>
 				<td> Table for the Roles </td>
-				<td> <?php echo CHtml::textField('rolesTable', $this->module->rolesTable); ?> </td> 
+				<td> <?php echo CHtml::textField('rolesTable', $rolesTable); ?> </td> 
 			</tr>
 			<tr>
 				<td> Table for the Role Assignment </td>
-				<td> <?php echo CHtml::textField('userRoleTable', $this->module->userRoleTable); ?> </td>
+				<td> <?php echo CHtml::textField('userRoleTable', $userRoleTable); ?> </td>
 			</tr>
 			<tr>
 				<td> This table holds the assignment, which user can administrate which other users </td>
-				<td> <?php echo CHtml::textField('userUserTable', $this->module->userUserTable); ?> </td>
+				<td> <?php echo CHtml::textField('userUserTable', $userUserTable); ?> </td>
 			</tr>
 		</table>
 	</div>
@@ -81,7 +85,7 @@ your Yii Web Application </p>
 		<table>
 			<tr>
 				<td> Table for Messages </td>
-				<td> <?php echo CHtml::textField('messagesTable', $this->module->messagesTable); ?> </td> 
+				<td> <?php echo CHtml::textField('messagesTable', $messagesTable); ?> </td> 
 			</tr>
 		</table>
 	</div>
@@ -95,15 +99,15 @@ your Yii Web Application </p>
 		<table>
 			<tr> 
 				<td> Table for the Profile Fields </td>
-				<td> <?php echo CHtml::textField('profileFieldsTable', $this->module->profileFieldsTable);?> </td> 
+				<td> <?php echo CHtml::textField('profileFieldsTable', $profileFieldsTable);?> </td> 
 			</tr>
 			<tr> 
 				<td> Table for the Profile Fields Group</td>
-				<td> <?php echo CHtml::textField('profileFieldsGroupTable', $this->module->profileFieldsGroupTable);?> </td> 
+				<td> <?php echo CHtml::textField('profileFieldsGroupTable', $profileFieldsGroupTable);?> </td> 
 			</tr>			
 			<tr> 
 				<td> Table for the Profiles </td>
-				<td> <?php echo CHtml::textField('profileTable', $this->module->profileTable); ?> </td> 
+				<td> <?php echo CHtml::textField('profileTable', $profileTable); ?> </td> 
 			</tr>
 		</table>
 	</div>
