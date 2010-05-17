@@ -70,6 +70,7 @@ return array (
   'No' => 'Nie',
   'No, but show on registration form' => 'Nie, ale pokaż w formularzu rejestracji',
   'Not active' => 'Nieaktywny',
+  'Not assigned' => 'Nie przypisano',
   'Only owner' => 'Tylko właściciel',
   'Other validator' => 'Pozostałe walidatory',
   'Password' => 'Hasło',
