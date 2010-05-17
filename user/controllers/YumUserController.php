@@ -23,7 +23,7 @@ class YumUserController extends YumController
 			),
 			array('allow',
 				'actions'=>array('admin','delete','create','update', 'list', 'assign'),
-				'users'=>YumUser::getAdmins(),
+				'users'=>Yii::app()->user->isAdmin() ? array(Yii::app()->user->name ) : array(),
 			),
 			array('allow',
 				'actions' => array('admin'),

@@ -18,7 +18,7 @@ class YumFieldsGroupController extends YumController
 		return array(
 			array('allow', 
 				'actions'=>array('create','update','view','admin','delete'),
-				'users'=>YumUser::getAdmins(),
+				'users'=>Yii::app()->user->isAdmin() ? array(Yii::app()->user->name ) : array(),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

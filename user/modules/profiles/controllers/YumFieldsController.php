@@ -19,7 +19,7 @@ class YumFieldsController extends YumController
 			),
 			array('allow', 
 				'actions'=>array('index', 'create','update','view','admin','delete'),
-				'users'=>YumUser::getAdmins(),
+				'users'=>Yii::app()->user->isAdmin() ? array(Yii::app()->user->name ) : array(),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
