@@ -35,6 +35,7 @@ Enhancements:
  - Login url support now all placeholder defined in YumHelper::route (tomasz.suchanek)
  - Unified naming convention for all links description (only first letter in sentence is uppercased) (tomasz.suchanek)
  - Added title property to YumController instead of displaying heading directly in views. Heading is now displayed in layout according to use needs (tomasz.suchanek)
+ - Commas and semicolons can be used as range separators (tomasz.suchanek)
  
 Bug Fixes:
 - Changed UserModule::$returnUrl UserModule::$returnLogoutUrl calls to Yii::app()->controller->module->returnUrl/returnLogoutUrl (steve)

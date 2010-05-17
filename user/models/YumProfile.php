@@ -105,10 +105,11 @@ class YumProfile extends YumActiveRecord
 			}
 			if ($field->range) 
 			{
-				$field_rule = array($field->varname,
-						'in',
-						'range' => explode(';'.$field->range)
-						);
+				#allow using commas and semicolons
+				$range=explode(';',$field->range);
+				if(count($range)===1)
+					$range=explode(',',$field->range);
+				$field_rule = array($field->varname,'in','range' => $range);
 
 				if ($field->error_message)
 					$field_rule['message'] = Yii::t("UserModule.user", $field->error_message);
