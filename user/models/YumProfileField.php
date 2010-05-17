@@ -8,6 +8,7 @@
  * @property integer $field_group_id
  * @property string $varname
  * @property string $title
+ * @property string $hint
  * @property string $field_type
  * @property integer $field_size
  * @property integer $field_size_min
@@ -76,6 +77,7 @@ class YumProfileField extends YumActiveRecord
 			array('varname', 'unique', 'message' => Yii::t("UserModule.user", "This field already exists.")),
 			array('varname, field_type', 'length', 'max'=>50),
 			array('field_group_id, field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
+			array('hint','safe'),
 			array('title, match, range, error_message, other_validator, default', 'length', 'max'=>255),
 		);
 	}
@@ -90,18 +92,19 @@ class YumProfileField extends YumActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => Yii::t("UserModule.user", 'Id'),
+			'id' => Yii::t("UserModule.user", '#'),
 			'field_group_id' => Yii::t("UserModule.user", 'Field group'),
 			'varname' => Yii::t("UserModule.user", 'Variable name'),
 			'title' => Yii::t("UserModule.user", 'Title'),
-			'field_type' => Yii::t("UserModule.user", 'Field Type'),
-			'field_size' => Yii::t("UserModule.user", 'Field Size'),
-			'field_size_min' => Yii::t("UserModule.user", 'Field Size min'),
+			'hint' => Yii::t("UserModule.user", 'Hint'),
+			'field_type' => Yii::t("UserModule.user", 'Field type'),
+			'field_size' => Yii::t("UserModule.user", 'Field size'),
+			'field_size_min' => Yii::t("UserModule.user", 'Field size min'),
 			'required' => Yii::t("UserModule.user", 'Required'),
 			'match' => Yii::t("UserModule.user", 'Match'),
 			'range' => Yii::t("UserModule.user", 'Range'),
-			'error_message' => Yii::t("UserModule.user", 'Error Message'),
-			'other_validator' => Yii::t("UserModule.user", 'Other Validator'),
+			'error_message' => Yii::t("UserModule.user", 'Error message'),
+			'other_validator' => Yii::t("UserModule.user", 'Other validator'),
 			'default' => Yii::t("UserModule.user", 'Default'),
 			'position' => Yii::t("UserModule.user", 'Position'),
 			'visible' => Yii::t("UserModule.user", 'Visible'),

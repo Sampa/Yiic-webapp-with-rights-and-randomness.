@@ -1,13 +1,11 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.
-Yii::t("UserModule.user", "Profile");
-
-$this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
-?>
-
-<h2><?php echo Yii::t("UserModule.user", 'Your profile'); ?></h2>
-
 <?php
-
+#page title 
+$this->pageTitle=Yii::app()->name . ' - ' . Yii::t("UserModule.user", "Profile");
+#breadcrumbs
+$this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
+#heading
+$this->title = Yii::t("UserModule.user", 'Your profile');
+#menu
 $this->menu=array(
 	YumMenuItemHelper::manageMyUsers(),
 	YumMenuItemHelper::manageUsers(),
@@ -19,10 +17,8 @@ $this->menu=array(
 	YumMenuItemHelper::listMessages(),
 	YumMenuItemHelper::composeMessage(),
 	YumMenuItemHelper::changePassword(),
-	YumMenuItemHelper::logout()
-);
+	YumMenuItemHelper::logout());
 ?>
-
 
 <?php
 if($this->module->hasModule('messages')) $this->renderPartial('newMessages');?>

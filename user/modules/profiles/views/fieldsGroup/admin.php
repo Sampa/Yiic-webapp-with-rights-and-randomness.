@@ -1,14 +1,15 @@
 <?php
+#heading
+$this->title = Yii::t("UserModule.user", 'Manage profile fields groups');
+#breadcrumbs
 $this->breadcrumbs=array(
-	Yii::t("UserModule.user", 'Profile Fields Groups')=>array('admin'),
-	Yii::t("UserModule.user", 'Manage'),
-);
-
+	Yii::t("UserModule.user", 'Profile fields groups')=>array('admin'),
+	Yii::t("UserModule.user", 'Manage'),);
+#menu
 $this->menu = array(
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::manageFields(),
-	YumMenuItemHelper::createFieldsGroup(),
-);
+	YumMenuItemHelper::createFieldsGroup());
 
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
@@ -24,9 +25,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1><?php echo Yii::t("UserModule.user", 'Manage profile fields groups'); ?></h1>
-
-<?php echo CHtml::link(Yii::t("UserModule.user",'Advanced Search'),'#',array('class'=>'search-button')); ?>
+<?php echo CHtml::link(Yii::t("UserModule.user",'Advanced search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,

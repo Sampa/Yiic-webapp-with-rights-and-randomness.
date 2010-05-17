@@ -7,7 +7,7 @@ $newMessages = YumMessages::model()->findAll('to_user_id = :to and message_read 
 if($newMessages) {
 	echo '<div class="success">';
 
-	echo Yii::t('UserModule.user', 'You have new Messages !');
+	echo Yii::t('UserModule.user', 'You have new messages!');
 
 	echo '<ul>';
 	foreach($newMessages as $message) {

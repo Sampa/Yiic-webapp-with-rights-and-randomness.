@@ -1,17 +1,16 @@
 <?php
+#heading
+$this->title = Yii::t('UserModule.user', 'My inbox');
+#breadcrumbs
 $this->breadcrumbs=array(
-		Yii::t('UserModule.user', 'Messages')=>array('index'),
-		Yii::t('UserModule.user', 'My Inbox'),
-		);
-
+	Yii::t('UserModule.user', 'Messages')=>array('index'),
+	Yii::t('UserModule.user', 'My inbox'));
+#menu
 $this->menu=array(
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::composeMessage(),
-	YumMenuItemHelper::backToProfile(),
-);
+	YumMenuItemHelper::backToProfile());
 ?>
-
-<h1> <?php echo Yii::t('UserModule.user', 'My Inbox');?> </h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'yum-messages-grid',

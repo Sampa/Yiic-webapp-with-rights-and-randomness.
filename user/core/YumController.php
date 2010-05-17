@@ -8,8 +8,28 @@
  */
 abstract class YumController extends CController
 {
+	/**
+	 * @var array
+	 */
 	public $breadcrumbs;
+	
+	/**
+	 * @var array
+	 */
 	public $menu;
+	
+	/**
+	 * @var string
+	 */
+	public $title='Change me!';
+	
+	/**
+	 * Set it in controller child controller class to use
+	 * different layout than module layout 
+	 * @var string
+	 */
+	public $layour=null;	
+	
 
 	/**
 	 * Apply module layout if there is no layout specified
@@ -20,7 +40,8 @@ abstract class YumController extends CController
 	public function beforeAction($action) 
 	{
 		$allowedByParent=parent::beforeAction($action);
-		$this->layout = Yii::app()->controller->module->layout;
+		if($this->layout===null)
+			$this->layout = Yii::app()->controller->module->layout;
 		return $allowedByParent && true;
 	}	
  	

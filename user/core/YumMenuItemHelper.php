@@ -93,7 +93,7 @@ class YumMenuItemHelper
 	public static function updateUser(array $params=null, $label='Update user')
 	{
 		if(!isset($params['id']))
-			throw new CException(Yii::t('UserModule.user','Missing user ID.'));
+			throw new CException(Yii::t('UserModule.core','Missing user ID.'));
 		return self::users($label,'update',Yii::app()->user->isAdmin(),$params);
 	}
 	
@@ -107,7 +107,7 @@ class YumMenuItemHelper
 	public static function viewUser(array $params=null,$label='View user')
 	{
 		if(!isset($params['id']))
-			throw new CException(Yii::t('UserModule.user','Missing user ID.'));
+			throw new CException(Yii::t('UserModule.core','Missing user ID.'));
 		return self::users($label,'view',Yii::app()->user->isAdmin(),$params);
 	}	
 	
@@ -233,7 +233,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	public static function listFields(array $params=null,$label='Edit profile field')
+	public static function listFields(array $params=null,$label='List profile field')
 	{
 		return self::profiles($label,'fields/index',Yii::app()->user->isAdmin(),$params);
 	}	
@@ -300,7 +300,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	public static function listMessages(array $params=null,$label='My Inbox')
+	public static function listMessages(array $params=null,$label='My inbox')
 	{
 		return self::messages($label,'messages/index',true,$params);
 	}	

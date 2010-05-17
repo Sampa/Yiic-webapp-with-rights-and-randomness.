@@ -1,21 +1,20 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.
-Yii::t("UserModule.user", "Profile");
-
+<?php 
+#page title
+$this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Profile");
+#breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", "Profile")=>array('profile'),
-	Yii::t("UserModule.user", "Edit"),
-);
-?><h2><?php echo Yii::t("UserModule.user", 'Edit profile'); ?></h2>
-
-<?php
+	Yii::t("UserModule.user", "Edit"));
+#title
+$this->title = Yii::t("UserModule.user", 'Edit profile');
+#menu
 $this->menu = array(
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::listUsers(),
 	YumMenuItemHelper::manageRoles(),
 	YumMenuItemHelper::backToProfile(),
 	YumMenuItemHelper::changePassword(),
-	YumMenuItemHelper::logout()
-);
+	YumMenuItemHelper::logout());
 ?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
@@ -27,13 +26,10 @@ $this->menu = array(
 
 <?php echo CHtml::beginForm(); ?>
 
-<p class="note">
-<?php echo Yii::t("UserModule.user", 
-'Fields with <span class="required">*</span> are required.'); ?></p>
+<?php echo YumHelper::requiredFieldNote(); ?>
 
 <?php echo CHtml::errorSummary($model);
-		  echo CHtml::errorSummary($profile); ?>
-
+  echo CHtml::errorSummary($profile); ?>
 <?php 
 $profileFields=YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
 

@@ -76,7 +76,7 @@ class YumMessages extends YumActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => '#',
+			'id' => Yii::t('UserModule.user', '#'),
 			'from_user_id' => Yii::t('UserModule.user', 'From'),
 			'to_user_id' => Yii::t('UserModule.user', 'To'),
 			'title' => Yii::t('UserModule.user', 'Title'),

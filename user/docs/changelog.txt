@@ -8,6 +8,7 @@ Features:
 - Added YumWebModule class (tomasz.suchanek)
 - Added profile field grouping functionality (tomasz.suchanek)
 - Added allowCaptcha property to UserModule, to controle whether Captcha is required (tomasz.suchanek)
+- Added new column for profile field definition: hint (tomasz.suchanek) 
 - Updated AR models documentation with phpdoc @property improve code usage (tomasz.suchanek)
 - Yum can by used as submodule. To avoid names confict all models are renamed:
  * Messages => YumMessages,
@@ -30,6 +31,11 @@ Features:
  * UserController => YumUserController,  
 Note that this change may break the code.
 
+Enhancements:
+ - Login url support now all placeholder defined in YumHelper::route (tomasz.suchanek)
+ - Unified naming convention for all links description (only first letter in sentence is uppercased) (tomasz.suchanek)
+ - Added title property to YumController instead of displaying heading directly in views. Heading is now displayed in layout according to use needs (tomasz.suchanek)
+ 
 Bug Fixes:
 - Changed UserModule::$returnUrl UserModule::$returnLogoutUrl calls to Yii::app()->controller->module->returnUrl/returnLogoutUrl (steve)
 - Fixed the fallback table name in the ProfileField Model (steve)

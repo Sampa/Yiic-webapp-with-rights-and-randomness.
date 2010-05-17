@@ -18,7 +18,7 @@ class YumUserChangePassword extends YumFormModel
 			array('password', 'length', 'max'=>128, 'min' => 4,
 				'message' => Yii::t("UserModule.user", "Incorrect password (minimal length 4 symbols).")),
 			array('password', 'compare', 'compareAttribute'=>'verifyPassword',
-				'message' => Yii::t("UserModule.user", "Retype Password is incorrect.")),
+				'message' => Yii::t("UserModule.user", "Retype password is incorrect.")),
 		);
 	}
 
@@ -29,7 +29,7 @@ class YumUserChangePassword extends YumFormModel
 	{
 		return array(
 			'password'=>Yii::t("UserModule.user", "password"),
-			'verifyPassword'=>Yii::t("UserModule.user", "Retype Password"),
+			'verifyPassword'=>Yii::t("UserModule.user", "Retype password"),
 		);
 	}
 } 

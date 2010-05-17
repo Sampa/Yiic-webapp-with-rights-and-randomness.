@@ -1,22 +1,17 @@
 <?php
-$this->breadcrumbs=array(
-	Yii::t("UserModule.user", 'Users')=>array('index'),
-	$model->username,
-);
-?>
-
-<?php
+#heading
+$this->title = Yii::t('UserModule.user', 'View user "{username}"',array('{username}'=>$model->username));
+#breadcrumbs
+$this->breadcrumbs=array(Yii::t('UserModule.user', 'Users') => array('index'), $model->username);
+#menu
 $this->menu = array(
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::listUsers(),
 	YumMenuItemHelper::createUser(),
 	YumMenuItemHelper::updateUser(array('id'=>$model->id)),
 	YumMenuItemHelper::manageFields(),
-	YumMenuItemHelper::manageRoles(),
-);
+	YumMenuItemHelper::manageRoles());
 ?>
-
-<h1><?php echo Yii::t("UserModule.user", 'View User').' "'.$model->username.'"'; ?></h1>
 
 <?php 
 if(Yii::app()->user->isAdmin()) {
@@ -31,10 +26,10 @@ if(Yii::app()->user->isAdmin()) {
 		foreach($profileFields as $field) 
 		{
 			array_push($attributes,array(
-						'label' => Yii::t("UserModule.user", $field->title),
-						'name' => $field->varname,
-						'value' => $model->profile->getAttribute($field->varname),
-						));
+				'label' => Yii::t('UserModule.user', $field->title),
+				'name' => $field->varname,
+				'value' => $model->profile->getAttribute($field->varname),
+				));
 		}
 	}
 
@@ -74,7 +69,7 @@ if(Yii::app()->user->isAdmin()) {
 	if ($profileFields) {
 		foreach($profileFields as $field) {
 			array_push($attributes,array(
-					'label' => Yii::t("UserModule.user", $field->title),
+					'label' => Yii::t('UserModule.user', $field->title),
 					'name' => $field->varname,
 					'value' => $model->profile->getAttribute($field->varname),
 				));
@@ -102,7 +97,7 @@ if(Yii::app()->user->isAdmin()) {
 
 <?php 
 
-echo Yii::t('UserModule.User', 'This User belongs to these roles:');  ?>
+echo Yii::t('UserModule.user', 'This user belongs to these roles:');  ?>
 
 <?php 
 if($model->roles) {
@@ -124,7 +119,7 @@ else
 
 <?php
 
-echo Yii::t('UserModule.User', 'This User can administrate this Users:');  ?>
+echo Yii::t('UserModule.user', 'This user can administrate this users:');  ?>
 
 <?php 
 if($model->users) {

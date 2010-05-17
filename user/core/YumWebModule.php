@@ -28,11 +28,11 @@ class YumWebModule extends CWebModule
 	public function init()
 	{
 		if($this->version===null)
-			throw new CException(Yii::t('UserModule.core','Please provide module version in your Yum module'));
+			throw new CException(Yii::t('UserModule.core','Please provide module version in Yum module'));
 		if($this->debug===null)
-			throw new CException(Yii::t('UserModule.core','Please provide debug mode in your Yum module'));
+			throw new CException(Yii::t('UserModule.core','Please set debug mode in Yum module'));
 		if($this->installDemoData===null)
-			throw new CException(Yii::t('UserModule.core','Please set install demo data in your Yum module'));
+			throw new CException(Yii::t('UserModule.core','Please determine whether to install demo data in Yum module.'));
 	}
 	
 	/** 

@@ -1,6 +1,6 @@
 <h1>
  <?php 
-echo Yii::t('UserModule.user', 'Yii User management Module Installation'); 
+echo Yii::t('UserModule.user', 'Yii User Management Module installation'); 
 ?> 
 </h1>
 
@@ -10,14 +10,14 @@ echo Yii::t('UserModule.user', 'Yii User management Module Installation');
 	<h2> Information: </h2>
 	<hr />
 	<p> You are about to install the Yii User management Module in your Web 
-Application. You require a working Database connection to an Mysql
+Application. You require a working database connection to an Mysql
 Database. Other Databases are not supported at this time. Please make sure 
 your Database is Accessible in protected/config/main.php. </p>
 
 	<?php if (Yii::app()->db): ?>
-	<div class="hint"> Your Database Connection seems to be working </div>
+	<div class="hint"> Your database connection seems to be working </div>
 	<?php else: ?>
-	<div class="error"> Your Database Connection doesn't seem to be working </div>
+	<div class="error"> Your database connection doesn't seem to be working </div>
 	<?php endif; ?>
 
 	<p> <strong> Every existing Table will be deleted! If you are really sure you
@@ -134,6 +134,6 @@ your Yii Web Application </p>
 	";
 Yii::app()->clientScript->registerScript('install', $js); ?>
 
-<?php echo CHtml::submitButton(Yii::t('UserModule.user', 'Install Module')); ?>
+<?php echo CHtml::submitButton(Yii::t('UserModule.user', 'Install module')); ?>
 <?php echo CHtml::endForm(); ?>
 

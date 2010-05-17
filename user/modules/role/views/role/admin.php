@@ -1,16 +1,16 @@
 <?php
+#heading
+$this->title = Yii::t('UserModule.user', 'Manage roles'); 
+#breadcrumbs
 $this->breadcrumbs=array(
-		Yii::t("UserModule.user", 'Roles')=>array('index'),
-		Yii::t("UserModule.user", 'Manage'),
-		);
-
+	Yii::t("UserModule.user", 'Roles')=>array('index'),
+	Yii::t("UserModule.user", 'Manage'),
+);
+#menu
 $this->menu = array(
 	YumMenuItemHelper::createRole(),
-	YumMenuItemHelper::manageUsers()
-)
+	YumMenuItemHelper::manageUsers());
 ?>
-
-<h1> <?php echo Yii::t('UserModule.user', 'Manage Roles'); ?> </h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,

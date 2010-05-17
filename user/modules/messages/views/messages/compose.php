@@ -1,13 +1,13 @@
 <?php 
-$this->breadcrumbs=array(
-		Yii::t('UserModule.user', 'Messages')=>array('index'),
-		Yii::t('UserModule.user', 'Compose new Message'),
-		);
-
-
-$this->menu = array(
-	YumMenuItemHelper::backToInbox()
+#heading
+$this->title = Yii::t('UserModule.user','Composing new message');
+#breadcrumbs
+$this->breadcrumbs = array(
+	Yii::t('UserModule.user', 'Messages') => array('index'),
+	Yii::t('UserModule.user', 'Compose new message'),
 );
+#menu
+$this->menu = array(YumMenuItemHelper::backToInbox());
 ?>
 
 <div class="form">
@@ -17,7 +17,7 @@ $this->menu = array(
 	'enableAjaxValidation'=>true,
 )); ?>
 
-	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with');?> <span class="required">*</span> <?php echo Yii::t("UserModule.user", 'are required');?>.</p>
+	<?php echo YumHelper::requiredFieldNote(); ?>
 
 	<?php echo $form->errorSummary($model); ?>
 

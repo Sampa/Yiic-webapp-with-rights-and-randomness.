@@ -1,25 +1,27 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t('UserModule.user', "Change password");
-$this->breadcrumbs=array(
+<?php 
+#page title
+$this->pageTitle=Yii::app()->name . ' - '.Yii::t('UserModule.user', "Change password");
+#heading
+$this->title = Yii::t('UserModule.user', "Change password");
+#breadcrumbs
+$this->breadcrumbs = array(
 	Yii::t('UserModule.user', "Profile") => array('profile'),
-	Yii::t('UserModule.user', "Change password"),
-	);
+	Yii::t('UserModule.user', "Change password"));
+#menu
+$this->menu = array(YumMenuItemHelper::backToProfile());
 ?>
-
-<?php $this->menu = array( YumMenuItemHelper::backToProfile() );?>
-
-<h1><?php echo Yii::t('UserModule.user', "Change password"); ?></h1>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo Yii::t('UserModule.user', 'Fields with <span class="required">*</span> are required.'); ?></p>
+	<?php echo YumHelper::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
 	
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($form,'password'); ?>
 	<?php echo CHtml::activePasswordField($form,'password'); ?>
 	<p class="hint">
-	<?php echo Yii::t('UserModule.user', "Minimal password length 4 symbols."); ?>
+	<?php echo Yii::t('UserModule.user', "Minimal password length is 4 symbols."); ?>
 	</p>
 	</div>
 	

@@ -1,14 +1,13 @@
 <?php
 if(!isset($model)) 
 	$model = new YumUserLogin();
-
-$this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login");
-$this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Login"),
-);
+#page title
+$this->pageTitle = Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login");
+#heading
+$this->title = Yii::t("UserModule.user", "Login");
+#breadcrumbs
+$this->breadcrumbs=array(Yii::t("UserModule.user", "Login"));
 ?>
-
-<h1> <?php echo Yii::t("UserModule.user", "Login"); ?> </h1>
 
 <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
@@ -26,11 +25,7 @@ echo Yii::t("UserModule.user",
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note">
-	<?php 
-	echo Yii::t("UserModule.user",
-			'Fields with <span class="required">*</span> are required.'); ?></p>
-
+	<?php echo YumHelper::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($model); ?>
 	
 	<div class="row">
@@ -49,7 +44,7 @@ echo Yii::t("UserModule.user",
 	printf("%s | %s",
 			CHtml::link(Yii::t("UserModule.user", "Registration"),
 				$this->module->registrationUrl),
-			CHtml::link(Yii::t("UserModule.user", "Lost Password?"),
+			CHtml::link(Yii::t("UserModule.user", "Lost password?"),
 				$this->module->recoveryUrl));
 ?>
 </p>

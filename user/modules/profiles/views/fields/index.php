@@ -1,16 +1,14 @@
 <?php
-$this->breadcrumbs=array(
-	Yii::t("UserModule.user", 'Profile Fields'),
-);
-
+#heading
+$this->title = Yii::t("UserModule.user", 'List profile field');
+#breadcrumb
+$this->breadcrumbs=array(Yii::t("UserModule.user", 'Profile fields'));
+#menu
 $this->menu = array(
 	YumMenuItemHelper::createField(),
 	YumMenuItemHelper::manageFields(),
-	YumMenuItemHelper::manageFieldsGroups(),	
-);
+	YumMenuItemHelper::manageFieldsGroups());
 ?>
-
-<h1><?php echo Yii::t("UserModule.user", 'List Profile Field'); ?></h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

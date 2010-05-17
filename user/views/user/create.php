@@ -1,15 +1,15 @@
 <?php
-$this->breadcrumbs=array(
-	Yii::t('UserModule.user', 'Users')=>array('index'),
-	Yii::t('UserModule.user', 'Create'),
-);
-
+#heading
+$this->title = Yii::t('UserModule.user', "Create user");
+#breadcrumbs
+$this->breadcrumbs = array(
+	Yii::t('UserModule.user', 'Users') => array('index'),
+	Yii::t('UserModule.user', 'Create'));
+#menu
 $this->menu = array(
 	YumMenuItemHelper::listUsers(),
 	YumMenuItemHelper::manageUsers(),
-	YumMenuItemHelper::manageFields()
-);
+	YumMenuItemHelper::manageFields());
 ?>
-<h1><?php echo Yii::t('UserModule.user', "Create User"); ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model,'profile'=>$profile)); ?>

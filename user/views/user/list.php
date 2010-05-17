@@ -1,10 +1,10 @@
-<h2>User List</h2>
-
 <?php
+#heading
+$this->title=Yii::t('UserModule.user','User list');
+#menu
 $this->menu = array(
 	YumMenuItemHelper::createUser(),
-	YumMenuItemHelper::manageUsers(),
-);
+	YumMenuItemHelper::manageUsers());
 ?>
 
 <?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>

@@ -156,12 +156,12 @@ class YumUser extends YumActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'username'=>Yii::t("UserModule.user", "username"),
-			'password'=>Yii::t("UserModule.user", "password"),
-			'verifyPassword'=>Yii::t("UserModule.user", "Retype Password"),
-			'verifyCode'=>Yii::t("UserModule.user", "Verification Code"),
-			'id' => 'Id',
-			'activationKey' => Yii::t("UserModule.user", "activation key"),
+			'id'=>Yii::t('UserModule.user', '#'),
+			'username'=>Yii::t("UserModule.user", "Username"),
+			'password'=>Yii::t("UserModule.user", "Password"),
+			'verifyPassword'=>Yii::t("UserModule.user", "Retype password"),
+			'verifyCode'=>Yii::t("UserModule.user", "Verification code"),
+			'activationKey' => Yii::t("UserModule.user", "Activation key"),
 			'createtime' => Yii::t("UserModule.user", "Registration date"),
 			'lastvisit' => Yii::t("UserModule.user", "Last visit"),
 			'superuser' => Yii::t("UserModule.user", "Superuser"),

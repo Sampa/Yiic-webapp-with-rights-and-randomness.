@@ -1,10 +1,11 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t("user", "Registration");
-$this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Registration"),
-);
+<?php 
+#page title
+$this->pageTitle = Yii::app()->name . ' - '.Yii::t("user", "Registration");
+#heading
+$this->tilte = Yii::t("UserModule.user", "Registration");
+#breadcrumbs
+$this->breadcrumbs = array(Yii::t("UserModule.user", "Registration"));
 ?>
-
-<h1><?php echo Yii::t("UserModule.user", "Registration"); ?></h1>
 
 <?php if(Yii::app()->user->hasFlash('registration')): ?>
 <div class="success">
@@ -15,9 +16,7 @@ $this->breadcrumbs=array(
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-<p class="note"><?php echo Yii::t("UserModule.user",
-		'Fields with <span class="required">*</span> are required.'); ?></p>
-
+	<?php echo YumHelper::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
 	
 	<div class="row">
@@ -29,7 +28,7 @@ $this->breadcrumbs=array(
 	<?php echo CHtml::activeLabelEx($form,'password'); ?>
 	<?php echo CHtml::activePasswordField($form,'password'); ?>
 	<p class="hint">
-	<?php echo Yii::t("UserModule.user", "Minimal password length 4 symbols."); ?>
+	<?php echo Yii::t("UserModule.user", "Minimal password length is 4 symbols."); ?>
 	</p>
 	</div>
 	

@@ -36,7 +36,6 @@ class YumHelper
 	public static function route($url)
 	{
 		$yumBaseRoute=YumWebModule::yum()->yumBaseRoute;
-
 		$tr=array();
 		$tr['{yum}']=$yumBaseRoute;
 		$tr['{messages}']=$yumBaseRoute.'/messages';
@@ -53,6 +52,18 @@ class YumHelper
 		else
 			return strtr($url,$tr);
 		
+	}
+	
+	/**
+	 * Produces note: "Field with * are required"
+	 * @since 0.6
+	 * @return string 
+	 */
+	public static function requiredFieldNote()
+	{
+		return CHtml::tag('p',array('class'=>'note'),Yii::t(
+			'UserModule.user','Fields with <span class="required">*</span> are required.'
+		),true);		
 	}
 
 }

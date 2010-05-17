@@ -2,7 +2,7 @@
 
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with <span class="required">*</span> are required.'); ?></p>
+	<?php echo YumHelper::requiredFieldNote(); ?>
 
 	<?php echo CHtml::errorSummary($model); ?>
 
@@ -18,7 +18,7 @@
 		<?php echo CHtml::error($model,'description'); ?>
 	</div>	
 
-<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this Role'); ?> </p>
+<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this role'); ?> </p>
 
 <?php 
 		$this->widget('YumModule.components.Relation',

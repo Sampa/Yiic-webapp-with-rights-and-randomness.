@@ -1,19 +1,16 @@
-<?php 
-$this->pageTitle=Yii::app()->name . ' - '.
-Yii::t('UserModule.user', "Profile");
-
-$this->breadcrumbs=array(Yii::t('UserModule.user', "Profile"), $model->username); 
-
-$this->menu=array(
+<?php
+#page title 
+$this->pageTitle=Yii::app()->name . ' - '.Yii::t('UserModule.user', "Profile");
+#heading
+$this->title = Yii::t('UserModule.user', 'Profile of ') . $model->username;
+#breadcrumbs
+$this->breadcrumbs = array(Yii::t('UserModule.user', "Profile"), $model->username); 
+#menu
+$this->menu = array(
 	YumMenuItemHelper::backToProfile(),
 	YumMenuItemHelper::logout(),
-	YumMenuItemHelper::composeMessage(array('to_user_id'=>$model->id),'Send a message to this user')
-);
-?>
-
-<h2><?php echo Yii::t('UserModule.user', 'Profile of ') . $model->username; ?> 
-</h2> 
-
+	YumMenuItemHelper::composeMessage(array('to_user_id'=>$model->id),'Send a message to this user'));
+?> 
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">

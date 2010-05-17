@@ -1,15 +1,14 @@
 <?php
+#heading
+$this->title = Yii::t("UserModule.user", "Update role");
+#breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
-	Yii::t("UserModule.user", 'Update'),
-);
-
+	Yii::t("UserModule.user", 'Update'));
+#menu
 $this->menu = array(
 	YumMenuItemHelper::manageRoles(),
-	YumMenuItemHelper::manageUsers(),
-);
-
+	YumMenuItemHelper::manageUsers());
 ?>
-<h1><?php echo Yii::t("UserModule.user", "Update Role"); ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

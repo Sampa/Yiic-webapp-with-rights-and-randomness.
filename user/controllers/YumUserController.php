@@ -93,7 +93,7 @@ class YumUserController extends YumController
 						if(Yii::app()->controller->module->disableEmailActivation == true)
 						{
 							Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
-								"Your Account has been activated. Thank you for your registration."));
+								"Your account has been activated. Thank you for your registration."));
 							$this->refresh();
 						}
 						else
@@ -130,7 +130,7 @@ class YumUserController extends YumController
 					{
 						Yii::app()->user->setFlash('registration',
 							Yii::t("UserModule.user",
-								"Your Registration didn't work. Please contact our System Administrator."));
+								"Your registration didn't work. Please contact our System Administrator."));
 						$this->refresh();
 
 					}
@@ -288,7 +288,7 @@ class YumUserController extends YumController
 						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 						$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery',array("activationKey" => $user->activationKey, "email" => $user->email));
 						mail($user->email,"You have requested to be reset. To receive a new password, go to $activation_url.",$headers);
-						Yii::app()->user->setFlash('resetPwMessage',Yii::t("user", "Instructions have been sent to you. Please check your eMail."));
+						Yii::app()->user->setFlash('resetPwMessage',Yii::t("user", "Instructions have been sent to you. Please check your email."));
 						$this->refresh();
 					}
 				}
@@ -351,8 +351,7 @@ class YumUserController extends YumController
 		{
 			Yii::app()->user->setFlash('profileMessage',
 				Yii::t("UserModule.user",
-					"You are not allowed to edit your own profile.
-					Please contact your System Administrator."));
+					"You are not allowed to edit your own profile. Please contact your System Administrator."));
 
 			$this->redirect(array('profile', 'id'=>$model->id));
 		}

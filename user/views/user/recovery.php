@@ -1,11 +1,13 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Restore");
+<?php 
+#page title 
+$this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Restore");
+#breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", "Login") => array(YumHelper::route('{user}/login')),
-	Yii::t("UserModule.user", "Restore"),
-);
+	Yii::t("UserModule.user", "Restore"));
+#heading
+$this->title = Yii::t("UserModule.user", "Restore"); 
 ?>
-
-<h1><?php echo Yii::t("UserModule.user", "Restore"); ?></h1>
 
 <?php if(Yii::app()->user->hasFlash('recoveryMessage')): ?>
 <div class="success">

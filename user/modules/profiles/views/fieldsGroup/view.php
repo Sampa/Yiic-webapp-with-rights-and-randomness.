@@ -1,19 +1,18 @@
 <?php
+#title
+$this->title = Yii::t("UserModule.user", 'View profile fields group #{group_name}',array('{group_name}'=>$model->group_name)); 
+#breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t('UserModule.user','Profile fields groups') => array('admin'),
-	Yii::t('UserModule.user',$model->title)
-);
-
+	Yii::t('UserModule.user',$model->title));
+#menu
 $this->menu=array(
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::manageFields(),
 	YumMenuItemHelper::createFieldsGroup(),
 	YumMenuItemHelper::updateFieldsGroup(array('id'=>$model->id)),
-	YumMenuItemHelper::manageFieldsGroups()
-);
+	YumMenuItemHelper::manageFieldsGroups());
 ?>
-
-<h1><?php echo Yii::t("UserModule.user", 'View profile fields group #').$model->group_name; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

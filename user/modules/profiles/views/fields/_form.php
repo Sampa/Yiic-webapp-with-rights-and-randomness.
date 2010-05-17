@@ -20,6 +20,13 @@
 		<p class="hint"><?php echo Yii::t("UserModule.user",'Field name on the language of "sourceLanguage".'); ?></p>
 	</div>
 	
+	<div class="row">
+	<?php echo CHtml::activeLabelEx($model,'hint'); ?>
+	<?php echo CHtml::activeTextField($model,'hint',array('size'=>60)); ?>
+	<?php echo CHtml::error($model,'hint'); ?>
+		<p class="hint"><?php echo Yii::t("UserModule.user",'Hint displayed to user e.g "You can enter more values and separate them using comma".'); ?></p>
+	</div>	
+	
 	<div lass="row">
 		<?php echo CHtml::activeLabelEx($model,'field_group_id'); ?>
 		<?php echo CHtml::activeDropDownList($model,'field_group_id',CHtml::listData(YumProfileFieldsGroup::model()->findAll(),'id','title')); ?>
@@ -31,7 +38,7 @@
 		<?php echo CHtml::activeLabelEx($model,'field_type'); ?>
 		<?php echo (($model->id)?CHtml::activeTextField($model,'field_type',array('size'=>60,'maxlength'=>50,'readonly'=>true)):CHtml::activeDropDownList($model,'field_type',YumProfileField::itemAlias('field_type'))); ?>
 		<?php echo CHtml::error($model,'field_type'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user", 'Column Field type in the database.'); ?></p>
+		<p class="hint"><?php echo Yii::t("UserModule.user", 'Column field type in the database.'); ?></p>
 	</div>
 
 	<div class="row">
@@ -73,7 +80,7 @@
 		<?php echo CHtml::activeLabelEx($model,'error_message'); ?>
 		<?php echo CHtml::activeTextField($model,'error_message',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo CHtml::error($model,'error_message'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Error message when Validation fails.'); ?></p>
+		<p class="hint"><?php echo Yii::t("UserModule.user",'Error message when validation fails.'); ?></p>
 	</div>
 
 	<div class="row">

@@ -1,29 +1,24 @@
 <?php
+$this->title = Yii::t('UserModule.user','View role {role}',array('{role}',$model->title));
+#breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
-	Yii::t("UserModule.user", 'View'),
-);
-?>
-
-<?php
+	Yii::t("UserModule.user", 'View'));
+#menu
 $this->menu = array(
 	YumMenuItemHelper::manageRoles(),
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::createRole(),
-	YumMenuItemHelper::updateRole(array('id'=>$model->id))
-);
+	YumMenuItemHelper::updateRole(array('id'=>$model->id)));
 ?>
 
-
-<h2> <?php echo $model->title; ?> </h2>
 <?php echo $model->description; ?>
-
 <hr />
 
 <p> 
 <?php 
 echo Yii::t('UserModule.user',
-		'This users have been assigned to this Role'); ?> 
+		'This users have been assigned to this role'); ?> 
 </p>
 
 	<?php 

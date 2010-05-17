@@ -2,7 +2,7 @@
 
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with <span class="required">*</span> are required.'); ?></p>
+	<?php echo YumHelper::requiredFieldNote(); ?>
 
 	<?php echo CHtml::errorSummary($model);
 		  echo CHtml::errorSummary($profile); ?>
@@ -47,6 +47,9 @@ if ($profileFields)
 			}
 		?>
 			<?php echo CHtml::error($profile,$field->varname); ?>
+			<?php if($field->hint):?>
+				<p class="hint"><?php echo $field->hint; ?></p>
+			<?php endif;?>
 			</div>	
 			<?php
 	}
@@ -56,7 +59,7 @@ if ($profileFields)
 
 <?php if($this->module->hasModule('role')): ?>
 <div class="row">
-<p> <?php echo Yii::t('UserModule.user', 'User belongs to these Roles'); ?>: </p>
+<p> <?php echo Yii::t('UserModule.user', 'User belongs to these roles'); ?>: </p>
 
 <?php 
 		$this->widget('YumModule.components.Relation',

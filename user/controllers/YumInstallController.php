@@ -109,6 +109,7 @@ class YumInstallController extends YumController
 							`field_group_id` int(3) NOT NULL default '0',
 							`varname` varchar(50) NOT NULL,
 							`title` varchar(255) NOT NULL,
+							'hint' text,
 							`field_type` varchar(50) NOT NULL,
 							`field_size` int(3) NOT NULL default '0',
 							`field_size_min` int(3) NOT NULL default '0',
@@ -237,29 +238,23 @@ class YumInstallController extends YumController
 				} 
 				else 
 				{
-					throw new CException(Yii::t('UserModule.user', 'Database Connection is not working'));	
+					throw new CException(Yii::t('UserModule.user', 'Database connection is not working'));	
 				}
 			}
 			else {
-				if(isset(Yii::app()->db->tablePrefix))
-					$tp = Yii::app()->db->tablePrefix . '_';
-				else
-					$tp = '';	
-
 				$this->render('start', array(
-							'usersTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->usersTable),
-							'rolesTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->rolesTable),
-							'messagesTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->messagesTable),
-							'profileTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->profileTable),
-							'profileFieldsTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->profileFieldsTable),
-							'profileFieldsGroupTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->profileFieldsGroupTable),
-							'userRoleTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->userRoleTable),
-							'userUserTable' => $tp . str_replace(array('{{', '}}'), '', $this->module->userUserTable),
-							)
-						);
+					'usersTable' => YumHelper::resolveTableName($this->module->usersTable,Yii::app()->db),
+					'rolesTable' => YumHelper::resolveTableName($this->module->rolesTable,Yii::app()->db),
+					'messagesTable' => YumHelper::resolveTableName($this->module->messagesTable,Yii::app()->db),
+					'profileTable' => YumHelper::resolveTableName($this->module->profileTable,Yii::app()->db),
+					'profileFieldsTable' => YumHelper::resolveTableName($this->module->profileFieldsTable,Yii::app()->db),
+					'profileFieldsGroupTable' => YumHelper::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
+					'userRoleTable' => YumHelper::resolveTableName($this->module->userRoleTable,Yii::app()->db),
+					'userUserTable' => YumHelper::resolveTableName($this->module->userUserTable,Yii::app()->db),
+				));
 			}
 		} else {
-			throw new CException(Yii::t('UserModule.user', 'User management Module is not in Debug Mode'));	
+			throw new CException(Yii::t('UserModule.user', 'User management module is not in Debug Mode'));	
 		}
 	}
 

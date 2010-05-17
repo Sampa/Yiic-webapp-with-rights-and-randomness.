@@ -77,8 +77,8 @@ class YumProfileFieldsGroup extends YumActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id' => Yii::t("UserModule.user", 'Id'),
-            'group_name' => Yii::t("UserModule.user", 'Group Name'),
+            'id' => Yii::t("UserModule.user", '#'),
+            'group_name' => Yii::t("UserModule.user", 'Group name'),
             'title' => Yii::t("UserModule.user", 'Title'),
             'position' => Yii::t("UserModule.user", 'Position'),
         );

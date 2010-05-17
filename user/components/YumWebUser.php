@@ -2,8 +2,15 @@
 
 class YumWebUser extends CWebUser
 {
-	public $loginUrl=array('/user/user/login');
+	public $loginUrl='{user}/login';
 
+	public function init()
+	{
+		#parse route and replace all placeholders with relative route
+		$this->loginUrl=array(YumHelper::route($this->loginUrl));
+		parent::init();
+	}
+	
 	/**
 	 * Performs access check for this user.
 	 * @param string the name of the role that need access check.

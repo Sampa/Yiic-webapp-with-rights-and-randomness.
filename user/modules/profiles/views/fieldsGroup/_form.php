@@ -5,7 +5,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with <span class="required">*</span> are required.'); ?></p>
+	<?php echo YumHelper::requiredFieldNote(); ?>
 
 	<?php echo $form->errorSummary($model); ?>
 

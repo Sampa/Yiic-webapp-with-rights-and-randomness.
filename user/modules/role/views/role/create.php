@@ -1,14 +1,14 @@
 <?php
+#heading
+$this->title = Yii::t("UserModule.user", "Create role");
+#breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
-	Yii::t("UserModule.user", 'Create'),
-);
-
+	Yii::t("UserModule.user", 'Create'));
+#menu
 $this->menu = array(
 	YumMenuItemHelper::manageRoles(),
-	YumMenuItemHelper::manageUsers(),
-);
+	YumMenuItemHelper::manageUsers());
 ?>
-<h1><?php echo Yii::t("UserModule.user", "Create Role"); ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

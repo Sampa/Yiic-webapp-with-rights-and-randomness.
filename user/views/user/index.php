@@ -1,24 +1,15 @@
-<?php $this->breadcrumbs=array(Yii::t("UserModule.user", "Users"));?>
-
-<?php $this->menu = array(
+<?php
+#heading
+$this->title = Yii::t('UserModule.user', 'Users');
+#breadcrumbs
+$this->breadcrumbs=array(Yii::t("UserModule.user", "Users"));
+#menu
+$this->menu = array(
 	YumMenuItemHelper::createUser(),
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::manageFields(),
-	YumMenuItemHelper::manageRoles()
-); ?>
-
-
-<?php if(Yii::app()->controller->module->debug === true) 
-{
-	echo CHtml::openTag('div', array('class' => 'hint'));
-	echo 'You are running the Yii User Management Module ' .
-		Yii::app()->controller->module->version .
-		' in Debug Mode!';
-	echo CHtml::closeTag('div'); 
-}
+	YumMenuItemHelper::manageRoles());
 ?>
-
-<h1> <?php echo Yii::t('UserModule.user', 'Users: '); ?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 			'dataProvider'=>$dataProvider,
