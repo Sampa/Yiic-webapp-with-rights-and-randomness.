@@ -109,7 +109,7 @@ class YumInstallController extends YumController
 							`field_group_id` int(3) NOT NULL default '0',
 							`varname` varchar(50) NOT NULL,
 							`title` varchar(255) NOT NULL,
-							'hint' text,
+							`hint` text NOT NULL,
 							`field_type` varchar(50) NOT NULL,
 							`field_size` int(3) NOT NULL default '0',
 							`field_size_min` int(3) NOT NULL default '0',

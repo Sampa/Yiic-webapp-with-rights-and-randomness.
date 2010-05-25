@@ -17,6 +17,7 @@ $this->menu=array(
 	YumMenuItemHelper::listMessages(),
 	YumMenuItemHelper::composeMessage(),
 	YumMenuItemHelper::changePassword(),
+	YumMenuItemHelper::deleteAccount(),
 	YumMenuItemHelper::logout());
 ?>
 

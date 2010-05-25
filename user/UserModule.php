@@ -15,14 +15,14 @@ class UserModule extends YumWebModule
 	
 	public $version = '0.6';
 	public $debug = false;
-	public $usersTable = "{{users}}";
-	public $messagesTable = "{{messages}}";
-	public $profileFieldsTable = "{{profile_fields}}";
-	public $profileFieldsGroupTable = "{{profile_fields_group}}";
-	public $profileTable = "{{profiles}}";
-	public $rolesTable = "{{roles}}";
-	public $userRoleTable = "{{user_has_role}}";
-	public $userUserTable = "{{user_has_user}}";
+	public $usersTable = "users";
+	public $messagesTable = "messages";
+	public $profileFieldsTable = "profile_fields";
+	public $profileFieldsGroupTable = "profile_fields_group";
+	public $profileTable = "profiles";
+	public $rolesTable = "roles";
+	public $userRoleTable = "user_has_role";
+	public $userUserTable = "user_has_user";
 	public $installDemoData = true;
 	public $disableEmailActivation = false;
 	public $layout = 'column2';

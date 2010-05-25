@@ -75,6 +75,7 @@ class YumUserController extends YumController
 			if(isset($_POST['YumRegistrationForm']))
 			{
 				$form->attributes = $_POST['YumRegistrationForm'];
+				$form->email = $_POST['YumProfile']['email'];
 
 				if($form->validate())
 				{
@@ -502,9 +503,9 @@ class YumUserController extends YumController
 	 */
 	public function actionDelete()
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			$model = $this->loadUser();
+		//if(Yii::app()->request->isPostRequest)
+		//{
+			$model = $this->loadUser(YII::app()->user->id);
 
 			if(is_array($model->profile))
 			{
@@ -519,10 +520,13 @@ class YumUserController extends YumController
 			}
 
 			$model->delete();
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		//}
+		//else
+		//	throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		$this->actionLogout();
 	}
+	
+
 
 	public function actionList()
 	{

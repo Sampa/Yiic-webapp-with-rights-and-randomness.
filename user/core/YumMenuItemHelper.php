@@ -366,6 +366,7 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */	
+	 
 	protected static function roles($label,$route,$visible=false,array $params=null)
 	{
 		$p=$params===null ? array() : $params;
@@ -412,6 +413,19 @@ class YumMenuItemHelper
 			throw new CException(Yii::t('UserModule.user','Missing role ID'));		
 		return self::roles($label,'role/update',Yii::app()->user->isAdmin(),$params);
 	}
-
+	
+	
+		
+		/**
+	 * Creates menu item: Delete Account
+	 * @param array $params
+	 * @param string $label
+	 * @since 0.6
+	 * @return array
+	 */
+		public static function deleteAccount(array $params=null,$label='Delete Account')
+	{
+		return self::users($label,'delete',true,$params);
+	}
 }
 ?>

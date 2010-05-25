@@ -56,7 +56,7 @@ class YumUser extends YumActiveRecord
     	elseif (isset(Yii::app()->modules['user']['usersTable'])) 
       		$this->_tableName = Yii::app()->modules['user']['usersTable'];
     	else
-      		$this->_tableName = '{{users}}'; // fallback if nothing is set
+      		$this->_tableName = 'users'; // fallback if nothing is set
 
 		return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
 	}
@@ -233,5 +233,6 @@ class YumUser extends YumActiveRecord
 			array_push($returnarray, $admin->username);
 		return $returnarray;
 	}
+
 	
 }

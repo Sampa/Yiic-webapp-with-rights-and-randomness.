@@ -31,15 +31,15 @@ class YumUserLogin extends YumFormModel
 	public function attributeLabels()
 	{
 	if(Yii::app()->controller->module->loginType == 0)
-		$username = Yii::t("UserModule.user", "username");
+		$username = Yii::t("UserModule.user", "Username");
 	else if(Yii::app()->controller->module->loginType == 1)
-		$username = Yii::t("UserModule.user", "email address");
+		$username = Yii::t("UserModule.user", "Email Address");
 	else if(Yii::app()->controller->module->loginType == 2)
-		$username = Yii::t("UserModule.user", "username or email");
+		$username = Yii::t("UserModule.user", "Username or Email");
 
 		return array(
 			'username'=>$username,
-			'password'=>Yii::t("UserModule.user", "password"),
+			'password'=>Yii::t("UserModule.user", "Password"),
 			'rememberMe'=>Yii::t("UserModule.user", "Remember me next time"),
 		);
 	}

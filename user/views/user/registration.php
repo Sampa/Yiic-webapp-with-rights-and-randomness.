@@ -2,7 +2,7 @@
 #page title
 $this->pageTitle = Yii::app()->name . ' - '.Yii::t("user", "Registration");
 #heading
-$this->tilte = Yii::t("UserModule.user", "Registration");
+$this->title = Yii::t("UserModule.user", "Registration");
 #breadcrumbs
 $this->breadcrumbs = array(Yii::t("UserModule.user", "Registration"));
 ?>

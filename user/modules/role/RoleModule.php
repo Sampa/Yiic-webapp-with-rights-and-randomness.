@@ -7,8 +7,8 @@ class RoleModule extends YumWebModule
 	
 	public $version = '0.5';
 	public $debug = false;
-	public $rolesTable = "{{roles}}";
-	public $userRoleTable = "{{user_has_role}}";
+	public $rolesTable = "roles";
+	public $userRoleTable = "user_has_role";
 	public $installDemoData = true;
 	
 	public $controllerMap=array(
