@@ -1,7 +1,8 @@
 <?php
-#heading
+// Header
 $this->title = Yii::t('UserModule.user', 'Manage users');
-#breadcrumbs
+
+// Breadcrumbs
 $this->breadcrumbs = array(
 	Yii::t("UserModule.user", 'Users') => array('index'),
 	Yii::t("UserModule.user", 'Manage'));
@@ -10,10 +11,15 @@ $this->menu = array(
 	YumMenuItemHelper::listUsers(),
 	YumMenuItemHelper::createUser(),
 	YumMenuItemHelper::manageRoles(),
-	YumMenuItemHelper::manageFields());
-?>
+	YumMenuItemHelper::manageFields(),
+	YumMenuItemHelper::displayProfile(),
+	YumMenuItemHelper::logout()
+	);
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+if(Yii::app()->user->hasFlash('adminMessage')) 
+	printf('<div class="success">%s</div>', Yii::app()->user->getFlash('adminMessage')); 
+
+$this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
 		'columns'=>array(
 			array(

@@ -110,7 +110,7 @@ if($model->roles) {
 }
 else 
 {
-	echo '<p> None </p>';
+	printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
 }
 
 ?>
@@ -132,7 +132,7 @@ if($model->users) {
 }
 else 
 {
-	echo '<p> None </p>';
+	printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
 }
 
 

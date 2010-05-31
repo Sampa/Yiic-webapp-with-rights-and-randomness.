@@ -2,6 +2,7 @@ Changelog for Yii User Management Module (Yum) since Version 0.3
 
 New in 0.6:
 Features:
+- Added confirmation for Account deletion (thyseus)
 - Renamed disableEmailActivation to enableEmailActivation (defaults to true) (thyseus)
 - Registration Form is now more intelligent and saves already inserted profile Fields after Validation (thanks to peterlap...@hotmail.com)
 - Added Layout for installation

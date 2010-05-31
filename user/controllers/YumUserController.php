@@ -63,7 +63,7 @@ class YumUserController extends YumController
 
 	/* 
 	Registration of an new User in the system.
-	Depending on whether $enableEmailRegistration is set, an Confirmation Email
+	Depending on whether $enableEmailRegistration is set, an confirmation Email
 	will be sent to the Email address.
 	*/
 	public function actionRegistration()
@@ -525,29 +525,56 @@ class YumUserController extends YumController
 	 */
 	public function actionDelete()
 	{
-		//if(Yii::app()->request->isPostRequest)
-		//{
-			$model = $this->loadUser(YII::app()->user->id);
+		if(Yii::app()->user->isAdmin())
+		{
+			Yii::app()->user->setFlash('adminMessage',
+					Yii::t("UserModule.user",
+						"Admin Users can not be deleted!"));
+			$this->redirect('admin');
+		}
+		else
+		{
+			$model = $this->loadUser(Yii::app()->user->id);
 
-			if(is_array($model->profile))
+			if(isset($_POST['confirmPassword'])) 
 			{
-				foreach($model->profile as $profile)
+				if($model->encrypt($_POST['confirmPassword']) == $model->password)
 				{
-					$profile->delete();
+					if(Yii::app()->controller->module->profileHistory == false) 
+					{
+						if(is_array($model->profile))
+						{
+							foreach($model->profile as $profile)
+							{
+								$profile->delete();
+							}
+						}
+						else if (is_object($model->profile))
+						{
+							$model->profile->delete();
+						}
+					}
+					$model->delete();
+					$this->actionLogout();
+				} 
+				else 
+				{
+					Yii::app()->user->setFlash('profileMessage',
+							sprintf('%s. (%s)', 
+								Yii::t('UserModule.user', 'Wrong password confirmation! Account was not deleted'),
+								CHtml::link(Yii::t('UserModule.user', 'Try again'), array('delete'))
+								)
+							);
+					$this->redirect('profile');
 				}
 			}
-			else if (is_object($model->profile))
+			else
 			{
-				$model->profile->delete();
+				$this->render('confirmDeletion', array('model' => $model));
 			}
-
-			$model->delete();
-		//}
-		//else
-		//	throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-		$this->actionLogout();
+		}
 	}
-	
+
 
 
 	public function actionList()

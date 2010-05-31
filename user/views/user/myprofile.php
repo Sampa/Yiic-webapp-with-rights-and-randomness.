@@ -10,7 +10,6 @@ $this->menu=array(
 	YumMenuItemHelper::manageMyUsers(),
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::listUsers(),
-	YumMenuItemHelper::displayProfile(),
 	YumMenuItemHelper::updateProfile(),
 	YumMenuItemHelper::manageFields(),
 	YumMenuItemHelper::manageRoles(),
