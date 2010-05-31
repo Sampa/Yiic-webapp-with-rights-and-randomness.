@@ -2,6 +2,8 @@ Changelog for Yii User Management Module (Yum) since Version 0.3
 
 New in 0.6:
 Features:
+- Renamed disableEmailActivation to enableEmailActivation (defaults to true) (thyseus)
+- Registration Form is now more intelligent and saves already inserted profile Fields after Validation (thanks to peterlap...@hotmail.com)
 - Added Layout for installation
 - Added YumHelper class (tomasz.suchanek)
 - Added YumMenuItemHelper class (tomasz.suchanek)
@@ -32,6 +34,7 @@ Features:
 Note that this change may break the code.
 
 Enhancements:
+ - Repaired registration Process (biya)
  - Login url support now all placeholder defined in YumHelper::route (tomasz.suchanek)
  - Unified naming convention for all links description (only first letter in sentence is uppercased) (tomasz.suchanek)
  - Added title property to YumController instead of displaying heading directly in views. Heading is now displayed in layout according to use needs (tomasz.suchanek)

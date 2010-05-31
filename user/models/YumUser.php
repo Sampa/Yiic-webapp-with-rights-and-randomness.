@@ -112,7 +112,7 @@ class YumUser extends YumActiveRecord
 		$this->createtime = time();
 		$this->superuser = 0;
 
-		if(Yii::app()->controller->module->disableEmailActivation == true) 
+		if(Yii::app()->controller->module->enableEmailActivation == false) 
 			$this->status = YumUser::STATUS_ACTIVE;
 		else
 			$this->status = YumUser::STATUS_NOTACTIVE;

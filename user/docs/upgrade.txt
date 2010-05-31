@@ -1,6 +1,8 @@
 Upgrading Yii User Management Module (Yum) since Version 0.6
 
 From ver. 0.5 to 0.6
+ - UserModule::disableEmailActivation has been renamed to 
+	UserModule::enableEmailActivation (default to true)
  - Following models were renamed to avoid conflicts when using Yum as submodule:
   * Messages => YumMessages,
   * Profile => YumProfile,

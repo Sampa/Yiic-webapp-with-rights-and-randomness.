@@ -2,6 +2,7 @@
 
 Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) );
 Yii::import('YumModule.core.YumWebModule');
+Yii::import('YumModule.core.YumHelper');
 
 /**
  * @property string $registrationUrl
@@ -24,7 +25,7 @@ class UserModule extends YumWebModule
 	public $userRoleTable = "user_has_role";
 	public $userUserTable = "user_has_user";
 	public $installDemoData = true;
-	public $disableEmailActivation = false;
+	public $enableEmailActivation = true;
 	public $layout = 'column2';
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
@@ -35,7 +36,7 @@ class UserModule extends YumWebModule
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 
 	// Allow login of inactive User Account
-	public static $allowInactiveAcctLogin=false;
+	public static $allowInactiveAcctLogin = false;
 
 	private $_urls=array(
 		'registration'=>array('{user}/registration'),

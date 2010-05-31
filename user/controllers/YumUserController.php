@@ -61,9 +61,18 @@ class YumUserController extends YumController
 			$this->actionList();
 	}
 
+	/* 
+	Registration of an new User in the system.
+	Depending on whether $enableEmailRegistration is set, an Confirmation Email
+	will be sent to the Email address.
+	*/
 	public function actionRegistration()
 	{
 		$form = new YumRegistrationForm;
+		$profile = new YumProfile();
+
+		if(isset($_POST['YumProfile']))
+			$profile->attributes = $_POST['YumProfile'];
 
 		// User is already logged in?
 		if (($uid = Yii::app()->user->id) === true)
@@ -85,21 +94,22 @@ class YumUserController extends YumController
 					{
 						if(isset($_POST['YumProfile']))
 						{
-							$profile = new YumProfile();
 							$profile->attributes = $_POST['YumProfile'];
 							$profile->user_id = $user->id;
 							$profile->save();
+							$user->email = $profile->attributes['email'];
 						}
 
-						if(Yii::app()->controller->module->disableEmailActivation == true)
-						{
-							Yii::app()->user->setFlash('registration',Yii::t("UserModule.user",
-								"Your account has been activated. Thank you for your registration."));
-							$this->refresh();
-						}
-						else
+						if(Yii::app()->controller->module->enableEmailActivation)
 						{
 							$this->sendRegistrationEmail($user);
+						} 
+						else 
+						{
+							Yii::app()->user->setFlash('registration',
+									Yii::t("UserModule.user",
+										"Your account has been activated. Thank you for your registration."));
+							$this->refresh();
 						}
 
 						if (UserModule::$allowInactiveAcctLogin)
@@ -137,13 +147,25 @@ class YumUserController extends YumController
 					}
 				}
 			}
-			$this->render('/user/registration',array('form'=>$form));
+			$this->render('/user/registration', array(
+						'form' => $form,
+						'profile' => $profile
+						)
+					);
 		}
 	}
 
+	/*
+	Send the Email to the given user object. $user->email needs to be set.
+	*/
 	public function sendRegistrationEmail($user)
 	{
-		$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+		if(!isset($user->email))
+		{
+			throw new CException(Yii::t('UserModule.user', 'Email is not set when trying to send Registration Email'));	
+		}
+
+		$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 		$activation_url = 'http://' .
 			$_SERVER['HTTP_HOST'] .
 			$this->createUrl('user/activation',array(

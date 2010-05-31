@@ -1,12 +1,14 @@
 <?php
 
+Yii::import('application.modules.user.core.*');
+
 class YumWebUser extends CWebUser
 {
 	public $loginUrl='{user}/login';
 
 	public function init()
 	{
-		#parse route and replace all placeholders with relative route
+		// parse route and replace all placeholders with relative route
 		$this->loginUrl=array(YumHelper::route($this->loginUrl));
 		parent::init();
 	}

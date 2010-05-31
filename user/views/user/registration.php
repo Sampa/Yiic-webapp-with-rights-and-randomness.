@@ -42,7 +42,8 @@ $this->breadcrumbs = array(Yii::t("UserModule.user", "Registration"));
 
 if ($profileFields) 
 {
-	$profile = new YumProfile();
+	if(!isset($profile))
+		$profile = new YumProfile();
 
 	foreach($profileFields as $field) 
 	{
