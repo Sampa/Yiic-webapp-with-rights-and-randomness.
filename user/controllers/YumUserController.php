@@ -305,14 +305,23 @@ class YumUserController extends YumController
 				if(isset($_POST['YumUserRecoveryForm']))
 				{
 					$form->attributes=$_POST['YumUserRecoveryForm'];
+
 					if($form->validate())
 					{
 						$user = YumUser::model()->findbyPk($form->user_id);
 						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-						$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery',array("activationKey" => $user->activationKey, "email" => $user->email));
+
+						$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery',array(
+							"activationKey" => $user->activationKey,
+							"email" => $user->email));
+
 						mail($user->email,"You have requested to be reset. To receive a new password, go to $activation_url.",$headers);
-						Yii::app()->user->setFlash('resetPwMessage',Yii::t("user", "Instructions have been sent to you. Please check your email."));
-						$this->refresh();
+
+						Yii::app()->user->setFlash('loginMessage',
+								Yii::t("UserModule.user",
+									"Instructions have been sent to you. Please check your email."));
+
+						$this->redirect(array('/user/user/login'));
 					}
 				}
 				$this->render('recovery',array('form'=>$form));

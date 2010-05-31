@@ -17,7 +17,7 @@ $this->menu = array(
 	);
 
 if(Yii::app()->user->hasFlash('adminMessage')) 
-	printf('<div class="success">%s</div>', Yii::app()->user->getFlash('adminMessage')); 
+	printf('<div class="errorSummary">%s</div>', Yii::app()->user->getFlash('adminMessage')); 
 
 $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,

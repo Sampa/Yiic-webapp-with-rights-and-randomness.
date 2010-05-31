@@ -24,7 +24,7 @@ $this->menu=array(
 if($this->module->hasModule('messages')) $this->renderPartial('newMessages');?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="success">
+<div class="errorSummary">
 <?php echo Yii::app()->user->getFlash('profileMessage'); ?>
 </div>
 <?php endif; ?>

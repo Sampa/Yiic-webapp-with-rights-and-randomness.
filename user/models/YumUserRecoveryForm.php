@@ -37,20 +37,27 @@ class YumUserRecoveryForm extends YumFormModel {
 		if(!$this->hasErrors())  // we only want to authenticate when no input errors
 		{
 			if (strpos($this->login_or_email,"@")) {
-				$user=YumUser::model()->findByAttributes(array('email'=>$this->login_or_email));
-				$this->user_id=$user->id;
+				$user = YumUser::model()->findByAttributes(array(
+							'email'=>$this->login_or_email));
 			} else {
-				$user=YumUser::model()->findByAttributes(array('username'=>$this->login_or_email));
-				$this->user_id=$user->id;
+				$user = YumUser::model()->findByAttributes(array(
+							'username'=>$this->login_or_email));
 			}
-			
-			if($user===null)
-				if (strpos($this->login_or_email,"@")) {
+
+			if($user === null) 
+			{
+				if (strpos($this->login_or_email, "@")) 
+				{
 					$this->addError("login_or_email",Yii::t("UserModule.user", "Email is incorrect."));
 				} else {
 					$this->addError("login_or_email",Yii::t("UserModule.user", "Username is incorrect."));
 				}
+			} 
+			else
+			{
+				$this->user_id = $user->id;
+			}
 		}
 	}
-	
+
 }

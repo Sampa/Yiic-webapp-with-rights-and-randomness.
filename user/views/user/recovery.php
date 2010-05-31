@@ -1,11 +1,13 @@
 <?php 
-#page title 
+// Page title
 $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Restore");
-#breadcrumbs
+
+// Breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", "Login") => array(YumHelper::route('{user}/login')),
 	Yii::t("UserModule.user", "Restore"));
-#heading
+
+// Header
 $this->title = Yii::t("UserModule.user", "Restore"); 
 ?>
 
@@ -23,7 +25,7 @@ $this->title = Yii::t("UserModule.user", "Restore");
 	<div class="row">
 		<?php echo CHtml::activeLabel($form,'login_or_email'); ?>
 		<?php echo CHtml::activeTextField($form,'login_or_email') ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user","Please enter your login or email address."); ?></p>
+		<p class="hint"><?php echo Yii::t("UserModule.user", "Please enter your login or email address."); ?></p>
 	</div>
 	
 	<div class="row submit">
