@@ -1,101 +1,95 @@
-<div class="form">
+<?php
 
-<?php echo CHtml::beginForm(); ?>
+    if(empty($tabularIdx))
+    {
+        #dont display when used in multiform
+        echo CHtml::openTag('div',array('class'=>'form'));
+        echo CHtml::beginForm();
+        echo YumHelper::requiredFieldNote();
+    }
 
-	<?php echo YumHelper::requiredFieldNote(); ?>
+    echo CHtml::errorSummary($model); echo CHtml::errorSummary($profile);
 
-	<?php echo CHtml::errorSummary($model);
-		  echo CHtml::errorSummary($profile); ?>
+	$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]username" : "username";
+    echo CHtml::openTag('div',array('class'=>'row'));
+    echo CHtml::activeLabelEx($model,$attribute);
+	echo CHtml::activeTextField($model,$attribute,array('size'=>20,'maxlength'=>20));
+	echo CHtml::error($model,$attribute);
+    echo CHtml::closeTag('div');
 
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'username'); ?>
-		<?php echo CHtml::activeTextField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo CHtml::error($model,'username'); ?>
-	</div>
+	$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]password" : "password";
+    echo CHtml::openTag('div',array('class'=>'row'));
+    echo CHtml::activeLabelEx($model,$attribute);
+	echo CHtml::activePasswordField($model,$attribute,array('size'=>60,'maxlength'=>128));
+	echo CHtml::error($model,$attribute);
+    echo CHtml::closeTag('div');
 
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'password'); ?>
-		<?php echo CHtml::activePasswordField($model,'password',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo CHtml::error($model,'password'); ?>
-	</div>
+	$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]superuser" : "superuser";
+    echo CHtml::openTag('div',array('class'=>'row'));
+    echo CHtml::activeLabelEx($model,$attribute);
+	echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('AdminStatus'));
+	echo CHtml::error($model,$attribute);
+    echo CHtml::closeTag('div');
 
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'superuser'); ?>
-		<?php echo CHtml::activeDropDownList($model,'superuser',YumUser::itemAlias('AdminStatus')); ?>
-		<?php echo CHtml::error($model,'superuser'); ?>
-	</div>
+	$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]status" : "status";
+    echo CHtml::openTag('div',array('class'=>'row'));
+	echo CHtml::activeLabelEx($model,$attribute);
+	echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('UserStatus'));
+	echo CHtml::error($model,$attribute);
+    echo CHtml::closeTag('div');
+    
+    foreach($profile->loadProfileFields() as $field)
+    {
+        echo CHtml::openTag('div',array('class'=>'row'));
+        $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]{$field->varname}" : $field->varname;
+        echo CHtml::activeLabelEx($profile,$attribute);
+        if ($field->field_type=="TEXT")
+            echo CHtml::activeTextArea($profile,$attribute,array('rows'=>6, 'cols'=>50));
+        else
+            echo CHtml::activeTextField($profile,$attribute,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
+        echo CHtml::error($profile,$attribute);
+        if($field->hint)
+            echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
+        echo CHtml::closeTag('div');
+    }
 
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'status'); ?>
-		<?php echo CHtml::activeDropDownList($model,'status',YumUser::itemAlias('UserStatus')); ?>
-		<?php echo CHtml::error($model,'status'); ?>
-	</div>
-<?php 
-$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
-if ($profileFields) 
-{
-	foreach($profileFields as $field) 
-	{
-		?>
-			<div class="row">
-			<?php echo CHtml::activeLabelEx($profile,$field->varname); ?>
-			<?php 
-			if ($field->field_type=="TEXT") {
-				echo CHtml::activeTextArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
-			} else {
-				echo CHtml::activeTextField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
-			}
-		?>
-			<?php echo CHtml::error($profile,$field->varname); ?>
-			<?php if($field->hint):?>
-				<p class="hint"><?php echo $field->hint; ?></p>
-			<?php endif;?>
-			</div>	
-			<?php
-	}
-}
-?>
-
-
-<?php if($this->module->hasModule('role')): ?>
-<div class="row">
-<p> <?php echo Yii::t('UserModule.user', 'User belongs to these roles'); ?>: </p>
-
-<?php 
-		$this->widget('YumModule.components.Relation',
+    if($this->module->hasModule('role'))
+    {
+        echo CHtml::openTag('div',array('class'=>'row'));
+        echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'User belongs to these roles'),true);
+        $this->widget('YumModule.components.Relation',
 			array('model' => $model,
 			'relation' => 'roles',
 			'style' => 'dropdownlist',
 			'fields' => 'title',
 			'showAddButton' => false
-		));  ?>
+		));
+        echo CHtml::closeTag('div');
 
-</div>
+        if($model->users)
+        {
+           echo CHtml::openTag('div',array('class'=>'row'));
+           echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'This user can administrate this users'),true);
+           echo CHtml::closeTag('div');
+           $this->widget('YumModule.components.Relation',
+               array('model' => $model,
+                   'relation' => 'users',
+                   'style' => 'listbox',
+                   'fields' => 'username',
+                   'showAddButton' => false
+            ));
+        }
+    }
 
-<div class="row">
-<p> <?php echo Yii::t('UserModule.user', 'This user can administrate this users'); ?>: </p>
+    if(empty($tabularIdx))
+    {
+        echo CHtml::openTag('div',array('class'=>'row buttons'));
+        echo CHtml::submitButton($model->isNewRecord
+            ? Yii::t('UserModule.user', 'Create')
+            : Yii::t('UserModule.user', 'Save'));
+        echo CHtml::closeTag('div');
 
-<?php 
-		$this->widget('YumModule.components.Relation',
-			array('model' => $model,
-			'relation' => 'users',
-			'style' => 'listbox',
-			'fields' => 'username',
-			'showAddButton' => false
-		));  ?>
-
-</div>
-
-
-<?php endif; ?>
-
-
-<div class="row buttons">
-<?php echo CHtml::submitButton($model->isNewRecord 
-		? Yii::t('UserModule.user', 'Create') 
-		: Yii::t('UserModule.user', 'Save')); ?>
-		</div>
-
-		<?php echo CHtml::endForm(); ?>
-
-		</div><!-- form -->
+        echo CHtml::endForm();
+        echo CHtml::closeTag('div');
+    }
+?>

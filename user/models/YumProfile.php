@@ -18,6 +18,21 @@
  */
 class YumProfile extends YumActiveRecord
 {
+	const PRIVACY_PRIVATE = 'private';
+	const PRIVACY_PROTECTEd = 'protected';
+	const PRIVACY_PUBLIC = 'public';
+
+    /**
+    * @var array of YumProfileFields
+    */
+    static $fields=null;
+
+    public function init()
+    {
+        parent::init();
+        #load profile fields only once
+        $this->loadProfileFields();
+    }
 
 	/**
 	 * @param string $className
@@ -50,13 +65,12 @@ class YumProfile extends YumActiveRecord
 
 	public function rules()
 	{
+
 		$required = array();
 		$numerical = array();           
 		$rules = array();
 
-		$model = YumProfileField::model()->forOwner()->findAll();
-
-		foreach ($model as $field) 
+		foreach (self::$fields as $field)
 		{
 			$field_rule = array();
 
@@ -150,12 +164,44 @@ class YumProfile extends YumActiveRecord
 			'profile_id' => Yii::t("UserModule.user", 'Profile ID'),
 			'privacy' => Yii::t('UserModule.user', 'Privacy'),
 		);
-		$model=YumProfileField::model()->forOwner()->findAll();
 
-		foreach ($model as $field)
+		foreach (self::$fields as $field)
 			$labels[$field->varname] = Yii::t("UserModule.user", $field->title);
 
 		return $labels;
+	}
+
+    /**
+    * Load profile fields.
+    * Overwrite this method to get another set of fields
+    * @since 0.6
+    * @return array of YumProfileFields or empty array
+    */
+    public function loadProfileFields()
+    {
+        if(self::$fields===null)
+        {
+            self::$fields=YumProfileField::model()->forOwner()->findAll();
+            if(self::$fields==null)
+                self::$fields=array();
+        }
+        return self::$fields;
+    }
+	
+	/**
+	 * Returns formatted name
+	 * With default fomatting it returns firstname and lastname 
+	 * concatenated and separated with space.
+	 * As placeholders in template you can use all profile properties
+	 * @param string $template
+	 * @since 0.6
+	 * @return string
+	 */
+	public function getFormattedName($template='{firstname} {lastname}')
+	{
+		foreach($this->getAttributes() as $key=>$attribute)
+			$tr["{{$key}}"]=$attribute;
+		return strtr($template,$tr);
 	}
 
 

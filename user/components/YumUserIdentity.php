@@ -9,6 +9,7 @@ class YumUserIdentity extends CUserIdentity
 
 	public function authenticate()
 	{
+		$user=null;
 		$loginType = Yii::app()->controller->module->loginType; 
 
 		if ($loginType == UserModule::LOGIN_BY_USERNAME)
@@ -17,7 +18,9 @@ class YumUserIdentity extends CUserIdentity
 		}
 		else if ($loginType == UserModule::LOGIN_BY_EMAIL) 
 		{
-			$user = YumProfile::model()->findByAttributes(array('email'=>$this->username))->user;
+			$profile = YumProfile::model()->findByAttributes(array('email'=>$this->username));
+			if($profile instanceof YumProfile)
+				$user = $profile->user;
 		}
 		else if ($loginType == UserModule::LOGIN_BY_USERNAME_OR_EMAIL) 
 		{

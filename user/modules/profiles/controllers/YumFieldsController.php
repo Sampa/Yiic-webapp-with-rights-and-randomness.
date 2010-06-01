@@ -19,7 +19,8 @@ class YumFieldsController extends YumController
 			),
 			array('allow', 
 				'actions'=>array('index', 'create','update','view','admin','delete'),
-				'users'=>Yii::app()->user->isAdmin() ? array(Yii::app()->user->name ) : array(),
+				'users'=>array(Yii::app()->user->name ),
+                'expression' => 'Yii::app()->user->isAdmin()'
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -29,6 +30,7 @@ class YumFieldsController extends YumController
 
 	public function actionView()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$this->render('view',array(
 			'model'=>$this->loadModel(),
 		));
@@ -36,6 +38,7 @@ class YumFieldsController extends YumController
 
 	public function actionCreate()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$model=new YumProfileField;
 		#add to group?
 		if(isset($_GET['in_group']))
@@ -69,6 +72,7 @@ class YumFieldsController extends YumController
 
 	public function actionUpdate()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$model=$this->loadModel();
 		if(isset($_POST['YumProfileField']))
 		{
@@ -87,6 +91,7 @@ class YumFieldsController extends YumController
 
 	public function actionDelete()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
@@ -105,6 +110,7 @@ class YumFieldsController extends YumController
 
 	public function actionIndex()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$dataProvider=new CActiveDataProvider('YumProfileField', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,
@@ -121,6 +127,7 @@ class YumFieldsController extends YumController
 
 	public function actionAdmin()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$dataProvider=new CActiveDataProvider('YumProfileField', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,

@@ -23,7 +23,8 @@ class YumUserController extends YumController
 			),
 			array('allow',
 				'actions'=>array('admin','delete','create','update', 'list', 'assign'),
-				'users'=>Yii::app()->user->isAdmin() ? array(Yii::app()->user->name ) : array(),
+				'users'=>array(Yii::app()->user->name ),
+                'expression' => 'Yii::app()->user->isAdmin()'
 			),
 			array('allow',
 				'actions' => array('admin'),
@@ -108,7 +109,7 @@ class YumUserController extends YumController
 						{
 							Yii::app()->user->setFlash('registration',
 									Yii::t("UserModule.user",
-										"Your account has been activated. Thank you for your registration."));
+								"Your account has been activated. Thank you for your registration."));
 							$this->refresh();
 						}
 
@@ -437,6 +438,7 @@ class YumUserController extends YumController
 	 */
 	public function actionCreate()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$model=new YumUser;
 		$profile=new YumProfile;
 
@@ -470,12 +472,14 @@ class YumUserController extends YumController
 		$this->render('create',array(
 			'model'=>$model,
 			'profile'=>$profile,
+			'tabularIdx'=>null,
 		));
 
 	}
 
 	public function actionUpdate()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$model = $this->loadUser();
 		$model->password = '';
 
@@ -524,6 +528,7 @@ class YumUserController extends YumController
 		$this->render('update',array(
 			'model'=>$model,
 			'profile'=>$profile,
+			'tabularIdx'=>null,
 		));
 	}
 
@@ -534,8 +539,10 @@ class YumUserController extends YumController
 	 */
 	public function actionDelete()
 	{
+		if(Yii::app()->request->isPostRequest)
 		if(Yii::app()->user->isAdmin())
 		{
+			$this->layout = YumWebModule::yum()->adminLayout;
 			Yii::app()->user->setFlash('adminMessage',
 					Yii::t("UserModule.user",
 						"Admin Users can not be deleted!"));
@@ -543,6 +550,7 @@ class YumUserController extends YumController
 		}
 		else
 		{
+			$this->layout = YumWebModule::yum()->layout;
 			$model = $this->loadUser(Yii::app()->user->id);
 
 			if(isset($_POST['confirmPassword'])) 
@@ -551,19 +559,19 @@ class YumUserController extends YumController
 				{
 					if(Yii::app()->controller->module->profileHistory == false) 
 					{
-						if(is_array($model->profile))
-						{
-							foreach($model->profile as $profile)
-							{
-								$profile->delete();
-							}
-						}
-						else if (is_object($model->profile))
-						{
-							$model->profile->delete();
-						}
+			if(is_array($model->profile))
+			{
+				foreach($model->profile as $profile)
+				{
+					$profile->delete();
+				}
+			}
+			else if (is_object($model->profile))
+			{
+				$model->profile->delete();
+			}
 					}
-					$model->delete();
+			$model->delete();
 					$this->actionLogout();
 				} 
 				else 
@@ -575,12 +583,12 @@ class YumUserController extends YumController
 								)
 							);
 					$this->redirect('profile');
-				}
+		}
 			}
-			else
+		else
 			{
 				$this->render('confirmDeletion', array('model' => $model));
-			}
+	}
 		}
 	}
 
@@ -588,6 +596,7 @@ class YumUserController extends YumController
 
 	public function actionList()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,
@@ -600,6 +609,7 @@ class YumUserController extends YumController
 
 	public function actionAdmin()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,

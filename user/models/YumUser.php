@@ -56,6 +56,7 @@ class YumUser extends YumActiveRecord
     	elseif (isset(Yii::app()->modules['user']['usersTable'])) 
       		$this->_tableName = Yii::app()->modules['user']['usersTable'];
     	else
+      		$this->_tableName = '{{users}}'; // fallback if nothing is set
       		$this->_tableName = 'users'; // fallback if nothing is set
 
 		return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
@@ -103,16 +104,20 @@ class YumUser extends YumActiveRecord
 	);
 	}
 
-	public function register($username, $password, $email)
+	public function register($username=null, $password=null, $email=null)
 	{
-		// Password equality is checked in Registration Form
-		$this->username = $username;
-		$this->password = $this->encrypt($password);
-		$this->activationKey = $this->encrypt(microtime() . $password);
+		#this function can be used external to
+		if($username!==null && $password!==null)
+		{
+			// Password equality is checked in Registration Form
+			$this->username = $username;
+			$this->password = $this->encrypt($password);
+		}
+		$this->activationKey = $this->generateActivationKey(false,$password);
 		$this->createtime = time();
 		$this->superuser = 0;
 
-		if(Yii::app()->controller->module->enableEmailActivation == false) 
+		if(YumWebModule::yum()->disableEmailActivation == true) 
 			$this->status = YumUser::STATUS_ACTIVE;
 		else
 			$this->status = YumUser::STATUS_NOTACTIVE;
@@ -144,13 +149,26 @@ class YumUser extends YumActiveRecord
 		} 
 		elseif($find->activationKey == $activationKey) 
 		{
-			$find->activationKey = YumUser::encrypt(microtime());
+			$find->activationKey = $this->generateActivationKey(true);
 			$find->status = 1;
 			$find->save();
 			return true;
 		}
 		else
 			return false;
+	}
+	/**
+	 * @params boolean $activate Whether to generate activation key when user is registering first time (false)
+	 * or when it is activating (true)
+	 * @params string $password password entered by user	
+	 * @param array $params, optional, to allow passing values outside class in inherited classes
+	 * By default it uses password and microtime combination to generated activation key
+	 * When user is activating, activation key becomes micortime()
+	 * @return string
+	 */
+	public function generateActivationKey($activate=false,$password='',array $params=array())
+	{
+		return $activate ? $this->encrypt(microtime()) : $this->encrypt(microtime() . $this->password);
 	}
 
 	public function attributeLabels()
@@ -175,8 +193,8 @@ class YumUser extends YumActiveRecord
 	 */
 	public static function encrypt($string = "")
 	{
-		$salt = Yii::app()->controller->module->salt;
-		$hashFunc = Yii::app()->controller->module->hashFunc;
+		$salt = YumWebModule::yum()->salt;
+		$hashFunc = YumWebModule::yum()->hashFunc;
 		$string = sprintf("%s%s%s", $salt, $string, $salt);
 		
 		if(!function_exists($hashFunc))

@@ -27,6 +27,7 @@ class UserModule extends YumWebModule
 	public $installDemoData = true;
 	public $enableEmailActivation = true;
 	public $layout = 'column2';
+	public $adminLayout = 'column2';
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';	
@@ -108,25 +109,26 @@ class UserModule extends YumWebModule
 	public function __set($name,$value)
 	{
 		if(substr($name,-3)==='Url')
+		{
 			if(isset($this->_urls[substr($name,0,-3)]))
 				$this->_urls[substr($name,0,-3)]=$value;		
+		}
 		parent::__set($name,$value);
 	}
 
 	public function init()
 	{
 		$this->setImport(array(
-			'user.models.*',
-			'user.components.*',
-			'user.core.YumActiveRecord',
-			'user.core.YumController',
-			'user.core.YumFormModel',
-			'user.core.YumHelper',
-			'user.core.YumMenuItemHelper',
-			'user.core.YumWebModule',
+			'YumModule.models.*',
+			'YumModule.components.*',
+			'YumModule.core.YumActiveRecord',
+			'YumModule.core.YumController',
+			'YumModule.core.YumFormModel',
+			'YumModule.core.YumHelper',
+			'YumModule.core.YumMenuItemHelper',
+			'YumModule.core.YumWebModule',
 		));
 	}
-
 
 	public function beforeControllerAction($controller, $action)
 	{

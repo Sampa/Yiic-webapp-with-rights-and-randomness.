@@ -6,13 +6,14 @@ class YumRoleController extends YumController
 
 	public function actionView()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$model = $this->loadModel();
 		$this->render('view',array('model'=>$model));
 	}
 
 	public function actionCreate() 
 	{
-
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$model = new YumRole();
 		$this->performAjaxValidation($model);
 		if(isset($_POST['YumRole'])) {
@@ -27,6 +28,7 @@ class YumRoleController extends YumController
 
 	public function actionUpdate()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$model = $this->loadModel();
 
 	 $this->performAjaxValidation($model);
@@ -48,6 +50,7 @@ class YumRoleController extends YumController
 
 	public function actionAdmin() 
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;
 		$dataProvider=new CActiveDataProvider('YumRole', array(
 			'pagination'=>array(
 				'pageSize'=>20,
@@ -62,6 +65,7 @@ class YumRoleController extends YumController
 
 	public function actionDelete()
 	{
+		$this->layout = YumWebModule::yum()->adminLayout;	
 		if(Yii::app()->request->isPostRequest)
 		{
 			$this->loadModel()->delete();
