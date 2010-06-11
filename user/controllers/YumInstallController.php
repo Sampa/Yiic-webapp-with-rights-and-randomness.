@@ -3,21 +3,14 @@
 class YumInstallController extends YumController
 {
 	public $layout = 'install';
-	
-	/**
-	 * Default action: install
-	 * @var string
-	 */
 	public $defaultAction='install';
 	
-	/**
-	 * @return array
-	 */
 	public function accessRules()
 	{
 		return array(
 			array('allow',
-				'actions'=>array('index, start, installer, installation, install, index'),
+				'actions'=>array(
+					'index, start, installer, installation, install, index'),
 				'users'=>array('*')),
 			#deny all other users			
 			
@@ -41,7 +34,7 @@ class YumInstallController extends YumController
 
 	public function actionInstall() 
 	{
-		if($this->module->debug == true) 
+		if($this->module->debug === true) 
 		{
 			if(Yii::app()->request->isPostRequest) 
 			{
@@ -238,7 +231,8 @@ class YumInstallController extends YumController
 				} 
 				else 
 				{
-					throw new CException(Yii::t('UserModule.user', 'Database connection is not working'));	
+					throw new CException(Yii::t('UserModule.user',
+								'Database connection is not working'));	
 				}
 			}
 			else {

@@ -4,10 +4,10 @@
 see the module specific options that can be set in your Application 
 Configuration (for example, language). </p>
 
-<p> Please change the Administrator Password to something better than 
-the default password. </p>
+<strong> Please change the Administrator Password to something better than 
+the default password. </strong>
 
 <p><?php 
-	$route=YumHelper::route('{user}/admin'); 
+	$route=YumHelper::route('{user}/login'); 
 	echo CHtml::link("Administrate your Users (use {$route})",array($route)); 
 ?></p>

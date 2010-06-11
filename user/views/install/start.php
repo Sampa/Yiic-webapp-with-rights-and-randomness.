@@ -1,16 +1,13 @@
-<h1>
- <?php 
-echo Yii::t('UserModule.user', 'Yii User Management Module installation'); 
-?> 
-</h1>
+<h1> Yii User Management Module Installation </h1>
 
 <?php echo CHtml::beginForm(array('install')); ?>
 
 <div class="span-12">
 	<h2> Information: </h2>
 	<hr />
-	<p> You are about to install the Yii User management Module in your Web 
-Application. You require a working database connection to an Mysql
+	<p> You are about to install the Yii User management Module version
+<?php echo Yii::app()->getModule('user')->version; ?>
+ in your Web Application. You require a working database connection to an mysql
 Database. Other Databases are not supported at this time. Please make sure 
 your Database is Accessible in protected/config/main.php. </p>
 

@@ -38,7 +38,7 @@ Add these lines:
 				'profiles',
 				'messages',
 				),
-      'debug' => 'true',
+      'debug' => true,
 			)
 		),
 

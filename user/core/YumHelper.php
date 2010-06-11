@@ -17,7 +17,14 @@ class YumHelper
 	 */
 	public static function resolveTableName($tablename, CDbConnection $connection=null)
 	{
-		$dbConnection=$connection instanceof CDbConnection ? $connection : Yii::app()->getModule('db');
+		$dbConnection = $connection instanceof CDbConnection ? $connection : Yii::app()->getModule('db');
+		if(isset($dbConnection->tablePrefix) && $dbConnection->tablePrefix != '') 
+		{
+			if(substr($dbConnection->tablePrefix, -1) == '_') 
+				$tablename = $dbConnection->tablePrefix . $tablename;	
+			else
+				$tablename = $dbConnection->tablePrefix . '_' . $tablename;	
+		}
 		return $dbConnection->createCommand($tablename)->getText();
 	}
 	
