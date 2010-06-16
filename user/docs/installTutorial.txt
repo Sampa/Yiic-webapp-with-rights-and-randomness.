@@ -16,14 +16,14 @@ Create a Web application under '/var/www/testdrive'? [Yes|No] Yes
 Your application has been created successfully under /var/www/testdrive.
 
 2.) Extract the Yii User Management Module under the modules/ directory
-of your new Web Application. Replace the _0.5 with the latest Version
+of your new Web Application. Replace the _0.7 with the latest Version
 available.
 
 $ cd testdrive/protected
 $ mkdir modules
 $ cd modules
-$ wget http://www.yiiframework.com/extension/yii-user-management/files/User_Management_Module_0.5.tar.bz2
-$ tar xvf User_Management_Module_0.5.tar.bz2
+$ wget http://www.yiiframework.com/extension/yii-user-management/files/User_Management_Module_0.7.tar.bz2
+$ tar xvf User_Management_Module_0.7.tar.bz2
 
 3.) Add the Module to your Application Configuration
 
@@ -161,7 +161,7 @@ in a later Version.
 available Application Configuration Parameters:
 
  Version number of the Module:
-$version = '0.5';
+$version = '0.7';
 
  Whether the Module is in Debug mode.
 $debug = false; 

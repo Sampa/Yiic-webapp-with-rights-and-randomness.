@@ -18,7 +18,7 @@ class YumUserController extends YumController
 				'expression'=>'Yii::app()->controller->module->allowCaptcha',
 			),
 			array('allow',
-				'actions'=>array('profile', 'edit', 'logout', 'changepassword'),
+				'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'delete'),
 				'users'=>array('@'),
 			),
 			array('allow',

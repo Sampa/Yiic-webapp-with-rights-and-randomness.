@@ -14,7 +14,7 @@ Yii::import('YumModule.core.YumHelper');
 class UserModule extends YumWebModule
 {
 	
-	public $version = '0.6';
+	public $version = '0.7';
 	public $debug = false;
 	public $usersTable = "users";
 	public $messagesTable = "messages";
@@ -113,7 +113,7 @@ class UserModule extends YumWebModule
 			if(isset($this->_urls[substr($name,0,-3)]))
 				$this->_urls[substr($name,0,-3)]=$value;		
 		}
-		parent::__set($name,$value);
+		//parent::__set($name,$value);
 	}
 
 	public function init()
