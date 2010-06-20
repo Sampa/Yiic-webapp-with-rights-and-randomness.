@@ -97,20 +97,22 @@ if(Yii::app()->user->isAdmin()) {
 
 <?php 
 
-echo Yii::t('UserModule.user', 'This user belongs to these roles:');  ?>
+if(isset(Yii::app()->controller->module->modules['roles'])) {
 
-<?php 
-if($model->roles) {
-	echo "<ul>";
-	foreach($model->roles as $role) {
-		echo CHtml::tag('li',array(),CHtml::link(
-			$role->title,array(YumHelper::route('{roles}/role/view'),'id'=>$role->id)),true);
+	echo Yii::t('UserModule.user', 'This user belongs to these roles:');  
+
+	if($model->roles) {
+		echo "<ul>";
+		foreach($model->roles as $role) {
+			echo CHtml::tag('li',array(),CHtml::link(
+						$role->title,array(YumHelper::route('{roles}/role/view'),'id'=>$role->id)),true);
+		}
+		echo "</ul>";
 	}
-	echo "</ul>";
-}
-else 
-{
-	printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
+	else 
+	{
+		printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
+	}
 }
 
 ?>

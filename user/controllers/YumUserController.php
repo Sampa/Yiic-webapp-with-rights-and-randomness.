@@ -22,9 +22,9 @@ class YumUserController extends YumController
 				'users'=>array('@'),
 			),
 			array('allow',
-				'actions'=>array('admin','delete','create','update', 'list', 'assign'),
+				'actions'=>array('admin','adminpanel','delete','create','update', 'list', 'assign'),
 				'users'=>array(Yii::app()->user->name ),
-                'expression' => 'Yii::app()->user->isAdmin()'
+        'expression' => 'Yii::app()->user->isAdmin()'
 			),
 			array('allow',
 				'actions' => array('admin'),
@@ -60,6 +60,11 @@ class YumUserController extends YumController
 			$this->actionProfile();
 		else
 			$this->actionList();
+	}
+
+	public function actionAdminPanel()
+	{
+		$this->render('adminpanel');
 	}
 
 	/* 

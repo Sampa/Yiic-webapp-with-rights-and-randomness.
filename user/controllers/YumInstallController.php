@@ -197,8 +197,8 @@ class YumInstallController extends YumController
 					if(isset($_POST['installDemoData'])) 
 					{
 						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
-							(1, 'admin', '".YumUser::encrypt('admin')."', '', 0, 1266571424, 1, 1),
-							(2, 'demo', '".YumUser::encrypt('demo')."', '', 0, 1266543330, 0, 1)";
+							(1, 'admin', '".YumUser::encrypt('admin')."', '', ".time().", 0, 1, 1),
+							(2, 'demo', '".YumUser::encrypt('demo')."', '', ".time().", 0, 0, 1)";
 						$db->createCommand($sql)->execute();
 
 						if(isset($_POST['installRole']))

@@ -49,7 +49,7 @@ class YumMenuItemHelper
 	{
 		return self::users(
 			$label,'admin',
-			(!Yii::app()->user->isAdmin() && ( Yii::app()->user->hasUsers() || Yii::app()->user->hasRole('UserCreation'))),
+			(!Yii::app()->user->isAdmin() && (Yii::app()->user->hasUsers() || Yii::app()->user->hasRole('UserCreation'))),
 			$params
 		);
 	}	
@@ -93,7 +93,7 @@ class YumMenuItemHelper
 	public static function updateUser(array $params=null, $label='Update user')
 	{
 		if(!isset($params['id']))
-			throw new CException(Yii::t('UserModule.core','Missing user ID.'));
+			throw new CException(Yii::t('UserModule.core', 'Missing user ID.'));
 		return self::users($label,'update',Yii::app()->user->isAdmin(),$params);
 	}
 	
