@@ -416,7 +416,7 @@ class YumUserController extends YumController
 		if(isset($_POST['YumUser']))
 		{
 			$model->attributes=$_POST['YumUser'];
-      		if($this->module->profileHistory == true)
+			if($this->module->profileHistory == true)
 				$profile = new YumProfile();
 
 			if(isset($_POST['YumProfile']))
@@ -501,14 +501,15 @@ class YumUserController extends YumController
 	public function actionUpdate()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
+
 		$model = $this->loadUser();
-		$model->password = '';
 
 		if(($profile = $model->profile) === false)
 			$profile = new YumProfile();
 
 		if(isset($_POST['YumUser']))
 		{
+
 			$model->attributes = $_POST['YumUser'];
 
 			if($this->module->hasModule('role'))
@@ -524,22 +525,16 @@ class YumUserController extends YumController
 				$model->users = $_POST['YumUser']['YumUser'];
 			}
 
-			if(isset($_POST['YumProfile']))
+			if(isset($_POST['YumProfile'])) {
+				if($this->module->profileHistory == true)
+					$profile = new YumProfile();
+
 				$profile->attributes = $_POST['YumProfile'];
+				$profile->user_id = $model->id;
+			}
 
 			if($model->validate() && $profile->validate())
 			{
-				$old_password = YumUser::model()->findByPk($model->id)->password;
-				if ($model->password != '')
-				{
-					$model->password = YumUser::encrypt($model->password);
-					$model->activationKey = YumUser::encrypt(microtime().$model->password);
-				}
-				else
-				{
-					$model->password = $old_password;
-				}
-
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));

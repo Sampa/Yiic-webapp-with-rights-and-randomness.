@@ -93,12 +93,12 @@ class YumUser extends YumActiveRecord
     else
       $this->_userUserTable = '{{user_has_user}}';
       
-    #resolve table names to use them in relations definition
+    // resolve table names to use them in relations definition
     $relationUHRTableName=YumHelper::resolveTableName($this->_userRoleTable,$this->getDbConnection());      
     $relationUHUTableName=YumHelper::resolveTableName($this->_userUserTable,$this->getDbConnection());
 
 	return array(
-		'profile'=>array(self::HAS_ONE, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
+		'profile'=>array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
 		'roles'=>array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
 		'users'=>array(self::MANY_MANY, 'YumUser', $relationUHUTableName . '(owner_id, child_id)'),
 	);

@@ -65,7 +65,7 @@ class YumInstallController extends YumController
 
 					// Create User Table
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $usersTable . "` (
-						`id` int(11) NOT NULL auto_increment,
+						`id` int unsigned NOT NULL auto_increment,
 						`username` varchar(20) NOT NULL,
 						`password` varchar(128) NOT NULL,
 						`activationKey` varchar(128) NOT NULL default '',
@@ -86,8 +86,8 @@ class YumInstallController extends YumController
 					{
 						
 						//Create Profile Fields Group Table
-						$sql = "CREATE  TABLE IF NOT EXISTS `" . $profileFieldsGroupTable . "` (
-							`id` INT(3) NOT NULL AUTO_INCREMENT ,
+						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsGroupTable . "` (
+							`id` int unsigned not null auto_increment,
 							`group_name` VARCHAR(50) NOT NULL ,
 							`title` VARCHAR(255) NOT NULL ,
 							`position` INT(3) NOT NULL DEFAULT 0 ,
@@ -98,8 +98,8 @@ class YumInstallController extends YumController
 						
 						// Create Profile Fields Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
-							`id` int(10) NOT NULL auto_increment,
-							`field_group_id` int(3) NOT NULL default '0',
+							`id` int unsigned NOT NULL auto_increment,
+							`field_group_id` int unsigned NOT NULL default '0',
 							`varname` varchar(50) NOT NULL,
 							`title` varchar(255) NOT NULL,
 							`hint` text NOT NULL,
@@ -122,9 +122,9 @@ class YumInstallController extends YumController
 
 						// Create Profiles Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
-							`profile_id` int(11) NOT NULL auto_increment,
-							`user_id` int(11) NOT NULL,
-							`timestamp` int(11) NOT NULL,
+							`profile_id` int unsigned NOT NULL auto_increment,
+							`user_id` int unsigned NOT NULL,
+							`timestamp` timestamp NOT NULL,
 							`privacy` ENUM('protected', 'private', 'public') NOT NULL,
 							`lastname` varchar(50) NOT NULL default '',
 							`firstname` varchar(50) NOT NULL default '',
@@ -142,7 +142,7 @@ class YumInstallController extends YumController
 					{
 						// Create Roles Table
 						$sql = "CREATE TABLE IF NOT EXISTS `".$rolesTable."` (
-							`id` INT NOT NULL AUTO_INCREMENT ,
+							`id` INT unsigned NOT NULL AUTO_INCREMENT ,
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL ,
 							PRIMARY KEY (`id`)) 
@@ -153,9 +153,9 @@ class YumInstallController extends YumController
 						// Create User_has_role Table
 
 						$sql = "CREATE TABLE IF NOT EXISTS `".$userRoleTable."` (
-							`id` int(11) NOT NULL auto_increment,
-							`user_id` int(11) NOT NULL,
-							`role_id` int(11) NOT NULL,
+							`id` int unsigned NOT NULL auto_increment,
+							`user_id` int unsigned NOT NULL,
+							`role_id` int unsigned NOT NULL,
 							PRIMARY KEY  (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
@@ -164,9 +164,9 @@ class YumInstallController extends YumController
 						// Create User_has_user Table
 
 						$sql = "CREATE TABLE IF NOT EXISTS `".$userUserTable."` (
-							`id` int(11) NOT NULL auto_increment,
-							`owner_id` int(11) NOT NULL,
-							`child_id` int(11) NOT NULL,
+							`id` int unsigned NOT NULL auto_increment,
+							`owner_id` int unsigned NOT NULL,
+							`child_id` int unsigned NOT NULL,
 							PRIMARY KEY  (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
@@ -179,9 +179,9 @@ class YumInstallController extends YumController
 						// Create Messages Table
 						$sql = "
 							CREATE TABLE IF NOT EXISTS `" . $messagesTable . "` (
-									`id` int(11) NOT NULL auto_increment,
-									`from_user_id` int(11) NOT NULL,
-									`to_user_id` int(11) NOT NULL,
+									`id` int unsigned NOT NULL auto_increment,
+									`from_user_id` int unsigned NOT NULL,
+									`to_user_id` int unsigned NOT NULL,
 									`title` varchar(45) NOT NULL,
 									`message` text,
 									`message_read` tinyint(1) NOT NULL,

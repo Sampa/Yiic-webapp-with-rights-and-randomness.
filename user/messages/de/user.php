@@ -2,6 +2,8 @@
 
 
 return array(
+		'Profile history' => 'Profilverlauf',
+		'Profile number' => 'Profilnummer: ',
 		'View all messages' => 'Alle Nachrichten ansehen',
 		'Manage profiles' => 'Profile verwalten',
 		'Manage profile fields' => 'Profilfelder verwalten',

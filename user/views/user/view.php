@@ -1,5 +1,6 @@
 <?php
-$this->title = Yii::t('UserModule.user', 'View user "{username}"',array('{username}'=>$model->username));
+$this->title = Yii::t('UserModule.user', 'View user "{username}"',array(
+			'{username}'=>$model->username));
 
 $this->breadcrumbs=array(Yii::t('UserModule.user', 'Users') => array('index'), $model->username);
 
@@ -28,7 +29,9 @@ if(Yii::app()->user->isAdmin()) {
 			array_push($attributes,array(
 				'label' => Yii::t('UserModule.user', $field->title),
 				'name' => $field->varname,
-				'value' => $model->profile->getAttribute($field->varname),
+				'value' => is_array($model->profile) 
+				? $model->profile[0]->getAttribute($field->varname) 
+				: $model->profile->getAttribute($field->varname) ,
 				));
 		}
 	}
@@ -53,7 +56,7 @@ if(Yii::app()->user->isAdmin()) {
 			'value' => YumUser::itemAlias("UserStatus",$model->status),
 		)
 	);
-	
+
 	$this->widget('zii.widgets.CDetailView', array(
 		'data'=>$model,
 		'attributes'=>$attributes,
@@ -95,9 +98,32 @@ if(Yii::app()->user->isAdmin()) {
 
 <hr />
 
-<?php 
+<?php
+if(Yii::app()->controller->module->profileHistory) 
+{
+	printf('<h2>%s</h2>', Yii::t('UserModule.user', 'Profile history'));
 
-if(isset(Yii::app()->controller->module->modules['roles'])) {
+	if(!is_array($model->profile))
+	$model->profile = array($model->profile);
+
+	foreach($model->profile as $profile) 
+	{
+		$data = sprintf('%s: %s %s',
+				date($profile->timestamp),
+				Yii::t('UserModule.user', 'Profile number'),
+				$profile->profile_id
+				);
+		printf('<li>%s</li>', CHtml::link($data, array(
+					'user/profile/view',
+					'id' => $profile->profile_id)));
+	}
+echo '<br />';
+}
+
+?>
+
+<?php 
+if(in_array('role', (Yii::app()->modules['user']['modules']))) {
 
 	echo Yii::t('UserModule.user', 'This user belongs to these roles:');  
 
