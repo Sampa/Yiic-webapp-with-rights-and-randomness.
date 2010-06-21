@@ -22,9 +22,7 @@ class YumProfileController extends YumController
 	public function actionView()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
-		$this->render('view',array(
-			'model'=>$this->loadModel(),
-		));
+		$this->render('view',array( 'model'=>$this->loadModel()));
 	}
 
 	public function actionCreate()

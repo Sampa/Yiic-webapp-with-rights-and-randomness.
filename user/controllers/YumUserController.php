@@ -504,12 +504,13 @@ class YumUserController extends YumController
 
 		$model = $this->loadUser();
 
-		if(($profile = $model->profile) === false)
-			$profile = new YumProfile();
+		if($model->profile === false)
+			$model->profile = new YumProfile();
+		else if(is_array($model->profile))
+			$model->profile = $model->profile[0];
 
 		if(isset($_POST['YumUser']))
 		{
-
 			$model->attributes = $_POST['YumUser'];
 
 			if($this->module->hasModule('role'))
@@ -543,7 +544,7 @@ class YumUserController extends YumController
 
 		$this->render('update',array(
 			'model'=>$model,
-			'profile'=>$profile,
+			'profile'=>$model->profile,
 			'tabularIdx'=>null,
 		));
 	}
