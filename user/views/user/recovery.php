@@ -1,13 +1,10 @@
 <?php 
-// Page title
 $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Restore");
 
-// Breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", "Login") => array(YumHelper::route('{user}/login')),
 	Yii::t("UserModule.user", "Restore"));
 
-// Header
 $this->title = Yii::t("UserModule.user", "Restore"); 
 ?>
 

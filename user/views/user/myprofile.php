@@ -1,12 +1,9 @@
 <?php
-#page title 
 $this->pageTitle=Yii::app()->name . ' - ' . Yii::t("UserModule.user", "Profile");
-#breadcrumbs
 $this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
-#heading
 $this->title = Yii::t("UserModule.user", 'Your profile');
-#menu
 $this->menu=array(
+  YumMenuItemHelper::adminPanel(), 
 	YumMenuItemHelper::manageMyUsers(),
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::listUsers(),

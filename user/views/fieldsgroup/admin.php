@@ -1,12 +1,10 @@
 <?php
-#heading
 $this->title = Yii::t("UserModule.user", 'Manage profile fields groups');
-#breadcrumbs
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Profile fields groups')=>array('admin'),
 	Yii::t("UserModule.user", 'Manage'),);
-#menu
 $this->menu = array(
+	YumMenuItemHelper::adminPanel(),
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::manageFields(),
 	YumMenuItemHelper::createFieldsGroup());

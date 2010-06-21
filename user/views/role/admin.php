@@ -1,13 +1,13 @@
 <?php
-#heading
 $this->title = Yii::t('UserModule.user', 'Manage roles'); 
-#breadcrumbs
+
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
 	Yii::t("UserModule.user", 'Manage'),
 );
-#menu
+
 $this->menu = array(
+	YumMenuItemHelper::adminPanel(),
 	YumMenuItemHelper::createRole(),
 	YumMenuItemHelper::manageUsers());
 ?>

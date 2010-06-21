@@ -107,18 +107,17 @@ class YumFieldsGroupController extends YumController
 	}
 
 	/**
-	 * Manages all models.
+	 * Manage fields Groups.
 	 */
 	public function actionAdmin()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
-		$model=new YumProfileFieldsGroup('search');
+
+		$model = new YumProfileFieldsGroup('search');
 		if(isset($_GET['YumProfileFieldsGroup']))
 			$model->attributes=$_GET['YumProfileFieldsGroup'];
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+		$this->render('admin', array( 'model'=>$model ));
 	}
 
 	/**

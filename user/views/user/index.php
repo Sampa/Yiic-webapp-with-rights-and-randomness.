@@ -1,10 +1,8 @@
 <?php
-#heading
 $this->title = Yii::t('UserModule.user', 'Users');
-#breadcrumbs
 $this->breadcrumbs=array(Yii::t("UserModule.user", "Users"));
-#menu
 $this->menu = array(
+  YumMenuItemHelper::adminPanel(), 
 	YumMenuItemHelper::createUser(),
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::manageFields(),

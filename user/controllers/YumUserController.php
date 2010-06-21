@@ -55,7 +55,11 @@ class YumUserController extends YumController
 	public function actionIndex()
 	{
 		if(Yii::app()->user->isGuest)
+			// User is not logged in, so we redirect to the actionLogin, which will
+			// render the login Form
 			$this->actionLogin();
+		else if(Yii::app()->user->isAdmin())
+			$this->actionAdminPanel();
 		else if(isset($_GET['id']) || isset ($_GET['user_id']))
 			$this->actionProfile();
 		else
@@ -64,7 +68,16 @@ class YumUserController extends YumController
 
 	public function actionAdminPanel()
 	{
-		$this->render('adminpanel');
+		$this->render('adminpanel', array(
+					'active_users' => YumUser::model()->count('status = 1'),
+					'inactive_users' => YumUser::model()->count('status = 0'),
+					'admin_users' => YumUser::model()->count('superuser = 1'),
+					'roles' => YumRole::model()->count(),
+					'profiles' => YumProfile::model()->count(),
+					'profile_fields' => YumProfileField::model()->count(),
+					'profile_field_groups' => YumProfileFieldsGroup::model()->count(),
+					'messages' => YumMessages::model()->count(),
+					));
 	}
 
 	/* 
@@ -184,22 +197,27 @@ class YumUserController extends YumController
 
 	public function actionLogin()
 	{
-		$model=new YumUserLogin;
+		$loginForm = new YumUserLogin;
+
 		// collect user input data
 		if(isset($_POST['YumUserLogin']))
 		{
-			$model->attributes=$_POST['YumUserLogin'];
+			$loginForm->attributes=$_POST['YumUserLogin'];
+
 			// validate user input and redirect to previous page if valid
-			if($model->validate())
+			if($loginForm->validate())
 			{
 				$lastVisit = YumUser::model()->findByPk(Yii::app()->user->id);
 				$lastVisit->lastvisit = time();
 				$lastVisit->save();
-				$this->redirect(Yii::app()->controller->module->returnUrl);
+				if($lastVisit->superuser)
+					$this->redirect(Yii::app()->controller->module->returnAdminUrl);
+				else
+					$this->redirect(Yii::app()->controller->module->returnUrl);
 			}
 		}
 		// display the login form
-		$this->render('/user/login',array('model'=>$model,));
+		$this->render('/user/login',array('model'=>$loginForm,));
 	}
 
 	public function actionLogout()
@@ -359,7 +377,6 @@ class YumUserController extends YumController
 		else
 		{
 			// Display a foreign profile:
-
 			$model = $this->loadUser($uid = $_GET['id']);
 
 			if($this->module->forceProtectedProfiles == true ||
@@ -376,7 +393,6 @@ class YumUserController extends YumController
 				));
 			}
 		}
-
 	}
 
 	/**
@@ -623,7 +639,6 @@ class YumUserController extends YumController
 		$this->render('admin',array(
 			'dataProvider'=>$dataProvider,
 		));
-
 	}
 
 	/**

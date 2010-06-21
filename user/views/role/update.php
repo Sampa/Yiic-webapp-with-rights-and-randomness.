@@ -1,12 +1,21 @@
 <?php
-#heading
 $this->title = Yii::t("UserModule.user", "Update role");
-#breadcrumbs
+
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
 	Yii::t("UserModule.user", 'Update'));
-#menu
+
 $this->menu = array(
+		YumMenuItemHelper::adminPanel(), 
+		YumMenuItemHelper::manageFields(),
+		YumMenuItemHelper::manageRoles());
+?>
+
+<?php 
+if(Yii::app()->user->isAdmin()) {
+	$attributes = array(
+		'id',
+	
 	YumMenuItemHelper::manageRoles(),
 	YumMenuItemHelper::manageUsers());
 ?>

@@ -2,16 +2,16 @@
 
     if(empty($tabularIdx))
     {
-        #title
         $this->title=Yii::t("UserModule.user", 'Update user')." ".$model->id;
-        #breadcrumbs
+
         $this->breadcrumbs = array(
             Yii::t("UserModule.user", 'Users')=>array('index'),
             $model->username=>array('view','id'=>$model->id),
             Yii::t("UserModule.user", 'Update'));
-        #menu
-        $this->menu = array(
-            YumMenuItemHelper::manageUsers(),
+
+				$this->menu = array(
+						YumMenuItemHelper::adminPanel(), 
+						YumMenuItemHelper::manageUsers(),
             YumMenuItemHelper::listUsers(),
             YumMenuItemHelper::createUser(),
             YumMenuItemHelper::viewUser(array('id'=>$model->id)),

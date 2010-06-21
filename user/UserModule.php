@@ -44,6 +44,8 @@ class UserModule extends YumWebModule
 		'recovery'=>array('{user}/recovery'),
 		'login'=>array("{user}/login"),
 		'return'=>array("{user}/profile"),
+		// Page to go after admin logs in
+		'returnAdmin'=>array("{user}/adminpanel"),
 		// Page to go to after registration, login etc.	
 		'returnLogout'=>array("{user}/login"),
 	);
@@ -79,13 +81,19 @@ class UserModule extends YumWebModule
 	public $allowCaptcha=true;
 	
 	/**
-	 * Controller map
+	 * Defines all Controllers of the User Management Module and maps them to
+	 * shorter terms for using in the url
 	 * @var array
 	 */
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
+		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),	
+		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),	
+		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),	
+		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),	
+		'fieldsgroup'=>array('class'=>'YumModule.controllers.YumFieldsGroupController'),	
 	);
 	
 	/**

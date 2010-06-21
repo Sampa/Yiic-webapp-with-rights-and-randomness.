@@ -2,13 +2,26 @@
 /**
  * Helper class
  * @author tomasz.suchanek@gmail.com
+ * @author thyseus@gmail.com
  * @since 0.6
  * @package Yum.core
- *
  */
 class YumMenuItemHelper
 {
-	
+	protected static function hasModule($module) 
+	{
+		return in_array($module, (Yii::app()->modules['user']['modules']));
+	}
+
+	public static function adminPanel()
+	{
+		if(Yii::app()->user->isAdmin())
+			return	array(
+					'label' => Yii::t('UserModule.user', 'User administration Panel'),
+					'url' => array('/user/user/adminpanel')
+					);
+	}
+
 	/**
 	 * Creates menu item which points to user module controller/action
 	 * @param string $label
@@ -22,7 +35,7 @@ class YumMenuItemHelper
 	{
 		$p = $params === null ? array() : $params;
 		$l = Yii::t('UserModule.user', $label); 
-		$url = array_merge(array(YumHelper::route("{user}/{$route}")), $p);
+		$url = array_merge(array(YumHelper::route($route)), $p);
 		return array('label'=>$l,'url'=>$url,'visible'=>$visible);
 	}	
 	
@@ -35,7 +48,7 @@ class YumMenuItemHelper
 	 */
 	public static function manageUsers(array $params=null, $label='Manage users')
 	{
-		return self::users($label,'admin',Yii::app()->user->isAdmin(),$params);
+		return self::users($label, 'user/admin',Yii::app()->user->isAdmin(),$params);
 	}
 	
 	/**
@@ -185,11 +198,12 @@ class YumMenuItemHelper
 	{
 		$p=$params===null ? array() : $params;
 		$l=Yii::t('UserModule.user',$label); 
-		$url=array_merge(array(YumHelper::route("{profiles}/{$route}")),$p);
-		$vis=$visible && YumWebModule::yum()->hasModule('profiles');
+		$url=array_merge(array(YumHelper::route($route)),$p);
+		$vis = $visible && YumMenuItemHelper::hasModule('profiles');
 		return array('label'=>$l,'url'=>$url,'visible'=>$vis);			
 	}
-	
+
+
 	/**
 	 * Creates menu item: manage profile fields
 	 * @param array $params
@@ -288,8 +302,8 @@ class YumMenuItemHelper
 	{
 		$p=$params===null ? array() : $params;
 		$l=Yii::t('UserModule.user',$label); 
-		$url=array_merge(array(YumHelper::route("{messages}/".$route)),$p);
-		$vis=$visible && YumWebModule::yum()->hasModule('messages');
+		$url=array_merge(array(YumHelper::route($route)),$p);
+		$vis=$visible && YumMenuItemHelper::hasModule('messages');
 		return array('label'=>$l,'url'=>$url,'visible'=>$vis);
 	}	
 
@@ -369,10 +383,10 @@ class YumMenuItemHelper
 	 
 	protected static function roles($label,$route,$visible=false,array $params=null)
 	{
-		$p=$params===null ? array() : $params;
-		$l=Yii::t('UserModule.user',$label); 
-		$url=array_merge(array(YumHelper::route("{roles}/".$route)),$p);
-		$vis=$visible && YumWebModule::yum()->hasModule('role');
+		$p = $params === null ? array() : $params;
+		$l = Yii::t('UserModule.user', $label); 
+		$url = array_merge(array(YumHelper::route($route)),$p);
+		$vis = $visible && YumMenuItemHelper::hasModule('role');
 		return array('label'=>$l,'url'=>$url,'visible'=>$vis);		
 	}
 

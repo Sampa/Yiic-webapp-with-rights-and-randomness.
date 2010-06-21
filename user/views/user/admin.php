@@ -8,6 +8,7 @@ $this->breadcrumbs = array(
 	Yii::t("UserModule.user", 'Manage'));
 #menu
 $this->menu = array(
+	YumMenuItemHelper::adminPanel(),
 	YumMenuItemHelper::listUsers(),
 	YumMenuItemHelper::createUser(),
 	YumMenuItemHelper::manageRoles(),

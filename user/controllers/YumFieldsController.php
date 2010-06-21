@@ -3,25 +3,16 @@
 class YumFieldsController extends YumController
 {
 	const PAGE_SIZE=10;
-
 	private $_model;
 
 	public function accessRules()
 	{
 		return array(
-			array('allow',  
-				'actions'=>array('*'),
-				'users'=>array('*'),
-			),
 			array('allow', 
-				'actions'=>array('*'),
-				'users'=>array('@'),
-			),
-			array('allow', 
-				'actions'=>array('index', 'create','update','view','admin','delete'),
-				'users'=>array(Yii::app()->user->name ),
-                'expression' => 'Yii::app()->user->isAdmin()'
-			),
+				'actions'=>array('index', 'create', 'update', 'view', 'admin','delete'),
+				'users'=>array(Yii::app()->user->name),
+				'expression' => 'Yii::app()->user->isAdmin()'
+				),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -39,8 +30,9 @@ class YumFieldsController extends YumController
 	public function actionCreate()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
-		$model=new YumProfileField;
-		#add to group?
+		$model = new YumProfileField;
+
+		// add to group?
 		if(isset($_GET['in_group']))
 			$model->field_group_id=$_GET['in_group'];
 		if(isset($_POST['YumProfileField']))
@@ -128,6 +120,7 @@ class YumFieldsController extends YumController
 	public function actionAdmin()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
+
 		$dataProvider=new CActiveDataProvider('YumProfileField', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,

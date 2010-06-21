@@ -1,8 +1,7 @@
 <?php
-#heading
 $this->title=Yii::t('UserModule.user','User list');
-#menu
 $this->menu = array(
+  YumMenuItemHelper::adminPanel(), 
 	YumMenuItemHelper::createUser(),
 	YumMenuItemHelper::manageUsers());
 ?>

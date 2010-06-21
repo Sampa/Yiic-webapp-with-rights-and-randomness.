@@ -1,11 +1,8 @@
 <?php
 if(!isset($model)) 
 	$model = new YumUserLogin();
-#page title
 $this->pageTitle = Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login");
-#heading
 $this->title = Yii::t("UserModule.user", "Login");
-#breadcrumbs
 $this->breadcrumbs=array(Yii::t("UserModule.user", "Login"));
 ?>
 

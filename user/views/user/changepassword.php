@@ -1,13 +1,9 @@
 <?php 
-#page title
 $this->pageTitle=Yii::app()->name . ' - '.Yii::t('UserModule.user', "Change password");
-#heading
 $this->title = Yii::t('UserModule.user', "Change password");
-#breadcrumbs
 $this->breadcrumbs = array(
 	Yii::t('UserModule.user', "Profile") => array('profile'),
 	Yii::t('UserModule.user', "Change password"));
-#menu
 $this->menu = array(YumMenuItemHelper::backToProfile());
 ?>
 

@@ -1,23 +1,23 @@
 <?php
-#heading
 $this->title = Yii::t('UserModule.user', 'View user "{username}"',array('{username}'=>$model->username));
-#breadcrumbs
+
 $this->breadcrumbs=array(Yii::t('UserModule.user', 'Users') => array('index'), $model->username);
-#menu
+
 $this->menu = array(
-	YumMenuItemHelper::manageUsers(),
-	YumMenuItemHelper::listUsers(),
-	YumMenuItemHelper::createUser(),
-	YumMenuItemHelper::updateUser(array('id'=>$model->id)),
-	YumMenuItemHelper::manageFields(),
-	YumMenuItemHelper::manageRoles());
+		YumMenuItemHelper::adminPanel(), 
+		YumMenuItemHelper::manageUsers(),
+		YumMenuItemHelper::listUsers(),
+		YumMenuItemHelper::createUser(),
+		YumMenuItemHelper::updateUser(array('id'=>$model->id)),
+		YumMenuItemHelper::manageFields(),
+		YumMenuItemHelper::manageRoles());
 ?>
 
 <?php 
 if(Yii::app()->user->isAdmin()) {
 	$attributes = array(
-		'id',
-		'username',
+			'id',
+			'username',
 	);
 	
 	$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();

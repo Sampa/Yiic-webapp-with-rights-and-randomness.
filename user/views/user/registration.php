@@ -1,11 +1,8 @@
 <?php 
-// Page title
 $this->pageTitle = Yii::app()->name . ' - '.Yii::t("user", "Registration");
 
-// Header
 $this->title = Yii::t("UserModule.user", "Registration");
 
-// Breadcrumbs
 $this->breadcrumbs = array(Yii::t("UserModule.user", "Registration"));
 ?>
 
