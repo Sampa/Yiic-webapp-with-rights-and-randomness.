@@ -146,7 +146,6 @@ class YumProfile extends YumActiveRecord
 				array(implode(',',$required), 'required'));
 		array_push($rules,
 				array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
-
 		return $rules;
 	}
 

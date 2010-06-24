@@ -60,4 +60,5 @@ Yii::app()->clientScript->registerCssFile($cssfile);
 	</ul>
 </div>
 
+<?php echo CHtml::link(Yii::t('UserModule.user', 'Logout'), array('/user/user/logout')); ?>
 </div>

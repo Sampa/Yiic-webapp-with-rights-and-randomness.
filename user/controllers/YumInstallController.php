@@ -129,8 +129,8 @@ class YumInstallController extends YumController
 							`lastname` varchar(50) NOT NULL default '',
 							`firstname` varchar(50) NOT NULL default '',
 							`email` varchar(255) NOT NULL default '',
-							`about` text,
 							`street` varchar(255),
+							`about` text,
 							PRIMARY KEY  (`profile_id`),
 							KEY `fk_profiles_users` (`user_id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
@@ -216,7 +216,7 @@ class YumInstallController extends YumController
 								(2, 2, 'demo','demo','demo@example.com')";
 							$db->createCommand($sql)->execute();
 
-							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2), ('firstname', 'First name', 'VARCHAR', 255, 1, 2), ('lastname', 'Last name', 'VARCHAR', 255, 1, 2)";
+							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2), ('firstname', 'First name', 'VARCHAR', 255, 1, 2), ('lastname', 'Last name', 'VARCHAR', 255, 1, 2), ('street','Street', 'VARCHAR', 255, 0, 1), ('about','About', 'TEXT', 255, 0, 1)";
 							$db->createCommand($sql)->execute();
 							
 						}

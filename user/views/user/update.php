@@ -20,8 +20,9 @@
             YumMenuItemHelper::manageFields());
     }
 
-    echo $this->renderPartial('_form', array(
-		'model'=>$model,
-        'profile'=>$profile,
-		'tabularIdx'=>$tabularIdx));
+echo $this->renderPartial('_form', array(
+			'model'=>$model,
+			'profile'=>$profile,
+			'tabularIdx'=>$tabularIdx)
+		);
 ?>
