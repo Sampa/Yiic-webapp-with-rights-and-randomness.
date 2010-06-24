@@ -33,14 +33,14 @@ if($this->module->hasModule('messages')) $this->renderPartial('newMessages');?>
 </td>
 </tr>
 <?php 
-		$profileFields=YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
+		$profileFields = YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 			?>
 <tr>
 	<th class="label"><?php echo CHtml::encode(Yii::t("UserModule.user", $field->title)); ?>
 </th>
-    <td><?php echo CHtml::encode($profile->getAttribute($field->varname)); ?>
+    <td><?php echo CHtml::encode($profile[0]->getAttribute($field->varname)); ?>
 </td>
 </tr>
 			<?php
