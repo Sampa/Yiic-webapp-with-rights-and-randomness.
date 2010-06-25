@@ -1,6 +1,7 @@
 <?php
 
 Yii::import('application.modules.user.core.*');
+Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) . '/../');
 
 class YumWebUser extends CWebUser
 {
@@ -8,9 +9,8 @@ class YumWebUser extends CWebUser
 
 	public function init()
 	{
-		// parse route and replace all placeholders with relative route
-		$this->loginUrl=$this->loginUrl;
 		parent::init();
+		$this->loginUrl=$this->loginUrl;
 	}
 	
 	/**
@@ -29,6 +29,9 @@ class YumWebUser extends CWebUser
 	 */
 	public function checkAccess($operation,$params=array(),$allowCaching=true)
 	{
+		if(Yii::app()->getModule('user')->useYiiCheckAccess) 
+			return parent::checkAccess();
+
 		return $this->hasRole($operation);	
 	}
 

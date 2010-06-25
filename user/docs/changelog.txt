@@ -4,6 +4,7 @@ New in 0.7:
 - Added User Control Panel (thyseus)
 - fixed many glitches of 0.6
 - rearranged submodule hierarchy
+- added useYiiCheckAccess() in module config if you want to use yii's checkAccess() method
 
 New in 0.6:
 Features:

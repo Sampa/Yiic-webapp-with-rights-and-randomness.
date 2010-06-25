@@ -28,6 +28,7 @@ class UserModule extends YumWebModule
 	public $enableEmailActivation = true;
 	public $layout = 'column2';
 	public $adminLayout = 'column2';
+	public $useYiiCheckAccess = false;
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';	
