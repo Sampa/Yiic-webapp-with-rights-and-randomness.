@@ -5,6 +5,7 @@ New in 0.7:
 - fixed many glitches of 0.6
 - rearranged submodule hierarchy
 - added useYiiCheckAccess() in module config if you want to use yii's checkAccess() method
+- a user now can only administrate User he should be able to
 
 New in 0.6:
 Features:

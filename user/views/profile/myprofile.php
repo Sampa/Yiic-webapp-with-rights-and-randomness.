@@ -18,7 +18,7 @@ $this->menu=array(
 ?>
 
 <?php
-if($this->module->hasModule('messages')) $this->renderPartial('newMessages');?>
+$this->renderPartial('/messages/newMessages');?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="errorSummary">

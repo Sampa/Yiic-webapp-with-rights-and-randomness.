@@ -59,21 +59,17 @@ foreach($profile->loadProfileFields() as $field)
 	echo CHtml::closeTag('div');
 } 
 
-if($this->module->hasModule('role'))
-{
 	echo CHtml::openTag('div',array('class'=>'row'));
 	echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'User belongs to these roles'),true);
 	$this->widget('YumModule.components.Relation',
 			array('model' => $model,
 				'relation' => 'roles',
-				'style' => 'dropdownlist',
+				'style' => 'listbox',
 				'fields' => 'title',
 				'showAddButton' => false
 				));
 	echo CHtml::closeTag('div');
 
-	if($model->users)
-	{
 		echo CHtml::openTag('div',array('class'=>'row'));
 		echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'This user can administrate this users'),true);
 		echo CHtml::closeTag('div');
@@ -84,8 +80,6 @@ if($this->module->hasModule('role'))
 					'fields' => 'username',
 					'showAddButton' => false
 					));
-	}
-}
 
 if(empty($tabularIdx))
 {

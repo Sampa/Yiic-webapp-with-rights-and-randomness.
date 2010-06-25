@@ -1,4 +1,6 @@
-<?php $this->menu = array(YumMenuItemHelper::backToProfile());?>
+<?php 
+$this->title = Yii::t('UserModule.user', 'Permission Denied'); 
+$this->menu = array(YumMenuItemHelper::backToProfile());?>
 
 <div class="hint">
 	<p> <?php echo Yii::t('UserModule.user',

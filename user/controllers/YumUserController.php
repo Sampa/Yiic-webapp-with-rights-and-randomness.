@@ -368,9 +368,10 @@ class YumUserController extends YumController
 			{
 				$model = $this->loadUser(Yii::app()->user->id);
 
-				$this->render('myprofile',array(
+				$this->render('/profile/myprofile',array(
 					'model'=>$model,
 					'profile'=>$model->profile,
+					'messages'=>$model->messages,
 				));
 			}
 		}
@@ -410,8 +411,8 @@ class YumUserController extends YumController
 			$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
-		$model=YumUser::model()->findByPk(Yii::app()->user->id);
-		$profile = $model->profile;
+		$model = YumUser::model()->findByPk(Yii::app()->user->id);
+		$profile = $model->profile[0];
 
 		if(isset($_POST['YumUser']))
 		{
@@ -468,10 +469,7 @@ class YumUserController extends YumController
 			$model->attributes=$_POST['YumUser'];
 
 
-			if($this->module->hasModule('role'))
-			{
-				$model->roles = Relation::retrieveValues($_POST, 'YumRole');
-			}
+			$model->roles = Relation::retrieveValues($_POST, 'YumRole');
 			$model->activationKey=YumUser::encrypt(microtime().$model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
@@ -513,8 +511,6 @@ class YumUserController extends YumController
 		{
 			$model->attributes = $_POST['YumUser'];
 
-			if($this->module->hasModule('role'))
-			{
 				// Assign the roles and slave Users to the model
 				if(!isset($_POST['YumUser']['YumRole']))
 					$_POST['YumUser']['YumRole'] = array();
@@ -522,9 +518,8 @@ class YumUserController extends YumController
 				if(!isset($_POST['YumUser']['YumUser']))
 					$_POST['YumUser']['YumUser'] = array();
 
-				$model->roles = Relation::retrieveValues($_POST, 'YumRole');
+				$model->roles = $_POST['YumUser']['YumRole'];
 				$model->users = $_POST['YumUser']['YumUser'];
-			}
 
 			if(isset($_POST['YumProfile'])) {
 				if($this->module->profileHistory == true)
@@ -626,14 +621,31 @@ class YumUserController extends YumController
 	public function actionAdmin()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
+
+		$criteria = new CDbCriteria;
+
+		if(Yii::app()->user->isAdmin())
+			$dataProvider=new CActiveDataProvider('YumUser', array(
+						'pagination'=>array(
+							'pageSize'=>self::PAGE_SIZE,
+							)));
+		else {
+			$user = YumUser::model()->findByPk(Yii::app()->user->id);
+
+			foreach($user->users as $user) {
+				$criteria->addCondition('id = '.$user->id);
+			}
+		}
+
 		$dataProvider=new CActiveDataProvider('YumUser', array(
-			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
-		)));
+					'criteria' => $criteria,
+					'pagination'=>array(
+						'pageSize'=>self::PAGE_SIZE,
+						)));
 
 		$this->render('admin',array(
-			'dataProvider'=>$dataProvider,
-		));
+					'dataProvider'=>$dataProvider,
+					));
 	}
 
 	/**

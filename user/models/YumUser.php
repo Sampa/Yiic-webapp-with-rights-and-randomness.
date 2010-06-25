@@ -98,6 +98,7 @@ class YumUser extends YumActiveRecord
     $relationUHUTableName=YumHelper::resolveTableName($this->_userUserTable,$this->getDbConnection());
 
 	return array(
+		'messages'=>array(self::HAS_MANY, 'YumMessages', 'to_user_id', 'order' => 'messages.id DESC'),
 		'profile'=>array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
 		'roles'=>array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
 		'users'=>array(self::MANY_MANY, 'YumUser', $relationUHUTableName . '(owner_id, child_id)'),

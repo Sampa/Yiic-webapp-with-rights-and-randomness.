@@ -35,7 +35,7 @@ class YumMenuItemHelper
 	{
 		$p = $params === null ? array() : $params;
 		$l = Yii::t('UserModule.user', $label); 
-		$url = array_merge(array(YumHelper::route($route)), $p);
+		$url = array_merge(array($route), $p);
 		return array('label'=>$l, 'url'=>$url, 'visible'=>$visible);
 	}	
 	
@@ -157,7 +157,7 @@ class YumMenuItemHelper
 	 */		
 	public static function displayProfile(array $params=null,$label='Profile')
 	{
-		return self::users($label,'profile',true,$params);
+		return self::users($label, 'user/profile',true,$params);
 	}	
 	
 	/**

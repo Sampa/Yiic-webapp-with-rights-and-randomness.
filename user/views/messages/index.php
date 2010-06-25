@@ -1,11 +1,10 @@
 <?php
-#heading
 $this->title = Yii::t('UserModule.user', 'My inbox');
-#breadcrumbs
+
 $this->breadcrumbs=array(
 	Yii::t('UserModule.user', 'Messages')=>array('index'),
 	Yii::t('UserModule.user', 'My inbox'));
-#menu
+
 $this->menu=array(
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::composeMessage(),
@@ -20,7 +19,7 @@ $this->menu=array(
 			'type' => 'raw',
 			'name' => Yii::t('UserModule.user', 'from'),
 			'value' => 'CHtml::link($data->from_user->username, array(
-					Yum::route(\'{user}/profile\'),
+					YumHelper::route(\'user/user/profile\'),
 					"id" => $data->from_user_id)
 				)'
 			),
