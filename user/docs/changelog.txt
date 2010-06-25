@@ -1,5 +1,10 @@
 Changelog for Yii User Management Module (Yum) since Version 0.3
 
+New in 0.7:
+- Added User Control Panel (thyseus)
+- fixed many glitches of 0.6
+- rearranged submodule hierarchy
+
 New in 0.6:
 Features:
 - Added confirmation for Account deletion (thyseus)

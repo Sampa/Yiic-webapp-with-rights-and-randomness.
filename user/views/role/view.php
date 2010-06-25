@@ -26,7 +26,7 @@ echo Yii::t('UserModule.user',
 if($model->users) 
 {
 	foreach($model->users as $user) {
-		printf("<li>%s</li>", CHtml::link($user->username, array(YumHelper::route('{users}/view'), 'id' => $user->id)));
+		printf("<li>%s</li>", CHtml::link($user->username, array(YumHelper::route('user/view'), 'id' => $user->id)));
 
 	}
 }

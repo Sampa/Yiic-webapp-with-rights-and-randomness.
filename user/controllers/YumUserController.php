@@ -380,8 +380,8 @@ class YumUserController extends YumController
 			$model = $this->loadUser($uid = $_GET['id']);
 
 			if($this->module->forceProtectedProfiles == true ||
-				$model->profile->privacy == 'protected' ||
-				$model->profile->privacy == 'private')
+				$model->profile[0]->privacy == 'protected' ||
+				$model->profile[0]->privacy == 'private')
 			{
 				$this->render('profilenotallowed');
 			}
@@ -556,18 +556,17 @@ class YumUserController extends YumController
 	 */
 	public function actionDelete()
 	{
-		if(Yii::app()->request->isPostRequest)
-		if(Yii::app()->user->isAdmin())
-		{
-			$this->layout = YumWebModule::yum()->adminLayout;
-			Yii::app()->user->setFlash('adminMessage',
-					Yii::t("UserModule.user",
-						"Admin Users can not be deleted!"));
-			$this->redirect('admin');
-		}
-		else
-		{
-			$this->layout = YumWebModule::yum()->layout;
+			if(Yii::app()->user->isAdmin())
+			{
+				$this->layout = YumWebModule::yum()->adminLayout;
+				Yii::app()->user->setFlash('adminMessage',
+						Yii::t("UserModule.user",
+							"Admin Users can not be deleted!"));
+				$this->redirect('admin');
+			}
+			else
+			{
+				$this->layout = YumWebModule::yum()->layout;
 			$model = $this->loadUser(Yii::app()->user->id);
 
 			if(isset($_POST['confirmPassword'])) 

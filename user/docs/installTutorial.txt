@@ -57,7 +57,11 @@ URI in your Application configuration, like this:
       'username' => 'root',
       'password' => '',
       'charset' => 'utf8',
+			'tablePrefix' => '',
     ),
+
+Please note that it is quite important to set the tablePrefix to '' even if 
+you don't want an prefix cause yii seems to behave awkward without sometimes.
     
 $ mysql -u root localhost    
 > CREATE DATABASE `testdrive` ;

@@ -131,7 +131,7 @@ if(in_array('role', (Yii::app()->modules['user']['modules']))) {
 		echo "<ul>";
 		foreach($model->roles as $role) {
 			echo CHtml::tag('li',array(),CHtml::link(
-						$role->title,array(YumHelper::route('{roles}/role/view'),'id'=>$role->id)),true);
+						$role->title,array(YumHelper::route('role/view'),'id'=>$role->id)),true);
 		}
 		echo "</ul>";
 	}

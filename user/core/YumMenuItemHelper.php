@@ -31,12 +31,12 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	protected static function users($label, $route, $visible=false,array $params=null)
+	protected static function users($label, $route, $visible=false, array $params=null)
 	{
 		$p = $params === null ? array() : $params;
 		$l = Yii::t('UserModule.user', $label); 
 		$url = array_merge(array(YumHelper::route($route)), $p);
-		return array('label'=>$l,'url'=>$url,'visible'=>$visible);
+		return array('label'=>$l, 'url'=>$url, 'visible'=>$visible);
 	}	
 	
 	/**
@@ -76,7 +76,7 @@ class YumMenuItemHelper
 	 */
 	public static function listUsers(array $params=null, $label='List users')
 	{
-		return self::users($label,'index',!Yii::app()->user->isAdmin(),$params);		
+		return self::users($label,'index', Yii::app()->user->isAdmin(), $params);		
 	}
 	
 	/**

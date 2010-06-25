@@ -4,12 +4,12 @@ Yii::import('application.modules.user.core.*');
 
 class YumWebUser extends CWebUser
 {
-	public $loginUrl='{user}/login';
+	public $loginUrl='/user/user/login';
 
 	public function init()
 	{
 		// parse route and replace all placeholders with relative route
-		$this->loginUrl=array(YumHelper::route($this->loginUrl));
+		$this->loginUrl=$this->loginUrl;
 		parent::init();
 	}
 	
@@ -41,8 +41,8 @@ class YumWebUser extends CWebUser
 			$uid = Yii::app()->user->getId();
 
 		$user = YumUser::model()->findByPk($uid);
-		
-		return isset($user->users);
+
+		return $user->users !== array();
 	}
 
 /**
