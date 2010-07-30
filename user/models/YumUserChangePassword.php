@@ -15,7 +15,7 @@ class YumUserChangePassword extends YumFormModel
 	{
 		$passwordRequirements = Yii::app()->getModule('user')->passwordRequirements;
 
-		$passwordrule = array_merge(array('password', 'CPasswordValidator'), 
+		$passwordrule = array_merge(array('password', 'YumPasswordValidator'), 
 				$passwordRequirements);
 
 		$rules[] = $passwordrule;

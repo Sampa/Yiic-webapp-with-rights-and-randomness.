@@ -93,43 +93,42 @@ class YumUserController extends YumController
 		if(isset($_POST['YumProfile']))
 			$profile->attributes = $_POST['YumProfile'];
 
-		// User is already logged in?
-		if (($uid = Yii::app()->user->id) === true)
+		if(isset($_POST['YumRegistrationForm']))
 		{
-			$this->redirect(Yii::app()->homeUrl);
-		}
-		else
-		{
-			if(isset($_POST['YumRegistrationForm']))
+			$form->attributes = $_POST['YumRegistrationForm'];
+			$form->email = $_POST['YumProfile']['email'];
+
+
+			if(isset($_POST['YumProfile'])) {
+				$profile->attributes = $_POST['YumProfile'];
+				$profile->validate();
+			}
+
+			if($form->validate())
 			{
-				$form->attributes = $_POST['YumRegistrationForm'];
-				$form->email = $_POST['YumProfile']['email'];
+				$user = new YumUser();
 
-				if($form->validate())
+				if ($user->register($form->username, $form->password, $form->email))
 				{
-					$user = new YumUser();
-
-					if ($user->register($form->username, $form->password, $form->email))
+					if(isset($_POST['YumProfile']))
 					{
-						if(isset($_POST['YumProfile']))
-						{
-							$profile->attributes = $_POST['YumProfile'];
-							$profile->user_id = $user->id;
-							$profile->save();
-							$user->email = $profile->attributes['email'];
-						}
+						$profile->attributes = $_POST['YumProfile'];
+						$profile->user_id = $user->id;
+						$profile->save();
+						$user->email = $profile->attributes['email'];
+					}
 
-						if(Yii::app()->controller->module->enableEmailActivation)
-						{
-							$this->sendRegistrationEmail($user);
-						} 
-						else 
-						{
-							Yii::app()->user->setFlash('registration',
-									Yii::t("UserModule.user",
-								"Your account has been activated. Thank you for your registration."));
-							$this->refresh();
-						}
+					if(Yii::app()->controller->module->enableEmailActivation)
+					{
+						$this->sendRegistrationEmail($user);
+					} 
+					else 
+					{
+						Yii::app()->user->setFlash('registration',
+								Yii::t("UserModule.user",
+									"Your account has been activated. Thank you for your registration."));
+						$this->refresh();
+					}
 
 						if (UserModule::$allowInactiveAcctLogin)
 						{
@@ -172,7 +171,6 @@ class YumUserController extends YumController
 						)
 					);
 		}
-	}
 
 	/*
 	Send the Email to the given user object. $user->email needs to be set.

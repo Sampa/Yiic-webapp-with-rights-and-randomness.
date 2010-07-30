@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CPasswordValidator class file.
+ * YumPasswordValidator class file.
  *
  * @author Alexander Sieburg <alex.sieburg@gmail.com>
  * @link http://code.google.com/p/qwerty-yii-extensions/source/browse/trunk/PasswordValidator/
@@ -9,7 +9,7 @@
  */
 
 /**
- * CPasswordValidator validates that the attribute value is a valid password.
+ * YumPasswordValidator validates that the attribute value is a valid password.
  *
  * Future plans:
  * validate against dictionary
@@ -19,7 +19,7 @@
  * @author Alexander Sieburg <alex.sieburg@gmail.com>
  * @version 0.01
  */
-class CPasswordValidator extends CValidator
+class YumPasswordValidator extends CValidator
 {
   /*
    * current yii enconding for use in mb string functions.
@@ -77,7 +77,7 @@ class CPasswordValidator extends CValidator
     {
       if (strlen($value) < $this->minLen)
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} is too short (min. {num} characters).',
             array('{num}' => $this->minLen));
 
@@ -89,7 +89,7 @@ class CPasswordValidator extends CValidator
     {
       if (strlen($value) > $this->maxLen)
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} is too long (max. {num} characters).',
             array('{num}' => $this->maxLen));
 
@@ -101,7 +101,7 @@ class CPasswordValidator extends CValidator
     {
       if (preg_match_all('/[a-z]/', $value, $matches) < $this->minLowerCase)
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} must include at least {num} lower case letters.',
             array('{num}' => $this->minLowerCase));
 
@@ -113,7 +113,7 @@ class CPasswordValidator extends CValidator
     {
       if (preg_match_all('/[A-Z]/', $value, $matches) < $this->minUpperCase)
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} must include at least {num} upper case letters.',
             array('{num}' => $this->minUpperCase));
 
@@ -125,7 +125,7 @@ class CPasswordValidator extends CValidator
     {
       if (preg_match_all('/[0-9]/', $value, $matches) < $this->minDigits)
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} must include at least {num} digits.',
             array('{num}' => $this->minDigits));
         $this->addError($object, $attribute, $message);
@@ -136,7 +136,7 @@ class CPasswordValidator extends CValidator
     {
       if (preg_match_all('/\W/', $value, $matches) < $this->minSym)
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} must include at least {num} symbols.',
             array('{num}' => $this->minSym));
 
@@ -148,7 +148,7 @@ class CPasswordValidator extends CValidator
     {
       if (preg_match('/\s/', $value))
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} must not contain whitespace.',
             array('{num}' => $this->minSym));
         
@@ -160,7 +160,7 @@ class CPasswordValidator extends CValidator
     {
       if (preg_match('/(.){1}\\1{' . $this->maxRepetition . ',}/', $value))
       {
-        $message = $this->message !== null ? $this->message : Yii::t('UserModule.CPasswordValidator',
+        $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} must not contain more than {num} sequentially repeated characters.',
             array('{num}' => $this->maxRepetition + 1));
 

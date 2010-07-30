@@ -18,11 +18,14 @@ class YumRegistrationForm extends YumUser {
 
 	public function rules() 
 	{
-		return CMap::mergeArray(parent::rules(),array(
-			array('username, password, verifyPassword', 'required'),
-			array('password', 'compare', 'compareAttribute'=>'verifyPassword', 'message' => Yii::t("UserModule.user", "Retype password is incorrect.")),
-			array('verifyCode', 'captcha', 'allowEmpty'=>!extension_loaded('gd')||!Yii::app()->controller->module->allowCaptcha)
-		));
+		$rules = parent::rules();
+		$rules[] = array('username, password, verifyPassword', 'required');
+		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword', 'message' => Yii::t("UserModule.user", "Retype password is incorrect."));
+		$rules[] = array('verifyCode', 'captcha', 'allowEmpty'=>!extension_loaded('gd')||!Yii::app()->controller->module->allowCaptcha);
+
+		return $rules;
+
+
 	}
 
 }

@@ -46,8 +46,10 @@ class YumUser extends YumActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('t.username',$this->username,true);
-
 		$criteria->compare('t.status',$this->status);
+		$criteria->compare('t.superuser',$this->superuser);
+		$criteria->compare('t.createtime',$this->createtime, true);
+		$criteria->compare('t.lastvisit',$this->lastvisit, true);
 
 		return new CActiveDataProvider(get_class($this), array(
 					'criteria'=>$criteria,
@@ -82,7 +84,7 @@ class YumUser extends YumActiveRecord
 
 		$passwordRequirements = Yii::app()->getModule('user')->passwordRequirements;
 
-		$passwordrule = array_merge(array('password', 'CPasswordValidator'), 
+		$passwordrule = array_merge(array('password', 'YumPasswordValidator'), 
 				$passwordRequirements);
 
 		$rules[] = $passwordrule;
