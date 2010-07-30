@@ -1,4 +1,8 @@
-Changelog for Yii User Management Module (Yum) since Version 0.3
+Changelog for Yii User Management Module (Yum) 
+
+New in 0.8:
+- Made users/admin CGridView filterable
+- added qwerty's CPasswordValidator and ability to configure the password requirements in the Application configuration
 
 New in 0.7:
 - Added User Control Panel (thyseus)

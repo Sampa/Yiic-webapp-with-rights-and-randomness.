@@ -1,29 +1,22 @@
 <?php
 
-Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) );
+Yii::setPathOfAlias('YumModule' , dirname(__FILE__));
 Yii::import('YumModule.core.YumWebModule');
 Yii::import('YumModule.core.YumHelper');
 
-/**
- * @property string $registrationUrl
- * @property string $recoveryUrl
- * @property string $loginUrl
- * @property string $returnUrl
- * @property string $returnLogoutUrl
- */
 class UserModule extends YumWebModule
 {
 	
-	public $version = '0.7';
+	public $version = '0.8';
 	public $debug = false;
-	public $usersTable = "users";
-	public $messagesTable = "messages";
-	public $profileFieldsTable = "profile_fields";
-	public $profileFieldsGroupTable = "profile_fields_group";
-	public $profileTable = "profiles";
-	public $rolesTable = "roles";
-	public $userRoleTable = "user_has_role";
-	public $userUserTable = "user_has_user";
+	public $usersTable = 'users';
+	public $messagesTable = 'messages';
+	public $profileFieldsTable = 'profile_fields';
+	public $profileFieldsGroupTable = 'profile_fields_group';
+	public $profileTable = 'profiles';
+	public $rolesTable = 'roles';
+	public $userRoleTable = 'user_has_role';
+	public $userUserTable = 'user_has_user';
 	public $installDemoData = true;
 	public $enableEmailActivation = true;
 	public $layout = 'column2';
@@ -96,7 +89,17 @@ class UserModule extends YumWebModule
 		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),	
 		'fieldsgroup'=>array('class'=>'YumModule.controllers.YumFieldsGroupController'),	
 	);
-	
+
+	public $passwordRequirements = array(
+			'minLen' => 8,
+			'maxLen' => 32,
+			'minUpperCase' => 1,
+			'minLowerCase' => 1,
+			'minDigits' => 1,
+			'minDigits' => 1,
+			'maxRepetition' => 3,
+			);
+
 	/**
 	 * Additionally implements support for getting URLs
 	 * @param string $name

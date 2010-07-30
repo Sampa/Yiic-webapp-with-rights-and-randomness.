@@ -41,6 +41,21 @@ class YumUser extends YumActiveRecord
 		return parent::model($className);
 	}
 
+	public function search() 
+	{
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('t.username',$this->username,true);
+
+		$criteria->compare('t.status',$this->status);
+
+		return new CActiveDataProvider(get_class($this), array(
+					'criteria'=>$criteria,
+					'pagination' => array('pageSize' => 20),
+					));
+	}
+
+
 	/**
 	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
 	 * Following algorith of searching valid table name is implemented:
@@ -64,17 +79,23 @@ class YumUser extends YumActiveRecord
 
 	public function rules()
 	{
-		return array(
-			array('username', 'length', 'max'=>20, 'min' => 3,'message' => Yii::t("UserModule.user", "Incorrect username (length between 3 and 20 characters).")),
-			array('password', 'length', 'max'=>128, 'min' => 4, 'message' => Yii::t("UserModule.user", "Incorrect password (minimal length 4 symbols).")),
-			array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists.")),
-			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)")),
-			array('status', 'in', 'range'=>array(0,1,-1)),
-			array('superuser', 'in', 'range'=>array(0,1)),
-			array('username, createtime, lastvisit, superuser, status', 'required'),
-			array('password', 'required', 'on'=>array('insert')),
-			array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true),
-		);
+
+		$passwordRequirements = Yii::app()->getModule('user')->passwordRequirements;
+
+		$passwordrule = array_merge(array('password', 'CPasswordValidator'), 
+				$passwordRequirements);
+
+		$rules[] = $passwordrule;
+		$rules[] = array('username', 'length', 'max'=>20, 'min' => 3,'message' => Yii::t("UserModule.user", "Incorrect username (length between 3 and 20 characters)."));
+			$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
+			$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
+			$rules[] = array('status', 'in', 'range'=>array(0,1,-1));
+			$rules[] = array('superuser', 'in', 'range'=>array(0,1));
+			$rules[] = array('username, createtime, lastvisit, superuser, status', 'required');
+			$rules[] = array('password', 'required', 'on'=>array('insert'));
+			$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
+
+			return $rules;
 	}
 
 	public function relations()
@@ -239,6 +260,17 @@ class YumUser extends YumActiveRecord
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
+	}
+
+	/**
+	 * Get all users with a specified role.
+	 * @param string $roleTitle title of role to be searched
+	 * @return array users with specified role. Null if none are found.
+	 */
+	public static function getUsersByRole($roleTitle)
+	{
+		$role = Role::model()->findByAttributes(array('title'=>$roleTitle));
+		return $role ? $role->users : null;
 	}
 
 	/**

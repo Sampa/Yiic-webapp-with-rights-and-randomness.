@@ -21,7 +21,8 @@ if(Yii::app()->user->hasFlash('adminMessage'))
 	printf('<div class="errorSummary">%s</div>', Yii::app()->user->getFlash('adminMessage')); 
 
 $this->widget('zii.widgets.grid.CGridView', array(
-	'dataProvider'=>$dataProvider,
+	'dataProvider'=>$model->search(),
+	'filter' => $model,
 		'columns'=>array(
 			array(
 				'name'=>'id',

@@ -80,6 +80,7 @@ Authentification Method in the Application Configuration:
 
  'import'=>array(  
   'application.modules.user.models.*',
+  'application.modules.user.core.*',
 	[...]
     
 This tells our Web Application that is can access the Model 'User'
@@ -134,6 +135,21 @@ the Application Configuration. If you want, you can add a
 in your config/main.php to get German Language strings. French and
 Russian are available, but not every string is translated at the time
 of this writing.
+
+Password Requirements:
+You can setup the password Requirements within the 'passwordRequirements' 
+option of the Module, for example:
+
+ 'user' => array(
+        'passwordRequirements' => array(                                        
+          'minLen' => 4,
+          'maxLen' => 16,
+          'maxRepetition' => 2,
+          'minDigits' => 3,
+          ),
+
+please see components/CPasswordValidator.php for possible password 
+requirement options
 
 User Registration:
 

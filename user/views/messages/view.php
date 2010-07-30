@@ -1,5 +1,5 @@
 <?php
-$this->title = Yii::t('UserModule.user','Viewing message: ') . $model->title;
+$this->title = $model->title;
 
 $this->breadcrumbs=array('Messages'=>array('index'),$model->title);
 
@@ -12,10 +12,11 @@ $this->menu=array(
 );
 ?>
 
-<h2> <?php echo Yii::t('UserModule.user', 'Message from ') . 
+<h3> <?php echo Yii::t('UserModule.user', 'Message from ') . 
 '<em>' . $model->from_user->username . '</em>';
+
 echo ': ' . $model->title; ?> 
-</h2>
+</h3>
 
 <?php echo $model->message; ?>
 

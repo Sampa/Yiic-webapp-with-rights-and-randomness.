@@ -52,7 +52,7 @@ class YumMessages extends YumActiveRecord
 		return array(
 			array('from_user_id, to_user_id, title', 'required'),
 			array('from_user_id, draft, message_read', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>45),
+			array('title', 'length', 'max'=>255),
 			array('message', 'safe'),
 		);
 	}

@@ -621,31 +621,19 @@ class YumUserController extends YumController
 	public function actionAdmin()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
+		$model = new YumUser('search');
 
-		$criteria = new CDbCriteria;
+		if(isset($_GET['YumUser']))
+			$model->attributes = $_GET['YumUser'];                                    
 
-		if(Yii::app()->user->isAdmin())
-			$dataProvider=new CActiveDataProvider('YumUser', array(
-						'pagination'=>array(
-							'pageSize'=>self::PAGE_SIZE,
-							)));
-		else {
-			$user = YumUser::model()->findByPk(Yii::app()->user->id);
-
-			foreach($user->users as $user) {
-				$criteria->addCondition('id = '.$user->id);
-			}
-		}
-
-		$dataProvider=new CActiveDataProvider('YumUser', array(
-					'criteria' => $criteria,
-					'pagination'=>array(
-						'pageSize'=>self::PAGE_SIZE,
-						)));
+		$users = YumUser::model()->findAll();
 
 		$this->render('admin',array(
-					'dataProvider'=>$dataProvider,
+					'users'=>$users,
+					'model'=>$model,
 					));
+
+
 	}
 
 	/**

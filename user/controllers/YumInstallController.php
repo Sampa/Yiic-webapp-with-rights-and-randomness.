@@ -50,18 +50,23 @@ class YumInstallController extends YumController
 					$userRoleTable = $_POST['userRoleTable'];
 					$userUserTable = $_POST['userUserTable'];
 
-					// Clean up existing Installation
-					$db->createCommand(sprintf('drop table if exists %s, %s, %s, %s, %s, %s, %s, %s',
-								$usersTable,
-								$profileFieldsTable, 
-								$profileFieldsGroupTable,
-								$profileTable,
-								$messagesTable,
-								$rolesTable,
-								$userRoleTable,
-								$userUserTable
-								)
-							)->execute();
+					// Clean up existing Installation table-by-table (for sqlite)       
+					$db->createCommand(sprintf('drop table if exists %s',
+								$usersTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$profileFieldsTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$profileFieldsGroupTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$profileTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$messagesTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$rolesTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$userRoleTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$userUserTable))->execute();
 
 					// Create User Table
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $usersTable . "` (

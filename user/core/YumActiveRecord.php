@@ -15,9 +15,7 @@ abstract class YumActiveRecord extends CActiveRecord
 	 * @return array
 	 */
 	public function behaviors() {
-		return array( 'CAdvancedArBehavior'=>array(
-			'class' => 'YumModule.components.CAdvancedArBehavior'
-		));
+		return array( 'CAdvancedArBehavior' );
 	}	
 	
 	/**
