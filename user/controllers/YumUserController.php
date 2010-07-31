@@ -283,43 +283,36 @@ class YumUserController extends YumController
 
 
 	/**
-	 * Recover password
+   * Password recovery routine. The User will be sent an email with an
+   * activation link. If clicked, he will be prompted to enter his new 
+   * password.
 	 */
 	public function actionRecovery () {
 		$form = new YumUserRecoveryForm;
 
-		// User is already logged in
-		if (($uid = Yii::app()->user->id) === true)
-		{
-			$this->redirect(Yii::app()->controller->module->returnUrl);
-		}
-		else
-		{
-			if (isset($_GET['email']) && isset($_GET['activationKey'])) {
-				$email = $_GET['email'];
-				$activationKey = $_GET['activationKey'];
-				$form2 = new YumUserChangePassword;
-				$find = YumUser::model()->findByAttributes(array('email'=>$email));
-				if($find->activationKey==$activationKey)
-				{
-					if(isset($_POST['YumUserChangePassword']))
-					{
-						$form2->attributes=$_POST['YumUserChangePassword'];
-						if($form2->validate())
-						{
-							$find->password=YumUser::encrypt($form2->password);
-							$find->activationKey=YumUser::encrypt(microtime().$form2->password);
-							$find->save();
-							Yii::app()->user->setFlash('loginMessage',Yii::t("user", "Your new password has been saved."));
-							$this->redirect(Yii::app()->controller->module->loginUrl);
-						}
+		if (isset($_GET['email']) && isset($_GET['activationKey'])) {
+			$passwordform = new YumUserChangePassword;
+			$user = YumProfile::model()->findByAttributes(array('email'=>$email))->user;
+			if($user->activationKey == $_GET['activationKey']) {
+				if(isset($_POST['YumUserChangePassword'])) {
+					$passwordform->attributes = $_POST['YumUserChangePassword'];
+					if($passwordform->validate()) {
+						$user->password = YumUser::encrypt($form2->password);
+						$user->activationKey = YumUser::encrypt(microtime().$passwordform->password);
+						$user->save();
+
+						Yii::app()->user->setFlash('loginMessage',
+								Yii::t("user", "Your new password has been saved."));
+						$this->redirect(Yii::app()->controller->module->loginUrl);
 					}
-					$this->render('changepassword',array('form'=>$form2));
 				}
-				else
-				{
-					Yii::app()->user->setFlash('recoveryMessage',Yii::t("user", "Incorrect recovery link."));
-					$this->redirect('http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery'));
+				$this->render('changepassword',array('form'=>$passwordform));
+			}
+			else
+			{
+				Yii::app()->user->setFlash('recoveryMessage',
+						Yii::t("user", "Incorrect recovery link."));
+				$this->redirect('http://' . $_SERVER['HTTP_HOST'] . $this->createUrl('user/recovery'));
 				}
 			}
 			else
@@ -331,24 +324,29 @@ class YumUserController extends YumController
 					if($form->validate())
 					{
 						$user = YumUser::model()->findbyPk($form->user_id);
-						$headers="From: ".Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+						$headers = sprintf('From: %s\r\nReply-To: %s',
+								Yii::app()->params['adminEmail'],
+								Yii::app()->params['adminEmail']);
 
-						$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl('user/recovery',array(
-							"activationKey" => $user->activationKey,
-							"email" => $user->email));
+						$activation_url = sprintf('http://%s%s',
+								$_SERVER['HTTP_HOST'],
+								$this->createUrl('user/recovery',array(
+										'activationKey' => $user->activationKey,
+										'email' => $user->email)));
 
-						mail($user->email,"You have requested to be reset. To receive a new password, go to $activation_url.",$headers);
+								mail($user->email,
+									sprintf('You have requested to reset your Password. To receive a new password, go to %s',
+										$activation_url),$headers);
 
-						Yii::app()->user->setFlash('loginMessage',
-								Yii::t("UserModule.user",
-									"Instructions have been sent to you. Please check your email."));
+								Yii::app()->user->setFlash('loginMessage',
+								Yii::t('UserModule.user',
+									'Instructions have been sent to you. Please check your email.'));
 
 						$this->redirect(array('/user/user/login'));
 					}
 				}
 				$this->render('recovery',array('form'=>$form));
 			}
-		}
 	}
 
 	public function actionAssign()
