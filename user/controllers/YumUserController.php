@@ -54,9 +54,10 @@ class YumUserController extends YumController
 
 	public function actionIndex()
 	{
+		// If the user is not logged in, so we redirect to the actionLogin,
+		// which will render the login Form
+
 		if(Yii::app()->user->isGuest)
-			// User is not logged in, so we redirect to the actionLogin, which will
-			// render the login Form
 			$this->actionLogin();
 		else if(Yii::app()->user->isAdmin())
 			$this->actionAdminPanel();
@@ -98,65 +99,50 @@ class YumUserController extends YumController
 			$form->attributes = $_POST['YumRegistrationForm'];
 			$form->email = $_POST['YumProfile']['email'];
 
-
 			if(isset($_POST['YumProfile'])) {
 				$profile->attributes = $_POST['YumProfile'];
 				$profile->validate();
 			}
 
-			if($form->validate())
-			{
+			if($form->validate()) {
 				$user = new YumUser();
 
-				if ($user->register($form->username, $form->password, $form->email))
-				{
-					if(isset($_POST['YumProfile']))
-					{
+				if ($user->register($form->username, $form->password, $form->email)) {
+					if(isset($_POST['YumProfile'])) {
 						$profile->attributes = $_POST['YumProfile'];
 						$profile->user_id = $user->id;
 						$profile->save();
 						$user->email = $profile->attributes['email'];
 					}
 
-					if(Yii::app()->controller->module->enableEmailActivation)
-					{
+					if(Yii::app()->controller->module->enableEmailActivation) {
 						$this->sendRegistrationEmail($user);
-					} 
-					else 
-					{
+					} else {
 						Yii::app()->user->setFlash('registration',
 								Yii::t("UserModule.user",
 									"Your account has been activated. Thank you for your registration."));
 						$this->refresh();
 					}
 
-						if (UserModule::$allowInactiveAcctLogin)
-						{
-							if (Yii::app()->user->allowAutoLogin)
-							{
+						if (UserModule::$allowInactiveAcctLogin) {
+							if (Yii::app()->user->allowAutoLogin) {
 								$identity = new YumUserIdentity($model->username,$sourcePassword);
 								$identity->authenticate();
 								Yii::app()->user->login($identity, 0);
 								$this->redirect(Yii::app()->controller->module->returnUrl);
-							}
-							else
-							{
+							} else {
 								Yii::app()->user->setFlash('registration',
 									Yii::t("UserModule.user",
 										"Thank you for your registration. Please check your email or login."));
 								$this->refresh();
 							}
-						}
-						else
-						{
+						} else {
 							Yii::app()->user->setFlash('registration',
 								Yii::t("UserModule.user",
 									"Thank you for your registration. Please check your email."));
 							$this->refresh();
 						}
-					}
-					else
-					{
+					} else {
 						Yii::app()->user->setFlash('registration',
 							Yii::t("UserModule.user",
 								"Your registration didn't work. Please contact our System Administrator."));
@@ -172,9 +158,7 @@ class YumUserController extends YumController
 					);
 		}
 
-	/*
-	Send the Email to the given user object. $user->email needs to be set.
-	*/
+	// Send the Email to the given user object. $user->email needs to be set.
 	public function sendRegistrationEmail($user)
 	{
 		if(!isset($user->email))
@@ -198,24 +182,28 @@ class YumUserController extends YumController
 		$loginForm = new YumUserLogin;
 
 		// collect user input data
-		if(isset($_POST['YumUserLogin']))
-		{
+		if(isset($_POST['YumUserLogin'])) {
 			$loginForm->attributes=$_POST['YumUserLogin'];
 
 			// validate user input and redirect to previous page if valid
-			if($loginForm->validate())
-			{
+			if($loginForm->validate()) {
 				$lastVisit = YumUser::model()->findByPk(Yii::app()->user->id);
 				$lastVisit->lastvisit = time();
 				$lastVisit->save();
+
 				if($lastVisit->superuser)
-					$this->redirect(Yii::app()->controller->module->returnAdminUrl);
+					$this->redirect(Yii::app()->getModule('user')->returnAdminUrl);
 				else
-					$this->redirect(Yii::app()->controller->module->returnUrl);
+					$this->redirect(Yii::app()->getModule('user')->returnUrl);
 			}
 		}
-		// display the login form
-		$this->render('/user/login',array('model'=>$loginForm,));
+
+		// if the login Action is called from the Quick Login widget, just refresh
+		// the page, otherwise render the Login Form 
+		if(isset($_POST['quicklogin']))
+			$this->refresh();
+
+		$this->render('/user/login', array('model' => $loginForm));
 	}
 
 	public function actionLogout()

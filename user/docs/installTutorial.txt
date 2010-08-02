@@ -136,6 +136,12 @@ in your config/main.php to get German Language strings. French and
 Russian are available, but not every string is translated at the time
 of this writing.
 
+Quick Login Widget:
+If you want to display a quick login widget somewhere in your Web Application,
+just call in your view file:
+
+<?php $this->widget('application.modules.user.components.LoginWidget'); ?>
+
 Password Requirements:
 You can setup the password Requirements within the 'passwordRequirements' 
 option of the Module, for example:

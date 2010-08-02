@@ -2,6 +2,8 @@ Changelog for Yii User Management Module (Yum)
 
 New in 0.8:
 - Made users/admin CGridView filterable
+- Added AllowRegistration & AllowRecovery in Module Configuration
+- Added quick Login widget 
 - Fixed registration form and enabled YumPasswordValidator to registration Form
 - added qwerty's CPasswordValidator and ability to configure the password requirements in the Application configuration (renamed to YumPasswordValidator)
 

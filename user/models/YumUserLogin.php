@@ -19,22 +19,19 @@ class YumUserLogin extends YumFormModel
 	public function rules()
 	{
 		return array(
-			// username and password are required
 			array('username, password', 'required'),
-			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
-			// password needs to be authenticated
 			array('password', 'authenticate'),
 		);
 	}
 
 	public function attributeLabels()
 	{
-	if(Yii::app()->controller->module->loginType == 0)
+	if(Yii::app()->getModule('user')->loginType == 0)
 		$username = Yii::t("UserModule.user", "Username");
-	else if(Yii::app()->controller->module->loginType == 1)
+	else if(Yii::app()->getModule('user')->loginType == 1)
 		$username = Yii::t("UserModule.user", "Email Address");
-	else if(Yii::app()->controller->module->loginType == 2)
+	else if(Yii::app()->getModule('user')->loginType == 2)
 		$username = Yii::t("UserModule.user", "Username or Email");
 
 		return array(
@@ -67,10 +64,10 @@ class YumUserLogin extends YumFormModel
 					$this->addError("username",Yii::t("UserModule.user", "Username is incorrect."));
 					break;
 				case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
-					$this->addError("status",Yii::t("UserModule.user", "You account is not activated."));
+					$this->addError("status",Yii::t("UserModule.user", "This account is not activated."));
 					break;
 				case YumUserIdentity::ERROR_STATUS_BANNED:
-					$this->addError("status",Yii::t("UserModule.user", "You account is blocked."));
+					$this->addError("status",Yii::t("UserModule.user", "This account is blocked."));
 					break;
 				case YumUserIdentity::ERROR_PASSWORD_INVALID:
 					$this->addError("password",Yii::t("UserModule.user", "Password is incorrect."));

@@ -1,12 +1,12 @@
 <?php
 
 Yii::setPathOfAlias('YumModule' , dirname(__FILE__));
-Yii::import('YumModule.core.YumWebModule');
-Yii::import('YumModule.core.YumHelper');
+Yii::setPathOfAlias('YumComponents' , dirname(__FILE__) . '/components/');
+Yii::import('YumModule.models.*');
+Yii::import('YumModule.core.*');
 
 class UserModule extends YumWebModule
 {
-	
 	public $version = '0.8';
 	public $debug = false;
 	public $usersTable = 'users';
@@ -18,10 +18,12 @@ class UserModule extends YumWebModule
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
 	public $installDemoData = true;
-	public $enableEmailActivation = true;
 	public $layout = 'column2';
 	public $adminLayout = 'column2';
 	public $useYiiCheckAccess = false;
+	public $allowRegistration = true;
+	public $allowRecovery = true;
+	public $enableEmailActivation = true;
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';	

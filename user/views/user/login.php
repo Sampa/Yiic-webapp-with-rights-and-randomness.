@@ -3,10 +3,9 @@ if(!isset($model))
 	$model = new YumUserLogin();
 $this->pageTitle = Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login");
 $this->title = Yii::t("UserModule.user", "Login");
-$this->breadcrumbs=array(Yii::t("UserModule.user", "Login"));
-?>
+$this->breadcrumbs=array(Yii::t('user', 'Login'));
 
-<?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
+if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
 <div class="success">
 	<?php echo Yii::app()->user->getFlash('loginMessage'); ?>
@@ -38,49 +37,53 @@ echo Yii::t("UserModule.user",
 	<div class="row">
 	<p class="hint">
 	<?php 
-	printf("%s | %s",
-			CHtml::link(Yii::t("UserModule.user", "Registration"),
-				$this->module->registrationUrl),
-			CHtml::link(Yii::t("UserModule.user", "Lost password?"),
-				$this->module->recoveryUrl));
+	if(Yii::app()->getModule('user')->allowRegistration)
+		echo CHtml::link(Yii::t("UserModule.user", "Registration"),
+			$this->module->registrationUrl);
+	if(Yii::app()->getModule('user')->allowRegistration 
+		&& Yii::app()->getModule('user')->allowRecovery)
+		echo ' | ';
+	if(Yii::app()->getModule('user')->allowRecovery)
+		echo CHtml::link(Yii::t("UserModule.user", "Lost password?"),
+			$this->module->recoveryUrl);
 ?>
 </p>
 </div>
-	
-	<div class="row rememberMe">
-		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
-		<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
-	</div>
 
-	<div class="row submit">
-		<?php echo CHtml::submitButton(Yii::t("UserModule.user", "Login")); ?>
-	</div>
-	
+<div class="row rememberMe">
+<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
+<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
+</div>
+
+<div class="row submit">
+<?php echo CHtml::submitButton(Yii::t("UserModule.user", "Login")); ?>
+</div>
+
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->
 
 
 <?php
 $form = new CForm(array(
-    'elements'=>array(
-        'username'=>array(
-            'type'=>'text',
-            'maxlength'=>32,
-        ),
-        'password'=>array(
-            'type'=>'password',
-            'maxlength'=>32,
-        ),
-        'rememberMe'=>array(
-            'type'=>'checkbox',
-        )
-    ),
+			'elements'=>array(
+				'username'=>array(
+					'type'=>'text',
+					'maxlength'=>32,
+					),
+				'password'=>array(
+					'type'=>'password',
+					'maxlength'=>32,
+					),
+				'rememberMe'=>array(
+					'type'=>'checkbox',
+					)
+				),
 
-    'buttons'=>array(
-        'login'=>array(
-            'type'=>'submit',
-            'label'=>'Login',
-        ),
-    ),
-), $model);
+			'buttons'=>array(
+				'login'=>array(
+					'type'=>'submit',
+					'label'=>'Login',
+					),
+				),
+			), $model);
 ?>

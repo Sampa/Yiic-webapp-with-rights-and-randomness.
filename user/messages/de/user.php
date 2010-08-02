@@ -2,6 +2,7 @@
 
 
 return array(
+		'Login' => 'Anmeldung',
 		'Profile history' => 'Profilverlauf',
 		'Profile number' => 'Profilnummer: ',
 		'View all messages' => 'Alle Nachrichten ansehen',
@@ -90,8 +91,8 @@ return array(
 		'Email is incorrect.' => 'E-Mail ist nicht korrekt.',
 		'This user\'s name already exists.' => 'Der Benutzer Name existiert bereits.',
 		'This user\'s email adress already exists.' => 'Der Benutzer E-Mail-Adresse existiert bereits.',
-		'You account is not activated.' => 'Ihr Konto wurde nicht aktiviert.',
-		'You account is blocked.' => 'Ihr Konto wurde blockiert.',
+		'This account is not activated.' => 'Ihr Konto wurde nicht aktiviert.',
+		'This account is blocked.' => 'Ihr Konto wurde blockiert.',
 		'Password is incorrect.' => 'Passwort ist falsch.',
 		'E-mail' => 'E-mail',
 		'Verification Code' => 'Verification Code',
