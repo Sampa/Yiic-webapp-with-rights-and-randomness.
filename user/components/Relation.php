@@ -105,7 +105,7 @@ $this->widget('application.components.Relation', array(
 
 
 @author Herbert Maschke <thyseus@gmail.com>
-@version 0.91 (after 1.0rc5)
+@version 0.92 (after 1.0rc5)
 @since 1.1
 */
 
@@ -137,7 +137,7 @@ class Relation extends CWidget
 	public $allowEmpty = 0;
 
 	// Preselect which items?
-	public $preselect = array();
+	public $preselect = false;
 
 	// disable this to hide the Add Button
 	// set this to a string to set the String to be displayed
@@ -534,7 +534,7 @@ class Relation extends CWidget
 		{
 			$keys =	array_keys($this->getAssignedObjects());
 
-			if(isset($this->preselect))
+			if(isset($this->preselect) && $this->preselect != false)
 				$keys = $this->preselect;
 
 			echo CHtml::CheckBoxList($this->getListBoxName(),

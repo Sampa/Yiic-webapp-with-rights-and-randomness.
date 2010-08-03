@@ -130,9 +130,8 @@ class YumUser extends YumActiveRecord
 
 	public function register($username=null, $password=null, $email=null)
 	{
-		#this function can be used external to
-		if($username!==null && $password!==null)
-		{
+		// this function can be used external to
+		if($username!==null && $password!==null) {
 			// Password equality is checked in Registration Form
 			$this->username = $username;
 			$this->password = $this->encrypt($password);
@@ -167,18 +166,15 @@ class YumUser extends YumActiveRecord
 	public function activate($email, $activationKey)
 	{
 		$find = YumProfile::model()->findByAttributes(array('email'=>$email))->user;
-		if ($find->status) 
-		{
+		if ($find->status) {
 			return true;
 		} 
-		elseif($find->activationKey == $activationKey) 
-		{
+		elseif($find->activationKey == $activationKey) {
 			$find->activationKey = $this->generateActivationKey(true);
 			$find->status = 1;
 			$find->save();
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
 	/**

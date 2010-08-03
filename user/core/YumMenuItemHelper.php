@@ -61,8 +61,8 @@ class YumMenuItemHelper
 	public static function manageMyUsers(array $params=null, $label='Manage my users')
 	{
 		return self::users(
-			$label,'admin',
-			(!Yii::app()->user->isAdmin() && (Yii::app()->user->hasUsers() || Yii::app()->user->hasRole('UserCreation'))),
+			$label, 'admin',
+			(!Yii::app()->user->isAdmin() && (Yii::app()->user->hasUsers())),
 			$params
 		);
 	}	

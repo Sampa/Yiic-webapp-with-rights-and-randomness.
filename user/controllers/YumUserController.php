@@ -368,7 +368,7 @@ class YumUserController extends YumController
 				$model->profile[0]->privacy == 'protected' ||
 				$model->profile[0]->privacy == 'private')
 			{
-				$this->render('profilenotallowed');
+				$this->render('/profile/profilenotallowed');
 			}
 			else
 			{
@@ -421,7 +421,7 @@ class YumUserController extends YumController
 				$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
-		$this->render('profile-edit',array(
+		$this->render('/profile/profile-edit',array(
 			'model'=>$model,
 			'profile'=>$profile,
 		));
@@ -489,21 +489,25 @@ class YumUserController extends YumController
 
 		$model = $this->loadUser();
 
+		// Always operate on most actual profile
 		if($model->profile === false)
 			$model->profile = new YumProfile();
 		else if(is_array($model->profile))
 			$model->profile = $model->profile[0];
 
-		if(isset($_POST['YumUser']))
-		{
+		if(isset($_POST['YumUser'])) {
+
+			if(!isset($_POST['change_password']))
+				$_POST['YumUser']['password'] = $model->password;
+
 			$model->attributes = $_POST['YumUser'];
 
-				// Assign the roles and slave Users to the model
-				if(!isset($_POST['YumUser']['YumRole']))
-					$_POST['YumUser']['YumRole'] = array();
+			// Assign the roles and belonging Users to the model
+			if(!isset($_POST['YumUser']['YumRole']))
+				$_POST['YumUser']['YumRole'] = array();
 
-				if(!isset($_POST['YumUser']['YumUser']))
-					$_POST['YumUser']['YumUser'] = array();
+			if(!isset($_POST['YumUser']['YumUser']))
+				$_POST['YumUser']['YumUser'] = array();
 
 				$model->roles = $_POST['YumUser']['YumRole'];
 				$model->users = $_POST['YumUser']['YumUser'];
@@ -516,8 +520,13 @@ class YumUserController extends YumController
 				$profile->user_id = $model->id;
 			}
 
-			if($model->validate() && $profile->validate())
-			{
+			$model->validate();
+			$profile->validate();
+			if(!$model->hasErrors() && !$profile->hasErrors()) {
+				if(isset($_POST['change_password'])
+						&& $_POST['YumUser']['password'] != '')
+					$model->password = YumUser::encrypt($model->password);
+
 				$model->save();
 				$profile->save();
 				$this->redirect(array('view','id'=>$model->id));

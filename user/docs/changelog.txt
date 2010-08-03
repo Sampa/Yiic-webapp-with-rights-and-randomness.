@@ -1,6 +1,8 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- added differences between profile versions in admin View (thyseus)
+- repaired Messages Validation (thyseus)
 - Yum now tries to use the application layout by default. This can be
   configured in the application configuration (thyseus)
 - Added CEmailValidator to email profile field (thyseus)

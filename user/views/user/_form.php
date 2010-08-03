@@ -19,7 +19,16 @@ echo CHtml::error($model,$attribute);
 echo CHtml::closeTag('div');
 
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]password" : "password";
-echo CHtml::openTag('div',array('class'=>'row'));
+if(!$model->isNewRecord) {
+	$model->password = '';
+	$function = "$('#password').toggle()";
+	echo CHtml::label(Yii::t('UserModule.user', 'change Password'), 'change_password');
+	echo CHtml::checkBox('change_password', false, array('onClick' => $function));
+}
+echo CHtml::openTag('div',array(
+			'style' => $model->isNewRecord ? '' : 'display: none;',
+			'id' => 'password',
+			'class'=>'row'));
 echo CHtml::activeLabelEx($model,$attribute);
 echo CHtml::activePasswordField($model,$attribute,array('size'=>60,'maxlength'=>128));
 echo CHtml::error($model,$attribute);
@@ -61,9 +70,7 @@ echo CHtml::closeTag('div');
 
 
 
-echo CHtml::openTag('div',array(
-			'class'=>'row',
-			'style' => 'float:left;margin-right: 20px;'));
+echo CHtml::openTag('div',array( 'class'=>'row'));
 echo CHtml::tag('p',
 		array(),
 		Yii::t('UserModule.user', 'User belongs to these roles'),true);
@@ -82,7 +89,6 @@ $this->widget('YumModule.components.Relation',
 
 		echo CHtml::openTag('div',array('class'=>'row'));
 		echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'This user can administrate this users'),true);
-		echo CHtml::closeTag('div');
 		$this->widget('YumModule.components.Relation',
 				array('model' => $model,
 					'relation' => 'users',
@@ -93,7 +99,7 @@ $this->widget('YumModule.components.Relation',
 						'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
 						'showAddButton' => false
 					));
-
+		echo CHtml::closeTag('div');
 if(empty($tabularIdx))
 {
 	echo CHtml::openTag('div',array('class'=>'row buttons'));

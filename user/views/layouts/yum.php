@@ -1,26 +1,19 @@
-<?php $this->beginContent('application.views.layouts.main'); ?>
-<div class="container">
-	<div class="span-19">
-		<div id="content">
-			<h1><?php echo $this->title; ?></h1>		
-			<?php echo $content; ?>
-		</div><!-- content -->
-	</div>
-	<div class="span-5 last">
-		<?php if(!empty($this->menu)) : ?>
-		<div id="sidebar">
-		<?php
-			$this->beginWidget('zii.widgets.CPortlet', array(
-				'title'=>'Operations',
-			));
-			$this->widget('zii.widgets.CMenu', array(
-				'items'=>$this->menu,
-				'htmlOptions'=>array('class'=>'operations'),
-			));
-			$this->endWidget();
-		?>
-		</div><!-- sidebar -->
-		<?php endif; ?>
-	</div>
-</div>
-<?php $this->endContent(); ?>
+<?php 
+$this->beginContent(Yii::app()->getModule('user')->baseLayout);
+
+if(!empty($this->menu))  {
+
+echo '<div style="float:right; width:25%; margin: 0px 5px 0px 5px;">';
+$this->beginWidget('zii.widgets.CPortlet', array( 'title'=>'User Operations' ));
+$this->widget('zii.widgets.CMenu', array( 'items'=>$this->menu ));
+$this->endWidget();
+echo '</div>';
+}
+
+echo '<div id="yumcontent" style="width:70%;margin:5px;">';
+printf('<h2> %s </h2>', $this->title); 
+echo $content; 
+echo '</div>';
+
+
+$this->endContent(); ?>

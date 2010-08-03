@@ -45,7 +45,7 @@ class YumWebUser extends CWebUser
 
 		$user = YumUser::model()->findByPk($uid);
 
-		return $user->users !== array();
+		return isset($user->users) && $user->users !== array();
 	}
 
 /**

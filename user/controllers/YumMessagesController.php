@@ -32,21 +32,23 @@ class YumMessagesController extends YumController
 	{
 		$model=new YumMessages;
 
-	  	$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
 
-		if(isset($_POST['YumMessages']))
-		{			
-			foreach($_POST['SendTo'] as $user_id) {
-				$model = new YumMessages;
-				$model->attributes=$_POST['YumMessages'];
-				$model->to_user_id = $user_id;
-				$model->save();
+		if(isset($_POST['YumMessages'])) {			
+			$model = new YumMessages;
+			$model->attributes=$_POST['YumMessages'];
+
+			if($model->validate()) {
+				foreach($_POST['YumMessages']['to_user_id'] as $user_id) {
+					$model = new YumMessages;
+					$model->attributes=$_POST['YumMessages'];
+					$model->to_user_id = $user_id;
+					$model->save();
+				}
+				$this->redirect(array('success'));
 			}
-			$this->redirect(array('success'));
 		}
 
-		if(isset($_GET['to_user_id']))
-			$model->to_user_id = $_GET['to_user_id'];
 		$this->render('compose',array(
 			'model'=>$model,
 		));

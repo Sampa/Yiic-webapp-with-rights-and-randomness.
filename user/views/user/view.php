@@ -99,23 +99,8 @@ if(Yii::app()->user->isAdmin()) {
 <?php
 if(Yii::app()->controller->module->profileHistory) 
 {
-	printf('<h2>%s</h2>', Yii::t('UserModule.user', 'Profile history'));
 
-	if(!is_array($model->profile))
-	$model->profile = array($model->profile);
-
-	foreach($model->profile as $profile) 
-	{
-		$data = sprintf('%s: %s %s',
-				date($profile->timestamp),
-				Yii::t('UserModule.user', 'Profile number'),
-				$profile->profile_id
-				);
-		printf('<li>%s</li>', CHtml::link($data, array(
-					'user/profile/view',
-					'id' => $profile->profile_id)));
-	}
-echo '<br />';
+$this->renderPartial('/profile/profile_history', array('model' => $model));
 }
 
 ?>

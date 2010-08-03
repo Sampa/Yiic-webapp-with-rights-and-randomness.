@@ -18,8 +18,9 @@ class UserModule extends YumWebModule
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
 	public $installDemoData = true;
-	public $layout = NULL; // Use Application Layout
-	public $adminLayout = NULL;
+	public $baseLayout = 'application.views.layouts.main';
+	public $layout = 'yum';
+	public $adminLayout = 'yum';
 	public $useYiiCheckAccess = false;
 	public $allowRegistration = true;
 	public $allowRecovery = true;

@@ -22,17 +22,24 @@ class YumProfile extends YumActiveRecord
 	const PRIVACY_PROTECTEd = 'protected';
 	const PRIVACY_PUBLIC = 'public';
 
-    /**
-    * @var array of YumProfileFields
-    */
-    static $fields=null;
+	/**
+	 * @var array of YumProfileFields
+	 */
+	static $fields=null;
 
-    public function init()
-    {
-        parent::init();
-        #load profile fields only once
-        $this->loadProfileFields();
-    }
+	public function init()
+	{
+		parent::init();
+ // load profile fields only once
+		$this->loadProfileFields();
+	}
+
+	public function behaviors()  {
+		return array_merge(parent::behaviors(), array(
+					'Compare' => array(
+						'class' => 'Compare'))); 
+	}
+
 
 	/**
 	 * @param string $className
@@ -119,7 +126,7 @@ class YumProfile extends YumActiveRecord
 			}
 			if ($field->range) 
 			{
-				#allow using commas and semicolons
+				// allow using commas and semicolons
 				$range=explode(';',$field->range);
 				if(count($range)===1)
 					$range=explode(',',$field->range);
