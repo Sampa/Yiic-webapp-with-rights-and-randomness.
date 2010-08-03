@@ -1,11 +1,10 @@
 <?php
-#heading
 $this->title = Yii::t("UserModule.user", 'Manage profile fields'); 
-#breadcrumbs
+
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Profile fields')=>array('admin'),
 	Yii::t("UserModule.user", 'Manage'));
-#menu
+
 $this->menu = array(
 	YumMenuItemHelper::adminPanel(),
 	YumMenuItemHelper::manageUsers(),
@@ -32,13 +31,13 @@ $this->menu = array(
 		//'match',
 		//'range',
 		//'error_message',
-		//'other_validator',
+		'other_validator',
 		//'default',
 		array(
 			'name'=>'field_group_id',
 			'value'=>'$data->group instanceof YumProfileFieldsGroup ? Yii::t("UserModule.user",$data->group->title) : Yii::t("UserModule.user","Not assigned")'
 		),
-		'position',
+		//'position',
 		array(
 			'name'=>'visible',
 			'value'=>'YumProfileField::itemAlias("visible",$data->visible)',

@@ -11,6 +11,14 @@ $cssfile = Yii::app()->assetManager->publish($path);
 Yii::app()->clientScript->registerCssFile($cssfile);
 ?>
 
+<?php if(Yii::app()->getModule('user')->debug===true){
+	echo CHtml::openTag('div', array('style'=>'background-color: red;color:white;'));
+	echo Yii::t('UserModule.user',
+			'You are running the Yii User Management Module {version} in Debug Mode!',
+			array( '{version}'=>Yii::app()->controller->module->version));
+	echo CHtml::closeTag('div');
+}?>
+
 <div id="users">
 <p> 
 <?php echo Yii::t('UserModule.user', 'There are {active_users} active and {inactive_users} inactive users in your System, from which {admin_users} are Administrators.', array(
@@ -45,7 +53,6 @@ Yii::app()->clientScript->registerCssFile($cssfile);
 </p>
 
 	<ul>
-	<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'Manage profiles'), array('/user/profile/admin'))); ?>
 	<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'Manage profile fields'), array('/user/fields/admin'))); ?>
 	<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'Manage profile field groups'), array('/user/fieldsgroup/admin'))); ?>
 	</ul>
@@ -56,9 +63,11 @@ Yii::app()->clientScript->registerCssFile($cssfile);
 			'{messages}' => $messages)); ?>
 </p>
 	<ul>
-	<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'View all messages'), array('/user/messages/index'))); ?>
+	<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'View my messages'), array('/user/messages/index'))); ?>
 	</ul>
 </div>
+
+<div style="clear:both;"></div>
 
 <?php echo CHtml::link(Yii::t('UserModule.user', 'Logout'), array('/user/user/logout')); ?>
 </div>

@@ -18,8 +18,8 @@ class UserModule extends YumWebModule
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
 	public $installDemoData = true;
-	public $layout = 'column2';
-	public $adminLayout = 'column2';
+	public $layout = NULL; // Use Application Layout
+	public $adminLayout = NULL;
 	public $useYiiCheckAccess = false;
 	public $allowRegistration = true;
 	public $allowRecovery = true;
@@ -95,7 +95,6 @@ class UserModule extends YumWebModule
 	public $passwordRequirements = array(
 			'minLen' => 8,
 			'maxLen' => 32,
-			'minUpperCase' => 1,
 			'minLowerCase' => 1,
 			'minDigits' => 1,
 			'minDigits' => 1,

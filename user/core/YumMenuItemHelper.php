@@ -10,7 +10,7 @@ class YumMenuItemHelper
 {
 	protected static function hasModule($module) 
 	{
-		return in_array($module, (Yii::app()->modules['user']['modules']));
+		return true;
 	}
 
 	public static function adminPanel()
@@ -259,9 +259,9 @@ class YumMenuItemHelper
 	 * @since 0.6
 	 * @return array
 	 */
-	public static function manageFieldsGroups(array $params=null,$label='Manage profile fields groups')
+	public static function manageFieldsGroups(array $params=null, $label='Manage profile fields groups')
 	{
-		return self::profiles($label,'fieldsGroup/admin',Yii::app()->user->isAdmin(),$params);
+		return self::profiles($label, 'fieldsgroup/admin', Yii::app()->user->isAdmin(),$params);
 	}	
 	
 	/**
@@ -273,7 +273,7 @@ class YumMenuItemHelper
 	 */
 	public static function createFieldsGroup(array $params=null,$label='Create profile fields group')
 	{
-		return self::profiles($label,'fieldsGroup/create',Yii::app()->user->isAdmin(),$params);
+		return self::profiles($label,'fieldsgroup/create',Yii::app()->user->isAdmin(),$params);
 	}
 	
 	/**
@@ -285,7 +285,7 @@ class YumMenuItemHelper
 	 */
 	public static function updateFieldsGroup(array $params=null,$label='Edit profile fields group')
 	{
-		return self::profiles($label,'fieldsGroup/update',Yii::app()->user->isAdmin(),$params);
+		return self::profiles($label,'fieldsgroup/update',Yii::app()->user->isAdmin(),$params);
 	}	
 
 	/**

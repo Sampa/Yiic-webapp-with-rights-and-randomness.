@@ -1,11 +1,11 @@
 <?php
-#heading
-$this->title = Yii::t("UserModule.user", 'View profile field #{fieldname}',array('fieldname'=>$model->varname));
-#breadcrumbs
+$this->title = Yii::t("UserModule.user", 'Profile field {fieldname}', array(
+			'{fieldname}'=>$model->varname));
+
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Profile fields')=>array('admin'),
 	Yii::t("UserModule.user", $model->title));
-#menu
+
 $this->menu = array(
 	YumMenuItemHelper::manageUsers(),
 	YumMenuItemHelper::manageFields(),	

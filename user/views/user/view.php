@@ -21,12 +21,10 @@ if(Yii::app()->user->isAdmin()) {
 			'username',
 	);
 	
-	$profileFields=YumProfileField::model()->forOwner()->sort()->findAll();
-	if ($profileFields && $model->profile) 
-	{
-		foreach($profileFields as $field) 
-		{
-			array_push($attributes,array(
+	$profileFields = YumProfileField::model()->forOwner()->sort()->findAll();
+	if ($profileFields && $model->profile) {
+		foreach($profileFields as $field) {
+			array_push($attributes, array(
 				'label' => Yii::t('UserModule.user', $field->title),
 				'name' => $field->varname,
 				'value' => is_array($model->profile) 
@@ -123,8 +121,6 @@ echo '<br />';
 ?>
 
 <?php 
-if(in_array('role', (Yii::app()->modules['user']['modules']))) {
-
 	echo Yii::t('UserModule.user', 'This user belongs to these roles:');  
 
 	if($model->roles) {
@@ -134,22 +130,14 @@ if(in_array('role', (Yii::app()->modules['user']['modules']))) {
 						$role->title,array(YumHelper::route('role/view'),'id'=>$role->id)),true);
 		}
 		echo "</ul>";
-	}
-	else 
-	{
+	} else {
 		printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
 	}
-}
 
-?>
+echo '<hr />';
 
-<hr />
+echo Yii::t('UserModule.user', 'This user can administrate this users:');  
 
-<?php
-
-echo Yii::t('UserModule.user', 'This user can administrate this users:');  ?>
-
-<?php 
 if($model->users) {
 	echo "<ul>";
 	foreach($model->users as $user) {
@@ -163,4 +151,4 @@ else
 	printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
 }
 
-
+?>

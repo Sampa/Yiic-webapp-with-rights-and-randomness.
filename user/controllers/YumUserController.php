@@ -448,27 +448,31 @@ class YumUserController extends YumController
 		$model=new YumUser;
 		$profile=new YumProfile;
 
-		if(isset($_POST['YumUser']))
-		{
+		// When opening a empty user creation mask, we most probably want to 
+		// insert an _active_ user
+		$model->status = 1;
+
+		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
 
-
 			$model->roles = Relation::retrieveValues($_POST, 'YumRole');
-			$model->activationKey=YumUser::encrypt(microtime().$model->password);
+			$model->activationKey = YumUser::encrypt(microtime() . $model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
 
-			if( isset($_POST['YumProfile']) )
-				$profile->attributes=$_POST['YumProfile'];
+			if(isset($_POST['YumProfile']))
+				$profile->attributes = $_POST['YumProfile'];
 			$profile->user_id = 0;
-			if($model->validate() && $profile->validate()) {
-				$model->password=YumUser::encrypt($model->password);
-				if($model->save())
-				{
-					$profile->user_id=$model->id;
+
+			$model->validate();
+			$profile->validate();
+			if(!$model->hasErrors() && !$profile->hasErrors()) {
+				$model->password = YumUser::encrypt($model->password);
+				if($model->save()) {
+					$profile->user_id = $model->id;
 					$profile->save();
+					$this->redirect(array('view', 'id'=>$model->id));
 				}
-				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
@@ -477,7 +481,6 @@ class YumUserController extends YumController
 			'profile'=>$profile,
 			'tabularIdx'=>null,
 		));
-
 	}
 
 	public function actionUpdate()

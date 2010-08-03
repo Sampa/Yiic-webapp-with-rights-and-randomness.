@@ -1,9 +1,12 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
-- Made users/admin CGridView filterable
+- Yum now tries to use the application layout by default. This can be
+  configured in the application configuration (thyseus)
+- Added CEmailValidator to email profile field (thyseus)
+- Made users/admin CGridView filterable (thyseus)
 - Added AllowRegistration & AllowRecovery in Module Configuration
-- Added quick Login widget 
+- Added quick Login widget (thyseus)
 - Fixed registration form and enabled YumPasswordValidator to registration Form
 - added qwerty's CPasswordValidator and ability to configure the password requirements in the Application configuration (renamed to YumPasswordValidator)
 

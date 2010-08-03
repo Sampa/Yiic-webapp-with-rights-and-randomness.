@@ -12,8 +12,6 @@ class YumInstallController extends YumController
 				'actions'=>array(
 					'index, start, installer, installation, install, index'),
 				'users'=>array('*')),
-			#deny all other users			
-			
 		);
 	}
 
@@ -34,10 +32,8 @@ class YumInstallController extends YumController
 
 	public function actionInstall() 
 	{
-		if($this->module->debug === true) 
-		{
-			if(Yii::app()->request->isPostRequest) 
-			{
+		if($this->module->debug === true) {
+			if(Yii::app()->request->isPostRequest) {
 				if($db = Yii::app()->db) {
 					$transaction = $db->beginTransaction();
 
@@ -50,7 +46,7 @@ class YumInstallController extends YumController
 					$userRoleTable = $_POST['userRoleTable'];
 					$userUserTable = $_POST['userUserTable'];
 
-					// Clean up existing Installation table-by-table (for sqlite)       
+					// Clean up existing Installation table-by-table
 					$db->createCommand(sprintf('drop table if exists %s',
 								$usersTable))->execute();
 					$db->createCommand(sprintf('drop table if exists %s',
@@ -135,6 +131,7 @@ class YumInstallController extends YumController
 							`firstname` varchar(50) NOT NULL default '',
 							`email` varchar(255) NOT NULL default '',
 							`street` varchar(255),
+							`city` varchar(255),
 							`about` text,
 							PRIMARY KEY  (`profile_id`),
 							KEY `fk_profiles_users` (`user_id`)
@@ -221,7 +218,7 @@ class YumInstallController extends YumController
 								(2, 2, 'demo','demo','demo@example.com')";
 							$db->createCommand($sql)->execute();
 
-							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2), ('firstname', 'First name', 'VARCHAR', 255, 1, 2), ('lastname', 'Last name', 'VARCHAR', 255, 1, 2), ('street','Street', 'VARCHAR', 255, 0, 1), ('about','About', 'TEXT', 255, 0, 1)";
+							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2, 'CEmailValidator'), ('firstname', 'First name', 'VARCHAR', 255, 1, 2, ''), ('lastname', 'Last name', 'VARCHAR', 255, 1, 2, ''), ('street','Street', 'VARCHAR', 255, 0, 1, ''), ('city','City', 'VARCHAR', 255, 0, 1, ''), ('about', 'About', 'TEXT', 255, 0, 1, '')";
 							$db->createCommand($sql)->execute();
 							
 						}

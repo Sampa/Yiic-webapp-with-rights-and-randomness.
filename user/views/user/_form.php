@@ -8,7 +8,7 @@ if(empty($tabularIdx))
 	echo YumHelper::requiredFieldNote();
 }
 
-echo CHtml::errorSummary($model); echo CHtml::errorSummary($profile);
+echo CHtml::errorSummary(array($model, $profile));
 
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]username" : "username";
 
@@ -22,20 +22,6 @@ $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]password" : "password";
 echo CHtml::openTag('div',array('class'=>'row'));
 echo CHtml::activeLabelEx($model,$attribute);
 echo CHtml::activePasswordField($model,$attribute,array('size'=>60,'maxlength'=>128));
-echo CHtml::error($model,$attribute);
-echo CHtml::closeTag('div');
-
-$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]superuser" : "superuser";
-echo CHtml::openTag('div',array('class'=>'row'));
-echo CHtml::activeLabelEx($model,$attribute);
-echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('AdminStatus'));
-echo CHtml::error($model,$attribute);
-echo CHtml::closeTag('div');
-
-$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]status" : "status";
-echo CHtml::openTag('div',array('class'=>'row'));
-echo CHtml::activeLabelEx($model,$attribute);
-echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('UserStatus'));
 echo CHtml::error($model,$attribute);
 echo CHtml::closeTag('div');
 
@@ -59,13 +45,37 @@ foreach($profile->loadProfileFields() as $field)
 	echo CHtml::closeTag('div');
 } 
 
-	echo CHtml::openTag('div',array('class'=>'row'));
-	echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'User belongs to these roles'),true);
-	$this->widget('YumModule.components.Relation',
-			array('model' => $model,
-				'relation' => 'roles',
-				'style' => 'listbox',
-				'fields' => 'title',
+$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]superuser" : "superuser";
+echo CHtml::openTag('div',array('class'=>'row'));
+echo CHtml::activeLabelEx($model,$attribute);
+echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('AdminStatus'));
+echo CHtml::error($model,$attribute);
+echo CHtml::closeTag('div');
+
+$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]status" : "status";
+echo CHtml::openTag('div',array('class'=>'row'));
+echo CHtml::activeLabelEx($model,$attribute);
+echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('UserStatus'));
+echo CHtml::error($model,$attribute);
+echo CHtml::closeTag('div');
+
+
+
+echo CHtml::openTag('div',array(
+			'class'=>'row',
+			'style' => 'float:left;margin-right: 20px;'));
+echo CHtml::tag('p',
+		array(),
+		Yii::t('UserModule.user', 'User belongs to these roles'),true);
+
+$this->widget('YumModule.components.Relation',
+		array('model' => $model,
+			'relation' => 'roles',
+			'style' => 'checkbox',
+			'fields' => 'title',
+			'htmlOptions' => array(
+				'checkAll' => Yii::t('UserModule.user', 'Choose All'),
+				'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
 				'showAddButton' => false
 				));
 	echo CHtml::closeTag('div');
@@ -76,9 +86,12 @@ foreach($profile->loadProfileFields() as $field)
 		$this->widget('YumModule.components.Relation',
 				array('model' => $model,
 					'relation' => 'users',
-					'style' => 'listbox',
+					'style' => 'checkbox',
 					'fields' => 'username',
-					'showAddButton' => false
+					'htmlOptions' => array(
+						'checkAll' => Yii::t('UserModule.user', 'Choose All'),
+						'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
+						'showAddButton' => false
 					));
 
 if(empty($tabularIdx))
@@ -91,5 +104,6 @@ if(empty($tabularIdx))
 
 	echo CHtml::endForm();
 	echo CHtml::closeTag('div');
+	echo '<div style="clear:both;"></div>';
 }
 ?>

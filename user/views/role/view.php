@@ -1,5 +1,6 @@
 <?php
-$this->title = Yii::t('UserModule.user','View role {role}',array('{role}',$model->title));
+$this->title = Yii::t('UserModule.user','View role {role}', array(
+			'{role}' => $model->title));
 
 $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
@@ -23,16 +24,13 @@ echo Yii::t('UserModule.user',
 </p>
 
 	<?php 
-if($model->users) 
-{
+if($model->users) {
 	foreach($model->users as $user) {
 		printf("<li>%s</li>", CHtml::link($user->username, array(YumHelper::route('user/view'), 'id' => $user->id)));
 
 	}
-}
-else 
-{
-	echo '<p> None </p>';
+} else {
+	printf('<p> %s </p>', Yii::t('UserModule.user', 'None'));
 }
 
 ?>
