@@ -52,7 +52,7 @@ return array(
 		'Manage this profile' => 'dieses Profil bearbeiten',
 		'None' => 'Keine',
 		'This user belongs to these roles:' => 'Benutzer gehört diesen Rollen an:',
-		'This user can administrate this users' => 'Benutzer kann diese Benutzer verwalten',
+		'This user can administer this users' => 'Benutzer kann diese Benutzer verwalten',
 		'Your Account has been activated. Thank you for your registration.' =>
 		'Ihr Account wurde aktiviert. Danke für ihre Anmeldung. ',
 		'Registration' => 'Registrierung',

@@ -121,7 +121,7 @@ $this->renderPartial('/profile/profile_history', array('model' => $model));
 
 echo '<hr />';
 
-echo Yii::t('UserModule.user', 'This user can administrate this users:');  
+echo Yii::t('UserModule.user', 'This user can administer this users:');  
 
 if($model->users) {
 	echo "<ul>";

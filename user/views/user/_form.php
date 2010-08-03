@@ -88,7 +88,7 @@ $this->widget('YumModule.components.Relation',
 	echo CHtml::closeTag('div');
 
 		echo CHtml::openTag('div',array('class'=>'row'));
-		echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'This user can administrate this users'),true);
+		echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'This user can administer this users'),true);
 		$this->widget('YumModule.components.Relation',
 				array('model' => $model,
 					'relation' => 'users',

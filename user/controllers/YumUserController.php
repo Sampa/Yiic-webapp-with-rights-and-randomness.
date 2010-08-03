@@ -4,51 +4,51 @@ class YumUserController extends YumController
 {
 	const PAGE_SIZE=10;
 	private $_model;
-	
+
 	public function accessRules()
 	{
 		return array(
-			array('allow',
-				'actions'=>array('index','view','registration','login', 'recovery', 'activation'),
-				'users'=>array('*'),
-			),
-			array('allow',
-				'actions'=>array('captcha'),
-				'users'=>array('*'),
-				'expression'=>'Yii::app()->controller->module->allowCaptcha',
-			),
-			array('allow',
-				'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'delete'),
-				'users'=>array('@'),
-			),
-			array('allow',
-				'actions'=>array('admin','adminpanel','delete','create','update', 'list', 'assign'),
-				'users'=>array(Yii::app()->user->name ),
-        'expression' => 'Yii::app()->user->isAdmin()'
-			),
-			array('allow',
-				'actions' => array('admin'),
-				'expression' => "Yii::app()->user->hasUsers()",
-			),
-			array('allow',
-				'actions' => array('update'),
-				'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
-			),
-			array('deny',  // deny all other users
-				'users'=>array('*'),
-				),
-			);
+				array('allow',
+					'actions'=>array('index','view','registration','login', 'recovery', 'activation'),
+					'users'=>array('*'),
+					),
+				array('allow',
+					'actions'=>array('captcha'),
+					'users'=>array('*'),
+					'expression'=>'Yii::app()->controller->module->allowCaptcha',
+					),
+				array('allow',
+					'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'delete'),
+					'users'=>array('@'),
+					),
+				array('allow',
+					'actions'=>array('admin','adminpanel','delete','create','update', 'list', 'assign'),
+					'users'=>array(Yii::app()->user->name ),
+					'expression' => 'Yii::app()->user->isAdmin()'
+					),
+				array('allow',
+					'actions' => array('admin'),
+					'expression' => "Yii::app()->user->hasUsers()",
+					),
+				array('allow',
+						'actions' => array('update'),
+						'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
+						),
+				array('deny',  // deny all other users
+						'users'=>array('*'),
+						),
+				);
 	}
 
 	public function actions()
 	{
 		return Yii::app()->controller->module->allowCaptcha 
 			? array(
-				'captcha'=>array(
-					'class'=>'CCaptchaAction',
-					'backColor'=>0xFFFFFF,
-				),
-			)
+					'captcha'=>array(
+						'class'=>'CCaptchaAction',
+						'backColor'=>0xFFFFFF,
+						),
+					)
 			: array();
 	}
 
@@ -82,10 +82,10 @@ class YumUserController extends YumController
 	}
 
 	/* 
-	Registration of an new User in the system.
-	Depending on whether $enableEmailRegistration is set, an confirmation Email
-	will be sent to the Email address.
-	*/
+		 Registration of an new User in the system.
+		 Depending on whether $enableEmailRegistration is set, an confirmation Email
+		 will be sent to the Email address.
+	 */
 	public function actionRegistration()
 	{
 		$form = new YumRegistrationForm;
@@ -124,39 +124,39 @@ class YumUserController extends YumController
 						$this->refresh();
 					}
 
-						if (UserModule::$allowInactiveAcctLogin) {
-							if (Yii::app()->user->allowAutoLogin) {
-								$identity = new YumUserIdentity($model->username,$sourcePassword);
-								$identity->authenticate();
-								Yii::app()->user->login($identity, 0);
-								$this->redirect(Yii::app()->controller->module->returnUrl);
-							} else {
-								Yii::app()->user->setFlash('registration',
-									Yii::t("UserModule.user",
-										"Thank you for your registration. Please check your email or login."));
-								$this->refresh();
-							}
+					if (UserModule::$allowInactiveAcctLogin) {
+						if (Yii::app()->user->allowAutoLogin) {
+							$identity = new YumUserIdentity($model->username,$sourcePassword);
+							$identity->authenticate();
+							Yii::app()->user->login($identity, 0);
+							$this->redirect(Yii::app()->controller->module->returnUrl);
 						} else {
 							Yii::app()->user->setFlash('registration',
-								Yii::t("UserModule.user",
-									"Thank you for your registration. Please check your email."));
+									Yii::t("UserModule.user",
+										"Thank you for your registration. Please check your email or login."));
 							$this->refresh();
 						}
 					} else {
 						Yii::app()->user->setFlash('registration',
+								Yii::t("UserModule.user",
+									"Thank you for your registration. Please check your email."));
+						$this->refresh();
+					}
+				} else {
+					Yii::app()->user->setFlash('registration',
 							Yii::t("UserModule.user",
 								"Your registration didn't work. Please contact our System Administrator."));
-						$this->refresh();
+					$this->refresh();
 
-					}
 				}
 			}
-			$this->render('/user/registration', array(
-						'form' => $form,
-						'profile' => $profile
-						)
-					);
 		}
+		$this->render('/user/registration', array(
+					'form' => $form,
+					'profile' => $profile
+					)
+				);
+	}
 
 	// Send the Email to the given user object. $user->email needs to be set.
 	public function sendRegistrationEmail($user)
@@ -209,7 +209,7 @@ class YumUserController extends YumController
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-    	$this->redirect(Yii::app()->controller->module->returnLogoutUrl);
+		$this->redirect(Yii::app()->controller->module->returnLogoutUrl);
 	}
 
 	/**
@@ -220,14 +220,12 @@ class YumUserController extends YumController
 		if(YumUser::activate($_GET['email'], $_GET['activationKey']))
 		{
 			$this->render('message', array(
-				'title'=>Yii::t("UserModule.user", "User activation"),
-				'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
-		}
-		else
-		{
+						'title'=>Yii::t("UserModule.user", "User activation"),
+						'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
+		} else {
 			$this->render('message',array(
-				'title'=>Yii::t("UserModule.user", "User activation"),
-				'content'=>Yii::t("UserModule.user", "Incorrect activation URL.")));
+						'title'=>Yii::t("UserModule.user", "User activation"),
+						'content'=>Yii::t("UserModule.user", "Incorrect activation URL.")));
 		}
 	}
 
@@ -236,28 +234,21 @@ class YumUserController extends YumController
 	 */
 	public function actionChangepassword() {
 		$form = new YumUserChangePassword;
-		if (isset(Yii::app()->user->id))
-		{
-			if(isset($_POST['YumUserChangePassword']))
-			{
+		if (isset(Yii::app()->user->id)) {
+			if(isset($_POST['YumUserChangePassword'])) {
 				$form->attributes = $_POST['YumUserChangePassword'];
-				if($form->validate())
-				{
+				if($form->validate()) {
 					$new_password = YumUser::model()->findByPk(Yii::app()->user->id);
 					$new_password->password = YumUser::encrypt($form->password);
 					$new_password->activationKey = YumUser::encrypt(microtime().$form->password);
 
-					if($new_password->save())
-					{
-
+					if($new_password->save()) {
 						Yii::app()->user->setFlash('profileMessage',
-							Yii::t("UserModule.user", "Your new password has been saved."));
+								Yii::t("UserModule.user", "Your new password has been saved."));
 						$this->redirect(array("user/profile"));
-					}
-					else
-					{
+					} else {
 						Yii::app()->user->setFlash('profileMessage',
-							Yii::t("UserModule.user", "There was an error saving your password."));
+								Yii::t("UserModule.user", "There was an error saving your password."));
 						$this->redirect(array("user/profile"));
 					}
 				}
@@ -271,9 +262,9 @@ class YumUserController extends YumController
 
 
 	/**
-   * Password recovery routine. The User will be sent an email with an
-   * activation link. If clicked, he will be prompted to enter his new 
-   * password.
+	 * Password recovery routine. The User will be sent an email with an
+	 * activation link. If clicked, he will be prompted to enter his new 
+	 * password.
 	 */
 	public function actionRecovery () {
 		$form = new YumUserRecoveryForm;
@@ -295,46 +286,40 @@ class YumUserController extends YumController
 					}
 				}
 				$this->render('changepassword',array('form'=>$passwordform));
-			}
-			else
-			{
+			} else {
 				Yii::app()->user->setFlash('recoveryMessage',
 						Yii::t("user", "Incorrect recovery link."));
 				$this->redirect('http://' . $_SERVER['HTTP_HOST'] . $this->createUrl('user/recovery'));
+			}
+		} else {
+			if(isset($_POST['YumUserRecoveryForm'])) {
+				$form->attributes=$_POST['YumUserRecoveryForm'];
+
+				if($form->validate()) {
+					$user = YumUser::model()->findbyPk($form->user_id);
+					$headers = sprintf('From: %s\r\nReply-To: %s',
+							Yii::app()->params['adminEmail'],
+							Yii::app()->params['adminEmail']);
+
+					$activation_url = sprintf('http://%s%s',
+							$_SERVER['HTTP_HOST'],
+							$this->createUrl('user/recovery',array(
+									'activationKey' => $user->activationKey,
+									'email' => $user->email)));
+
+					mail($user->email,
+							sprintf('You have requested to reset your Password. To receive a new password, go to %s',
+								$activation_url),$headers);
+
+					Yii::app()->user->setFlash('loginMessage',
+							Yii::t('UserModule.user',
+								'Instructions have been sent to you. Please check your email.'));
+
+					$this->redirect(array('/user/user/login'));
 				}
 			}
-			else
-			{
-				if(isset($_POST['YumUserRecoveryForm']))
-				{
-					$form->attributes=$_POST['YumUserRecoveryForm'];
-
-					if($form->validate())
-					{
-						$user = YumUser::model()->findbyPk($form->user_id);
-						$headers = sprintf('From: %s\r\nReply-To: %s',
-								Yii::app()->params['adminEmail'],
-								Yii::app()->params['adminEmail']);
-
-						$activation_url = sprintf('http://%s%s',
-								$_SERVER['HTTP_HOST'],
-								$this->createUrl('user/recovery',array(
-										'activationKey' => $user->activationKey,
-										'email' => $user->email)));
-
-								mail($user->email,
-									sprintf('You have requested to reset your Password. To receive a new password, go to %s',
-										$activation_url),$headers);
-
-								Yii::app()->user->setFlash('loginMessage',
-								Yii::t('UserModule.user',
-									'Instructions have been sent to you. Please check your email.'));
-
-						$this->redirect(array('/user/user/login'));
-					}
-				}
-				$this->render('recovery',array('form'=>$form));
-			}
+			$this->render('recovery',array('form'=>$form));
+		}
 	}
 
 	public function actionAssign()
@@ -353,10 +338,10 @@ class YumUserController extends YumController
 				$model = $this->loadUser(Yii::app()->user->id);
 
 				$this->render('/profile/myprofile',array(
-					'model'=>$model,
-					'profile'=>$model->profile,
-					'messages'=>$model->messages,
-				));
+							'model'=>$model,
+							'profile'=>$model->profile,
+							'messages'=>$model->messages,
+							));
 			}
 		}
 		else
@@ -365,17 +350,17 @@ class YumUserController extends YumController
 			$model = $this->loadUser($uid = $_GET['id']);
 
 			if($this->module->forceProtectedProfiles == true ||
-				$model->profile[0]->privacy == 'protected' ||
-				$model->profile[0]->privacy == 'private')
+					$model->profile[0]->privacy == 'protected' ||
+					$model->profile[0]->privacy == 'private')
 			{
 				$this->render('/profile/profilenotallowed');
 			}
 			else
 			{
 				$this->render('foreignprofile',array(
-					'model'=>$model,
-					'profile'=>$model->profile,
-				));
+							'model'=>$model,
+							'profile'=>$model->profile,
+							));
 			}
 		}
 	}
@@ -389,8 +374,8 @@ class YumUserController extends YumController
 		if($this->module->readOnlyProfiles == true)
 		{
 			Yii::app()->user->setFlash('profileMessage',
-				Yii::t("UserModule.user",
-					"You are not allowed to edit your own profile. Please contact your System Administrator."));
+					Yii::t("UserModule.user",
+						"You are not allowed to edit your own profile. Please contact your System Administrator."));
 
 			$this->redirect(array('profile', 'id'=>$model->id));
 		}
@@ -412,19 +397,19 @@ class YumUserController extends YumController
 				$profile->user_id = $model->id;
 			}
 
-				if($model->save() && $profile->save() )
-					Yii::app()->user->setFlash('profileMessage',
+			if($model->save() && $profile->save() )
+				Yii::app()->user->setFlash('profileMessage',
 						Yii::t("UserModule.user", "Your changes have been saved"));
-				else
-					Yii::app()->user->setFlash('profileMessage',
+			else
+				Yii::app()->user->setFlash('profileMessage',
 						Yii::t("UserModule.user", "An error occured while saving your changes"));
-				$this->redirect(array('profile', 'id'=>$model->id));
+			$this->redirect(array('profile', 'id'=>$model->id));
 		}
 
 		$this->render('/profile/profile-edit',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
+					'model'=>$model,
+					'profile'=>$profile,
+					));
 
 	}
 
@@ -435,8 +420,8 @@ class YumUserController extends YumController
 	{
 		$model = $this->loadUser();
 		$this->render('view',array(
-			'model'=>$model,
-		));
+					'model'=>$model,
+					));
 	}
 
 	/**
@@ -477,10 +462,10 @@ class YumUserController extends YumController
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
-			'profile'=>$profile,
-			'tabularIdx'=>null,
-		));
+					'model'=>$model,
+					'profile'=>$profile,
+					'tabularIdx'=>null,
+					));
 	}
 
 	public function actionUpdate()
@@ -509,8 +494,8 @@ class YumUserController extends YumController
 			if(!isset($_POST['YumUser']['YumUser']))
 				$_POST['YumUser']['YumUser'] = array();
 
-				$model->roles = $_POST['YumUser']['YumRole'];
-				$model->users = $_POST['YumUser']['YumUser'];
+			$model->roles = $_POST['YumUser']['YumRole'];
+			$model->users = $_POST['YumUser']['YumUser'];
 
 			if(isset($_POST['YumProfile'])) {
 				if($this->module->profileHistory == true)
@@ -534,69 +519,61 @@ class YumUserController extends YumController
 		}
 
 		$this->render('update',array(
-			'model'=>$model,
-			'profile'=>$model->profile,
-			'tabularIdx'=>null,
-		));
+					'model'=>$model,
+					'profile'=>$model->profile,
+					'tabularIdx'=>null,
+					));
 	}
 
 
 	/**
 	 * Deletes a User, and if profile History is deactivated, deletes all
-   * profiles.
+	 * profiles.
 	 */
 	public function actionDelete()
 	{
-			if(Yii::app()->user->isAdmin())
-			{
-				$this->layout = YumWebModule::yum()->adminLayout;
-				Yii::app()->user->setFlash('adminMessage',
-						Yii::t("UserModule.user",
-							"Admin Users can not be deleted!"));
-				$this->redirect('admin');
+		if(Yii::app()->user->isAdmin()) {
+			$this->layout = YumWebModule::yum()->adminLayout;
+			if(isset($_GET['id']) && $model = $this->loadUser($_GET['id'])) {
+				if($model->id == Yii::app()->user->id) {
+					Yii::app()->user->setFlash('adminMessage', 'You can not delete your own admin account');
+					$this->redirect(array('//user/user/admin'));
+				} else
+					$model->delete();	
 			}
-			else
-			{
-				$this->layout = YumWebModule::yum()->layout;
+		} else {
+			$this->layout = YumWebModule::yum()->layout;
 			$model = $this->loadUser(Yii::app()->user->id);
 
-			if(isset($_POST['confirmPassword'])) 
-			{
-				if($model->encrypt($_POST['confirmPassword']) == $model->password)
-				{
-					if(Yii::app()->controller->module->profileHistory == false) 
-					{
-			if(is_array($model->profile))
-			{
-				foreach($model->profile as $profile)
-				{
-					$profile->delete();
-				}
-			}
-			else if (is_object($model->profile))
-			{
-				$model->profile->delete();
-			}
+			$preserveProfiles = Yii::app()->getModule('user')->preserveProfiles;
+			if(isset($_POST['confirmPassword'])) {
+				if($model->encrypt($_POST['confirmPassword']) == $model->password) {
+					if(Yii::app()->controller->module->profileHistory == false) {
+						if(is_array($model->profile) 
+								&& !$preserveProfiles) {
+							foreach($model->profile as $profile) {
+								$profile->delete();
+							}
+						} else if (is_object($model->profile) && !$preserveProfiles) 
+							$model->profile->delete();
 					}
-			$model->delete();
+					$model->delete();
 					$this->actionLogout();
-				} 
-				else 
-				{
+				} else {
 					Yii::app()->user->setFlash('profileMessage',
 							sprintf('%s. (%s)', 
 								Yii::t('UserModule.user', 'Wrong password confirmation! Account was not deleted'),
 								CHtml::link(Yii::t('UserModule.user', 'Try again'), array('delete'))
 								)
 							);
-					$this->redirect('profile');
-		}
-			}
-		else
-			{
+						$this->redirect('profile');
+				}
+			} else {
 				$this->render('confirmDeletion', array('model' => $model));
-	}
+			}
 		}
+		if(!Yii::app()->request->isAjaxRequest)
+			$this->redirect('//user/user/admin');
 	}
 
 
@@ -605,13 +582,13 @@ class YumUserController extends YumController
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
 		$dataProvider=new CActiveDataProvider('YumUser', array(
-			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
-		)));
+					'pagination'=>array(
+						'pageSize'=>self::PAGE_SIZE,
+						)));
 
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+					'dataProvider'=>$dataProvider,
+					));
 	}
 
 	public function actionAdmin()

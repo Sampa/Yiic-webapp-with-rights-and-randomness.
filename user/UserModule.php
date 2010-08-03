@@ -18,12 +18,16 @@ class UserModule extends YumWebModule
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
 	public $installDemoData = true;
+	public $preserveProfiles = true;
 	public $baseLayout = 'application.views.layouts.main';
 	public $layout = 'yum';
 	public $adminLayout = 'yum';
 	public $useYiiCheckAccess = false;
 	public $allowRegistration = true;
 	public $allowRecovery = true;
+	public $enableProfiles = true;
+	public $enableMessages = true;
+	public $enableRoles = true;
 	public $enableEmailActivation = true;
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
@@ -75,7 +79,7 @@ class UserModule extends YumWebModule
 	 * Whether to use captcha e.g. in registration process
 	 * @var boolean
 	 */
-	public $allowCaptcha=true;
+	public $allowCaptcha = true;
 	
 	/**
 	 * Defines all Controllers of the User Management Module and maps them to
@@ -135,12 +139,7 @@ class UserModule extends YumWebModule
 		$this->setImport(array(
 			'YumModule.models.*',
 			'YumModule.components.*',
-			'YumModule.core.YumActiveRecord',
-			'YumModule.core.YumController',
-			'YumModule.core.YumFormModel',
-			'YumModule.core.YumHelper',
-			'YumModule.core.YumMenuItemHelper',
-			'YumModule.core.YumWebModule',
+			'YumModule.core.*',
 		));
 	}
 
