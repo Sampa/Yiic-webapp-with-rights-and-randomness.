@@ -527,8 +527,8 @@ class YumUserController extends YumController
 
 
 	/**
-	 * Deletes a User, and if profile History is deactivated, deletes all
-	 * profiles.
+	 * Deletes a User, and if preserve History is deactivated, deletes all
+	 * profiles of that user.
 	 */
 	public function actionDelete()
 	{
@@ -537,7 +537,8 @@ class YumUserController extends YumController
 			if(isset($_GET['id']) && $model = $this->loadUser($_GET['id'])) {
 				if($model->id == Yii::app()->user->id) {
 					Yii::app()->user->setFlash('adminMessage', 'You can not delete your own admin account');
-					$this->redirect(array('//user/user/admin'));
+					if(!Yii::app()->request->isAjaxRequest)
+						$this->redirect(array('//user/user/admin'));
 				} else
 					$model->delete();	
 			}
@@ -549,8 +550,7 @@ class YumUserController extends YumController
 			if(isset($_POST['confirmPassword'])) {
 				if($model->encrypt($_POST['confirmPassword']) == $model->password) {
 					if(Yii::app()->controller->module->profileHistory == false) {
-						if(is_array($model->profile) 
-								&& !$preserveProfiles) {
+						if(is_array($model->profile) && !$preserveProfiles) {
 							foreach($model->profile as $profile) {
 								$profile->delete();
 							}
@@ -562,8 +562,10 @@ class YumUserController extends YumController
 				} else {
 					Yii::app()->user->setFlash('profileMessage',
 							sprintf('%s. (%s)', 
-								Yii::t('UserModule.user', 'Wrong password confirmation! Account was not deleted'),
-								CHtml::link(Yii::t('UserModule.user', 'Try again'), array('delete'))
+								Yii::t('UserModule.user',
+									'Wrong password confirmation! Account was not deleted'),
+								CHtml::link(Yii::t('UserModule.user', 'Try again'), array(
+										'delete'))
 								)
 							);
 						$this->redirect('profile');
