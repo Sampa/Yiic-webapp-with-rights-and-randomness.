@@ -7,7 +7,6 @@ $this->breadcrumbs=array(Yii::t('UserModule.user', 'Users') => array('index'), $
 $this->menu = array(
 		YumMenuItemHelper::adminPanel(), 
 		YumMenuItemHelper::manageUsers(),
-		YumMenuItemHelper::listUsers(),
 		YumMenuItemHelper::createUser(),
 		YumMenuItemHelper::updateUser(array('id'=>$model->id)),
 		YumMenuItemHelper::manageFields(),

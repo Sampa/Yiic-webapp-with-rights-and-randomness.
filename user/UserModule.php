@@ -36,6 +36,7 @@ class UserModule extends YumWebModule
 	public $yumBaseRoute = '/user';
 
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
+	public $dateTimeFormat = 'm-d-Y G:i:s';  //"d.m.Y H:i:s"
 
 	// Allow login of inactive User Account
 	public static $allowInactiveAcctLogin = false;
