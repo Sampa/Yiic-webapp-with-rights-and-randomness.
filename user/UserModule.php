@@ -146,10 +146,8 @@ class UserModule extends YumWebModule
 		));
 	}
 
-	public function beforeControllerAction($controller, $action)
-	{
-		if(parent::beforeControllerAction($controller, $action))
-		{
+	public function beforeControllerAction($controller, $action) {
+		if(parent::beforeControllerAction($controller, $action) && !Yii::app()->controller->getModule('user')->debug) {
 			$settings = YumSettings::model()->find('is_active');
 			$this->preserveProfiles = $settings->preserveProfiles;
 			$this->enableRegistration = $settings->enableRegistration;
@@ -158,10 +156,8 @@ class UserModule extends YumWebModule
 			$this->enableProfileHistory = $settings->enableProfileHistory;
 			$this->readOnlyProfiles = $settings->readOnlyProfiles;
 			$this->allowCaptcha = $settings->enableCaptcha;
-			return true;
 		}
-		else
-			return false;
+			return true;
 	}
 
 	/**
