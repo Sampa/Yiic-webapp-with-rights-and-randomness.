@@ -1,13 +1,17 @@
 <?php
+$this->title = Yii::t('UserModule.user', 'Manage Text settings');
 $this->breadcrumbs=array(
-	'Yum Text Settings'=>array(Yii::t('app', 'index')),
-	Yii::t('app', 'Manage'),
+	Yii::t('UserModule.user','User administration panel')=>array('//user/user/adminpanel'),
+
+	Yii::t('UserModule.user', 'Yum Text Settings'),
+	Yii::t('UserModule.user', 'Manage'),
+
 );
 
 $this->menu=array(
-		array('label'=>Yii::t('app', 'List') . ' YumTextSettings',
+		array('label'=>Yii::t('UserModule.user', 'List') . ' YumTextSettings',
 			'url'=>array('index')),
-		array('label'=>Yii::t('app', 'Create') . ' YumTextSettings',
+		array('label'=>Yii::t('UserModule.user', 'Create') . ' YumTextSettings',
 		'url'=>array('create')),
 	);
 
@@ -25,9 +29,7 @@ data: $(this).serialize()
 			");
 		?>
 
-<h1> <?php echo Yii::t('app', 'Manage'); ?> Yum Text Settings</h1>
-
-<?php echo CHtml::link(Yii::t('app', 'Advanced Search'),'#',array('class'=>'search-button')); ?>
+<?php echo CHtml::link(Yii::t('UserModule.user', 'Advanced Search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -45,11 +47,9 @@ data: $(this).serialize()
 		'text_registration_footer',
 		'text_login_header',
 		'text_login_footer',
-		/*
 		'text_email_registration',
 		'text_email_recovery',
 		'text_email_activation',
-		*/
 		array(
 			'class'=>'CButtonColumn',
 		),

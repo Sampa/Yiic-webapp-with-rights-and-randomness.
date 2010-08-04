@@ -25,7 +25,7 @@ if(Yii::app()->user->isAdmin()) {
 		foreach($profileFields as $field) {
 			array_push($attributes, array(
 				'label' => Yii::t('UserModule.user', $field->title),
-				'name' => $field->varname,
+				'type' => 'raw',
 				'value' => is_array($model->profile) 
 				? $model->profile[0]->getAttribute($field->varname) 
 				: $model->profile->getAttribute($field->varname) ,

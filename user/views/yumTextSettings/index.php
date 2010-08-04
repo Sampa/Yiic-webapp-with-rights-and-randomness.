@@ -1,16 +1,16 @@
 <?php
+$this->title = Yii::t('UserModule.user', 'Text settings');
 $this->breadcrumbs = array(
-	'Yum Text Settings',
-	Yii::t('app', 'Index'),
+	Yii::t('UserModule.user','User administration panel')=>array('//user/user/adminpanel'),
+	Yii::t('UserModule.user', 'Yum Text Settings'),
+	Yii::t('UserModule.user', 'Index'),
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('app', 'Create') . ' YumTextSettings', 'url'=>array('create')),
-	array('label'=>Yii::t('app', 'Manage') . ' YumTextSettings', 'url'=>array('admin')),
+	array('label'=>Yii::t('UserModule.user', 'Create new text setting'), 'url'=>array('create')),
+	array('label'=>Yii::t('UserModule.user', 'Manage text settings'), 'url'=>array('admin')),
 );
 ?>
-
-<h1>Yum Text Settings</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

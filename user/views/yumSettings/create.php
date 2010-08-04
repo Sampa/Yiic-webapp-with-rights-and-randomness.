@@ -16,6 +16,7 @@ $this->menu=array(
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'yum-settings-form',
 	'enableAjaxValidation'=>true,
+	'htmlOptions' => array('style' => 'width: 400px;')
 )); 
 echo $this->renderPartial('_form', array(
 	'model'=>$model,

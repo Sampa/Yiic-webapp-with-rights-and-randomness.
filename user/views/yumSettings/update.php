@@ -1,5 +1,5 @@
 <?php
-$this->title = Yii::t('UserModule.user', 'Change setting profile');
+$this->title = Yii::t('UserModule.user', 'Change setting profile') . ' ' . $model->title;
 $this->breadcrumbs=array(
 	Yii::t('UserModule.user','User administration panel')=>array('//user/user/adminpanel'),
 	Yii::t('UserModule.user', 'Module settings')=>array('index'),
@@ -14,12 +14,12 @@ $this->menu=array(
 );
 ?>
 
-<h2> <?php echo $model->title; ?> </h2>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'yum-settings-form',
 	'enableAjaxValidation'=>true,
+	'htmlOptions' => array('style' => 'width: 400px;')
 )); 
 echo $this->renderPartial('_form', array(
 	'model'=>$model,

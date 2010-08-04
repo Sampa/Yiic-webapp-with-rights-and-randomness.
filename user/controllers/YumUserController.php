@@ -372,7 +372,6 @@ class YumUserController extends YumController
 	 */
 	public function actionEdit()
 	{
-
 		if($this->module->readOnlyProfiles == true)
 		{
 			Yii::app()->user->setFlash('profileMessage',
@@ -385,27 +384,26 @@ class YumUserController extends YumController
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
 		$profile = $model->profile[0];
 
-		if(isset($_POST['YumUser']))
-		{
+		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
 			if($this->module->profileHistory == true)
 				$profile = new YumProfile();
 
-			if(isset($_POST['YumProfile']))
-			{
+			if(isset($_POST['YumProfile'])) {
 				$profile->attributes=$_POST['YumProfile'];
 				$profile->timestamp = time();
 				$profile->privacy = $_POST['YumProfile']['privacy'];
 				$profile->user_id = $model->id;
 			}
-
-			if($model->save() && $profile->save() )
+			$model->validate();
+			$profile->validate();
+			if(!$model->hasErrors() && !$profile->hasErrors()) {
+				$model->save();
+				$profile->save();
 				Yii::app()->user->setFlash('profileMessage',
 						Yii::t("UserModule.user", "Your changes have been saved"));
-			else
-				Yii::app()->user->setFlash('profileMessage',
-						Yii::t("UserModule.user", "An error occured while saving your changes"));
-			$this->redirect(array('profile', 'id'=>$model->id));
+				$this->redirect(array('profile', 'id'=>$model->id));
+			}
 		}
 
 		$this->render('/profile/profile-edit',array(
@@ -595,10 +593,12 @@ class YumUserController extends YumController
 				}
 			} else {
 				$this->render('confirmDeletion', array('model' => $model));
+				Yii::app()->end();
 			}
 		}
+
 		if(!Yii::app()->request->isAjaxRequest)
-			$this->redirect('//user/user/admin');
+			$this->redirect(array('//user/user/admin'));
 	}
 
 

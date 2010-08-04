@@ -7,7 +7,7 @@ echo CHtml::dropDownList('active_profile',
 		$model->getActive(),
 		CHtml::listData(YumSettings::model()->findAll(), 'id', 'title'));
 echo CHtml::submitButton(Yii::t('UserModule.user', '<- Save'));
-echo CHtml::Button(Yii::t('UserModule.user', 'Go to active profile'), array('submit' => array('//user/yumSettings/update', 'id' => 0)));
+echo CHtml::Button(Yii::t('UserModule.user', 'Edit active profile settings'), array('submit' => array('//user/yumSettings/update', 'id' => 0)));
 echo CHtml::endForm();
 
 ?>
