@@ -50,6 +50,14 @@ your Yii Web Application </p>
 			<td> Table for Users </td>
 			<td> <?php echo CHtml::textField('usersTable', $usersTable); ?> </td>
 		</tr>
+		<tr>
+			<td> Table for User Management Settings </td>
+			<td> <?php echo CHtml::textField('settingsTable', $settingsTable); ?> </td>
+		</tr>
+		<tr>
+			<td> Table for User Management Text Settings </td>
+			<td> <?php echo CHtml::textField('textSettingsTable', $textSettingsTable); ?> </td>
+		</tr>
 	</table	>
 
 	<div style="clear:both;"> </div>

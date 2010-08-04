@@ -2,7 +2,14 @@
 
 
 return array(
-'You are running the Yii User Management Module {version} in Debug Mode!' => 'Dies ist das Yii-User-Management Modul in Version {version} im Debug Modus!',
+		'User Operations' => 'Benutzeraktionen',
+		'Date' => 'Datum',
+		'Changes' => 'Änderungen',
+		'Field' => 'Feld',
+		'Old value' => 'Alter Wert',
+		'New value' => 'Neuer Wert',
+		'No profile changes were made' => 'Keine Profiländerungen stattgefunden',
+		'You are running the Yii User Management Module {version} in Debug Mode!' => 'Dies ist das Yii-User-Management Modul in Version {version} im Debug Modus!',
 		'Choose All' => 'Alle auswählen',
 		'Street' => 'Straße',
 		'City' => 'City',

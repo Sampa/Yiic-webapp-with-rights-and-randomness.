@@ -1,5 +1,4 @@
 <?php
-// Yii User Management Administration Panel
 $this->title = Yii::t('UserModule.user', 'User administration Panel');
 
 $this->breadcrumbs = array(
@@ -18,6 +17,9 @@ Yii::app()->clientScript->registerCssFile($cssfile);
 			array( '{version}'=>Yii::app()->controller->module->version));
 	echo CHtml::closeTag('div');
 }?>
+<?php $this->renderPartial('/yumSettings/choose_active_profile', array(
+'returnTo' => '//user/user/adminpanel',
+'model' => new YumSettings())); ?>
 
 <div id="users">
 <p> 
@@ -29,7 +31,9 @@ Yii::app()->clientScript->registerCssFile($cssfile);
 		); ?>
 </p>
 <ul>
-	<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'Manage Users'), array('/user/user/admin'))); ?>
+<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'Manage Users'), array('/user/user/admin'))); ?>
+<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'Manage Settings'), array('/user/yumSettings/index'))); ?>
+<?php printf('<li>%s</li>', CHtml::link(Yii::t('UserModule.user', 'Manage Text Settings'), array('/user/yumTextSettings/index'))); ?>
 </ul>
 </div>
 <div id="roles">

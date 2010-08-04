@@ -10,6 +10,8 @@ class UserModule extends YumWebModule
 	public $version = '0.8';
 	public $debug = false;
 	public $usersTable = 'users';
+	public $settingsTable = 'yumsettings';
+	public $textSettingsTable = 'yumtextsettings';
 	public $messagesTable = 'messages';
 	public $profileFieldsTable = 'profile_fields';
 	public $profileFieldsGroupTable = 'profile_fields_group';
@@ -148,6 +150,14 @@ class UserModule extends YumWebModule
 	{
 		if(parent::beforeControllerAction($controller, $action))
 		{
+			$settings = YumSettings::model()->find('is_active');
+			$this->preserveProfiles = $settings->preserveProfiles;
+			$this->enableRegistration = $settings->enableRegistration;
+			$this->enableRecovery = $settings->enableRecovery;
+			$this->enableEmailActivation = $settings->enableEmailActivation;
+			$this->enableProfileHistory = $settings->enableProfileHistory;
+			$this->readOnlyProfiles = $settings->readOnlyProfiles;
+			$this->allowCaptcha = $settings->enableCaptcha;
 			return true;
 		}
 		else
