@@ -24,8 +24,8 @@
 				Yii::t('UserModule.user', 'Field'),
 				Yii::t('UserModule.user', 'Old value'),
 				Yii::t('UserModule.user', 'New value')) ;
+		$count = 0;
 		foreach($cmp_attributes as $field) {
-			$count = 0;
 			if(isset($data[$field->varname])) {
 				$count++;
 				printf('<tr> <td> %s </td> <td> %s </td> <td> %s <td> </tr>',

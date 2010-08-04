@@ -13,6 +13,8 @@
 
     echo $this->renderPartial('_form', array(
 		'model'=>$model,
+		'changepassword' => true,
+		'passwordform'=>$passwordform,
 		'profile'=>$profile,
 		'tabularIdx'=>$tabularIdx));
 ?>

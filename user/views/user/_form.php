@@ -8,7 +8,7 @@ if(empty($tabularIdx))
 	echo YumHelper::requiredFieldNote();
 }
 
-echo CHtml::errorSummary(array($model, $profile));
+echo CHtml::errorSummary(array($model, $profile, $passwordform));
 
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]username" : "username";
 
@@ -23,15 +23,15 @@ if(!$model->isNewRecord) {
 	$model->password = '';
 	$function = "$('#password').toggle()";
 	echo CHtml::label(Yii::t('UserModule.user', 'change Password'), 'change_password');
-	echo CHtml::checkBox('change_password', false, array('onClick' => $function));
+	echo CHtml::checkBox(Yii::t('UserModule.user', 'change Password'),
+			$changepassword,
+			array('onClick' => $function));
 }
 echo CHtml::openTag('div',array(
-			'style' => $model->isNewRecord ? '' : 'display: none;',
+			'style' => $changepassword ? '' : 'display: none;',
 			'id' => 'password',
 			'class'=>'row'));
-echo CHtml::activeLabelEx($model,$attribute);
-echo CHtml::activePasswordField($model,$attribute,array('size'=>60,'maxlength'=>128));
-echo CHtml::error($model,$attribute);
+$this->renderPartial('passwordfields', array('form'=>$passwordform));
 echo CHtml::closeTag('div');
 
 foreach($profile->loadProfileFields() as $field)

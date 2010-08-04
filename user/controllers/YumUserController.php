@@ -233,31 +233,33 @@ class YumUserController extends YumController
 	 * Change password
 	 */
 	public function actionChangepassword() {
+		if(isset($_GET['id']))
+			$uid = $_GET['id'];
+		else
+			$uid =Yii::app()->user->id;
+
 		$form = new YumUserChangePassword;
 		if (isset(Yii::app()->user->id)) {
 			if(isset($_POST['YumUserChangePassword'])) {
 				$form->attributes = $_POST['YumUserChangePassword'];
 				if($form->validate()) {
-					$new_password = YumUser::model()->findByPk(Yii::app()->user->id);
+					$new_password = YumUser::model()->findByPk($uid);
 					$new_password->password = YumUser::encrypt($form->password);
 					$new_password->activationKey = YumUser::encrypt(microtime().$form->password);
 
 					if($new_password->save()) {
 						Yii::app()->user->setFlash('profileMessage',
-								Yii::t("UserModule.user", "Your new password has been saved."));
+								Yii::t("UserModule.user", "The new password has been saved."));
 						$this->redirect(array("user/profile"));
 					} else {
 						Yii::app()->user->setFlash('profileMessage',
-								Yii::t("UserModule.user", "There was an error saving your password."));
-						$this->redirect(array("user/profile"));
+								Yii::t("UserModule.user", "There was an error saving the password."));
+						$this->redirect(array('/user/profile'));
 					}
 				}
 			}
-			$this->render('changepassword',array('form'=>$form));
-		} else {
-			// No id was set. An error has occured. (should never get here)
-			$this->redirect(Yii::app()->controller->module->returnUrl);
-		}
+			$this->render('changepassword', array('form'=>$form));
+		} 
 	}
 
 
@@ -430,8 +432,9 @@ class YumUserController extends YumController
 	public function actionCreate()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
-		$model=new YumUser;
-		$profile=new YumProfile;
+		$model = new YumUser;
+		$profile = new YumProfile;
+		$passwordform = new YumUserChangePassword;
 
 		// When opening a empty user creation mask, we most probably want to 
 		// insert an _active_ user
@@ -449,10 +452,15 @@ class YumUserController extends YumController
 				$profile->attributes = $_POST['YumProfile'];
 			$profile->user_id = 0;
 
+			if(isset($_POST['YumUserChangePassword'])) {
+				$passwordform->attributes = $_POST['YumUserChangePassword'];
+				if($passwordform->validate())
+					$model->password = YumUser::encrypt($passwordform->password);
+			}
+
 			$model->validate();
 			$profile->validate();
-			if(!$model->hasErrors() && !$profile->hasErrors()) {
-				$model->password = YumUser::encrypt($model->password);
+			if(!$model->hasErrors() && !$profile->hasErrors() && !$passwordform->hasErrors()) {
 				if($model->save()) {
 					$profile->user_id = $model->id;
 					$profile->save();
@@ -462,9 +470,10 @@ class YumUserController extends YumController
 		}
 
 		$this->render('create',array(
-					'model'=>$model,
-					'profile'=>$profile,
-					'tabularIdx'=>null,
+					'model' => $model,
+					'passwordform' => $passwordform,
+					'profile' => $profile,
+					'tabularIdx' => null,
 					));
 	}
 
@@ -473,18 +482,19 @@ class YumUserController extends YumController
 		$this->layout = YumWebModule::yum()->adminLayout;
 
 		$model = $this->loadUser();
+		$passwordform = new YumUserChangePassword();
+
+		$changepassword = isset($_POST['change_Password']);
 
 		// Always operate on most actual profile
 		if($model->profile === false)
 			$model->profile = new YumProfile();
-		else if(is_array($model->profile))
-			$model->profile = $model->profile[0];
+		else if(!is_array($model->profile))
+			$model->profile = array($model->profile);
+
+		$profile = $model->profile[0];
 
 		if(isset($_POST['YumUser'])) {
-
-			if(!isset($_POST['change_password']))
-				$_POST['YumUser']['password'] = $model->password;
-
 			$model->attributes = $_POST['YumUser'];
 
 			// Assign the roles and belonging Users to the model
@@ -505,22 +515,35 @@ class YumUserController extends YumController
 				$profile->user_id = $model->id;
 			}
 
-			$model->validate();
-			$profile->validate();
-			if(!$model->hasErrors() && !$profile->hasErrors()) {
-				if(isset($_POST['change_password'])
-						&& $_POST['YumUser']['password'] != '')
-					$model->password = YumUser::encrypt($model->password);
+			if($changepassword) { 
+				$model->validate();
+				$profile->validate();
+				$passwordform->attributes = $_POST['YumUserChangePassword'];
+				$passwordform->validate();
 
-				$model->save();
-				$profile->save();
-				$this->redirect(array('view','id'=>$model->id));
+				if(!$model->hasErrors() && !$profile->hasErrors() && !$passwordform->hasErrors()) {
+					$model->password = YumUser::encrypt($passwordform->password);
+					$model->save();
+					$profile->save();
+					$this->redirect(array('view','id'=>$model->id));
+				}
+			} else {
+				$model->validate();
+				$profile->validate();
+
+				if(!$model->hasErrors() && !$profile->hasErrors()) {
+					$model->save();
+					$profile->save();
+					$this->redirect(array('view','id'=>$model->id));
+				}
 			}
-		}
+		}	
 
-		$this->render('update',array(
+		$this->render('update', array(
 					'model'=>$model,
-					'profile'=>$model->profile,
+					'passwordform' =>$passwordform,
+					'changepassword' => $changepassword,
+					'profile'=>$profile,
 					'tabularIdx'=>null,
 					));
 	}

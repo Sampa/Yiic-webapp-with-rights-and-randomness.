@@ -22,6 +22,8 @@
 
 echo $this->renderPartial('_form', array(
 			'model'=>$model,
+			'passwordform'=>$passwordform,
+			'changepassword' => $changepassword,
 			'profile'=>$profile,
 			'tabularIdx'=>$tabularIdx)
 		);

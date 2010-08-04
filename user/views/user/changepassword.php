@@ -12,17 +12,8 @@ $this->menu = array(YumMenuItemHelper::backToProfile());
 
 	<?php echo YumHelper::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
-	
-	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'password'); ?>
-	<?php echo CHtml::activePasswordField($form,'password'); ?>
-	</div>
-	
-	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
-	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
-	</div>
-	
+	<?php $this->renderPartial('passwordfields', array( 'form'=>$form)); ?>
+
 	
 	<div class="row submit">
 	<?php echo CHtml::submitButton(Yii::t('UserModule.user', "Save")); ?>

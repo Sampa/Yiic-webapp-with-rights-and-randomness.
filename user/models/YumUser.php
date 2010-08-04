@@ -81,7 +81,6 @@ class YumUser extends YumActiveRecord
 
 	public function rules()
 	{
-
 		$passwordRequirements = Yii::app()->getModule('user')->passwordRequirements;
 
 		$passwordrule = array_merge(array('password', 'YumPasswordValidator'), 
