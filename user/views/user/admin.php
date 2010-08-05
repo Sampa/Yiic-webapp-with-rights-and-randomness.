@@ -1,21 +1,9 @@
 <?php
-// Header
 $this->title = Yii::t('UserModule.user', 'Manage users');
 
-// Breadcrumbs
 $this->breadcrumbs = array(
 	Yii::t("UserModule.user", 'Users') => array('index'),
 	Yii::t("UserModule.user", 'Manage'));
-#menu
-$this->menu = array(
-	YumMenuItemHelper::adminPanel(),
-	YumMenuItemHelper::listUsers(),
-	YumMenuItemHelper::createUser(),
-	YumMenuItemHelper::manageRoles(),
-	YumMenuItemHelper::manageFields(),
-	YumMenuItemHelper::displayProfile(),
-	YumMenuItemHelper::logout()
-	);
 
 if(Yii::app()->user->hasFlash('adminMessage')) 
 	printf('<div class="errorSummary">%s</div>', Yii::app()->user->getFlash('adminMessage')); 

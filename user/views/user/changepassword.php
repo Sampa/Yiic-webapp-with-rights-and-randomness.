@@ -4,7 +4,6 @@ $this->title = Yii::t('UserModule.user', "Change password");
 $this->breadcrumbs = array(
 	Yii::t('UserModule.user', "Profile") => array('profile'),
 	Yii::t('UserModule.user', "Change password"));
-$this->menu = array(YumMenuItemHelper::backToProfile());
 ?>
 
 <div class="form">

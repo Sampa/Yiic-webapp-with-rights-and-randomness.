@@ -2,12 +2,7 @@
 $this->pageTitle=Yii::app()->name . ' - '.Yii::t('UserModule.user', "Profile");
 $this->title = Yii::t('UserModule.user', 'Profile of ') . $model->username;
 $this->breadcrumbs = array(Yii::t('UserModule.user', "Profile"), $model->username); 
-$this->menu = array(
-  YumMenuItemHelper::adminPanel(), 
-	YumMenuItemHelper::backToProfile(),
-	YumMenuItemHelper::logout(),
-	YumMenuItemHelper::composeMessage(array('to_user_id'=>$model->id),'Send a message to this user'));
-?> 
+?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="success">

@@ -1,12 +1,6 @@
 <?php
 $this->title = Yii::t('UserModule.user', 'Users');
 $this->breadcrumbs=array(Yii::t("UserModule.user", "Users"));
-$this->menu = array(
-  YumMenuItemHelper::adminPanel(), 
-	YumMenuItemHelper::createUser(),
-	YumMenuItemHelper::manageUsers(),
-	YumMenuItemHelper::manageFields(),
-	YumMenuItemHelper::manageRoles());
 ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(

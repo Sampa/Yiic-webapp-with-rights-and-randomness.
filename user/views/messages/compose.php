@@ -4,7 +4,6 @@ $this->breadcrumbs = array(
 	Yii::t('UserModule.user', 'Messages') => array('index'),
 	Yii::t('UserModule.user', 'Compose new message'),
 );
-$this->menu = array(YumMenuItemHelper::backToInbox());
 ?>
 
 <div class="form">

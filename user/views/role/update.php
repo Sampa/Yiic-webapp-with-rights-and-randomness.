@@ -5,10 +5,6 @@ $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
 	Yii::t("UserModule.user", 'Update'));
 
-$this->menu = array(
-		YumMenuItemHelper::adminPanel(), 
-		YumMenuItemHelper::manageFields(),
-		YumMenuItemHelper::manageRoles());
 ?>
 
 <?php 

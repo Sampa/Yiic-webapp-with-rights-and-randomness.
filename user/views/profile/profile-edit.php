@@ -4,14 +4,6 @@ $this->breadcrumbs=array(
 	Yii::t("UserModule.user", "Profile")=>array('profile'),
 	Yii::t("UserModule.user", "Edit"));
 $this->title = Yii::t("UserModule.user", 'Edit profile');
-$this->menu = array(
-	YumMenuItemHelper::adminPanel(),
-	YumMenuItemHelper::manageUsers(),
-	YumMenuItemHelper::listUsers(),
-	YumMenuItemHelper::manageRoles(),
-	YumMenuItemHelper::backToProfile(),
-	YumMenuItemHelper::changePassword(),
-	YumMenuItemHelper::logout());
 ?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>

@@ -1,9 +1,5 @@
 <?php
 $this->title=Yii::t('UserModule.user','User list');
-$this->menu = array(
-  YumMenuItemHelper::adminPanel(), 
-	YumMenuItemHelper::createUser(),
-	YumMenuItemHelper::manageUsers());
 ?>
 
 <?php $this->widget('CLinkPager',array('pages'=>$pages)); ?>

@@ -2,6 +2,19 @@
 
 
 return array(
+		'User administration panel' => 'Kontrollzentrum',
+		'Create new user' => 'Neuen Benutzer anlegen',
+		'Create new role' => 'Neue Rolle anlegen',
+		'Show users' => 'Benutzer anzeigen',
+		'Show roles' => 'Rollen anzeigen',
+		'View admin messages' => 'Administratornachrichten anzeigen',
+		'Change admin Password' => 'Administratorpasswort ändern',
+		'Module settings' => 'Moduleinstellungen',
+		'Module text settings' => 'Modultexteinstellungen',
+		'change Password' => 'Passwort ändern',
+		'View users' => 'Benutzer anzeigen',
+		'My Inbox' => 'Posteingang',
+		'Write a message' => 'Nachricht schreiben',
 		'User Operations' => 'Benutzeraktionen',
 		'Date' => 'Datum',
 		'Changes' => 'Änderungen',

@@ -1,6 +1,7 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- changed menu Navigation to one big, hierarchical menu displayed as a treeview (thyseus)
 - added yumSettings and yumTextSettings (thyseus) 
 - added differences between profile versions in admin View (thyseus)
 - repaired Messages Validation (thyseus)

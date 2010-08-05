@@ -6,10 +6,6 @@ $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Manage'),
 );
 
-$this->menu = array(
-	YumMenuItemHelper::adminPanel(),
-	YumMenuItemHelper::createRole(),
-	YumMenuItemHelper::manageUsers());
 ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(

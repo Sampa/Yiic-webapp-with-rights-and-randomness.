@@ -5,10 +5,6 @@ $this->breadcrumbs=array(
 	Yii::t('UserModule.user', 'Messages')=>array('index'),
 	Yii::t('UserModule.user', 'My inbox'));
 
-$this->menu=array(
-	YumMenuItemHelper::manageUsers(),
-	YumMenuItemHelper::composeMessage(),
-	YumMenuItemHelper::backToProfile());
 ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(

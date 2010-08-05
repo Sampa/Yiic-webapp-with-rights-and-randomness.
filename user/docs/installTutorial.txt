@@ -80,7 +80,6 @@ Authentification Method in the Application Configuration:
 
  'import'=>array(  
   'application.modules.user.models.*',
-  'application.modules.user.core.*',
 	[...]
     
 This tells our Web Application that is can access the Model 'User'

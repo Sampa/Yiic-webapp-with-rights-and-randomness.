@@ -3,7 +3,7 @@
 Yii::setPathOfAlias('YumModule' , dirname(__FILE__));
 Yii::setPathOfAlias('YumComponents' , dirname(__FILE__) . '/components/');
 Yii::import('YumModule.models.*');
-Yii::import('YumModule.core.*');
+Yii::import('YumModule.controllers.YumController');
 
 class UserModule extends YumWebModule
 {

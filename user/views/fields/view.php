@@ -6,12 +6,6 @@ $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Profile fields')=>array('admin'),
 	Yii::t("UserModule.user", $model->title));
 
-$this->menu = array(
-	YumMenuItemHelper::manageUsers(),
-	YumMenuItemHelper::manageFields(),	
-	YumMenuItemHelper::createField(),
-	YumMenuItemHelper::updateField(),
-	YumMenuItemHelper::manageFieldsGroups());
 ?>
 
 <?php $this->widget('zii.widgets.CDetailView', array(

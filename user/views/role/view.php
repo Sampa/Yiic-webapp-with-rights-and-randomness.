@@ -6,12 +6,6 @@ $this->breadcrumbs=array(
 	Yii::t("UserModule.user", 'Roles')=>array('index'),
 	Yii::t("UserModule.user", 'View'));
 
-$this->menu = array(
-		YumMenuItemHelper::adminPanel(), 
-		YumMenuItemHelper::manageRoles(),
-		YumMenuItemHelper::manageUsers(),
-		YumMenuItemHelper::createRole(),
-		YumMenuItemHelper::updateRole(array('id'=>$model->id)));
 ?>
 
 <?php echo $model->description; ?>
