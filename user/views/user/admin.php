@@ -16,13 +16,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'name'=>'id',
 				'type'=>'raw',
 				'value'=>'CHtml::link(CHtml::encode($data->id),
-				array(YumHelper::route("{user}/update"),"id"=>$data->id))',
+				array(Yum::route("{user}/update"),"id"=>$data->id))',
 			),
 			array(
 				'name'=>'username',
 				'type'=>'raw',
 				'value'=>'CHtml::link(CHtml::encode($data->username),
-				array(YumHelper::route("{user}/view"),"id"=>$data->id))',
+				array(Yum::route("{user}/view"),"id"=>$data->id))',
 			),
 			array(
 				'name'=>'createtime',

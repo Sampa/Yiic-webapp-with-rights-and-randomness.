@@ -37,7 +37,7 @@ $this->renderPartial('/messages/newMessages');?>
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('password')); ?>
 </th>
-    <td><?php echo CHtml::link(Yii::t("UserModule.user", "Change password"),array(YumHelper::route('{user}/changepassword'))); ?>
+    <td><?php echo CHtml::link(Yii::t("UserModule.user", "Change password"),array(Yum::route('{user}/changepassword'))); ?>
 </td>
 </tr>
 <tr>

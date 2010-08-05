@@ -5,7 +5,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<?php echo YumHelper::requiredFieldNote(); ?>
+	<?php echo Yum::requiredFieldNote(); ?>
 
 	<?php echo $form->errorSummary($model); ?>
 

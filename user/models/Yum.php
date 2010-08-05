@@ -6,8 +6,12 @@
  * @package Yum.core
  *
  */
-class YumHelper
+class Yum
 {
+	public static function t($string, $params = array()) {
+		return Yii::t('UserModule.user', $string, $params);
+	}
+
 	/**
 	 * Resolved table name into table name with prefix if needed
 	 * @param string $tablename, e.g {{tablename}}

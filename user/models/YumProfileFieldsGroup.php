@@ -41,7 +41,7 @@ class YumProfileFieldsGroup extends YumActiveRecord
     	else
       		$this->_tableName = '{{profile_fields_group}}'; // fallback if nothing is set
 
-    	return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
+    	return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
   	}
 
     /**

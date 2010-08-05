@@ -15,13 +15,13 @@ $this->breadcrumbs=array(
 			'name' => 'id',
 			'type' => 'raw',
 			'value'=> 'CHtml::link(CHtml::encode($data->id),
-				array(YumHelper::route("role/update"),"id"=>$data->id))',
+				array(Yum::route("role/update"),"id"=>$data->id))',
 		),
 		array(
 			'name' => 'title',
 			'type' => 'raw',
 			'value'=> 'CHtml::link(CHtml::encode($data->title),
-				array(YumHelper::route("role/view"),"id"=>$data->id))',
+				array(Yum::route("role/view"),"id"=>$data->id))',
 		),
 		array(
 			'class'=>'CButtonColumn',

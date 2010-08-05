@@ -13,7 +13,7 @@ $this->breadcrumbs = array(
 	'enableAjaxValidation'=>true,
 )); ?>
 
-	<?php echo YumHelper::requiredFieldNote(); ?>
+	<?php echo Yum::requiredFieldNote(); ?>
 
 	<?php echo $form->errorSummary($model); ?>
 

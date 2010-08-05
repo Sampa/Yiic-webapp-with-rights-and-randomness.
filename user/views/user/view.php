@@ -83,8 +83,6 @@ if(Yii::app()->user->isAdmin()) {
 }
 ?>
 
-<hr />
-
 <?php
 if(Yii::app()->user->isAdmin()) {
 	if(Yii::app()->controller->module->profileHistory) {
@@ -96,22 +94,22 @@ if(Yii::app()->user->isAdmin()) {
 		echo "<ul>";
 		foreach($model->roles as $role) {
 			echo CHtml::tag('li',array(),CHtml::link(
-						$role->title,array(YumHelper::route('role/view'),'id'=>$role->id)),true);
+						$role->title,array(Yum::route('role/view'),'id'=>$role->id)),true);
 		}
 		echo "</ul>";
 	} else {
 		printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
 	}
 
-	echo '<hr />';
-
 	echo Yii::t('UserModule.user', 'This user can administer this users:');  
 
-	if($model->users) {
+	if(Yii::app()->user->isAdmin()) {
+		printf('<p>%s</p>', Yum::t('Everyone, cause he is an admin'));
+	} else if($model->users) {
 		echo "<ul>";
 		foreach($model->users as $user) {
 			echo CHtml::tag('li',array(),CHtml::link(
-						$user->username,array(YumHelper::route('{user}/view'),'id'=>$user->id)),true);		
+						$user->username,array(Yum::route('{user}/view'),'id'=>$user->id)),true);		
 		}
 		echo "</ul>";
 	}
@@ -120,5 +118,8 @@ if(Yii::app()->user->isAdmin()) {
 		printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
 	}
 }
+
+if(Yii::app()->user->isAdmin())
+	echo CHtml::Button(Yum::t('Update User'), array('submit' => array('user/update', 'id' => $model->id)));
 
 ?>

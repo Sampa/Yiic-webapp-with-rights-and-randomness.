@@ -7,14 +7,4 @@ $this->breadcrumbs=array(
 
 ?>
 
-<?php 
-if(Yii::app()->user->isAdmin()) {
-	$attributes = array(
-			'id',
-			YumMenuItemHelper::manageRoles(),
-			YumMenuItemHelper::manageUsers()
-			);
-}
-	?>
-
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

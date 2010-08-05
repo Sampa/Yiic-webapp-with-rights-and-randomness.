@@ -76,7 +76,7 @@ class YumUser extends YumActiveRecord
       		$this->_tableName = '{{users}}'; // fallback if nothing is set
       		$this->_tableName = 'users'; // fallback if nothing is set
 
-		return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
+		return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
 	}
 
 	public function rules()
@@ -116,8 +116,8 @@ class YumUser extends YumActiveRecord
       $this->_userUserTable = '{{user_has_user}}';
       
     // resolve table names to use them in relations definition
-    $relationUHRTableName=YumHelper::resolveTableName($this->_userRoleTable,$this->getDbConnection());      
-    $relationUHUTableName=YumHelper::resolveTableName($this->_userUserTable,$this->getDbConnection());
+    $relationUHRTableName=Yum::resolveTableName($this->_userRoleTable,$this->getDbConnection());      
+    $relationUHUTableName=Yum::resolveTableName($this->_userUserTable,$this->getDbConnection());
 
 	return array(
 		'messages'=>array(self::HAS_MANY, 'YumMessages', 'to_user_id', 'order' => 'messages.id DESC'),

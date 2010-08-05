@@ -1,6 +1,9 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- added new Relation widget that fixed MANY_MANY DropDownList problems (thyseus)
+- Wrapped Yum::t() around Yii::t() to allow easier translations (thyseus)
+- Renamed YumHelper to Yum (thyseus)
 - changed menu Navigation to one big, hierarchical menu displayed as a treeview (thyseus)
 - added yumSettings and yumTextSettings (thyseus) 
 - added differences between profile versions in admin View (thyseus)
@@ -27,7 +30,7 @@ Features:
 - Renamed disableEmailActivation to enableEmailActivation (defaults to true) (thyseus)
 - Registration Form is now more intelligent and saves already inserted profile Fields after Validation (thanks to peterlap...@hotmail.com)
 - Added Layout for installation
-- Added YumHelper class (tomasz.suchanek)
+- Added Yum class (tomasz.suchanek)
 - Added YumMenuItemHelper class (tomasz.suchanek)
 - Added YumWebModule class (tomasz.suchanek)
 - Added profile field grouping functionality (tomasz.suchanek)
@@ -58,7 +61,7 @@ Note that this change may break the code.
 
 Enhancements:
  - Repaired registration Process (biya)
- - Login url support now all placeholder defined in YumHelper::route (tomasz.suchanek)
+ - Login url support now all placeholder defined in Yum::route (tomasz.suchanek)
  - Unified naming convention for all links description (only first letter in sentence is uppercased) (tomasz.suchanek)
  - Added title property to YumController instead of displaying heading directly in views. Heading is now displayed in layout according to use needs (tomasz.suchanek)
  - Commas and semicolons can be used as range separators (tomasz.suchanek)

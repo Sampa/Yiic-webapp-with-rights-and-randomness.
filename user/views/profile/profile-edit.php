@@ -15,7 +15,7 @@ $this->title = Yii::t("UserModule.user", 'Edit profile');
 
 <?php echo CHtml::beginForm(); ?>
 
-<?php echo YumHelper::requiredFieldNote(); ?>
+<?php echo Yum::requiredFieldNote(); ?>
 
 <?php echo CHtml::errorSummary($model);
   echo CHtml::errorSummary($profile); ?>

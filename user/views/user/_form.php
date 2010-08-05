@@ -5,7 +5,7 @@ if(empty($tabularIdx))
 // don' t display when used in multiform
 	echo CHtml::openTag('div',array('class'=>'form'));
 	echo CHtml::beginForm();
-	echo YumHelper::requiredFieldNote();
+	echo Yum::requiredFieldNote();
 }
 
 echo CHtml::errorSummary(array($model, $profile, $passwordform));

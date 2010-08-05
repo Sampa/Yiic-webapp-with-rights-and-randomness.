@@ -105,7 +105,7 @@ $this->widget('application.components.Relation', array(
 
 
 @author Herbert Maschke <thyseus@gmail.com>
-@version 0.92 (after 1.0rc5)
+@version 0.93 (after 1.0rc5)
 @since 1.1
 */
 
@@ -278,7 +278,7 @@ class Relation extends CWidget
 				if(is_string($this->allowEmpty))
 					$dataArray[0] = $this->allowEmpty;
 				else
-					$dataArray[0] = Yii::t('user', 'None');
+					$dataArray[0] = Yii::t('app', 'None');
 
 			foreach($parentobjects as $obj)	
 			{
@@ -323,11 +323,11 @@ class Relation extends CWidget
 
 				if($this->groupParentsBy != '') 
 				{
-					$dataArray[$obj->{$this->groupParentsBy}][$obj->{$this->relatedPk}] = $value;
+					$dataArray[$obj->{$this->groupParentsBy}][$obj->{$this->relatedPk}] = CHtml::encode($value);
 				}
 				else 
 				{
-					$dataArray[$obj->{$this->relatedPk}] = $value;
+					$dataArray[$obj->{$this->relatedPk}] = CHtml::encode($value);
 				}	
 			}
 
@@ -385,13 +385,11 @@ class Relation extends CWidget
 		public function	getObjectValues($objects)
 		{
 			if(is_array($objects)) { 
-				foreach($objects as $object) 
-				{
+				foreach($objects as $object) {
 					$attributeValues[$object->primaryKey] = $object->{$this->fields};
 				}
 			}
-			else if(is_object($objects)) 
-			{
+			else if(is_object($objects)) {
 				$attributeValues[$object->primaryKey] = $objects->{$this->fields};
 			}
 
@@ -403,15 +401,12 @@ class Relation extends CWidget
 		 */
 		public function getListBoxName($ajax = false) 
 		{
-			if($ajax) 
-			{
+			if($ajax) {
 				return	sprintf('%s_%s',
 						get_class($this->_model),
 						get_class($this->_relatedModel)
 						);  
-			}
-			else 
-			{
+			} else {
 				return	sprintf('%s[%s]',
 						get_class($this->_model),
 						get_class($this->_relatedModel)
@@ -458,19 +453,25 @@ class Relation extends CWidget
 		 * The users can add additional entries with the + and remove entries
 		 * with the - Button .
 		 */
-		public function renderManyManyDropDownListSelection()
-		{
+		public function renderManyManyDropDownListSelection() {
+
+			$addbutton = sprintf('i = 1; maxi = %d;', count($relatedmodels = $this->_relatedModel->findAll()));
+			Yii::app()->clientScript->registerScript('addbutton', $addbutton); 
+
 			$i = 0;
-			foreach($this->_relatedModel->findAll() as $obj)
-			{ 
+			$uniqueid = $this->_relatedModel->tableSchema->name;
+			foreach($relatedmodels as $obj) { 
 				$i++;
 				$isAssigned = $this->isAssigned($obj->id);
 
 				echo CHtml::openTag('div', array(
-							'id' => 'div' . $i,
+							'id' => sprintf('div_%s_%d', $uniqueid, $i),
 							'style' => $isAssigned ? '' : 'display:none;',
 							));
-				echo CHtml::dropDownList('rel-' . $obj->id . "-" . $this->getListBoxName(),
+				echo CHtml::dropDownList(sprintf('rel_%s_%d_%s',
+							$uniqueid,
+							$obj->id,
+							$this->getListBoxName()),
 						$isAssigned ? $obj->id : 0,
 						CHtml::listData(
 							array_merge(
@@ -480,32 +481,30 @@ class Relation extends CWidget
 							$this->fields
 							)
 						);
+				echo CHtml::button('-', array('id' => sprintf('sub_%s_%d', $uniqueid, $i)));
 				echo CHtml::closeTag('div');
+				$jsadd = '
+					$(\'#add_'.$uniqueid.'_'.$i.'\').click(function() {
+							$(\'#div_'.$uniqueid.'_\' + i).show();
+							if(i <= maxi) i++;
+							});
+				';
+
+				$jssub = '
+					$(\'#sub_'.$uniqueid.'_'.$i.'\').click(function() {
+							$(\'#div_'.$uniqueid.'_'.$i.'\').hide();
+							$("select[name=\'rel_'.$uniqueid.'_'.$obj->id.'_'.$this->getListBoxName().'\']").val(\'\');
+							if(i >= 1) i--;
+							});
+				';
+
+				Yii::app()->clientScript->registerScript('addbutton_'.$i, $jsadd); 
+				Yii::app()->clientScript->registerScript('subbutton_'.$i, $jssub); 
 			}
-
-			$jsadd = '
-				i = 1;
-			maxi = '.$i.';
-			$(\'#add\').click(function() {
-					$(\'#div\' + i).show();
-					if(i <= maxi) ++i;
-					});
-			';
-
-			$jssub = '
-				$(\'#sub\').click(function() {
-						if(i > 2) --i;
-						$(\'#div\' + i).hide();
-						});
-			';
-
-			Yii::app()->clientScript->registerScript('addbutton', $jsadd); 
-			Yii::app()->clientScript->registerScript('subbutton', $jssub); 
-
-			echo CHtml::button('+', array('id' => 'add'));
 			echo '&nbsp;';
-			echo CHtml::button('-', array('id' => 'sub'));
-			echo '&nbsp;';
+			echo CHtml::button('+', array('id' => sprintf('add_%s_%d', $uniqueid, 1)));
+
+
 		}
 
 		public function isAssigned($id) 
@@ -517,10 +516,8 @@ class Relation extends CWidget
 		{
 			$returnArray = array();
 
-			foreach($data as $key => $value) 
-			{
-				if(strpos($key, 'rel') !== false)
-				{
+			foreach($data as $key => $value) {
+				if(strpos($key, 'rel') !== false) {
 					if(isset($value[$field]))
 						$returnArray[] = $value[$field];
 				}
@@ -610,17 +607,19 @@ class Relation extends CWidget
 		protected function renderAddButton() 
 		{
 			if(!isset($this->returnLink) or $this->returnLink == "")
-				$this->returnLink = $this->model->tableSchema->name . "/create";
+				$this->returnLink = get_class($this->model) . "/create";
 
+			if(isset($_POST['returnUrl']))
+				echo CHtml::hiddenField('returnUrl', $_POST['returnUrl']);
+			else
+				echo CHtml::hiddenField('returnUrl', Yii::app()->request->hostInfo . Yii::app()->request->requestUri);
+				
 			if($this->addButtonLink != '')
 				$link = $this->addButtonLink;
 			else
-				$link = array(
-						$this->_relatedModel->tableSchema->name . "/create", 
-						'returnTo' => $this->returnLink); 
+				$link = array(get_class($this->_relatedModel) . "/create"); 
 
-
-			$string = '<br />' . Yii::t('user', 'Add new') . ' ' . $this->_relatedModel->tableSchema->name;
+			$string = '<br />' . Yii::t('app', 'Add new') . ' ' . Yii::t('app', get_class($this->_relatedModel));
 
 			if(!$this->useLinkButton) {
 				echo CHtml::Link(
@@ -636,4 +635,3 @@ class Relation extends CWidget
 			}
 		}
 }
-

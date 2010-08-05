@@ -15,7 +15,7 @@ $this->breadcrumbs = array(Yii::t("UserModule.user", "Registration"));
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<?php echo YumHelper::requiredFieldNote(); ?>
+	<?php echo Yum::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
 	
 	<div class="row">

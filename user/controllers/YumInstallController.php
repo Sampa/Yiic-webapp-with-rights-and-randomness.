@@ -284,16 +284,16 @@ class YumInstallController extends YumController
 			}
 			else {
 				$this->render('start', array(
-					'usersTable' => YumHelper::resolveTableName($this->module->usersTable,Yii::app()->db),
-					'settingsTable' => YumHelper::resolveTableName($this->module->settingsTable, Yii::app()->db),
-					'textSettingsTable' => YumHelper::resolveTableName($this->module->textSettingsTable,Yii::app()->db),
-					'rolesTable' => YumHelper::resolveTableName($this->module->rolesTable,Yii::app()->db),
-					'messagesTable' => YumHelper::resolveTableName($this->module->messagesTable,Yii::app()->db),
-					'profileTable' => YumHelper::resolveTableName($this->module->profileTable,Yii::app()->db),
-					'profileFieldsTable' => YumHelper::resolveTableName($this->module->profileFieldsTable,Yii::app()->db),
-					'profileFieldsGroupTable' => YumHelper::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
-					'userRoleTable' => YumHelper::resolveTableName($this->module->userRoleTable,Yii::app()->db),
-					'userUserTable' => YumHelper::resolveTableName($this->module->userUserTable,Yii::app()->db),
+					'usersTable' => Yum::resolveTableName($this->module->usersTable,Yii::app()->db),
+					'settingsTable' => Yum::resolveTableName($this->module->settingsTable, Yii::app()->db),
+					'textSettingsTable' => Yum::resolveTableName($this->module->textSettingsTable,Yii::app()->db),
+					'rolesTable' => Yum::resolveTableName($this->module->rolesTable,Yii::app()->db),
+					'messagesTable' => Yum::resolveTableName($this->module->messagesTable,Yii::app()->db),
+					'profileTable' => Yum::resolveTableName($this->module->profileTable,Yii::app()->db),
+					'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable,Yii::app()->db),
+					'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
+					'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable,Yii::app()->db),
+					'userUserTable' => Yum::resolveTableName($this->module->userUserTable,Yii::app()->db),
 				));
 			}
 		} else {

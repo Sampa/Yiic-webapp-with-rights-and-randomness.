@@ -10,7 +10,7 @@ $this->breadcrumbs=array(Yii::t("UserModule.user", "Users"));
 			'name' => 'username',
 			'type'=>'raw',
 			'value' => 'CHtml::link(CHtml::encode($data->username),
-				array(YumHelper::route("{user}/user/profile"),"id"=>$data->id))',
+				array(Yum::route("{user}/user/profile"),"id"=>$data->id))',
 			),
 		array(
 			'name' => 'createtime',

@@ -15,7 +15,7 @@ $this->breadcrumbs=array(
 			'type' => 'raw',
 			'name' => Yii::t('UserModule.user', 'from'),
 			'value' => 'CHtml::link($data->from_user->username, array(
-					YumHelper::route(\'user/user/profile\'),
+					Yum::route(\'user/user/profile\'),
 					"id" => $data->from_user_id)
 				)'
 			),

@@ -35,7 +35,7 @@ class YumRole extends YumActiveRecord
       		$this->_tableName = Yii::app()->modules['user']['rolesTable'];
     	else
       		$this->_tableName = '{{roles}}'; // fallback if nothing is set
-    	return YumHelper::resolveTableName($this->_tableName,$this->getDbConnection());
+    	return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
   }
 
 	public function rules()
@@ -56,7 +56,7 @@ class YumRole extends YumActiveRecord
       $this->_userRoleTable = '{{user_has_role}}';
       
     #resolve table name to use it in relations definition      
-	$relationTableName=YumHelper::resolveTableName($this->_userRoleTable,$this->getDbConnection());
+	$relationTableName=Yum::resolveTableName($this->_userRoleTable,$this->getDbConnection());
 		return array(
 			'users'=>array(self::MANY_MANY, 'YumUser', $relationTableName .'(role_id, user_id)'),
 		);

@@ -1,67 +1,77 @@
 <?php
+// Helper function for generating menu entries
+function e($text, $url) {
+	return array('text' => sprintf('<span %s>%s</span>',
+				strpos(Yii::app()->request->url, $url) === false ? '' : 'style="font-weight:bold;"',
+				CHtml::link(Yum::t($text), array($url))));
+}
+
 // Draw menu only when logged in into the System
 if(!Yii::app()->user->isGuest) {
 
+	$menu = array();
+	// Gather available menu entries
+	if(Yii::app()->user->isAdmin()) {
+		$usermenu = array();
+		$rolemenu = array();
+		$profilemenu = array();
+		$settingsmenu = array();
+		$other = array();
 
-$menu = array();
-// Gather available menu entries
-if(Yii::app()->user->isAdmin()) {
-	$usermenu = array();
-	$rolemenu = array();
-	$profilemenu = array();
-	$settingsmenu = array();
-	$other = array();
+		$usermenu[] = e('User administration Panel', 'user/adminpanel');
+		$usermenu[] = e('Show users', 'user/admin');
+		$usermenu[] = e('Create new user', 'user/create');
 
-	$usermenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'User administration panel'), array('user/adminpanel')));
-	$usermenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Show users'), array('user/admin')));
-	$usermenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Create new user'), array('user/create')));
+		$rolemenu[] = e('Show roles' ,'role/admin');
+		$rolemenu[] = e('Create new role', 'role/create');
 
-	$rolemenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Show roles'), array('role/admin')));
-	$rolemenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Create new role'), array('role/create')));
+		$profilesettings[] = e('Manage profile fields', 'fields/admin');
+		$profilesettings[] = e('Create profile field', 'fields/create');
 
-	$profilesettings[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Manage profile fields'), array('fields/admin')));
-	$profilesettings[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Create profile field'), array('fields/create')));
+		$profilegroupsettings[] = e('Manage field groups', 'fieldsgroup/admin');
+		$profilegroupsettings[] = e('Create new field group', 'fieldsgroup/create');
 
-	$profilegroupsettings[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Manage field groups'), array('fieldsgroup/admin')));
-	$profilegroupsettings[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Create new field group'), array('fieldsgroup/create')));
+		$profilemenu[] = array('children' => $profilesettings, 'text' => Yum::t('Manage profile fields'));
+		$profilemenu[] = array('children' => $profilegroupsettings, 'text' => Yum::t('Manage profile field groups'));
 
+		$settingsmenu[] = e('Module settings', 'yumSettings/index');
+		$settingsmenu[] = e('Module text settings', 'yumTextSettings/admin');
 
-	$profilemenu[] = array('children' => $profilesettings, 'text' => Yii::t('UserModule.user', 'Manage profile fields'));
-	$profilemenu[] = array('children' => $profilegroupsettings, 'text' => Yii::t('UserModule.user', 'Manage profile field groups'));
+		$messagesmenu[] = e('View admin messages', 'messages/index');
+		$messagesmenu[] = e('Write a message', 'messages/compose');
+		$othermenu[] = e('Change admin Password', 'user/changePassword');
+		$othermenu[] = e('Logout', 'user/logout');
 
-	$settingsmenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Module settings'), array('yumSettings/index')));
-	$settingsmenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Module text settings'), array('yumTextSettings/admin')));
+		$menu[] = array('children' => $usermenu, 'text' => Yum::t('User Administration'));	
 
-	$messagesmenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'View admin messages'), array('messages/index')));
-	$messagesmenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Write a message'), array('messages/compose')));
-	$othermenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Change admin Password'), array('user/changePassword')));
-	$othermenu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Logout'), array('user/logout')));
+		if(Yii::app()->getModule('user')->enableRoles) 
+			$menu[] = array('children' => $rolemenu, 'text' => Yum::t('Role Administration'));	
+		if(Yii::app()->getModule('user')->enableProfiles) 
+			$menu[] = array('children' => $profilemenu, 'text' => Yum::t('Profile fields'));	
+		if(Yii::app()->getModule('user')->enableMessages) 
+			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 
 
-	$menu[] = array('children' => $usermenu, 'text' => Yii::t('UserModule.user', 'User Administration'));	
-	$menu[] = array('children' => $rolemenu, 'text' => Yii::t('UserModule.user', 'Role Administration'));	
-	$menu[] = array('children' => $profilemenu, 'text' => Yii::t('UserModule.user', 'Profile fields'));	
-	$menu[] = array('children' => $messagesmenu, 'text' => Yii::t('UserModule.user', 'Messages')); 
-	$menu[] = array('children' => $settingsmenu, 'text' => Yii::t('UserModule.user', 'Settings')); 
-	$menu[] = array('children' => $othermenu, 'text' => Yii::t('UserModule.user', 'Other')); 
-} else if(!Yii::app()->user->isguest) {
+		$menu[] = array('children' => $settingsmenu, 'text' => Yum::t('Settings')); 
+		$menu[] = array('children' => $othermenu, 'text' => Yum::t('Other')); 
+	} else if(!Yii::app()->user->isguest) {
 
-	if(Yii::app()->user->hasUsers())
-		$menu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Manage my users'), array('user/admin')));
-	$menu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'View users'), array('user/index')));
-	$menu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'My Inbox'), array('messages/index')));
-	$menu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Write a message'), array('messages/compose')));
-	$menu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Change password'), array('user/changePassword')));
-	$menu[] = array('text' => CHtml::link(Yii::t('UserModule.user', 'Delete account'), array('user/delete')));
-}
-echo '<div class="yum_menu" style="float:right; width:25%; margin: 0px 5px 0px 5px;">';
-$this->beginWidget('zii.widgets.CPortlet', array(
-			'title'=>Yii::t('UserModule.user', 'User Operations' )));
-$this->widget('CTreeView', array(
-'data' => $menu, 
-));
-$this->endWidget();
+		if(Yii::app()->user->hasUsers())
+			$menu[] = e('Manage my users', 'user/admin');
+		$menu[] = e('View users', 'user/index');
+		$menu[] = e('My Inbox', 'messages/index');
+		$menu[] = e('Write a message', 'messages/compose');
+		$menu[] = e('Change password', 'user/changePassword');
+		$menu[] = e('Delete account', 'user/delete');
+	}
+	echo '<div class="yum_menu" style="float:right; width:25%; margin: 0px 5px 0px 5px;">';
+	$this->beginWidget('zii.widgets.CPortlet', array(
+				'title'=>Yum::t('User Operations')));
+	$this->widget('CTreeView', array(
+				'data' => $menu, 
+				));
+	$this->endWidget();
 
-echo '</div>';
+	echo '</div>';
 
 }
 ?>

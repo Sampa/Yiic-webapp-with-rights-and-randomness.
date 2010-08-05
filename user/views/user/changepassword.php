@@ -9,7 +9,7 @@ $this->breadcrumbs = array(
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<?php echo YumHelper::requiredFieldNote(); ?>
+	<?php echo Yum::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
 	<?php $this->renderPartial('passwordfields', array( 'form'=>$form)); ?>
 

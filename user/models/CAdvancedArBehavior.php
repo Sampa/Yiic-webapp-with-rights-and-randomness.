@@ -154,7 +154,7 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 		// An array of objects is given
 		foreach($this->owner->$key as $foreignobject)
 		{
-			if(!is_numeric($foreignobject))
+			if(!is_numeric($foreignobject) && is_object($foreignobject))
 			{
 				$foreignobject = $foreignobject->{$foreignobject->$relation['m2mForeignField']};
 			}

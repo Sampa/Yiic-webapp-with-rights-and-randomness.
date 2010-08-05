@@ -8,6 +8,6 @@ Configuration (for example, language). </p>
 the default password. </strong>
 
 <p><?php 
-	$route=YumHelper::route('{user}/login'); 
+	$route=Yum::route('{user}/login'); 
 	echo CHtml::link("Administrate your Users (use {$route})",array($route)); 
 ?></p>

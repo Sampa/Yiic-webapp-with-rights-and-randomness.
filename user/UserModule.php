@@ -27,9 +27,9 @@ class UserModule extends YumWebModule
 	public $useYiiCheckAccess = false;
 	public $allowRegistration = true;
 	public $allowRecovery = true;
+	public $enableRoles = true;
 	public $enableProfiles = true;
 	public $enableMessages = true;
-	public $enableRoles = true;
 	public $enableEmailActivation = true;
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
@@ -117,7 +117,7 @@ class UserModule extends YumWebModule
 	{
 		if(substr($name,-3) === 'Url')
 			if(isset($this->_urls[substr($name, 0, -3)]))
-				return YumHelper::route($this->_urls[substr($name, 0, -3)]);
+				return Yum::route($this->_urls[substr($name, 0, -3)]);
 				
 		return parent::__get($name);
 	}
