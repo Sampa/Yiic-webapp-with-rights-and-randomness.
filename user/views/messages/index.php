@@ -1,21 +1,19 @@
 <?php
-$this->title = Yii::t('UserModule.user', 'My inbox');
+$this->title = Yum::t('My inbox');
 
 $this->breadcrumbs=array(
-	Yii::t('UserModule.user', 'Messages')=>array('index'),
-	Yii::t('UserModule.user', 'My inbox'));
+	Yum::t('Messages')=>array('index'),
+	Yum::t('My inbox'));
 
-?>
-
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'yum-messages-grid',
-	'dataProvider'=>$dataProvider,
+	'dataProvider' => $dataProvider,
 	'columns'=>array(
 		array(
 			'type' => 'raw',
-			'name' => Yii::t('UserModule.user', 'from'),
+			'name' => Yum::t('from'),
 			'value' => 'CHtml::link($data->from_user->username, array(
-					Yum::route(\'user/user/profile\'),
+					Yum::route(\'user/profile\'),
 					"id" => $data->from_user_id)
 				)'
 			),

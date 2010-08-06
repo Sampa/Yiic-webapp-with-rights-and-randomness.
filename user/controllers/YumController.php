@@ -8,9 +8,9 @@
  */
 abstract class YumController extends CController
 {
-	public $breadcrumbs;
-	public $menu;
-	public $title='Change me!';
+	public $breadcrumbs = array();
+	public $menu = array();
+	public $title ='';
 
 	public function filters()
 	{

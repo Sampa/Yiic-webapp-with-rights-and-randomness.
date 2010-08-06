@@ -1,5 +1,5 @@
 <?php
-$this->title = Yii::t('UserModule.user', 'Change setting profile') . ' ' . $model->title;
+$this->title = Yii::t('UserModule.user', 'Change setting profile') . ' "' . $model->title. '"';
 $this->breadcrumbs=array(
 	Yii::t('UserModule.user','User administration panel')=>array('//user/user/adminpanel'),
 	Yii::t('UserModule.user', 'Module settings')=>array('index'),

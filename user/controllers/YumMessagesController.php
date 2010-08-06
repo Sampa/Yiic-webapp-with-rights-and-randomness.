@@ -20,12 +20,18 @@ class YumMessagesController extends YumController
 	public function actionView()
 	{
 		$model = $this->loadModel();
-		if(!$model->message_read) {
-			$model->message_read = true;
-			$model->save();
-		}
 
-		$this->render('view',array('model'=>$model));
+		if($model->to_user_id != Yii::app()->user->id) {
+			$this->render('message_view_forbidden');
+		} else {
+
+			if(!$model->message_read) {
+				$model->message_read = true;
+				$model->save();
+			}
+
+			$this->render('view',array('model'=>$model));
+		}
 	}
 
 	public function actionCompose()
@@ -91,12 +97,13 @@ class YumMessagesController extends YumController
 
 	public function actionIndex()
 	{
-		$uid = Yii::app()->user->id;
 		$this->render('index',array(
-			//'models'=>YumMessages::model()->findAll('to = :uid', array(':uid' => $uid)),
-			'dataProvider'=>new CActiveDataProvider('YumMessages', array(
-				'criteria' => array('condition' => 'to_user_id = '. $uid
-		)))));
+					'dataProvider'=>new CActiveDataProvider('YumMessages', array(
+							'criteria' => array('condition' => 'to_user_id = '. Yii::app()->user->id)
+							)
+						)
+					)
+				);
 	}
 
 

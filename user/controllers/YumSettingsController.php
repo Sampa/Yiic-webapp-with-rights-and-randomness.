@@ -61,6 +61,8 @@ class YumSettingsController extends YumController
 	public function actionUpdate()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
+		if(!isset($_GET['id']))	
+			$_GET['id'] = 0;
 		if($_GET['id'] == 0)
 			$_GET['id'] = YumSettings::model()->getActive();
 		$model=$this->loadModel();

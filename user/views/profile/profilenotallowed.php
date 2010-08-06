@@ -1,8 +1,5 @@
-<?php 
-$this->title = Yii::t('UserModule.user', 'Permission Denied'); 
-$this->menu = array(YumMenuItemHelper::backToProfile());?>
-
+<?php $this->title = Yii::t('UserModule.user', 'Permission Denied'); ?>
 <div class="hint">
-	<p> <?php echo Yii::t('UserModule.user',
-	  'You are not allowed to view this profile.'); ?> </p>
+	<p> <?php echo Yum::t('You are not allowed to view this profile.'); ?> </p>
+  <p> <?php echo CHtml::link(Yum::t('Back to your profile'), array('user/profile')); ?> </p>
 </div>

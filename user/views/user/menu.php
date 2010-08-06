@@ -34,7 +34,8 @@ if(!Yii::app()->user->isGuest) {
 		$profilemenu[] = array('children' => $profilesettings, 'text' => Yum::t('Manage profile fields'));
 		$profilemenu[] = array('children' => $profilegroupsettings, 'text' => Yum::t('Manage profile field groups'));
 
-		$settingsmenu[] = e('Module settings', 'yumSettings/index');
+		$settingsmenu[] = e('Edit module settings', 'yumSettings/update');
+		$settingsmenu[] = e('Settings Profiles', 'yumSettings/index');
 		$settingsmenu[] = e('Module text settings', 'yumTextSettings/admin');
 
 		$messagesmenu[] = e('View admin messages', 'messages/index');
