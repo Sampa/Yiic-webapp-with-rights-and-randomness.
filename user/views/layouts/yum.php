@@ -1,5 +1,6 @@
 <?php 
-$this->beginContent(Yii::app()->getModule('user')->baseLayout);
+$module = Yii::app()->getModule('user');
+$this->beginContent($module->baseLayout);
 $this->renderPartial('/user/menu');
 
 echo '<div id="yumcontent" style="width:70%;margin:5px;">';

@@ -52,6 +52,19 @@
 </div>
 
 		<div class="row">
+<?php echo $form->labelEx($model,'messageSystem'); ?>
+<?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'The Message System to use. Plain will use non-Javascript to display new Messages and Dialog will use the CJuiDialog jQuery-plugin to display new Messages')); ?>
+
+<?php echo $form->dropDownList($model,'messageSystem', array(
+'None' => Yii::t('UserModule.user', 'None'),
+'Plain' => Yii::t('UserModule.user', 'Plain'),
+'Dialog' => Yii::t('UserModule.user', 'Dialog')
+)); ?>
+<?php echo $form->error($model,'messageSystem'); ?>
+</div>
+
+
+		<div class="row">
 <?php echo $form->labelEx($model,'enableProfileHistory'); ?>
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If enable History is set, user profiles are kept in the System if the user changes his profile Data. This way the admin is able to see what has changed in the profile history log.')); ?>
 

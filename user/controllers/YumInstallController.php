@@ -97,6 +97,7 @@ class YumInstallController extends YumController
 						`enableRecovery` tinyint(1) NOT NULL DEFAULT '1',
 						`enableEmailActivation` tinyint(1) NOT NULL DEFAULT '1',
 						`enableProfileHistory` tinyint(1) NOT NULL DEFAULT '1',
+						`messageSystem` enum('None', 'Plain', 'Dialog') NOT NULL DEFAULT 'Dialog',
 						`readOnlyProfiles` tinyint(1) NOT NULL DEFAULT '0',
 						`loginType` enum('LOGIN_BY_USERNAME','LOGIN_BY_EMAIL','LOGIN_BY_USERNAME_OR_EMAIL') NOT NULL,
 						`enableCaptcha` tinyint(1) NOT NULL DEFAULT '1',
@@ -227,6 +228,7 @@ class YumInstallController extends YumController
 						$sql = "
 							CREATE TABLE IF NOT EXISTS `" . $messagesTable . "` (
 									`id` int unsigned NOT NULL auto_increment,
+									`timestamp` int unsigned NOT NULL,
 									`from_user_id` int unsigned NOT NULL,
 									`to_user_id` int unsigned NOT NULL,
 									`title` varchar(45) NOT NULL,

@@ -29,7 +29,10 @@ class UserModule extends YumWebModule
 	public $allowRecovery = true;
 	public $enableRoles = true;
 	public $enableProfiles = true;
-	public $enableMessages = true;
+
+	// Messaging System can be MSG_NONE, MSG_PLAIN or MSG_DIALOG
+	public $messageSystem = YumMessage::MSG_DIALOG;
+
 	public $enableEmailActivation = true;
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
@@ -155,6 +158,7 @@ class UserModule extends YumWebModule
 			$this->enableEmailActivation = $settings->enableEmailActivation;
 			$this->enableProfileHistory = $settings->enableProfileHistory;
 			$this->readOnlyProfiles = $settings->readOnlyProfiles;
+			$this->messageSystem = $settings->messageSystem;
 			$this->allowCaptcha = $settings->enableCaptcha;
 		}
 			return true;

@@ -58,6 +58,11 @@ $this->menu=array(
 				'filter'=>array('0'=>Yii::t("UserModule.user","No"),'1'=>Yii::t("UserModule.user","Yes")),
 				),
 		array(
+				'name'=>'messageSystem',
+				'value'=>'$data->messageSystem',
+				'filter'=>array('None'=>Yii::t("UserModule.user","None"),'Plain'=>Yii::t("UserModule.user","Plain")),
+				),
+		array(
 				'name'=>'enableCaptcha',
 				'value'=>'$data->enableCaptcha?Yii::t("UserModule.user","Yes"):Yii::t("UserModule.user","No")',
 				'filter'=>array('0'=>Yii::t("UserModule.user","No"),'1'=>Yii::t("UserModule.user","Yes")),

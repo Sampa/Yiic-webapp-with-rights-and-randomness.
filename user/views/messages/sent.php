@@ -1,9 +1,9 @@
 <?php
-$this->title = Yum::t('My inbox');
+$this->title = Yum::t('Send messages');
 
 $this->breadcrumbs=array(
 	Yum::t('Messages')=>array('index'),
-	Yum::t('My inbox'));
+	Yum::t('Send messages'));
 
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'yum-messages-grid',
@@ -11,21 +11,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'columns'=>array(
 		array(
 			'type' => 'raw',
-			'name' => Yum::t('from'),
-			'value' => 'CHtml::link($data->from_user->username, array(
+			'name' => Yum::t('to'),
+			'value' => 'CHtml::link($data->to_user->username, array(
 					Yum::route(\'user/profile\'),
-					"id" => $data->from_user_id)
+					"id" => $data->to_user_id)
 				)'
 			),
 		array(
 			'type' => 'raw',
-			'name' => Yii::t('UserModule.user', 'timestamp'),
+			'name' => Yii::t('UserModule.user', 'Sent at'),
 			'value' => '$data->getDate()',
 		),
+
 		array(
 			'type' => 'raw',
 			'name' => Yii::t('UserModule.user', 'title'),
-			'value' => '$data->getTitle()',
+			'value' => '$data->title',
 		),
 		array(
 			'class'=>'CButtonColumn',

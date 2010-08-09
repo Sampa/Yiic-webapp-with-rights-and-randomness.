@@ -13,3 +13,11 @@ echo ': ' . $model->title; ?>
 
 <?php echo $model->message; ?>
 
+<hr />
+<?php
+if(Yii::app()->user->id != $model->from_user_id)
+ echo CHtml::Button(Yum::t('Reply to Message'), array(
+			'submit' => array(
+				'//user/messages/compose',
+				'to_user_id' => $model->from_user_id)));
+?>

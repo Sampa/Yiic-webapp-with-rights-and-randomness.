@@ -20,7 +20,7 @@ class YumSettings extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('title, loginType', 'required'),
+			array('title, loginType, messageSystem', 'required'),
 			array('preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			array('loginType', 'length', 'max'=>26),
@@ -53,6 +53,7 @@ class YumSettings extends CActiveRecord
 			'enableRecovery' => Yii::t('UserModule.user', 'Enable Recovery'),
 			'enableEmailActivation' => Yii::t('UserModule.user', 'Enable Email Activation'),
 			'enableProfileHistory' => Yii::t('UserModule.user', 'Enable Profile History'),
+			'messageSystem' => Yii::t('UserModule.user', 'Messaging system'),
 			'readOnlyProfiles' => Yii::t('UserModule.user', 'Read Only Profiles'),
 			'loginType' => Yii::t('UserModule.user', 'Login Type'),
 			'enableCaptcha' => Yii::t('UserModule.user', 'Enable Captcha'),

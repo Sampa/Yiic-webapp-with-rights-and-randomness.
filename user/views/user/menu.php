@@ -7,8 +7,9 @@ function e($text, $url) {
 }
 
 // Draw menu only when logged in into the System
-if(!Yii::app()->user->isGuest) {
 
+$module = Yii::app()->getModule('user');
+if(!Yii::app()->user->isGuest) {
 	$menu = array();
 	// Gather available menu entries
 	if(Yii::app()->user->isAdmin()) {
@@ -38,18 +39,19 @@ if(!Yii::app()->user->isGuest) {
 		$settingsmenu[] = e('Settings Profiles', 'yumSettings/index');
 		$settingsmenu[] = e('Module text settings', 'yumTextSettings/admin');
 
-		$messagesmenu[] = e('View admin messages', 'messages/index');
+		$messagesmenu[] = e('Admin inbox', 'messages/index');
+		$messagesmenu[] = e('Admin sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 		$othermenu[] = e('Change admin Password', 'user/changePassword');
 		$othermenu[] = e('Logout', 'user/logout');
 
 		$menu[] = array('children' => $usermenu, 'text' => Yum::t('User Administration'));	
 
-		if(Yii::app()->getModule('user')->enableRoles) 
+		if($module->enableRoles)
 			$menu[] = array('children' => $rolemenu, 'text' => Yum::t('Role Administration'));	
-		if(Yii::app()->getModule('user')->enableProfiles) 
+		if($module->enableProfiles) 
 			$menu[] = array('children' => $profilemenu, 'text' => Yum::t('Profile fields'));	
-		if(Yii::app()->getModule('user')->enableMessages) 
+		if($module->messageSystem != YumMessage::MSG_NONE) 
 			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 
 
 		$menu[] = array('children' => $settingsmenu, 'text' => Yum::t('Settings')); 
@@ -58,11 +60,18 @@ if(!Yii::app()->user->isGuest) {
 
 		if(Yii::app()->user->hasUsers())
 			$menu[] = e('Manage my users', 'user/admin');
+
+		$messagesmenu[] = e('My Inbox', 'messages/index');
+		$messagesmenu[] = e('Sent messages', 'messages/sent');
+		$messagesmenu[] = e('Write a message', 'messages/compose');
+
 		$menu[] = e('View users', 'user/index');
-		$menu[] = e('My Inbox', 'messages/index');
-		$menu[] = e('Write a message', 'messages/compose');
+
+		if($module->messageSystem != YumMessage::MSG_NONE) 
+			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 
 		$menu[] = e('Change password', 'user/changePassword');
 		$menu[] = e('Delete account', 'user/delete');
+		$menu[] = e('Logout', 'user/logout');
 	}
 	echo '<div class="yum_menu" style="float:right; width:25%; margin: 0px 5px 0px 5px;">';
 	$this->beginWidget('zii.widgets.CPortlet', array(

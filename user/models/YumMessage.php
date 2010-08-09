@@ -16,8 +16,11 @@
  * @property YumUser $to_user
  * @property YumUser $from_user
  */
-class YumMessages extends YumActiveRecord
+class YumMessage extends YumActiveRecord
 {
+	const MSG_NONE = 'None';
+	const MSG_PLAIN = 'Plain';
+	const MSG_DIALOG = 'Dialog';
 	/**
 	 * @param string $className
 	 * @return YumMessage
@@ -25,6 +28,11 @@ class YumMessages extends YumActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function beforeSave() {
+		$this->timestamp = time();
+		return true;
 	}
 
 	/**
@@ -64,6 +72,12 @@ class YumMessages extends YumActiveRecord
 		else
 			return '<strong>' . $this->title . '</strong>';
 	}
+
+	public function getDate()
+	{
+		return date(Yii::app()->getModule('user')->dateTimeFormat, $this->timestamp);
+	}
+
 
 	public function relations()
 	{

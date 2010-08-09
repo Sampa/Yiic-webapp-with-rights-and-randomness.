@@ -21,7 +21,8 @@ class YumMessagesController extends YumController
 	{
 		$model = $this->loadModel();
 
-		if($model->to_user_id != Yii::app()->user->id) {
+		if($model->to_user_id != Yii::app()->user->id
+				&& $model->from_user_id != Yii::app()->user->id) {
 			$this->render('message_view_forbidden');
 		} else {
 
@@ -36,18 +37,18 @@ class YumMessagesController extends YumController
 
 	public function actionCompose()
 	{
-		$model=new YumMessages;
+		$model=new YumMessage;
 
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['YumMessages'])) {			
-			$model = new YumMessages;
-			$model->attributes=$_POST['YumMessages'];
+		if(isset($_POST['YumMessage'])) {			
+			$model = new YumMessage;
+			$model->attributes=$_POST['YumMessage'];
 
 			if($model->validate()) {
-				foreach($_POST['YumMessages']['to_user_id'] as $user_id) {
-					$model = new YumMessages;
-					$model->attributes=$_POST['YumMessages'];
+				foreach($_POST['YumMessage']['to_user_id'] as $user_id) {
+					$model = new YumMessage;
+					$model->attributes=$_POST['YumMessage'];
 					$model->to_user_id = $user_id;
 					$model->save();
 				}
@@ -71,9 +72,9 @@ class YumMessagesController extends YumController
 
 	 $this->performAjaxValidation($model);
 
-		if(isset($_POST['YumMessages']))
+		if(isset($_POST['YumMessage']))
 		{
-			$model->attributes=$_POST['YumMessages'];
+			$model->attributes=$_POST['YumMessage'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -98,13 +99,19 @@ class YumMessagesController extends YumController
 	public function actionIndex()
 	{
 		$this->render('index',array(
-					'dataProvider'=>new CActiveDataProvider('YumMessages', array(
-							'criteria' => array('condition' => 'to_user_id = '. Yii::app()->user->id)
-							)
-						)
-					)
-				);
+					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
+							'criteria' => array(
+								'condition' => 'to_user_id = '. Yii::app()->user->id)))));
 	}
+
+	public function actionSent()
+	{
+		$this->render('sent',array(
+					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
+							'criteria' => array(
+								'condition' => 'from_user_id = '. Yii::app()->user->id)))));
+	}
+
 
 
 	/**
@@ -115,7 +122,7 @@ class YumMessagesController extends YumController
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=YumMessages::model()->findbyPk($_GET['id']);
+				$this->_model=YumMessage::model()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,Yii::t('App', 'The requested page does not exist.'));
 		}

@@ -2,6 +2,7 @@
 
 
 return array(
+		'Reply to Message' => 'auf diese Nachricht antworten',
 		'User administration panel' => 'Kontrollzentrum',
 		'Create new user' => 'Neuen Benutzer anlegen',
 		'Create new role' => 'Neue Rolle anlegen',

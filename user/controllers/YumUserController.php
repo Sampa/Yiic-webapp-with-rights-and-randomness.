@@ -77,7 +77,7 @@ class YumUserController extends YumController
 					'profiles' => YumProfile::model()->count(),
 					'profile_fields' => YumProfileField::model()->count(),
 					'profile_field_groups' => YumProfileFieldsGroup::model()->count(),
-					'messages' => YumMessages::model()->count(),
+					'messages' => YumMessage::model()->count(),
 					));
 	}
 

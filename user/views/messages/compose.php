@@ -26,7 +26,7 @@ $this->breadcrumbs = array(
 		'Select multiple recipients by holding the CTRL key'); ?> </p>
 
 <?php 
-echo CHtml::ListBox('YumMessages[to_user_id]',
+echo CHtml::ListBox('YumMessage[to_user_id]',
 		isset($_GET['to_user_id']) ? $_GET['to_user_id'] :'', CHtml::listData( 
 			YumUser::model()->active()->findAll(), 'id', 'username'),
 		array('multiple' => 'multiple', 'style' => 'width:300px; height:200px;'));

@@ -8,6 +8,7 @@ $this->breadcrumbs = array(
 $path = Yii::app()->getBasePath(). '/modules/user/views/user/adminpanel.css';
 $cssfile = Yii::app()->assetManager->publish($path);
 Yii::app()->clientScript->registerCssFile($cssfile);
+$this->renderPartial('/messages/new_messages');
 ?>
 
 <?php if(Yii::app()->getModule('user')->debug===true){
