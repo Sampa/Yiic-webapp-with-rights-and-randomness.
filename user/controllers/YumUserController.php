@@ -18,7 +18,7 @@ class YumUserController extends YumController
 					'expression'=>'Yii::app()->controller->module->allowCaptcha',
 					),
 				array('allow',
-					'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'delete'),
+					'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'passwordexpired', 'delete'),
 					'users'=>array('@'),
 					),
 				array('allow',
@@ -177,6 +177,11 @@ class YumUserController extends YumController
 		return true;
 	}
 
+	public function actionPasswordExpired()
+	{
+		$this->actionChangePassword($expired = true);
+	}
+
 	public function actionLogin()
 	{
 		$loginForm = new YumUserLogin;
@@ -187,11 +192,13 @@ class YumUserController extends YumController
 
 			// validate user input and redirect to previous page if valid
 			if($loginForm->validate()) {
-				$lastVisit = YumUser::model()->findByPk(Yii::app()->user->id);
-				$lastVisit->lastvisit = time();
-				$lastVisit->save();
+				$user = YumUser::model()->findByPk(Yii::app()->user->id);
+				$user->lastvisit = time();
+				$user->save();
 
-				if($lastVisit->superuser)
+				if($user->isPasswordExpired())
+					$this->redirect(array('passwordexpired'));
+				else if($user->superuser)
 					$this->redirect(Yii::app()->getModule('user')->returnAdminUrl);
 				else
 					$this->redirect(Yii::app()->getModule('user')->returnUrl);
@@ -232,7 +239,7 @@ class YumUserController extends YumController
 	/**
 	 * Change password
 	 */
-	public function actionChangepassword() {
+	public function actionChangepassword($expired = false) {
 		if(isset($_GET['id']))
 			$uid = $_GET['id'];
 		else
@@ -245,6 +252,7 @@ class YumUserController extends YumController
 				if($form->validate()) {
 					$new_password = YumUser::model()->findByPk($uid);
 					$new_password->password = YumUser::encrypt($form->password);
+					$new_password->lastpasswordchange = time();
 					$new_password->activationKey = YumUser::encrypt(microtime().$form->password);
 
 					if($new_password->save()) {
@@ -258,7 +266,7 @@ class YumUserController extends YumController
 					}
 				}
 			}
-			$this->render('changepassword', array('form'=>$form));
+			$this->render('changepassword', array('form'=>$form, 'expired' => $expired));
 		} 
 	}
 
@@ -522,6 +530,7 @@ class YumUserController extends YumController
 
 				if(!$model->hasErrors() && !$profile->hasErrors() && !$passwordform->hasErrors()) {
 					$model->password = YumUser::encrypt($passwordform->password);
+					$model->lastpasswordchange = time();
 					$model->save();
 					$profile->save();
 					$this->redirect(array('view','id'=>$model->id));

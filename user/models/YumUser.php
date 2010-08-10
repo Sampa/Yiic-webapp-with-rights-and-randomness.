@@ -92,7 +92,7 @@ class YumUser extends YumActiveRecord
 			$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
 			$rules[] = array('status', 'in', 'range'=>array(0,1,-1));
 			$rules[] = array('superuser', 'in', 'range'=>array(0,1));
-			$rules[] = array('username, createtime, lastvisit, superuser, status', 'required');
+			$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
 			$rules[] = array('password', 'required', 'on'=>array('insert'));
 			$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
@@ -156,7 +156,12 @@ class YumUser extends YumActiveRecord
 		} 
 		else
 			return false;
+	}
 
+	public function isPasswordExpired() 
+	{
+		$distance = Yii::app()->getModule('user')->password_expiration_time * 60 * 60;
+		return $this->lastpasswordchange - $distance > time();
 	}
 
 	/**

@@ -4,6 +4,9 @@ $this->title = Yii::t('UserModule.user', "Change password");
 $this->breadcrumbs = array(
 	Yii::t('UserModule.user', "Profile") => array('profile'),
 	Yii::t('UserModule.user', "Change password"));
+
+if($expired)
+$this->renderPartial('password_expired');
 ?>
 
 <div class="form">
