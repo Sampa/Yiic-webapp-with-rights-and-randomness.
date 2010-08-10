@@ -1,6 +1,8 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- prepared mail_send_method (thyseus)
+- prepared password expiration date (thyseus)
 - reworked messaging System (thyseus)
 - added new Relation widget that fixed MANY_MANY DropDownList problems (thyseus)
 - Wrapped Yum::t() around Yii::t() to allow easier translations (thyseus)

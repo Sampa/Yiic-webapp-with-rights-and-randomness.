@@ -51,17 +51,36 @@
 <?php echo $form->error($model,'enableEmailActivation'); ?>
 </div>
 
-		<div class="row">
+<div class="row">
 <?php echo $form->labelEx($model,'messageSystem'); ?>
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'The Message System to use. Plain will use non-Javascript to display new Messages and Dialog will use the CJuiDialog jQuery-plugin to display new Messages')); ?>
 
 <?php echo $form->dropDownList($model,'messageSystem', array(
-'None' => Yii::t('UserModule.user', 'None'),
-'Plain' => Yii::t('UserModule.user', 'Plain'),
-'Dialog' => Yii::t('UserModule.user', 'Dialog')
-)); ?>
+			'None' => Yum::t('None'),
+			'Plain' => Yum::t('Plain'),
+			'Dialog' => Yum::t('Dialog')
+			)); ?>
 <?php echo $form->error($model,'messageSystem'); ?>
 </div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'mail_send_method'); ?>
+<?php echo $form->dropDownList($model,'mail_send_method', array(
+			'Disabled' => Yum::t('Disable email sending'),
+			'Daily' => Yum::t('Daily summary of new Messages (if any)'),
+			'Message' => Yum::t('One E-mail per Message (instant)')
+			)); ?>
+<?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If activated, the System tries to inform every user about ew Messages that have been sent. Can be set to daily Summary or to one E-Mail per message')); ?>
+<?php echo $form->error($model,'auto_mail_sending'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'password_expiration_time'); ?>
+<?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'Time in days when the User is forced to change his password. Set to 0 to disable password expiration.')); ?>
+<?php echo $form->textField($model,'password_expiration_time', array('size' => 5)); ?>
+<?php echo $form->error($model,'password_expiration_time'); ?>
+</div>
+
 
 
 		<div class="row">

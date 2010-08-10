@@ -20,8 +20,8 @@ class YumSettings extends CActiveRecord
 	public function rules()
 	{
 		return array(
-			array('title, loginType, messageSystem', 'required'),
-			array('preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly'=>true),
+			array('title, loginType, messageSystem, mail_send_method', 'required'),
+			array('password_expiration_time, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			array('loginType', 'length', 'max'=>26),
 			array('id, title, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, loginType, enableCaptcha', 'safe', 'on'=>'search'),

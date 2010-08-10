@@ -167,9 +167,8 @@ class YumUser extends YumActiveRecord
 		$find = YumProfile::model()->findByAttributes(array('email'=>$email))->user;
 		if ($find->status) {
 			return true;
-		} 
-		elseif($find->activationKey == $activationKey) {
-			$find->activationKey = $this->generateActivationKey(true);
+		} else if($find->activationKey == $activationKey) {
+			$find->activationKey = $find->generateActivationKey(true);
 			$find->status = 1;
 			$find->save();
 			return true;
@@ -185,7 +184,7 @@ class YumUser extends YumActiveRecord
 	 * When user is activating, activation key becomes micortime()
 	 * @return string
 	 */
-	public function generateActivationKey($activate=false,$password='',array $params=array())
+	public function generateActivationKey($activate=false, $password='', array $params=array())
 	{
 		return $activate ? $this->encrypt(microtime()) : $this->encrypt(microtime() . $this->password);
 	}

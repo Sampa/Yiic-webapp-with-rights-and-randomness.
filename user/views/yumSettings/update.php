@@ -8,9 +8,9 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('UserModule.user', 'Create new setting profile'), 'url'=>array('create')),
-	array('label'=>Yii::t('UserModule.user', 'View setting profile'), 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>Yii::t('UserModule.user', 'Manage settings profiles'), 'url'=>array('admin')),
+	array('label'=>Yum::t('Create new setting profile'), 'url'=>array('create')),
+	array('label'=>Yum::t('View setting profile'), 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>Yum::t('Manage settings profiles'), 'url'=>array('admin')),
 );
 ?>
 
@@ -28,10 +28,8 @@ echo $this->renderPartial('_form', array(
 
 <div class="row buttons">
 	<?php
-	$url = array(Yii::app()->request->getQuery('returnTo'));
-	if(empty($url[0])) 
-		$url = array('yumsettings/admin');
-echo CHtml::Button(Yii::t('UserModule.user', 'Cancel'), array('submit' => $url)); ?>&nbsp;
+	$url = array('yumsettings/admin');
+	echo CHtml::Button(Yii::t('UserModule.user', 'Cancel'), array('submit' => $url)); ?>&nbsp;
 
 <?php echo CHtml::submitButton(Yii::t('UserModule.user', 'Update')); ?>
 </div>
