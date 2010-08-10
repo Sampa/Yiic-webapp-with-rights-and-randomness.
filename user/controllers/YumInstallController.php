@@ -98,7 +98,7 @@ class YumInstallController extends YumController
 						`enableEmailActivation` tinyint(1) NOT NULL DEFAULT '1',
 						`enableProfileHistory` tinyint(1) NOT NULL DEFAULT '1',
 						`messageSystem` enum('None', 'Plain', 'Dialog') NOT NULL DEFAULT 'Dialog',
-						`mail_send_method` enum('Disabled', 'Daily', 'Message') NOT NULL DEFAULT 'Message',
+						`mail_send_method` enum('Disabled', 'Daily', 'Instant') NOT NULL DEFAULT 'Instant',
 						`password_expiration_time` INT,
 						`readOnlyProfiles` tinyint(1) NOT NULL DEFAULT '0',
 						`loginType` enum('LOGIN_BY_USERNAME','LOGIN_BY_EMAIL','LOGIN_BY_USERNAME_OR_EMAIL') NOT NULL,
@@ -107,7 +107,7 @@ class YumInstallController extends YumController
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 					$db->createCommand($sql)->execute();
 
-					$sql = "INSERT INTO `".$settingsTable."` (`id`, `title`, `is_active`, `preserveProfiles`, `enableRegistration`, `enableRecovery`, `enableEmailActivation`, `enableProfileHistory`, `readOnlyProfiles`, `loginType`, `mail_send_method`, `password_expiration_time`, `enableCaptcha`) VALUES ('1', 'Yum factory Default', '1', '1', '1', '1', '1', '1', '0', 'LOGIN_BY_USERNAME_OR_EMAIL', 'Message', '30', '1');";
+					$sql = "INSERT INTO `".$settingsTable."` (`id`, `title`, `is_active`, `preserveProfiles`, `enableRegistration`, `enableRecovery`, `enableEmailActivation`, `enableProfileHistory`, `readOnlyProfiles`, `loginType`, `mail_send_method`, `password_expiration_time`, `enableCaptcha`) VALUES ('1', 'Yum factory Default', '1', '1', '1', '1', '1', '1', '0', 'LOGIN_BY_USERNAME_OR_EMAIL', 'Instant', '30', '1');";
 					$db->createCommand($sql)->execute();
 
 					// Create Text settings table

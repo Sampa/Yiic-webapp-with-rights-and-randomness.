@@ -220,12 +220,12 @@ class YumUserController extends YumController
 		if(YumUser::activate($_GET['email'], $_GET['activationKey']))
 		{
 			$this->render('message', array(
-						'title'=>Yii::t("UserModule.user", "User activation"),
-						'content'=>Yii::t("UserModule.user", "Your account has been activated.")));
+						'title'=>Yum::t("User activation"),
+						'content'=>Yum::t("Your account has been activated.")));
 		} else {
 			$this->render('message',array(
-						'title'=>Yii::t("UserModule.user", "User activation"),
-						'content'=>Yii::t("UserModule.user", "Incorrect activation URL.")));
+						'title'=>Yum::t("User activation"),
+						'content'=>Yum::t("Incorrect activation URL.")));
 		}
 	}
 

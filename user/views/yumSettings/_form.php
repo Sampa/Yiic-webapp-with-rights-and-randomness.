@@ -68,7 +68,7 @@
 <?php echo $form->dropDownList($model,'mail_send_method', array(
 			'Disabled' => Yum::t('Disable email sending'),
 			'Daily' => Yum::t('Daily summary of new Messages (if any)'),
-			'Message' => Yum::t('One E-mail per Message (instant)')
+			'Instant' => Yum::t('One E-mail per Message (instant)')
 			)); ?>
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If activated, the System tries to inform every user about ew Messages that have been sent. Can be set to daily Summary or to one E-Mail per message')); ?>
 <?php echo $form->error($model,'auto_mail_sending'); ?>

@@ -51,6 +51,10 @@ class YumMessagesController extends YumController
 					$model->attributes=$_POST['YumMessage'];
 					$model->to_user_id = $user_id;
 					$model->save();
+					$settings = YumSetting::model()->find('is_active');
+					if($settings->mail_send_method == 'Instant') {
+						$this->mailMessage($model);
+					}
 				}
 				$this->redirect(array('success'));
 			}
