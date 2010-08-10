@@ -22,7 +22,7 @@ class YumUserController extends YumController
 					'users'=>array('@'),
 					),
 				array('allow',
-					'actions'=>array('admin','adminpanel','delete','create','update', 'list', 'assign'),
+					'actions'=>array('admin','stats','delete','create','update', 'list', 'assign'),
 					'users'=>array(Yii::app()->user->name ),
 					'expression' => 'Yii::app()->user->isAdmin()'
 					),
@@ -60,16 +60,16 @@ class YumUserController extends YumController
 		if(Yii::app()->user->isGuest)
 			$this->actionLogin();
 		else if(Yii::app()->user->isAdmin())
-			$this->actionAdminPanel();
+			$this->actionStats();
 		else if(isset($_GET['id']) || isset ($_GET['user_id']))
 			$this->actionProfile();
 		else
 			$this->actionList();
 	}
 
-	public function actionAdminPanel()
+	public function actionStats()
 	{
-		$this->render('adminpanel', array(
+		$this->render('statistics', array(
 					'active_users' => YumUser::model()->count('status = 1'),
 					'inactive_users' => YumUser::model()->count('status = 0'),
 					'admin_users' => YumUser::model()->count('superuser = 1'),

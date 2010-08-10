@@ -12,6 +12,16 @@ $this->breadcrumbs = array(Yii::t("UserModule.user", "Registration"));
 </div>
 <?php else: ?>
 
+<?php
+$settings = YumTextSettings::model()->find("language = :language", array(
+			':language' => Yii::app()->language));
+
+if($settings) 
+	printf('%s<br /><br />', $settings->text_registration_header);
+
+?>
+
+
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
@@ -78,7 +88,7 @@ if ($profileFields)
 }
 ?>
 
-	<?php if(extension_loaded('gd') && Yii::app()->controller->module->allowCaptcha): ?>
+	<?php if(extension_loaded('gd') && Yii::app()->getModule('user')->enableCaptcha): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>
 		<div>
@@ -90,6 +100,11 @@ if ($profileFields)
 	</div>
 	<?php endif; ?>
 	
+<?php
+if($settings) 
+	printf('%s<br /><br />', $settings->text_registration_footer);
+?>
+
 	<div class="row submit">
 		<?php echo CHtml::submitButton(Yii::t("UserModule.user", "Registration")); ?>
 	</div>

@@ -12,6 +12,13 @@ if(Yii::app()->user->hasFlash('loginMessage')): ?>
 </div>
 
 <?php endif; ?>
+<?php
+$settings = YumTextSettings::model()->find("language = :language", array(
+			':language' => Yii::app()->language));
+
+if($settings) 
+	printf('%s<br /><br />', $settings->text_login_header);
+?>
 
 <p>
 <?php 
@@ -54,6 +61,10 @@ echo Yii::t("UserModule.user",
 <?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
 <?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
 </div>
+<?php
+if($settings) 
+	printf('%s<br /><br />', $settings->text_login_footer);
+?>
 
 <div class="row submit">
 <?php echo CHtml::submitButton(Yii::t("UserModule.user", "Login")); ?>

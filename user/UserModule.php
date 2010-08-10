@@ -54,9 +54,9 @@ class UserModule extends YumWebModule
 		'login'=>array("{user}/login"),
 		'return'=>array("{user}/profile"),
 		// Page to go after admin logs in
-		'returnAdmin'=>array("{user}/adminpanel"),
+		'returnAdmin'=>array("//user/statistics/index"),
 		// Page to go to after registration, login etc.	
-		'returnLogout'=>array("{user}/login"),
+		'returnLogout'=>array("//user/user/login"),
 	);
 
 	// Activate profile History (profiles are kept always, and when the 
@@ -87,7 +87,7 @@ class UserModule extends YumWebModule
 	 * Whether to use captcha e.g. in registration process
 	 * @var boolean
 	 */
-	public $allowCaptcha = true;
+	public $enableCaptcha = true;
 	
 	/**
 	 * Defines all Controllers of the User Management Module and maps them to
@@ -97,6 +97,7 @@ class UserModule extends YumWebModule
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
+		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
 		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),	
 		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),	
@@ -152,20 +153,18 @@ class UserModule extends YumWebModule
 	}
 
 	public function beforeControllerAction($controller, $action) {
-		if(parent::beforeControllerAction($controller, $action) && !Yii::app()->controller->getModule('user')->debug) {
+		parent::beforeControllerAction($controller, $action);
+
+		try {
 			$settings = YumSettings::model()->find('is_active');
-			$this->preserveProfiles = $settings->preserveProfiles;
-			$this->enableRegistration = $settings->enableRegistration;
-			$this->enableRecovery = $settings->enableRecovery;
-			$this->enableEmailActivation = $settings->enableEmailActivation;
-			$this->enableProfileHistory = $settings->enableProfileHistory;
-			$this->readOnlyProfiles = $settings->readOnlyProfiles;
-			$this->messageSystem = $settings->messageSystem;
-			$this->mail_send_method = $settings->mail_send_method;
-			$this->password_expiration_time = $settings->password_expiration_time;
-			$this->allowCaptcha = $settings->enableCaptcha;
-		}
-			return true;
+			
+			$options = array('preserveProfiles', 'enableRegistration', 'enableRecovery',
+					'enableEmailActivation', 'readOnlyProfiles', 'messageSystem', 
+					'mail_send_method', 'password_expiration_time', 'enableCaptcha');
+			foreach($options as $option) 
+				$this->$option = $settings->$option;
+		} catch (CDbException $e) {;}
+		return true;
 	}
 
 	/**

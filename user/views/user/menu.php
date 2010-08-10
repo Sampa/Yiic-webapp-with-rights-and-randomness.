@@ -1,13 +1,13 @@
 <?php
 // Helper function for generating menu entries
 function e($text, $url) {
+	$style = 'style="font-weight: bold;"';
 	return array('text' => sprintf('<span %s>%s</span>',
-				strpos(Yii::app()->request->url, $url) === false ? '' : 'style="font-weight:bold;"',
+				strpos(Yii::app()->request->url, $url) === false ? '' : $style,
 				CHtml::link(Yum::t($text), array($url))));
 }
 
 // Draw menu only when logged in into the System
-
 $module = Yii::app()->getModule('user');
 if(!Yii::app()->user->isGuest) {
 	$menu = array();
@@ -19,7 +19,7 @@ if(!Yii::app()->user->isGuest) {
 		$settingsmenu = array();
 		$other = array();
 
-		$usermenu[] = e('User administration Panel', 'user/adminpanel');
+		$usermenu[] = e('Statistics', 'statistics/index');
 		$usermenu[] = e('Show users', 'user/admin');
 		$usermenu[] = e('Create new user', 'user/create');
 
@@ -82,6 +82,5 @@ if(!Yii::app()->user->isGuest) {
 	$this->endWidget();
 
 	echo '</div>';
-
 }
 ?>

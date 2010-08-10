@@ -1,6 +1,8 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- Added User Statistics (thyseus)
+- Removed adminpanel (thyseus)
 - prepared mail_send_method (thyseus)
 - added password expiration date (experimental) (thyseus)
 - reworked messaging System (thyseus)

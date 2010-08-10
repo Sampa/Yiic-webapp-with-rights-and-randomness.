@@ -114,7 +114,7 @@ class YumInstallController extends YumController
 					// Create Text settings table
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $textSettingsTable . "` (
 						`id` int(11) NOT NULL AUTO_INCREMENT,
-						`language` enum('en','de','fr','pl','ru') NOT NULL DEFAULT 'en',
+						`language` enum('en_us','de','fr','pl','ru') NOT NULL DEFAULT 'en_us',
 						`text_registration_header` text NOT NULL,
 						`text_registration_footer` text NOT NULL,
 						`text_login_header` text NOT NULL,
@@ -127,7 +127,7 @@ class YumInstallController extends YumController
 					$db->createCommand($sql)->execute();
 
 					$sql = "
-						INSERT INTO `".$textSettingsTable."` (`id`, `language`, `text_registration_header`, `text_registration_footer`, `text_login_header`, `text_login_footer`, `text_email_registration`, `text_email_recovery`, `text_email_activation`) VALUES ('1', 'en', 'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.', 'Welcome!', '', 'Thank you for your registration. Please check your email or login.', 'You have requested a new Password. To set your new Password, please go to {activation_url}', 'Your account has been activated. Thank you for your registration.'), ('2', 'de', 'Willkommen zum System.', 'Mit der Anmeldung bestätigen Sie unsere allgemeinen Bedingungen.', 'Willkommen!', '', 'Sie haben sich für unsere Appliation registriert.', 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}', 'Ihr Konto wurde freigeschaltet.');
+						INSERT INTO `".$textSettingsTable."` (`id`, `language`, `text_registration_header`, `text_registration_footer`, `text_login_header`, `text_login_footer`, `text_email_registration`, `text_email_recovery`, `text_email_activation`) VALUES ('1', 'en_us', 'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.', 'Welcome!', '', 'Thank you for your registration. Please check your email or login.', 'You have requested a new Password. To set your new Password, please go to {activation_url}', 'Your account has been activated. Thank you for your registration.'), ('2', 'de', 'Willkommen zum System.', 'Mit der Anmeldung bestätigen Sie unsere allgemeinen Bedingungen.', 'Willkommen!', '', 'Sie haben sich für unsere Appliation registriert.', 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}', 'Ihr Konto wurde freigeschaltet.');
 					";
 
 					$db->createCommand($sql)->execute();

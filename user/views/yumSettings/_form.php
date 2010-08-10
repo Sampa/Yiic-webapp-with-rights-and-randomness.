@@ -10,11 +10,34 @@
 </div>
 
 		<div class="row">
+<?php echo $form->labelEx($model,'enableProfileHistory'); ?>
+<?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If enable History is set, user profiles are kept in the System if the user changes his profile Data. This way the admin is able to see what has changed in the profile history log.')); ?>
+
+<?php echo $form->dropDownList($model,'enableProfileHistory', array(
+0 => Yum::t('Disable profile History'),
+1 => Yum::t('Enable profile History')
+)); ?>
+<?php echo $form->error($model,'enableProfileHistory'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'readOnlyProfiles'); ?>
+<?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'Should users be able to update their profile data?')); ?>
+
+<?php echo $form->dropDownList($model,'readOnlyProfiles', array(
+0 => Yum::t('Profiles can be changed by their users'),
+1 => Yum::t('Profiles are read-only')
+)); ?>
+
+<?php echo $form->error($model,'readOnlyProfiles'); ?>
+</div>
+
+<div class="row">
 <?php echo $form->labelEx($model,'preserveProfiles'); ?>
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If preserveProfiles is set, the profiles are not being removed then the user gets deleted. This way the administrator keeps his user profile history forever')); ?>
 <?php echo $form->dropDownList($model,'preserveProfiles', array(
-0 => Yii::t('UserModule.user', 'No'),
-1 => Yii::t('UserModule.user', 'Yes')
+0 => Yum::t('Do not keep user profiles'),
+1 => Yum::t('Keep all User profiles')
 )); ?>
 <?php echo $form->error($model,'preserveProfiles'); ?>
 </div>
@@ -23,8 +46,8 @@
 <?php echo $form->labelEx($model,'enableRegistration'); ?>
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If enable Registration is set, users are able to register his own account. The link will be available beneath the login Form.')); ?>
 <?php echo $form->dropDownList($model,'enableRegistration', array(
-0 => Yii::t('UserModule.user', 'No'),
-1 => Yii::t('UserModule.user', 'Yes')
+0 => Yum::t('Disable registration'),
+1 => Yum::t('Enable registration')
 )); ?>
 <?php echo $form->error($model,'enableRegistration'); ?>
 </div>
@@ -34,8 +57,8 @@
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If enable Recovery is set, registerd users will have the possibility to recover his own password. The link will be available beneath the login Form.')); ?>
 
 <?php echo $form->dropDownList($model,'enableRecovery', array(
-0 => Yii::t('UserModule.user', 'No'),
-1 => Yii::t('UserModule.user', 'Yes')
+0 => Yum::t('Disable recovery'),
+1 => Yum::t('Enable recovery')
 )); ?>
 <?php echo $form->error($model,'enableRecovery'); ?>
 </div>
@@ -45,8 +68,8 @@
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If enable Email Activation is set, a user needs to confirm his account by an Activation Email that is send out to the user after the Registration process. If the link gets confirmed, his account will be set to status active.')); ?>
 
 <?php echo $form->dropDownList($model,'enableEmailActivation', array(
-0 => Yii::t('UserModule.user', 'No'),
-1 => Yii::t('UserModule.user', 'Yes')
+0 => Yum::t('Disable activation by E-Mail'),
+1 => Yum::t('Enable activation by E-Mail')
 )); ?>
 <?php echo $form->error($model,'enableEmailActivation'); ?>
 </div>
@@ -79,31 +102,6 @@
 <?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'Time in days when the User is forced to change his password. Set to 0 to disable password expiration.')); ?>
 <?php echo $form->textField($model,'password_expiration_time', array('size' => 5)); ?>
 <?php echo $form->error($model,'password_expiration_time'); ?>
-</div>
-
-
-
-		<div class="row">
-<?php echo $form->labelEx($model,'enableProfileHistory'); ?>
-<?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'If enable History is set, user profiles are kept in the System if the user changes his profile Data. This way the admin is able to see what has changed in the profile history log.')); ?>
-
-<?php echo $form->dropDownList($model,'enableProfileHistory', array(
-0 => Yii::t('UserModule.user', 'No'),
-1 => Yii::t('UserModule.user', 'Yes')
-)); ?>
-<?php echo $form->error($model,'enableProfileHistory'); ?>
-</div>
-
-		<div class="row">
-<?php echo $form->labelEx($model,'readOnlyProfiles'); ?>
-<?php printf('<p class="hint">%s</p>', Yii::t('UserModule.user', 'Should users be able to update their profile data?')); ?>
-
-<?php echo $form->dropDownList($model,'readOnlyProfiles', array(
-0 => Yii::t('UserModule.user', 'No'),
-1 => Yii::t('UserModule.user', 'Yes')
-)); ?>
-
-<?php echo $form->error($model,'readOnlyProfiles'); ?>
 </div>
 
 		<div class="row">
