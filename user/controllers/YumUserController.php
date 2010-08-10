@@ -309,7 +309,8 @@ class YumUserController extends YumController
 									'activationKey' => $user->activationKey,
 									'email' => $user->email)));
 
-					mail($user->email,
+					mail($user->profile[0]->email,
+							Yum::t('Password recovery'), 
 							sprintf('You have requested to reset your Password. To receive a new password, go to %s',
 								$activation_url),$headers);
 

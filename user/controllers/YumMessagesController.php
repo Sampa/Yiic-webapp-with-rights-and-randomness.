@@ -51,8 +51,7 @@ class YumMessagesController extends YumController
 					$model->attributes=$_POST['YumMessage'];
 					$model->to_user_id = $user_id;
 					$model->save();
-					$settings = YumSetting::model()->find('is_active');
-					if($settings->mail_send_method == 'Instant') {
+					if(Yii::app()->getModule('user')->mail_send_method == 'Instant') {
 						$this->mailMessage($model);
 					}
 				}
@@ -63,6 +62,18 @@ class YumMessagesController extends YumController
 		$this->render('compose',array(
 			'model'=>$model,
 		));
+	}
+
+	protected function mailMessage($model)
+	{
+		$headers = sprintf("From: %s\r\nReply-To: %s",
+				Yii::app()->params['adminEmail'],
+				Yii::app()->params['adminEmail']);;
+		mail($model->to_user->profile[0]->email,
+				$model->title,
+				$model->message,
+				$headers);
+
 	}
 
 	public function actionSuccess() 

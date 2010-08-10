@@ -29,6 +29,8 @@ class UserModule extends YumWebModule
 	public $allowRecovery = true;
 	public $enableRoles = true;
 	public $enableProfiles = true;
+	public $mail_send_method = 'Instant';
+	public $password_expiration_time = 30;
 
 	// Messaging System can be MSG_NONE, MSG_PLAIN or MSG_DIALOG
 	public $messageSystem = YumMessage::MSG_DIALOG;
@@ -159,6 +161,8 @@ class UserModule extends YumWebModule
 			$this->enableProfileHistory = $settings->enableProfileHistory;
 			$this->readOnlyProfiles = $settings->readOnlyProfiles;
 			$this->messageSystem = $settings->messageSystem;
+			$this->mail_send_method = $settings->mail_send_method;
+			$this->password_expiration_time = $settings->password_expiration_time;
 			$this->allowCaptcha = $settings->enableCaptcha;
 		}
 			return true;
