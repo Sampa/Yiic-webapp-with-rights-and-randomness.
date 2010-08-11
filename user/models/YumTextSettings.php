@@ -1,6 +1,6 @@
 <?php
 
-class YumTextSettings extends CActiveRecord
+class YumTextSettings extends YumActiveRecord
 {
 	public static function model($className=__CLASS__)
 	{

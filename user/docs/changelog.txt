@@ -1,6 +1,7 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- Prepared ROLE_has_ROLE to determine what users of which role can administrate user that have which Role (thyseus)
 - Added User Statistics (thyseus)
 - Removed adminpanel (thyseus)
 - prepared mail_send_method (thyseus)

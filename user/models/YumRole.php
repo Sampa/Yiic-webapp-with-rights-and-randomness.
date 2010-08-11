@@ -13,6 +13,7 @@
 class YumRole extends YumActiveRecord
 {
 	private $_userRoleTable;
+	private $_roleRoleTable;
 
 	public static function model($className=__CLASS__)
 	{
@@ -57,8 +58,10 @@ class YumRole extends YumActiveRecord
       
     #resolve table name to use it in relations definition      
 	$relationTableName=Yum::resolveTableName($this->_userRoleTable,$this->getDbConnection());
+    $relationRHRTableName=Yum::resolveTableName($this->_roleRoleTable, $this->getDbConnection());
 		return array(
 			'users'=>array(self::MANY_MANY, 'YumUser', $relationTableName .'(role_id, user_id)'),
+		'roles'=>array(self::MANY_MANY, 'YumRole', $relationRHRTableName . '(role_id, child_id)'),
 		);
 	}
 

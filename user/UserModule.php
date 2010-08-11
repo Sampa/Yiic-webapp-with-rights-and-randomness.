@@ -19,6 +19,7 @@ class UserModule extends YumWebModule
 	public $rolesTable = 'roles';
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
+	public $roleRoleTable = 'role_has_role';
 	public $installDemoData = true;
 	public $preserveProfiles = true;
 	public $baseLayout = 'application.views.layouts.main';

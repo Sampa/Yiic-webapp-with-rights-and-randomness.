@@ -45,6 +45,7 @@ class YumInstallController extends YumController
 					$rolesTable = $_POST['rolesTable'];
 					$userRoleTable = $_POST['userRoleTable'];
 					$userUserTable = $_POST['userUserTable'];
+					$roleRoleTable = $_POST['roleRoleTable'];
 					$settingsTable = $_POST['settingsTable'];
 					$textSettingsTable = $_POST['textSettingsTable'];
 
@@ -65,6 +66,8 @@ class YumInstallController extends YumController
 								$userRoleTable))->execute();
 					$db->createCommand(sprintf('drop table if exists %s',
 								$userUserTable))->execute();
+					$db->createCommand(sprintf('drop table if exists %s',
+								$roleRoleTable))->execute();
 					$db->createCommand(sprintf('drop table if exists %s',
 								$settingsTable))->execute();
 					$db->createCommand(sprintf('drop table if exists %s',
@@ -223,6 +226,17 @@ class YumInstallController extends YumController
 
 						$db->createCommand($sql)->execute();
 
+						// Create Role_has_role Table
+
+						$sql = "CREATE TABLE IF NOT EXISTS `".$roleRoleTable."` (
+							`id` int unsigned NOT NULL auto_increment,
+							`role_id` int unsigned NOT NULL,
+							`child_id` int unsigned NOT NULL,
+							PRIMARY KEY  (`id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+
+						$db->createCommand($sql)->execute();
+
 					}
 
 					if(isset($_POST['installMessages'])) 
@@ -299,6 +313,7 @@ class YumInstallController extends YumController
 					'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
 					'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable,Yii::app()->db),
 					'userUserTable' => Yum::resolveTableName($this->module->userUserTable,Yii::app()->db),
+					'roleRoleTable' => Yum::resolveTableName($this->module->roleRoleTable,Yii::app()->db),
 				));
 			}
 		} else {

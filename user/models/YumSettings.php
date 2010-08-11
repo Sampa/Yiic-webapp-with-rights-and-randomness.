@@ -1,6 +1,6 @@
 <?php
 
-class YumSettings extends CActiveRecord
+class YumSettings extends YumActiveRecord
 {
 	public static function model($className=__CLASS__)
 	{
@@ -31,15 +31,6 @@ class YumSettings extends CActiveRecord
 	public function relations()
 	{
 		return array(
-		);
-	}
-
-	public function behaviors()
-	{
-		return array(
-			'CAdvancedArBehavior' => array(
-				'class' => 'ext.CAdvancedArBehavior'
-			)
 		);
 	}
 

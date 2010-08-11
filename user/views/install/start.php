@@ -26,11 +26,6 @@ get overriden accidentally. </strong> </p>
 some Demo Data. If you want so see, what will happen exactly, look at the 
 controllers/InstallController.php file in the Module Source. </p>
 
-	<p> Note that the Yii User management Module does not contain any css files and
-almost no predefined layout, so that you can easily integrate this module in
-your already existing Web Application. Use the config parameters 'layout' to
-specify which layout the User Module should use. </p>
-
 	<p> The API Documentation, examples and an Database Schema for Mysql Workbench
 can be found in the docs/ directory of the Module. Please also take a look
 in this directory when you want to use the Role Manager of yii-user. </p>
@@ -78,9 +73,13 @@ your Yii Web Application </p>
 			<tr>
 				<td> This table holds the assignment, which user can administrate which other users </td>
 				<td> <?php echo CHtml::textField('userUserTable', $userUserTable); ?> </td>
-			</tr>
-		</table>
-	</div>
+				</tr>
+				<tr>
+				<td> This table holds the assignment, which roles can administrate which other roles </td>
+				<td> <?php echo CHtml::textField('roleRoleTable', $roleRoleTable); ?> </td>
+				</tr>
+				</table>
+				</div>
 
 	<div style="clear:both;"> </div>
 
