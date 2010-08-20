@@ -9,10 +9,14 @@ class YumProfileController extends YumController
 	{
 		return array(
 			array('allow', 
-				'actions'=>array('index', 'create', 'update', 'view', 'admin','delete'),
-				'users'=>array(Yii::app()->user->name),
+				'actions'=>array('index', 'create', 'update', 'admin','delete'),
 				'expression' => 'Yii::app()->user->isAdmin()'
 				),
+			array('allow', 
+				'actions'=>array('view'),
+				'users' => array('@'),
+				),
+
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),

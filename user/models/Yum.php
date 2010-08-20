@@ -6,15 +6,25 @@
  * @package Yum.core
  *
  */
-class Yum
-{
+class Yum { 
+	/** Register an asset file of Yum */
+	public static function register($file) {
+		$url = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('YumAssets'));
+
+		$path = $url . DIRECTORY_SEPARATOR . $file;
+		if(strpos($file, 'js') !== false)
+			Yii::app()->clientScript->registerScriptFile($path);
+		else if(strpos($file, 'css') !== false)
+			Yii::app()->clientScript->registerCssFile($path);
+	}
+
 	public static function t($string, $params = array()) {
 		return Yii::t('UserModule.user', $string, $params);
 	}
 
 	/**
 	 * Resolved table name into table name with prefix if needed
-	 * @param string $tablename, e.g {{tablename}}
+		 * @param string $tablename, e.g {{tablename}}
 	 * @param CDbConnection $connection
 	 * @since 0.6
 	 * @return string resolved table name

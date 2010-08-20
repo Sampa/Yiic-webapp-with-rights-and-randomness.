@@ -17,10 +17,6 @@ $this->breadcrumbs = array(
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo CHtml::activeHiddenField($model,
-			'from_user_id', array(
-				'value' => Yii::app()->user->id)); ?>
-
 	<div class="row">
 		<p> <?php echo Yii::t('UserModule.user', 
 		'Select multiple recipients by holding the CTRL key'); ?> </p>

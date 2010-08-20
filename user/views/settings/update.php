@@ -28,7 +28,7 @@ echo $this->renderPartial('/settings/_form', array(
 
 <div class="row buttons">
 	<?php
-	$url = array('yumsettings/admin');
+	$url = array('//user/yumSettings/index');
 	echo CHtml::Button(Yii::t('UserModule.user', 'Cancel'), array('submit' => $url)); ?>&nbsp;
 
 <?php echo CHtml::submitButton(Yii::t('UserModule.user', 'Update')); ?>

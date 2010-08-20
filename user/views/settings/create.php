@@ -23,11 +23,11 @@ echo $this->renderPartial('_form', array(
 	'form' =>$form
 	)); ?>
 
-<div class="row buttons">
+<div class="buttons">
 	<?php
 	$url = array(Yii::app()->request->getQuery('returnTo'));
 	if(empty($url[0])) 
-		$url = array('yumsettings/admin');
+	$url = array('//user/yumSettings/index');
 echo CHtml::Button(Yii::t('app', 'Cancel'), array('submit' => $url)); ?>&nbsp;
 <?php echo CHtml::submitButton(Yii::t('app', 'Create')); ?>
 </div>

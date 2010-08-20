@@ -49,20 +49,10 @@ class YumRole extends YumActiveRecord
 
 	public function relations()
 	{
-    if (isset(Yii::app()->controller->module->userRoleTable))
-      $this->_userRoleTable = Yii::app()->controller->module->userRoleTable;
-    elseif (isset(Yii::app()->modules['user']['userRoleTable'])) 
-      $this->_tableName = Yii::app()->modules['user']['userRoleTable'];
-    else
-      $this->_userRoleTable = '{{user_has_role}}';
-      
-    #resolve table name to use it in relations definition      
-	$relationTableName=Yum::resolveTableName($this->_userRoleTable,$this->getDbConnection());
-    $relationRHRTableName=Yum::resolveTableName($this->_roleRoleTable, $this->getDbConnection());
 		return array(
-			'users'=>array(self::MANY_MANY, 'YumUser', $relationTableName .'(role_id, user_id)'),
-		'roles'=>array(self::MANY_MANY, 'YumRole', $relationRHRTableName . '(role_id, child_id)'),
-		);
+				'users'=>array(self::MANY_MANY, 'YumUser', Yii::app()->getModule('user')->userRoleTable . '(role_id, user_id)'),
+				'roles'=>array(self::MANY_MANY, 'YumRole', Yii::app()->getModule('user')->roleRoleTable . '(role_id, child_id)'),
+				);
 	}
 
 	public function attributeLabels()

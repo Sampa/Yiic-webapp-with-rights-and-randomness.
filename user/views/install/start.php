@@ -45,15 +45,8 @@ your Yii Web Application </p>
 			<td> Table for Users </td>
 			<td> <?php echo CHtml::textField('usersTable', $usersTable); ?> </td>
 		</tr>
-		<tr>
-			<td> Table for User Management Settings </td>
-			<td> <?php echo CHtml::textField('settingsTable', $settingsTable); ?> </td>
-		</tr>
-		<tr>
-			<td> Table for User Management Text Settings </td>
-			<td> <?php echo CHtml::textField('textSettingsTable', $textSettingsTable); ?> </td>
-		</tr>
-	</table	>
+
+	</table>
 
 	<div style="clear:both;"> </div>
 
@@ -118,6 +111,23 @@ your Yii Web Application </p>
 
 	<div style="clear:both;"> </div>
 
+	<label for="installSettingsTable"> Enable Module settings Configuration by Database Table </label>
+	<?php echo CHtml::checkBox('installSettingsTable', true); ?>
+	<div id="settings">
+		<table>
+			<tr>
+				<td> Table for User Management Settings </td>
+				<td> <?php echo CHtml::textField('settingsTable', $settingsTable); ?> </td>
+			</tr>
+			<tr>
+				<td> Table for User Management Text Settings </td>
+				<td> <?php echo CHtml::textField('textSettingsTable', $textSettingsTable); ?> </td>
+			</tr>
+		</table>
+	</div>
+
+	<div style="clear:both;"> </div>
+
 	<label for="installDemoData"> Install Demo data (recommended) ? </label>
 	<?php echo CHtml::checkBox('installDemoData', $this->module->installDemoData); ?>
 
@@ -125,6 +135,9 @@ your Yii Web Application </p>
 
 	<?php 
 	$js = "
+	$('#installSettingsTable').click(function() {
+	$('#settings').toggle();
+	});
 	$('#installRole').click(function() {
 	$('#roles').toggle();
 	});

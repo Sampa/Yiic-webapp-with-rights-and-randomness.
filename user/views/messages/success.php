@@ -1,12 +1,9 @@
 <?php 
-$this->title = Yii::t('UserModule.user', 'Your message has been sent.');
+$this->title = Yum::t('Your message has been sent');
 $this->breadcrumbs=array(
-	Yii::t('UserModule.user', 'Messages')=>array('index'),
-	Yii::t('UserModule.user', 'Success'));
+	Yum::t('Messages')=>array('index'),
+	Yum::t('Success'));
 ?>
 
-<p> <?php echo CHtml::link(Yii::t('UserModule.user', 'Back to inbox'), 
-array('index')); ?> </p>
-
-<p> <?php echo CHtml::link(Yii::t('UserModule.user', 'Write another message'), 
-array('compose')); ?> </p>
+<p> <?php echo CHtml::link(Yum::t('Back to inbox'), array('index')); ?> </p> 
+<p> <?php echo CHtml::link(Yum::t('Write another message'), array('compose')); ?> </p>

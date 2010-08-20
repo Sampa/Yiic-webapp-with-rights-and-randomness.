@@ -48,12 +48,30 @@ class YumWebUser extends CWebUser
 		return isset($user->users) && $user->users !== array();
 	}
 
+	/**
+	 * Checks if this (non-admin) User can administrate some users of a specific role
+	 */
+	public static function hasRoles($uid = 0)
+	{
+		if($uid == 0)
+			$uid = Yii::app()->user->id;
+
+		$user = YumUser::model()->findByPk($uid);
+
+		$flag = false;
+		foreach($user->roles as $role) 
+			if (isset($role->roles) && $role->roles !== array())
+				$flag = true;
+
+		return $flag;
+	}
+
+
 /**
 	 * Checks if this (non-admin) User can administrate the given user
 	 */
 	public static function hasUser($username, $uid = 0)
 	{
-
 		if($uid == 0)
 			$uid = Yii::app()->user->getId();
 
@@ -75,6 +93,36 @@ class YumWebUser extends CWebUser
 			}
 		return false;
 	}
+
+/**
+	 * Checks if this (non-admin) User can administrate the given user of a specific role
+	 */
+	public static function hasRoleOfUser($username, $uid = 0)
+	{
+		if($uid == 0)
+			$uid = Yii::app()->user->getId();
+
+		$user = YumUser::model()->findByPk($uid);
+
+		if(!is_array($username))
+			$username = array ($username);
+
+		if(isset($user->roles)) 
+			foreach($user->roles as $roleobj) {
+				if(isset($roleobj->roles))
+					foreach($roleobj->roles as $administerable_role) {
+						if($administerable_role->users)
+							foreach($administerable_role->users as $userobj) {
+								if(in_array($userobj->username, $username) ||
+										in_array($userobj->id, $username))
+									return true;
+							}
+					}
+			}
+
+		return false;
+	}
+
 
 
 	/**

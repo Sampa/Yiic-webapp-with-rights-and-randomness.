@@ -96,7 +96,7 @@
 <div class="row">
 <?php echo $form->labelEx($model,'password_expiration_time'); ?>
 <?php echo $form->textField($model,'password_expiration_time', array('size' => 5)); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'Time in days when the User is forced to change his password. Set to 0 to disable password expiration.')); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Time in days when the User is forced to change his password. Set to 0 to disable password expiration.')); ?>
 <?php echo $form->error($model,'password_expiration_time'); ?>
 </div>
 
@@ -106,7 +106,7 @@
 <?php echo CHtml::activeDropDownList($model, 'loginType', array(
 			'LOGIN_BY_USERNAME' => Yii::t('UserModule.user', 'Login allowed only by Username') ,
 			'LOGIN_BY_EMAIL' => Yii::t('UserModule.user', 'Login allowed only by Email') ,
-			'LOGIN_BY_USERNAME_OR_EMAIL' => Yii::t('UserModule.user', 'Login allowed my Email and Username') ,
+			'LOGIN_BY_USERNAME_OR_EMAIL' => Yii::t('UserModule.user', 'Login allowed by Email and Username') ,
 )); ?>
 <?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'This option sets how the login should be allowed')); ?>
 <?php echo $form->error($model,'loginType'); ?>
@@ -123,18 +123,10 @@
 
 
 <?php echo $form->error($model,'enableCaptcha'); ?>
-
 </div>
+<div style="clear:both;"></div>
 
-<?php 
-$url = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('user.assets'));
-Yii::app()->clientScript->registerScriptFile($url . DIRECTORY_SEPARATOR . 'js'.DIRECTORY_SEPARATOR .'tools.tooltip-1.1.3.min.js');
-Yii::app()->clientScript->registerCssFile($url . DIRECTORY_SEPARATOR . 'css'.DIRECTORY_SEPARATOR .'settingsconfig.css');
-Yii::app()->clientScript->registerScript('tooltip', "
-		$('.row input, .row select').tooltip({
-position: 'center right',
-offset: [-2, 10]
-});
-
-");?>
-
+<?php
+Yum::register('js/tools.tooltip-1.1.3.min.js');
+Yum::register('js/tooltip.js');
+Yum::register('css/yum.css');?>

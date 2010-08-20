@@ -5,10 +5,10 @@ $messages = YumMessage::model()->findAll(
 		);
 
 if(count($messages) > 0) {
-	if(Yii::app()->getModule('user')->messageSystem == YumMessage::MSG_PLAIN) 
+	if($this->module->messageSystem == YumMessage::MSG_PLAIN) 
 		$this->renderPartial('/messages/new_messages_plain', array(
 					'messages' => $messages));
-	else if(Yii::app()->getModule('user')->messageSystem == YumMessage::MSG_DIALOG)
+	else if($this->module->messageSystem == YumMessage::MSG_DIALOG)
 		$this->renderPartial('/messages/new_messages_dialog', array(
 					'messages' => $messages));
 }

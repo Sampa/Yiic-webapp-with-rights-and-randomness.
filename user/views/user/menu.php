@@ -35,9 +35,9 @@ if(!Yii::app()->user->isGuest) {
 		$profilemenu[] = array('children' => $profilesettings, 'text' => Yum::t('Manage profile fields'));
 		$profilemenu[] = array('children' => $profilegroupsettings, 'text' => Yum::t('Manage profile field groups'));
 
-		$settingsmenu[] = e('Edit module settings', 'yumSettings/update');
-		$settingsmenu[] = e('Settings Profiles', 'yumSettings/index');
+		$settingsmenu[] = e('User module settings', 'yumSettings/update');
 		$settingsmenu[] = e('Module text settings', 'yumTextSettings/admin');
+		$settingsmenu[] = e('Settings profiles', 'yumSettings/index');
 
 		$messagesmenu[] = e('Admin inbox', 'messages/index');
 		$messagesmenu[] = e('Admin sent messages', 'messages/sent');
@@ -54,11 +54,13 @@ if(!Yii::app()->user->isGuest) {
 		if($module->messageSystem != YumMessage::MSG_NONE) 
 			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 
 
+		if($module->tableSettingsDisabled != true)
 		$menu[] = array('children' => $settingsmenu, 'text' => Yum::t('Settings')); 
+
 		$menu[] = array('children' => $othermenu, 'text' => Yum::t('Other')); 
 	} else if(!Yii::app()->user->isguest) {
 
-		if(Yii::app()->user->hasUsers())
+		if(Yii::app()->user->hasUsers() || Yii::app()->user->hasRoles())
 			$menu[] = e('Manage my users', 'user/admin');
 
 		$messagesmenu[] = e('My Inbox', 'messages/index');
@@ -73,7 +75,10 @@ if(!Yii::app()->user->isGuest) {
 		$menu[] = e('Delete account', 'user/delete');
 		$menu[] = e('Logout', 'user/logout');
 	}
-	echo '<div class="yum_menu" style="float:right; width:25%; margin: 0px 5px 0px 5px;">';
+
+	Yum::register('css/yum.css');
+
+	echo '<div class="yum-menu">'; 	
 	$this->beginWidget('zii.widgets.CPortlet', array(
 				'title'=>Yum::t('User Operations')));
 	$this->widget('CTreeView', array(

@@ -103,7 +103,7 @@ if(Yii::app()->user->isAdmin()) {
 
 	echo Yii::t('UserModule.user', 'This user can administer this users:');  
 
-	if(Yii::app()->user->isAdmin()) {
+	if($model->superuser) {
 		printf('<p>%s</p>', Yum::t('Everyone, cause he is an admin'));
 	} else if($model->users) {
 		echo "<ul>";

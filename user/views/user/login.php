@@ -13,17 +13,18 @@ if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
 <?php endif; ?>
 <?php
-$settings = YumTextSettings::model()->find("language = :language", array(
-			':language' => Yii::app()->language));
+if($this->module->tableSettingsDisabled != true) {
+	$settings = YumTextSettings::model()->find("language = :language", array(
+				':language' => Yii::app()->language));
 
-if($settings) 
-	printf('%s<br /><br />', $settings->text_login_header);
+	if($settings) 
+		printf('%s<br /><br />', $settings->text_login_header);
+}
 ?>
 
 <p>
 <?php 
-echo Yii::t("UserModule.user",
-		"Please fill out the following form with your login credentials:"); ?></p>
+echo Yum::t("Please fill out the following form with your login credentials:"); ?></p>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
@@ -62,8 +63,10 @@ echo Yii::t("UserModule.user",
 <?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
 </div>
 <?php
-if($settings) 
-	printf('%s<br /><br />', $settings->text_login_footer);
+	if($this->module->tableSettingsDisabled != true) {
+		if($settings) 
+			printf('%s<br /><br />', $settings->text_login_footer);
+	}
 ?>
 
 <div class="row submit">

@@ -45,6 +45,7 @@ class YumUser extends YumActiveRecord
 	{
 		$criteria=new CDbCriteria;
 
+		$criteria->compare('t.id',$this->id,true);
 		$criteria->compare('t.username',$this->username,true);
 		$criteria->compare('t.status',$this->status);
 		$criteria->compare('t.superuser',$this->superuser);
@@ -57,7 +58,17 @@ class YumUser extends YumActiveRecord
 					));
 	}
 
+	public function getAdministerableUsers() {
+		$users = array();
+		$users = $this->users;
+		foreach($this->roles as $role) {
+			if($role->roles)
+				foreach($role->roles as $role) 
+					$users = array_merge($this->users, $role->users);
+		}
 
+		return $users;
+	}
 	/**
 	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
 	 * Following algorith of searching valid table name is implemented:

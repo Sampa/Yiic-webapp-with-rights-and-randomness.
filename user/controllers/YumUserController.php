@@ -31,8 +31,16 @@ class YumUserController extends YumController
 					'expression' => "Yii::app()->user->hasUsers()",
 					),
 				array('allow',
+					'actions' => array('admin'),
+					'expression' => "Yii::app()->user->hasRoles()",
+					),
+				array('allow',
 						'actions' => array('update'),
 						'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
+						),
+				array('allow',
+						'actions' => array('update'),
+						'expression' => 'Yii::app()->user->hasRoleOfUser($_GET[\'id\'])',
 						),
 				array('deny',  // deny all other users
 						'users'=>array('*'),
@@ -195,6 +203,11 @@ class YumUserController extends YumController
 				$user = YumUser::model()->findByPk(Yii::app()->user->id);
 				$user->lastvisit = time();
 				$user->save();
+
+				if($this->module->messageSystem != YumMessage::MSG_NONE
+						&& count($user->messages) > 0) {
+						$this->renderPartial('/messages/new_messages');
+				}
 
 				if(isset(Yii::app()->user->returnUrl))
 					$this->redirect(Yii::app()->user->returnUrl);
@@ -618,6 +631,7 @@ class YumUserController extends YumController
 	public function actionList()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
+
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'pagination'=>array(
 						'pageSize'=>self::PAGE_SIZE,
@@ -631,19 +645,20 @@ class YumUserController extends YumController
 	public function actionAdmin()
 	{
 		$this->layout = YumWebModule::yum()->adminLayout;
-		$model = new YumUser('search');
 
-		if(isset($_GET['YumUser']))
-			$model->attributes = $_GET['YumUser'];                                    
+		if(Yii::app()->user->isAdmin()) {
+			$model = new YumUser('search');
 
-		$users = YumUser::model()->findAll();
-
-		$this->render('admin',array(
-					'users'=>$users,
-					'model'=>$model,
-					));
+			if(isset($_GET['YumUser']))
+				$model->attributes = $_GET['YumUser'];                                    
 
 
+
+			$this->render('admin', array('model'=>$model));
+		} else {
+			$model = YumUser::model()->findByPk(Yii::app()->user->id);
+			$this->render('restricted_admin', array('users'=>$model->getAdministerableUsers()));
+		}
 	}
 
 	/**

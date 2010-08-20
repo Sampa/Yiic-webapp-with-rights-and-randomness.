@@ -18,7 +18,17 @@ class YumRoleController extends YumController
 		$this->performAjaxValidation($model);
 		if(isset($_POST['YumRole'])) {
 			$model->attributes = $_POST['YumRole'];
-			$model->users = Relation::retrieveValues($_POST, 'YumUser');
+			if(isset($_POST['YumRole']['YumUser']))
+				$model->users = $_POST['YumRole']['YumUser'];
+			else
+				$model->users = array();
+
+			if(isset($_POST['YumRole']['YumRole']))
+				$model->roles = $_POST['YumRole']['YumRole'];
+			else
+				$model->roles = array();
+
+
 			if($model->save())
 				$this->redirect(array('admin'));
 
@@ -37,9 +47,16 @@ class YumRoleController extends YumController
 		{
 			$model->title = $_POST['YumRole']['title'];
 			$model->description = $_POST['YumRole']['description'];
-			$model->users = Relation::retrieveValues($_POST, 'YumUser');
+			if(isset($_POST['YumRole']['YumUser']))
+				$model->users = $_POST['YumRole']['YumUser'];
+			else
+				$model->users = array();
+			if(isset($_POST['YumRole']['YumRole']))
+				$model->roles = $_POST['YumRole']['YumRole'];
+			else
+				$model->roles = array();
 
-		if($model->validate() && $model->save())
+			if($model->validate() && $model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
 

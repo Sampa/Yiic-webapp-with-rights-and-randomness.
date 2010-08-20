@@ -2,6 +2,7 @@
 
 Yii::setPathOfAlias('YumModule' , dirname(__FILE__));
 Yii::setPathOfAlias('YumComponents' , dirname(__FILE__) . '/components/');
+Yii::setPathOfAlias('YumAssets' , dirname(__FILE__) . '/assets/');
 Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
@@ -32,6 +33,9 @@ class UserModule extends YumWebModule
 	public $enableProfiles = true;
 	public $mail_send_method = 'Instant';
 	public $password_expiration_time = 30;
+
+	// determines whether configuration by Database Table is enabled or disabled
+	public $tableSettingsDisabled = false;
 
 	// Messaging System can be MSG_NONE, MSG_PLAIN or MSG_DIALOG
 	public $messageSystem = YumMessage::MSG_DIALOG;
@@ -165,7 +169,9 @@ class UserModule extends YumWebModule
 					'mail_send_method', 'password_expiration_time', 'enableCaptcha');
 			foreach($options as $option) 
 				$this->$option = $settings->$option;
-		} catch (CDbException $e) {;}
+		} catch (CDbException $e) {
+			$this->tableSettingsDisabled = true;
+		}
 		return true;
 	}
 

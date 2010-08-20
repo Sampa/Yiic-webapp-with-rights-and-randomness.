@@ -44,11 +44,13 @@ class YumMessagesController extends YumController
 		if(isset($_POST['YumMessage'])) {			
 			$model = new YumMessage;
 			$model->attributes=$_POST['YumMessage'];
+			$model->from_user_id = Yii::app()->user->id;
 
 			if($model->validate()) {
 				foreach($_POST['YumMessage']['to_user_id'] as $user_id) {
 					$model = new YumMessage;
 					$model->attributes=$_POST['YumMessage'];
+					$model->from_user_id = Yii::app()->user->id;
 					$model->to_user_id = $user_id;
 					$model->save();
 					if(Yii::app()->getModule('user')->mail_send_method == 'Instant') {
