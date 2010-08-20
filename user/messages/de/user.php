@@ -2,6 +2,21 @@
 
 
 return array(
+		'User Management settings configuration' => 
+		'Einstellungsprofilkonfiguration',
+		'Roles' => 'Rollen',
+		'Profiles' => 'Profile',
+		'Profile field groups' => 'Profilfeldgruppen',
+		'Inactive users' => 'Inaktive Benutzer',
+		'Banned users' => 'Gesperrte Benuter',
+		'Admin users' => 'Administratoren',
+		'Different users logged in today' => 'Anzahl der heute angemeldeten Benutzer',
+		'Create new settings profile' => 'Neues Einstellungsprofil erstellen',
+		'New settings profile' => 'Neues Einstellungsprofil',
+		'Sent at' => 'Gesendet am',
+		'Messages' => 'Nachrichten',
+		'Reply' => 'Antwort',
+		'Active users' => 'Aktive Benutzer',
 		'This role can administer users of this roles' =>
 		'Benutzer dieser Rolle können Benutzer dieser Rollen administrieren',
 		'Update role' => 'Rolle bearbeiten',
@@ -100,13 +115,13 @@ return array(
 		'Create user' => 'Benutzer anlegen',
 		'Create role' => 'Rolle anlegen',
 		'Update user' => 'Benutzer bearbeiten',
-		'View user' => 'Benutzer anzeigen',
+		'View user "{username}"' => 'Benutzer "{username}"',
 		'Manage roles' => 'Rollen verwalten',
 		'Manage my users' => 'Meine Benutzer verwalten',
 		'Manage this profile' => 'dieses Profil bearbeiten',
 		'None' => 'Keine',
 		'This user belongs to these roles:' => 'Benutzer gehört diesen Rollen an:',
-		'This user can administer this users' => 'Benutzer kann diese Benutzer verwalten',
+		'This user can administer this users:' => 'Benutzer kann diese Benutzer verwalten:',
 		'Your Account has been activated. Thank you for your registration.' =>
 		'Ihr Account wurde aktiviert. Danke für ihre Anmeldung. ',
 		'Registration' => 'Registrierung',

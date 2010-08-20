@@ -103,6 +103,7 @@ class UserModule extends YumWebModule
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
+		'hierarchy'=>array('class'=>'YumModule.controllers.YumHierarchyController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
 		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),	
 		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),	

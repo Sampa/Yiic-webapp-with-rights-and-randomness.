@@ -465,7 +465,17 @@ class YumUserController extends YumController
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
 
-			$model->roles = Relation::retrieveValues($_POST, 'YumRole');
+			if(isset($_POST['YumUser']['YumRole']))
+				$model->roles = $_POST['YumUser']['YumRole'];
+			else
+				$model->roles = array();
+
+			if(isset($_POST['YumUser']['YumUser']))
+				$model->users = $_POST['YumUser']['YumUser'];
+			else
+				$model->users = array();
+
+
 			$model->activationKey = YumUser::encrypt(microtime() . $model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();

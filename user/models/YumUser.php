@@ -110,6 +110,14 @@ class YumUser extends YumActiveRecord
 			return $rules;
 	}
 
+	public function getRoles() {
+		$roles = '';
+		foreach($this->roles as $role)
+			$roles .= ' ' . $role->title;
+
+		return $roles;
+	}
+
 	public function relations()
 	{
     if (isset(Yii::app()->controller->module->userRoleTable))

@@ -1,5 +1,5 @@
 <?php
-$this->title = Yum::t('Send messages');
+$this->title = Yum::t('Sent messages');
 
 $this->breadcrumbs=array(
 	Yum::t('Messages')=>array('index'),
@@ -19,7 +19,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 		array(
 			'type' => 'raw',
-			'name' => Yii::t('UserModule.user', 'Sent at'),
+			'name' => Yum::t('Sent at'),
 			'value' => '$data->getDate()',
 		),
 

@@ -1,7 +1,7 @@
 <?php
 $this->title = $model->title;
 
-$this->breadcrumbs=array('Messages'=>array('index'),$model->title);
+$this->breadcrumbs=array(Yum::t('Messages')=>array('index'),$model->title);
 
 ?>
 

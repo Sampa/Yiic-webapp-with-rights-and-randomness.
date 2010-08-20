@@ -25,6 +25,7 @@ if(!Yii::app()->user->isGuest) {
 
 		$rolemenu[] = e('Show roles' ,'role/admin');
 		$rolemenu[] = e('Create new role', 'role/create');
+		$rolemenu[] = e('Show administration Hierarchy', 'hierarchy/index');
 
 		$profilesettings[] = e('Manage profile fields', 'fields/admin');
 		$profilesettings[] = e('Create profile field', 'fields/create');
@@ -38,6 +39,7 @@ if(!Yii::app()->user->isGuest) {
 		$settingsmenu[] = e('User module settings', 'yumSettings/update');
 		$settingsmenu[] = e('Module text settings', 'yumTextSettings/admin');
 		$settingsmenu[] = e('Settings profiles', 'yumSettings/index');
+		$settingsmenu[] = e('New settings profile', 'yumSettings/create');
 
 		$messagesmenu[] = e('Admin inbox', 'messages/index');
 		$messagesmenu[] = e('Admin sent messages', 'messages/sent');

@@ -28,7 +28,7 @@ class YumSettingsController extends YumController
 			$setting->is_active = true;
 			$setting->save();	
 		}
-		$this->redirect(array($_POST['returnTo']));
+		$this->redirect(array('//user/yumSettings/index'));
 	}
 
 	public function actionCreate()
