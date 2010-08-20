@@ -20,7 +20,7 @@ $this->menu=array(
 	'id'=>'yum-text-settings-form',
 	'enableAjaxValidation'=>true,
 )); 
-echo $this->renderPartial('_form', array(
+echo $this->renderPartial('/textsettings/_form', array(
 	'model'=>$model,
 	'form' =>$form
 	)); ?>

@@ -50,14 +50,14 @@ class UserModule extends YumWebModule
 	public static $allowInactiveAcctLogin = false;
 
 	private $_urls=array(
-		'registration'=>array('{user}/registration'),
-		'recovery'=>array('{user}/recovery'),
-		'login'=>array("{user}/login"),
-		'return'=>array("{user}/profile"),
+		'registration'=>array('//user/user/registration'),
+		'recovery'=>array('//user/user/recovery'),
+		'login'=>array('//user/user/login'),
+		'return'=>array('//user/user/profile'),
 		// Page to go after admin logs in
-		'returnAdmin'=>array("//user/statistics/index"),
+		'returnAdmin'=>array('//user/statistics/index'),
 		// Page to go to after registration, login etc.	
-		'returnLogout'=>array("//user/user/login"),
+		'returnLogout'=>array('//user/user/login'),
 	);
 
 	// Activate profile History (profiles are kept always, and when the 
@@ -156,6 +156,7 @@ class UserModule extends YumWebModule
 	public function beforeControllerAction($controller, $action) {
 		parent::beforeControllerAction($controller, $action);
 
+		// Assign options from settings table, if available
 		try {
 			$settings = YumSettings::model()->find('is_active');
 			
@@ -175,15 +176,11 @@ class UserModule extends YumWebModule
 	 */
 	public function configure($config)
 	{
-		if(is_array($config))
-		{
-			foreach($config as $key=>$value)
-			{
-				if(isset(UserModule::${$key}))
-				{
+		if(is_array($config)) {
+			foreach($config as $key=>$value) {
+				if(isset(UserModule::${$key})) {
 					UserModule::${$key} = $value;
-				}
-				else 
+				} else 
 					$this->$key=$value;
 			}
 		}

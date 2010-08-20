@@ -7,12 +7,12 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 		array('label'=>Yii::t('UserModule.user', 'Create new settings profile'),
-			'url'=>array('create')),
+			'url'=>array('/settings/create')),
 		);
 		?>
 
-		<?php $this->renderPartial('choose_active_profile', array(
-					'returnTo' => '//user/yumSettings/index',
+		<?php $this->renderPartial('/settings/choose_active_profile', array(
+					'returnTo' => '/settings/index',
 					'model' => $model)); ?>
 		<?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'yum-settings-grid',

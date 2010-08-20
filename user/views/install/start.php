@@ -1,4 +1,4 @@
-<h1> Yii User Management Module Installation </h1>
+<H1> Yii User Management Module Installation </h1>
 
 <?php echo CHtml::beginForm(array('install')); ?>
 

@@ -21,7 +21,7 @@ $this->menu=array(
 	'enableAjaxValidation'=>true,
 	'htmlOptions' => array('style' => 'width: 400px;')
 )); 
-echo $this->renderPartial('_form', array(
+echo $this->renderPartial('/settings/_form', array(
 	'model'=>$model,
 	'form' =>$form
 	)); ?>

@@ -118,13 +118,13 @@ class YumInstallController extends YumController
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $textSettingsTable . "` (
 						`id` int(11) NOT NULL AUTO_INCREMENT,
 						`language` enum('en_us','de','fr','pl','ru') NOT NULL DEFAULT 'en_us',
-						`text_registration_header` text NOT NULL,
-						`text_registration_footer` text NOT NULL,
-						`text_login_header` text NOT NULL,
-						`text_login_footer` text NOT NULL,
-						`text_email_registration` text NOT NULL,
-						`text_email_recovery` text NOT NULL,
-						`text_email_activation` text NOT NULL,
+						`text_registration_header` text,
+						`text_registration_footer` text,
+						`text_login_header` text,
+						`text_login_footer` text,
+						`text_email_registration` text,
+						`text_email_recovery` text,
+						`text_email_activation` text,
 						PRIMARY KEY (`id`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 					$db->createCommand($sql)->execute();

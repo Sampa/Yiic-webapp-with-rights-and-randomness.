@@ -4,13 +4,6 @@ class YumTextSettingsController extends YumController
 {
 	private $_model;
 
-	public function filters()
-	{
-		return array(
-			'accessControl', 
-		);
-	}
-
 	public function accessRules()
 	{
 		return array(
@@ -34,7 +27,7 @@ class YumTextSettingsController extends YumController
 
 	public function actionView()
 	{
-		$this->render('view',array(
+		$this->render('/textsettings/view',array(
 			'model'=>$this->loadModel(),
 		));
 	}
@@ -68,7 +61,7 @@ class YumTextSettingsController extends YumController
 	}
 		}
 
-		$this->render('create',array(
+		$this->render('/textsettings/create',array(
 			'model'=>$model,
 		));
 	}
@@ -89,7 +82,7 @@ class YumTextSettingsController extends YumController
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->render('update',array(
+		$this->render('/textsettings/update',array(
 			'model'=>$model,
 		));
 	}
@@ -114,7 +107,7 @@ class YumTextSettingsController extends YumController
 	public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('YumTextSettings');
-		$this->render('index',array(
+		$this->render('/textsettings/index',array(
 			'dataProvider'=>$dataProvider,
 		));
 	}
@@ -128,7 +121,7 @@ class YumTextSettingsController extends YumController
 		if($YumTextSettingsData !== null)
 			$model->attributes = $YumTextSettingsData;
 
-		$this->render('admin',array(
+		$this->render('/textsettings/admin',array(
 			'model'=>$model,
 		));
 	}

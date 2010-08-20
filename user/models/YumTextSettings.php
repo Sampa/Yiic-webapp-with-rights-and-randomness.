@@ -15,8 +15,8 @@ class YumTextSettings extends YumActiveRecord
 	public function rules()
 	{
 		return array(
-			array('text_registration_header, text_registration_footer, text_login_header, text_login_footer, text_email_registration, text_email_recovery, text_email_activation', 'required'),
-			array('language', 'length', 'max'=>2),
+			array('text_registration_header, text_registration_footer, text_login_header, text_login_footer, text_email_registration, text_email_recovery, text_email_activation', 'safe'),
+			array('language', 'length', 'max'=>5),
 			array('id, language, text_registration_header, text_registration_footer, text_login_header, text_login_footer, text_email_registration, text_email_recovery, text_email_activation', 'safe', 'on'=>'search'),
 		);
 	}

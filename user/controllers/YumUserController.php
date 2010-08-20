@@ -15,7 +15,7 @@ class YumUserController extends YumController
 				array('allow',
 					'actions'=>array('captcha'),
 					'users'=>array('*'),
-					'expression'=>'Yii::app()->controller->module->allowCaptcha',
+					'expression'=>'Yii::app()->controller->module->enableCaptcha',
 					),
 				array('allow',
 					'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'passwordexpired', 'delete'),
@@ -42,7 +42,7 @@ class YumUserController extends YumController
 
 	public function actions()
 	{
-		return Yii::app()->controller->module->allowCaptcha 
+		return Yii::app()->controller->module->enableCaptcha 
 			? array(
 					'captcha'=>array(
 						'class'=>'CCaptchaAction',
@@ -196,11 +196,13 @@ class YumUserController extends YumController
 				$user->lastvisit = time();
 				$user->save();
 
-				if($user->isPasswordExpired())
-					$this->redirect(array('passwordexpired'));
+				if(isset(Yii::app()->user->returnUrl))
+					$this->redirect(Yii::app()->user->returnUrl);
 				else if($user->superuser)
 					$this->redirect(Yii::app()->getModule('user')->returnAdminUrl);
-				else
+				else if($user->isPasswordExpired())
+					$this->redirect(array('passwordexpired'));
+								else
 					$this->redirect(Yii::app()->getModule('user')->returnUrl);
 			}
 		}

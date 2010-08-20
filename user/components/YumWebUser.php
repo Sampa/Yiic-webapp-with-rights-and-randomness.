@@ -5,7 +5,7 @@ Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) . '/../');
 
 class YumWebUser extends CWebUser
 {
-	public $loginUrl='/user/user/login';
+	public $loginUrl=array('//user/user/login');
 
 	public function init()
 	{
@@ -27,7 +27,7 @@ class YumWebUser extends CWebUser
 	 * only within the same request.
 	 * @return boolean whether the operations can be performed by this user.
 	 */
-	public function checkAccess($operation,$params=array(),$allowCaching=true)
+	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
 		if(Yii::app()->getModule('user')->useYiiCheckAccess) 
 			return parent::checkAccess();

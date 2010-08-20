@@ -4,13 +4,6 @@ class YumSettingsController extends YumController
 {
 	private $_model;
 
-	public function filters()
-	{
-		return array(
-			'accessControl', 
-		);
-	}
-
 	public function accessRules()
 	{
 		return array(
@@ -53,7 +46,7 @@ class YumSettingsController extends YumController
 			}
 		}
 
-		$this->render('create',array(
+		$this->render('/settings/create',array(
 			'model'=>$model,
 		));
 	}
@@ -79,7 +72,7 @@ class YumSettingsController extends YumController
 				$this->redirect(array('index'));
 		}
 
-		$this->render('update',array(
+		$this->render('/settings/update',array(
 			'model'=>$model,
 		));
 	}
@@ -109,7 +102,7 @@ class YumSettingsController extends YumController
 		if($YumSettingsData !== null)
 			$model->attributes = $YumSettingsData;
 
-		$this->render('admin',array(
+		$this->render('/settings/admin',array(
 			'model'=>$model,
 		));
 	}

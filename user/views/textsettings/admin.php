@@ -31,7 +31,7 @@ data: $(this).serialize()
 
 <?php echo CHtml::link(Yii::t('UserModule.user', 'Advanced Search'),'#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
+<?php $this->renderPartial('/textsettings/_search',array(
 	'model'=>$model,
 )); ?>
 </div>
