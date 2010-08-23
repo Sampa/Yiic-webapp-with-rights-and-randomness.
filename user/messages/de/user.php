@@ -2,6 +2,11 @@
 
 
 return array(
+		'Allowed users' => 'Erlaubte Benutzer',
+		'Allowed roles' => 'Erlaubte Rollen',
+		'User can not administer any users' => 'Kann keine Benutzer verwalten',
+		'User can not administer any users of any role' => 'Kann keine Rollen verwalten',
+		'Show administration Hierarchy' => 'Hierarchie',
 		'User Management settings configuration' => 
 		'Einstellungsprofilkonfiguration',
 		'Roles' => 'Rollen',

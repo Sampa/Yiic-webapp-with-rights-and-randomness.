@@ -19,14 +19,14 @@ if(!Yii::app()->user->isGuest) {
 			$childnodes_roles[] = f($role->title, array('role/view', 'id' => $role->id));
 
 		if(count($childnodes_users) > 0)
-			$childnodes[] = array('text' => 'Allowed Users', 'children' => $childnodes_users);
+			$childnodes[] = array('text' => Yum::t('Allowed users'), 'children' => $childnodes_users);
 		else
-			$childnodes[] = array('text' => 'User can not administer any users');
+			$childnodes[] = array('text' => Yum::t('User can not administer any users'));
 
 		if(count($childnodes_roles) > 0)
-			$childnodes[] = array('text' => 'Allowed Roles', 'children' => $childnodes_roles);
+			$childnodes[] = array('text' => Yum::t('Allowed roles'), 'children' => $childnodes_roles);
 		else
-			$childnodes[] = array('text' => 'User can not administer any users of any role');
+			$childnodes[] = array('text' => Yum::t('User can not administer any users of any role'));
 
 		$hierarchy[] = f($user->username, array('user/view', 'id' => $user->id), $childnodes);
 	}

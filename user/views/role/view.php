@@ -4,8 +4,12 @@ $this->title = Yii::t('UserModule.user','{role}', array(
 
 $this->breadcrumbs=array(
 	Yum::t('Roles')=>array('index'),
-	Yum::t('View'));
+	Yum::t('View'),
+	$model->title
+);
 
+printf('<h2>%s</h2>', $model->title);
+echo '<br />';
 echo $model->description; ?>
 
 <br />

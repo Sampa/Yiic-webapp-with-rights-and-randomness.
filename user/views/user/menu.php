@@ -1,12 +1,13 @@
 <?php
 // Helper function for generating menu entries
-function e($text, $url) {
-	$style = 'style="font-weight: bold;"';
-	return array('text' => sprintf('<span %s>%s</span>',
-				strpos(Yii::app()->request->url, $url) === false ? '' : $style,
-				CHtml::link(Yum::t($text), array($url))));
+if(!function_exists('e')) {
+	function e($text, $url) {
+		$style = 'style="font-weight: bold;"';
+		return array('text' => sprintf('<span %s>%s</span>',
+					strpos(Yii::app()->request->url, $url) === false ? '' : $style,
+					CHtml::link(Yum::t($text), array('//user/'.$url))));
+	}
 }
-
 // Draw menu only when logged in into the System
 $module = Yii::app()->getModule('user');
 if(!Yii::app()->user->isGuest) {
@@ -78,7 +79,8 @@ if(!Yii::app()->user->isGuest) {
 		$menu[] = e('Logout', 'user/logout');
 	}
 
-	Yum::register('css/yum.css');
+	If($this->module->layout == 'yum')
+		Yum::register('css/yum.css');
 
 	echo '<div class="yum-menu">'; 	
 	$this->beginWidget('zii.widgets.CPortlet', array(

@@ -8,5 +8,4 @@ printf('<h2> %s </h2>', $this->title);
 echo $content; 
 echo '</div>';
 
-
 $this->endContent(); ?>

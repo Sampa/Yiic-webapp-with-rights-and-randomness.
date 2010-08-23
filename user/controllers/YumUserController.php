@@ -521,7 +521,8 @@ class YumUserController extends YumController
 		// Always operate on most actual profile
 		if($model->profile === false)
 			$model->profile = new YumProfile();
-		else if(!is_array($model->profile))
+
+		if(!is_array($model->profile))
 			$model->profile = array($model->profile);
 
 		$profile = $model->profile[0];
