@@ -1,88 +1,82 @@
 <?php
 
-class YumSettings extends YumActiveRecord
-{
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+class YumSettings extends YumActiveRecord {
 
-	public function tableName()
-	{
-  		if (isset(Yii::app()->controller->module->settingsTable))
-      		$this->_tableName = Yii::app()->controller->module->settingsTable;
-    	elseif (isset(Yii::app()->modules['user']['settingsTable']))
-      		$this->_tableName = Yii::app()->modules['user']['settingsTable'];
-    	else
-      		$this->_tableName = '{{yumsettings}}'; // fallback if nothing is set
-    	return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
-	}
+    public static function model($className=__CLASS__) {
+        return parent::model($className);
+    }
 
-	public function getActive()
-	{
-		return YumSettings::model()->find('is_active')->id;
-	}
+    public function tableName() {
+        if (isset(Yii::app()->controller->module->settingsTable))
+            $this->_tableName = Yii::app()->controller->module->settingsTable;
+        elseif (isset(Yii::app()->modules['user']['settingsTable']))
+            $this->_tableName = Yii::app()->modules['user']['settingsTable'];
+        else
+            $this->_tableName = '{{yumsettings}}'; // fallback if nothing is set
+ return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
+    }
 
-	public function rules()
-	{
-		return array(
-			array('title, loginType, messageSystem, mail_send_method', 'required'),
-			array('password_expiration_time, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>255),
-			array('loginType', 'length', 'max'=>26),
-			array('id, title, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, loginType, enableCaptcha', 'safe', 'on'=>'search'),
-		);
-	}
+    public function getActive() {
+        return YumSettings::model()->find('is_active')->id;
+    }
 
-	public function relations()
-	{
-		return array(
-		);
-	}
+    public function rules() {
+        return array(
+            array('title, loginType, messageSystem, mail_send_method', 'required'),
+            array('password_expiration_time, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly' => true),
+            array('title', 'length', 'max' => 255),
+            array('loginType', 'length', 'max' => 26),
+            array('id, title, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, loginType, enableCaptcha', 'safe', 'on' => 'search'),
+        );
+    }
 
-	public function attributeLabels()
-	{
-		return array(
-			'id' => Yii::t('UserModule.user', 'ID'),
-			'title' => Yii::t('UserModule.user', 'Title'),
-			'preserveProfiles' => Yii::t('UserModule.user', 'Preserve Profiles'),
-			'enableRegistration' => Yii::t('UserModule.user', 'Enable Registration'),
-			'enableRecovery' => Yii::t('UserModule.user', 'Enable Recovery'),
-			'enableEmailActivation' => Yii::t('UserModule.user', 'Enable Email Activation'),
-			'enableProfileHistory' => Yii::t('UserModule.user', 'Enable Profile History'),
-			'messageSystem' => Yii::t('UserModule.user', 'Messaging system'),
-			'readOnlyProfiles' => Yii::t('UserModule.user', 'Read Only Profiles'),
-			'loginType' => Yii::t('UserModule.user', 'Login Type'),
-			'enableCaptcha' => Yii::t('UserModule.user', 'Enable Captcha'),
-		);
-	}
+    public function relations() {
+        return array(
+        );
+    }
 
-	public function search()
-	{
-		$criteria=new CDbCriteria;
+    public function attributeLabels() {
+        return array(
+            'id' => Yii::t('UserModule.user', 'ID'),
+            'title' => Yii::t('UserModule.user', 'Title'),
+            'preserveProfiles' => Yii::t('UserModule.user', 'Preserve Profiles'),
+            'enableRegistration' => Yii::t('UserModule.user', 'Enable Registration'),
+            'enableRecovery' => Yii::t('UserModule.user', 'Enable Recovery'),
+            'enableEmailActivation' => Yii::t('UserModule.user', 'Enable Email Activation'),
+            'enableProfileHistory' => Yii::t('UserModule.user', 'Enable Profile History'),
+            'messageSystem' => Yii::t('UserModule.user', 'Messaging system'),
+            'readOnlyProfiles' => Yii::t('UserModule.user', 'Read Only Profiles'),
+            'loginType' => Yii::t('UserModule.user', 'Login Type'),
+            'enableCaptcha' => Yii::t('UserModule.user', 'Enable Captcha'),
+        );
+    }
 
-		$criteria->compare('id',$this->id);
+    public function search() {
+        $criteria = new CDbCriteria;
 
-		$criteria->compare('title',$this->title,true);
+        $criteria->compare('id', $this->id);
 
-		$criteria->compare('preserveProfiles',$this->preserveProfiles);
+        $criteria->compare('title', $this->title, true);
 
-		$criteria->compare('enableRegistration',$this->enableRegistration);
+        $criteria->compare('preserveProfiles', $this->preserveProfiles);
 
-		$criteria->compare('enableRecovery',$this->enableRecovery);
+        $criteria->compare('enableRegistration', $this->enableRegistration);
 
-		$criteria->compare('enableEmailActivation',$this->enableEmailActivation);
+        $criteria->compare('enableRecovery', $this->enableRecovery);
 
-		$criteria->compare('enableProfileHistory',$this->enableProfileHistory);
+        $criteria->compare('enableEmailActivation', $this->enableEmailActivation);
 
-		$criteria->compare('readOnlyProfiles',$this->readOnlyProfiles);
+        $criteria->compare('enableProfileHistory', $this->enableProfileHistory);
 
-		$criteria->compare('loginType',$this->loginType,true);
+        $criteria->compare('readOnlyProfiles', $this->readOnlyProfiles);
 
-		$criteria->compare('enableCaptcha',$this->enableCaptcha);
+        $criteria->compare('loginType', $this->loginType, true);
 
-		return new CActiveDataProvider(get_class($this), array(
-			'criteria'=>$criteria,
-		));
-	}
+        $criteria->compare('enableCaptcha', $this->enableCaptcha);
+
+        return new CActiveDataProvider(get_class($this), array(
+            'criteria' => $criteria,
+        ));
+    }
+
 }
