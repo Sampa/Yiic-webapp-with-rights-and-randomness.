@@ -3,7 +3,7 @@ $this->title = Yum::t('Sent messages');
 
 $this->breadcrumbs=array(
 	Yum::t('Messages')=>array('index'),
-	Yum::t('Send messages'));
+	Yum::t('Sent messages'));
 
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'yum-messages-grid',
@@ -11,7 +11,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'columns'=>array(
 		array(
 			'type' => 'raw',
-			'name' => Yum::t('to'),
+			'name' => Yum::t('To'),
 			'value' => 'CHtml::link($data->to_user->username, array(
 					Yum::route(\'user/profile\'),
 					"id" => $data->to_user_id)
@@ -25,7 +25,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 		array(
 			'type' => 'raw',
-			'name' => Yii::t('UserModule.user', 'title'),
+			'name' => Yum::t('title'),
 			'value' => '$data->title',
 		),
 		array(

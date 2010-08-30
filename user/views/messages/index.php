@@ -11,7 +11,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'columns'=>array(
 		array(
 			'type' => 'raw',
-			'name' => Yum::t('from'),
+			'name' => Yum::t('From'),
 			'value' => 'CHtml::link($data->from_user->username, array(
 					Yum::route(\'user/profile\'),
 					"id" => $data->from_user_id)
@@ -19,7 +19,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 		array(
 			'type' => 'raw',
-			'name' => Yii::t('UserModule.user', 'timestamp'),
+			'name' => Yum::t('Time sent'),
 			'value' => '$data->getDate()',
 		),
 		array(

@@ -6,12 +6,6 @@ $this->breadcrumbs=array(
 	$model->title=>array('update','id'=>$model->id),
 	Yii::t('UserModule.user', 'Update'),
 );
-
-$this->menu=array(
-	array('label'=>Yum::t('Create new setting profile'), 'url'=>array('create')),
-	array('label'=>Yum::t('View setting profile'), 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>Yum::t('Manage settings profiles'), 'url'=>array('admin')),
-);
 ?>
 
 <div class="form">

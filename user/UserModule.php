@@ -161,6 +161,9 @@ class UserModule extends YumWebModule
 	public function beforeControllerAction($controller, $action) {
 		parent::beforeControllerAction($controller, $action);
 
+		if(Yii::app()->user->isAdmin())
+			$controller->layout = Yii::app()->getModule('user')->adminLayout;
+
 		// Assign options from settings table, if available
 		try {
 			$settings = YumSettings::model()->find('is_active');

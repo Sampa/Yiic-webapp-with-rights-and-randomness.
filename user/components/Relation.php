@@ -105,7 +105,7 @@ $this->widget('application.components.Relation', array(
 
 
 @author Herbert Maschke <thyseus@gmail.com>
-@version 0.95 (after 1.0rc5)
+@version 0.97 (after 1.0rc5)
 @since 1.1
 */
 
@@ -141,7 +141,7 @@ class Relation extends CWidget
 
 	// disable this to hide the Add Button
 	// set this to a string to set the String to be displayed
-	public $showAddButton = true;
+	public $showAddButton = false;
 	public $addButtonLink = '';
 	// Set this to false to generate a Link rather than a LinkButton
 	// This is useful when Javascript is not available
@@ -151,20 +151,35 @@ class Relation extends CWidget
 	// clicking the add Button
 	public $returnLink;
 
-	// How should a data row be rendered. {id} will be replaced by the id of
-	// the model. You can also insert every field that is available in the
+	// How the label of a row should be rendered. {id} will be replaced by the
+	// id of the model. You can also insert every field that is available in the
 	// parent object.
 	// Use {fields} to display all fields delimited by $this->delimiter
-	// Use {func0} to {funcX} to evaluate user-contributed functions with the
-	// $functions array. Example:
+	// Use {myFuncName} to evaluate a user-contributed function specified in the
+	//  $functions array as 'myFuncName'=>'code to be evaluated'. The code for
+	//  these functions are evaluated under the context of the controller
+	//  rendering the current Relation widget ($this refers to the controller).
+	// Old way, not encouraged anymore: Use {func0} to {funcX} to evaluate user-
+	//  contributed functions specified in the $functions array as a keyless
+	//  string entry of 'code to be evaluated'.
+	// Example of code:
 	//
-	//  'functions' => array( "CHtml::checkBoxList('parent{id}', '',
-	//    CHtml::listData(Othermodel::model()->findAll(), 'id', 'title'));",),
-	// 'template' => '#{id} : {fields} ({title}) Allowed other Models: {func0}',
+	// 'template' => '#{id} : {fields} ({title}) Allowed other Models: {func0} {func1} {preferredWay}',
+	// 'functions' => array(
+	//		"CHtml::checkBoxList('parent{id}', '', CHtml::listData(Othermodel::model()->findAll(), 'id', 'title'));",
+	//      '$this->funcThatReturnsText();'
+	//      'preferredWay' => '$this->instructMe();'
+	// ),
 	public $template = '{fields}';
 
-	// User-Contributed functions to be evaluated in template
+	// User-contributed functions, see comment for $template.
 	public $functions = array();
+
+	// If true, all the user-contributed functions in $functions will be
+	//  substituted in $htmlOptions['template'] as well.
+	// If an array of function names, all the listed functions will be
+	//  substituted in $htmlOptions['template'] as well.
+	public $functionsInHtmlOptionsTemplate = false;
 
 	// how should multiple fields be delimited
 	public $delimiter = " | ";
@@ -180,6 +195,8 @@ class Relation extends CWidget
 	public $manyManyTable = '';
 	public $manyManyTableLeft = '';
 	public $manyManyTableRight = '';
+
+	public $num = 1;
 
 	public function init()
 	{
@@ -306,8 +323,19 @@ class Relation extends CWidget
 				{
 					foreach($this->functions as $key => $function) 
 					{
-						$funcrules[sprintf('{func%d}', $key)] = CComponent::evaluateExpression(
+						// If the key is of type string, it's assumed to be a named function,
+						//  used like {myFuncName}.
+						// If the key is an integer, it's assumed to be an unnamed function used
+						//  the old way, {funcX} where X is its index in the functions array.
+						// We keep the integer support mostly for backwards compatibility, the
+						//  new way is encouraged.
+						if(is_string($key)) {
+							$funcrules[sprintf('{%s}', $key)] = $this->controller->evaluateExpression(
 								strtr($function, $defaultrules));
+						} else {
+							$funcrules[sprintf('{func%d}', $key)] = $this->controller->evaluateExpression(
+								strtr($function, $defaultrules));
+						}
 					}
 				}
 
@@ -320,6 +348,25 @@ class Relation extends CWidget
 
 				// Apply the rules to the template
 				$value = strtr($this->template, $rules);
+
+				// Apply the user contributed functions to $htmlOptions's template, if requested.
+				if(isset($this->htmlOptions['template']) && $this->functionsInHtmlOptionsTemplate !== false && isset($funcrules) && is_array($funcrules)) {
+					if(is_array($this->functionsInHtmlOptionsTemplate))
+					{
+						$funcrulesToUse = array();
+						foreach($this->functionsInHtmlOptionsTemplate as $functionName) {
+							$functionName = sprintf('{%s}', $functionName);
+							if(isset($funcrules[$functionName])) {
+								$funcrulesToUse[$functionName] = $funcrules[$functionName];
+							}
+						}
+						$this->htmlOptions['template'] = strtr($this->htmlOptions['template'], $funcrulesToUse);
+					}
+					else
+					{
+						$this->htmlOptions['template'] = strtr($this->htmlOptions['template'], $funcrules);
+					}
+				}
 
 				if($this->groupParentsBy != '') 
 				{
@@ -357,6 +404,9 @@ class Relation extends CWidget
 				$id = $foreignObject[$this->manyManyTableRight];
 				$objects[$id] = $this->_relatedModel->findByPk($id); 
 			}
+
+			foreach($this->_model->{$this->relation} as $relobj) 
+				$objects[$relobj->id] = $relobj;
 
 			return isset($objects) ? $objects : array();
 		}
@@ -454,18 +504,20 @@ class Relation extends CWidget
 		 * with the - Button .
 		 */
 		public function renderManyManyDropDownListSelection() {
+			$uniqueid = $this->_relatedModel->tableSchema->name;
+
 			if($this->parentObjects != 0)
 				$relatedmodels = $this->parentObjects;
 			else
 				$relatedmodels = $this->_relatedModel->findAll();
 
-			$addbutton = sprintf('i = %d; maxi = %d;',
+			$addbutton = sprintf('i'.$this->num.' = %d; maxi'.$this->num.' = %d;',
 					count($this->getAssignedObjects()) + 1,
 					count($relatedmodels));
-			Yii::app()->clientScript->registerScript('addbutton', $addbutton); 
+			Yii::app()->clientScript->registerScript(
+					'addbutton_'.$uniqueid.'_'.$this->num, $addbutton); 
 
 			$i = 0;
-			$uniqueid = $this->_relatedModel->tableSchema->name;
 			foreach($relatedmodels as $obj) { 
 				$i++;
 				$isAssigned = $this->isAssigned($obj->id);
@@ -484,12 +536,14 @@ class Relation extends CWidget
 								$this->relatedPk,
 								$this->fields)
 						);
-				echo CHtml::button('-', array('id' => sprintf('sub_%s_%d', $uniqueid, $i)));
+				echo CHtml::button('-', array('id' => sprintf('sub_%s_%d',
+								$uniqueid,
+								$i)));
 				echo CHtml::closeTag('div');
 				$jsadd = '
-					$(\'#add_'.$uniqueid.'_'.$i.'\').click(function() {
-							$(\'#div_'.$uniqueid.'_\' + i).show();
-							if(i <= maxi) i++;
+					$(\'#add_'.$uniqueid.'\').click(function() {
+							$(\'#div_'.$uniqueid.'_\' + i'.$this->num.').show();
+							if(i'.$this->num.' <= maxi'.$this->num.') i'.$this->num.'++;
 							});
 				';
 
@@ -497,15 +551,15 @@ class Relation extends CWidget
 					$(\'#sub_'.$uniqueid.'_'.$i.'\').click(function() {
 							$(\'#div_'.$uniqueid.'_'.$i.'\').hide();
 							$("select[name=\''.$this->getListBoxName().'['.$i.']\']").val(\'\');
-							if(i >= 1) i--;
+							if(i'.$this->num.' >= 1) i--;
 							});
 				';
 
-				Yii::app()->clientScript->registerScript('addbutton_'.$i, $jsadd); 
-				Yii::app()->clientScript->registerScript('subbutton_'.$i, $jssub); 
+				Yii::app()->clientScript->registerScript('addbutton_'.$uniqueid, $jsadd); 
+				Yii::app()->clientScript->registerScript('subbutton_'.$uniqueid, $jssub); 
 			}
 			echo '&nbsp;';
-			echo CHtml::button('+', array('id' => sprintf('add_%s_%d', $uniqueid, 1)));
+			echo CHtml::button('+', array('id' => sprintf('add_%s', $uniqueid)));
 
 
 		}

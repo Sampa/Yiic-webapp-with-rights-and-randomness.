@@ -8,7 +8,10 @@ if(empty($tabularIdx))
 	echo Yum::requiredFieldNote();
 }
 
-echo CHtml::errorSummary(array($model, $profile, $passwordform));
+if($profile != false)
+	echo CHtml::errorSummary(array($model, $profile, $passwordform));
+else
+	echo CHtml::errorSummary(array($model, $passwordform));
 
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]username" : "username";
 
@@ -22,8 +25,8 @@ $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]password" : "password";
 if(!$model->isNewRecord) {
 	$model->password = '';
 	$function = "$('#password').toggle()";
-	echo CHtml::label(Yii::t('UserModule.user', 'change Password'), 'change_password');
-	echo CHtml::checkBox(Yii::t('UserModule.user', 'change Password'),
+	echo CHtml::label(Yum::t('change Password'), 'change_password');
+	echo CHtml::checkBox('change_password',
 			$changepassword,
 			array('onClick' => $function));
 }
@@ -34,25 +37,27 @@ echo CHtml::openTag('div',array(
 $this->renderPartial('passwordfields', array('form'=>$passwordform));
 echo CHtml::closeTag('div');
 
-foreach($profile->loadProfileFields() as $field)
-{
-	echo CHtml::openTag('div',array('class'=>'row'));
-	$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]{$field->varname}" : $field->varname;
-	echo CHtml::activeLabelEx($profile, $attribute);
-	if ($field->field_type=="TEXT")
-		echo CHtml::activeTextArea($profile, $attribute, array(
-					'rows'=>6,
-					'cols'=>50)
-				);
-	else
-		echo CHtml::activeTextField($profile, $attribute, array(
-					'size'=>60,
-					'maxlength'=>(($field->field_size)?$field->field_size:255)));
-	echo CHtml::error($profile, $attribute);
-	if($field->hint)
-		echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
-	echo CHtml::closeTag('div');
-} 
+	if($profile != false) {
+		foreach($profile->loadProfileFields() as $field)
+		{
+			echo CHtml::openTag('div',array('class'=>'row'));
+			$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]{$field->varname}" : $field->varname;
+			echo CHtml::activeLabelEx($profile, $attribute);
+			if ($field->field_type=="TEXT")
+				echo CHtml::activeTextArea($profile, $attribute, array(
+							'rows'=>6,
+							'cols'=>50)
+						);
+			else
+				echo CHtml::activeTextField($profile, $attribute, array(
+							'size'=>60,
+							'maxlength'=>(($field->field_size)?$field->field_size:255)));
+			echo CHtml::error($profile, $attribute);
+			if($field->hint)
+				echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
+			echo CHtml::closeTag('div');
+		} 
+	}
 
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]superuser" : "superuser";
 echo CHtml::openTag('div',array('class'=>'row'));
@@ -87,19 +92,21 @@ $this->widget('YumModule.components.Relation',
 				));
 	echo CHtml::closeTag('div');
 
-		echo CHtml::openTag('div',array('class'=>'row'));
-		echo CHtml::tag('p',array(),Yii::t('UserModule.user', 'This user can administer this users'),true);
-		$this->widget('YumModule.components.Relation',
-				array('model' => $model,
-					'relation' => 'users',
-					'style' => 'checkbox',
-					'fields' => 'username',
-					'htmlOptions' => array(
-						'checkAll' => Yii::t('UserModule.user', 'Choose All'),
-						'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
-						'showAddButton' => false
-					));
-		echo CHtml::closeTag('div');
+	echo CHtml::openTag('div',array('class'=>'row'));
+	echo CHtml::tag('p',array(),
+			Yum::t('This user can administer this users'),
+			true);
+$this->widget('YumModule.components.Relation',
+		array('model' => $model,
+			'relation' => 'users',
+			'style' => 'checkbox',
+			'fields' => 'username',
+			'htmlOptions' => array(
+				'checkAll' => Yii::t('UserModule.user', 'Choose All'),
+				'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
+			'showAddButton' => false
+			));
+echo CHtml::closeTag('div');
 if(empty($tabularIdx))
 {
 	echo CHtml::openTag('div',array('class'=>'row buttons'));

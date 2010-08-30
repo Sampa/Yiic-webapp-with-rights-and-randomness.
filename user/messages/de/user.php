@@ -2,6 +2,8 @@
 
 
 return array(
+		'Time sent' => 'Gesendet am',
+		'This user can administer this users' => 'Dieser Benutzer kann diese Nutzer administrieren',
 		'Allowed users' => 'Erlaubte Benutzer',
 		'Allowed roles' => 'Erlaubte Rollen',
 		'User can not administer any users' => 'Kann keine Benutzer verwalten',
@@ -90,6 +92,7 @@ return array(
 		'Profile number' => 'Profilnummer: ',
 		'View my messages' => 'Meine Nachrichten ansehen',
 		'You have new messages!' => 'Sie haben neue Nachrichten!',
+		'You have {count} new Messages !' => 'Sie haben {count} neue Nachricht(en)!',
 		'Manage profiles' => 'Profile verwalten',
 		'Manage profile fields' => 'Profilfelder verwalten',
 		'Manage profile field groups' => 'Profilfeldgruppen verwalten',
@@ -184,7 +187,7 @@ return array(
 		'Retype password' => 'Passwort wiederholen',
 		'Message from ' => 'Nachricht von ',
 		'Write another message' => 'Eine weitere Nachricht schreiben',
-		'Retype Password is incorrect.' => 'Wiederholtes Passwort ist falsch.',
+		'Retype password is incorrect.' => 'Wiederholtes Passwort ist falsch.',
 		'Incorrect password (minimal length 4 symbols).' => 'Falsches Passwort (minimale Länge 4 Zeichen).',
 		'Incorrect username (length between 3 and 20 characters).' => 'Falscher Benutzername (Länge zwischen 3 und 20 Zeichen).',
 		'Incorrect symbol\'s. (A-z0-9)' => 'Im Benutzernamen sind nur Buchstaben und Zahlen erlaubt.',

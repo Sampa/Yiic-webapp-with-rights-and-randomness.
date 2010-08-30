@@ -109,6 +109,14 @@ class YumUser extends YumActiveRecord
 			return $rules;
 	}
 
+	public function hasRole($role_title) {
+		foreach($this->roles as $role)
+			if($role->id == $role_title || $role->title == $role_title)
+				return true;
+
+		return false;
+	}
+
 	public function getRoles() {
 		$roles = '';
 		foreach($this->roles as $role)

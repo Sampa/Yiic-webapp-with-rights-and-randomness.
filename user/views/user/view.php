@@ -1,8 +1,10 @@
 <?php
+$profiles = Yii::app()->getModule('user')->enableProfiles;
+
 $this->title = Yii::t('UserModule.user', 'View user "{username}"',array(
 			'{username}'=>$model->username));
 
-$this->breadcrumbs=array(Yii::t('UserModule.user', 'Users') => array('index'), $model->username);
+$this->breadcrumbs = array(Yum::t('Users') => array('index'), $model->username);
 
 if(Yii::app()->user->isAdmin()) {
 	$attributes = array(
@@ -10,16 +12,18 @@ if(Yii::app()->user->isAdmin()) {
 			'username',
 	);
 	
-	$profileFields = YumProfileField::model()->forOwner()->sort()->findAll();
-	if ($profileFields && $model->profile) {
-		foreach($profileFields as $field) {
-			array_push($attributes, array(
-				'label' => Yii::t('UserModule.user', $field->title),
-				'type' => 'raw',
-				'value' => is_array($model->profile) 
-				? $model->profile[0]->getAttribute($field->varname) 
-				: $model->profile->getAttribute($field->varname) ,
-				));
+	if($profiles) {
+		$profileFields = YumProfileField::model()->forOwner()->sort()->findAll();
+		if ($profileFields && $model->profile) {
+			foreach($profileFields as $field) {
+				array_push($attributes, array(
+							'label' => Yii::t('UserModule.user', $field->title),
+							'type' => 'raw',
+							'value' => is_array($model->profile) 
+							? $model->profile[0]->getAttribute($field->varname) 
+							: $model->profile->getAttribute($field->varname) ,
+							));
+			}
 		}
 	}
 
@@ -55,16 +59,19 @@ if(Yii::app()->user->isAdmin()) {
 			'username',
 			);
 
-	$profileFields=YumProfileField::model()->forAll()->sort()->findAll();
-	if ($profileFields) {
-		foreach($profileFields as $field) {
-			array_push($attributes,array(
-						'label' => Yii::t('UserModule.user', $field->title),
-						'name' => $field->varname,
-						'value' => $model->profile->getAttribute($field->varname),
-						));
+	if($profiles) {
+		$profileFields = YumProfileField::model()->forAll()->sort()->findAll();
+		if ($profileFields) {
+			foreach($profileFields as $field) {
+				array_push($attributes,array(
+							'label' => Yii::t('UserModule.user', $field->title),
+							'name' => $field->varname,
+							'value' => $model->profile->getAttribute($field->varname),
+							));
+			}
 		}
 	}
+
 	array_push($attributes,
 			array(
 				'name' => 'createtime',
@@ -81,11 +88,9 @@ if(Yii::app()->user->isAdmin()) {
 				'attributes'=>$attributes,
 				));
 }
-?>
 
-<?php
 if(Yii::app()->user->isAdmin()) {
-	if(Yii::app()->controller->module->profileHistory) {
+	if($profiles && $this->module->profileHistory) {
 		$this->renderPartial('/profile/profile_history', array('model' => $model));
 	}
 	echo Yii::t('UserModule.user', 'This user belongs to these roles:');  
@@ -120,6 +125,8 @@ if(Yii::app()->user->isAdmin()) {
 }
 
 if(Yii::app()->user->isAdmin())
-	echo CHtml::Button(Yum::t('Update User'), array('submit' => array('user/update', 'id' => $model->id)));
+	echo CHtml::Button(
+			Yum::t('Update User'), array(
+				'submit' => array('user/update', 'id' => $model->id)));
 
-?>
+	?>
