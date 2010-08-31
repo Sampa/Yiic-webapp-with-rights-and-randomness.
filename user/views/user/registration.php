@@ -36,9 +36,6 @@ if($settings)
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($form,'password'); ?>
 	<?php echo CHtml::activePasswordField($form,'password'); ?>
-	<p class="hint">
-	<?php echo Yii::t("UserModule.user", "Minimal password length is 4 symbols."); ?>
-	</p>
 	</div>
 	
 	<div class="row">

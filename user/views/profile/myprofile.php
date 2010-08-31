@@ -21,11 +21,11 @@ $this->renderPartial('/messages/new_messages');?>
 </tr>
 <?php 
 		$profileFields = YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
-		if ($profileFields) {
+		if ($profileFields && Yii::app()->getModule('user')->enableProfiles) {
 			foreach($profileFields as $field) {
 			?>
 <tr>
-	<th class="label"><?php echo CHtml::encode(Yii::t("UserModule.user", $field->title)); ?>
+	<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 </th>
     <td><?php echo CHtml::encode($profile[0]->getAttribute($field->varname)); ?>
 </td>

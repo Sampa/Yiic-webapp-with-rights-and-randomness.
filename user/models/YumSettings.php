@@ -23,10 +23,10 @@ class YumSettings extends YumActiveRecord {
     public function rules() {
         return array(
             array('title, loginType, messageSystem, mail_send_method', 'required'),
-            array('password_expiration_time, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly' => true),
+            array('password_expiration_time, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 255),
             array('loginType', 'length', 'max' => 26),
-            array('id, title, preserveProfiles, enableRegistration, enableRecovery, enableEmailActivation, enableProfileHistory, readOnlyProfiles, loginType, enableCaptcha', 'safe', 'on' => 'search'),
+            array('id, title, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, loginType, enableCaptcha', 'safe', 'on' => 'search'),
         );
     }
 
@@ -40,9 +40,8 @@ class YumSettings extends YumActiveRecord {
             'id' => Yii::t('UserModule.user', 'ID'),
             'title' => Yii::t('UserModule.user', 'Title'),
             'preserveProfiles' => Yii::t('UserModule.user', 'Preserve Profiles'),
-            'enableRegistration' => Yii::t('UserModule.user', 'Enable Registration'),
+            'registrationType' => Yii::t('UserModule.user', 'Registration type'),
             'enableRecovery' => Yii::t('UserModule.user', 'Enable Recovery'),
-            'enableEmailActivation' => Yii::t('UserModule.user', 'Enable Email Activation'),
             'enableProfileHistory' => Yii::t('UserModule.user', 'Enable Profile History'),
             'messageSystem' => Yii::t('UserModule.user', 'Messaging system'),
             'readOnlyProfiles' => Yii::t('UserModule.user', 'Read Only Profiles'),
@@ -60,11 +59,9 @@ class YumSettings extends YumActiveRecord {
 
         $criteria->compare('preserveProfiles', $this->preserveProfiles);
 
-        $criteria->compare('enableRegistration', $this->enableRegistration);
+        $criteria->compare('registrationType', $this->registrationType);
 
         $criteria->compare('enableRecovery', $this->enableRecovery);
-
-        $criteria->compare('enableEmailActivation', $this->enableEmailActivation);
 
         $criteria->compare('enableProfileHistory', $this->enableProfileHistory);
 

@@ -3,26 +3,22 @@
 class YumUserController extends YumController
 {
 	const PAGE_SIZE=10;
+	public $defaultAction = 'login';
 	private $_model;
 
 	public function accessRules()
 	{
 		return array(
 				array('allow',
-					'actions'=>array('index','view','registration','login', 'recovery', 'activation'),
+					'actions'=>array('index','view','login'),
 					'users'=>array('*'),
-					),
-				array('allow',
-					'actions'=>array('captcha'),
-					'users'=>array('*'),
-					'expression'=>'Yii::app()->controller->module->enableCaptcha',
 					),
 				array('allow',
 					'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'passwordexpired', 'delete'),
 					'users'=>array('@'),
 					),
 				array('allow',
-					'actions'=>array('admin','stats','delete','create','update', 'list', 'assign'),
+					'actions'=>array('admin','delete','create','update', 'list', 'assign'),
 					'users'=>array(Yii::app()->user->name ),
 					'expression' => 'Yii::app()->user->isAdmin()'
 					),
@@ -48,18 +44,6 @@ class YumUserController extends YumController
 				);
 	}
 
-	public function actions()
-	{
-		return Yii::app()->controller->module->enableCaptcha 
-			? array(
-					'captcha'=>array(
-						'class'=>'CCaptchaAction',
-						'backColor'=>0xFFFFFF,
-						),
-					)
-			: array();
-	}
-
 	public function actionIndex() {
 		// If the user is not logged in, so we redirect to the actionLogin,
 		// which will render the login Form
@@ -74,112 +58,6 @@ class YumUserController extends YumController
 			$this->actionList();
 	}
 
-	public function actionStats() {
-		$this->render('statistics', array(
-					'active_users' => YumUser::model()->count('status = 1'),
-					'inactive_users' => YumUser::model()->count('status = 0'),
-					'admin_users' => YumUser::model()->count('superuser = 1'),
-					'roles' => YumRole::model()->count(),
-					'profiles' => YumProfile::model()->count(),
-					'profile_fields' => YumProfileField::model()->count(),
-					'profile_field_groups' => YumProfileFieldsGroup::model()->count(),
-					'messages' => YumMessage::model()->count(),
-					));
-	}
-
-	/* 
-		 Registration of an new User in the system.
-		 Depending on whether $enableEmailRegistration is set, an confirmation Email
-		 will be sent to the Email address.
-	 */
-	public function actionRegistration() {
-		$form = new YumRegistrationForm;
-		$profile = new YumProfile();
-
-		if(isset($_POST['YumProfile']))
-			$profile->attributes = $_POST['YumProfile'];
-
-		if(isset($_POST['YumRegistrationForm']))
-		{
-			$form->attributes = $_POST['YumRegistrationForm'];
-			$form->email = $_POST['YumProfile']['email'];
-
-			if(isset($_POST['YumProfile'])) {
-				$profile->attributes = $_POST['YumProfile'];
-				$profile->validate();
-			}
-
-			if($form->validate()) {
-				$user = new YumUser();
-
-				if ($user->register($form->username, $form->password, $form->email)) {
-					if(isset($_POST['YumProfile'])) {
-						$profile->attributes = $_POST['YumProfile'];
-						$profile->user_id = $user->id;
-						$profile->save();
-						$user->email = $profile->attributes['email'];
-					}
-
-					if(Yii::app()->controller->module->enableEmailActivation) {
-						$this->sendRegistrationEmail($user);
-					} else {
-						Yii::app()->user->setFlash('registration',
-								Yii::t("UserModule.user",
-									"Your account has been activated. Thank you for your registration."));
-						$this->refresh();
-					}
-
-					if (UserModule::$allowInactiveAcctLogin) {
-						if (Yii::app()->user->allowAutoLogin) {
-							$identity = new YumUserIdentity($model->username,$sourcePassword);
-							$identity->authenticate();
-							Yii::app()->user->login($identity, 0);
-							$this->redirect(Yii::app()->controller->module->returnUrl);
-						} else {
-							Yii::app()->user->setFlash('registration',
-									Yii::t("UserModule.user",
-										"Thank you for your registration. Please check your email or login."));
-							$this->refresh();
-						}
-					} else {
-						Yii::app()->user->setFlash('registration',
-								Yii::t("UserModule.user",
-									"Thank you for your registration. Please check your email."));
-						$this->refresh();
-					}
-				} else {
-					Yii::app()->user->setFlash('registration',
-							Yii::t("UserModule.user",
-								"Your registration didn't work. Please contact our System Administrator."));
-					$this->refresh();
-
-				}
-			}
-		}
-		$this->render('/user/registration', array(
-					'form' => $form,
-					'profile' => $profile
-					)
-				);
-	}
-
-	// Send the Email to the given user object. $user->email needs to be set.
-	public function sendRegistrationEmail($user) {
-		if(!isset($user->email))
-		{
-			throw new CException(Yii::t('UserModule.user', 'Email is not set when trying to send Registration Email'));	
-		}
-
-		$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-		$activation_url = 'http://' .
-			$_SERVER['HTTP_HOST'] .
-			$this->createUrl('user/activation',array(
-						"activationKey" => $user->activationKey, "email" => $user->email)
-					);
-		mail($user->email,"You registered from " . Yii::app()->name,"Please activate your account go to $activation_url.",$headers);
-
-		return true;
-	}
 
 	public function actionPasswordExpired()
 	{
@@ -187,6 +65,7 @@ class YumUserController extends YumController
 	}
 
 	public function actionLogin() {
+		$this->layout = Yii::app()->getModule('user')->loginLayout;
 		$loginForm = new YumUserLogin;
 
 		// collect user input data
@@ -205,14 +84,11 @@ class YumUserController extends YumController
 				}
 
 				if($user->superuser) {
-					if(Yii::app()->getModule('user')->returnAdminUrl !== '')
-						$this->redirect(Yii::app()->getModule('user')->returnAdminUrl);
-					else
-						$this->redirect(Yii::app()->user->returnUrl);
+					$this->redirect(Yii::app()->getModule('user')->returnAdminUrl);
 				} else {
 					if ($user->isPasswordExpired())
 						$this->redirect(array('passwordexpired'));
-					else if(Yii::app()->getModule('user')->returnAdminUrl !== false)
+					else if(Yii::app()->getModule('user')->returnUrl !== '')
 						$this->redirect(Yii::app()->getModule('user')->returnUrl);
 					else
 						$this->redirect(Yii::app()->user->returnUrl);
@@ -232,23 +108,6 @@ class YumUserController extends YumController
 	{
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->controller->module->returnLogoutUrl);
-	}
-
-	/**
-	 * Activation of an user account
-	 */
-	public function actionActivation ()
-	{
-		if(YumUser::activate($_GET['email'], $_GET['activationKey']))
-		{
-			$this->render('message', array(
-						'title'=>Yum::t("User activation"),
-						'content'=>Yum::t("Your account has been activated.")));
-		} else {
-			$this->render('message',array(
-						'title'=>Yum::t("User activation"),
-						'content'=>Yum::t("Incorrect activation URL.")));
-		}
 	}
 
 	/**
@@ -284,75 +143,6 @@ class YumUserController extends YumController
 			$this->render('changepassword', array('form'=>$form, 'expired' => $expired));
 		} 
 	}
-
-
-	/**
-	 * Password recovery routine. The User will be sent an email with an
-	 * activation link. If clicked, he will be prompted to enter his new 
-	 * password.
-	 */
-	public function actionRecovery () {
-		$form = new YumUserRecoveryForm;
-
-		if (isset($_GET['email']) && isset($_GET['activationKey'])) {
-			$passwordform = new YumUserChangePassword;
-			$user = YumProfile::model()->findByAttributes(array('email'=>$email))->user;
-			if($user->activationKey == $_GET['activationKey']) {
-				if(isset($_POST['YumUserChangePassword'])) {
-					$passwordform->attributes = $_POST['YumUserChangePassword'];
-					if($passwordform->validate()) {
-						$user->password = YumUser::encrypt($form2->password);
-						$user->activationKey = YumUser::encrypt(microtime().$passwordform->password);
-						$user->save();
-
-						Yii::app()->user->setFlash('loginMessage',
-								Yii::t("user", "Your new password has been saved."));
-						$this->redirect(Yii::app()->controller->module->loginUrl);
-					}
-				}
-				$this->render('changepassword',array('form'=>$passwordform));
-			} else {
-				Yii::app()->user->setFlash('recoveryMessage',
-						Yii::t("user", "Incorrect recovery link."));
-				$this->redirect('http://' . $_SERVER['HTTP_HOST'] . $this->createUrl('user/recovery'));
-			}
-		} else {
-			if(isset($_POST['YumUserRecoveryForm'])) {
-				$form->attributes=$_POST['YumUserRecoveryForm'];
-
-				if($form->validate()) {
-					$user = YumUser::model()->findbyPk($form->user_id);
-					$headers = sprintf('From: %s\r\nReply-To: %s',
-							Yii::app()->params['adminEmail'],
-							Yii::app()->params['adminEmail']);
-
-					$activation_url = sprintf('http://%s%s',
-							$_SERVER['HTTP_HOST'],
-							$this->createUrl('user/recovery',array(
-									'activationKey' => $user->activationKey,
-									'email' => $user->email)));
-
-					mail($user->profile[0]->email,
-							Yum::t('Password recovery'), 
-							sprintf('You have requested to reset your Password. To receive a new password, go to %s',
-								$activation_url),$headers);
-
-					Yii::app()->user->setFlash('loginMessage',
-							Yii::t('UserModule.user',
-								'Instructions have been sent to you. Please check your email.'));
-
-					$this->redirect(array('/user/user/login'));
-				}
-			}
-			$this->render('recovery',array('form'=>$form));
-		}
-	}
-
-	public function actionAssign()
-	{
-		Relation::handleAjaxRequest($_POST);
-	}
-
 
 	public function actionProfile()
 	{

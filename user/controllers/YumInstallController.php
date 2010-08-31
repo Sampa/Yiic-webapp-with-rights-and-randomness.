@@ -99,9 +99,8 @@ class YumInstallController extends YumController
 							`title` varchar(255) NOT NULL,
 							`is_active` tinyint(1) NOT NULL DEFAULT '0',
 							`preserveProfiles` tinyint(1) NOT NULL DEFAULT '1',
-							`enableRegistration` tinyint(1) NOT NULL DEFAULT '1',
+							`registrationType` tinyint(1) NOT NULL DEFAULT '4',
 							`enableRecovery` tinyint(1) NOT NULL DEFAULT '1',
-							`enableEmailActivation` tinyint(1) NOT NULL DEFAULT '1',
 							`enableProfileHistory` tinyint(1) NOT NULL DEFAULT '1',
 							`messageSystem` enum('None', 'Plain', 'Dialog') NOT NULL DEFAULT 'Dialog',
 							`mail_send_method` enum('Disabled', 'Daily', 'Instant') NOT NULL DEFAULT 'Instant',
@@ -113,7 +112,7 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `".$settingsTable."` (`id`, `title`, `is_active`, `preserveProfiles`, `enableRegistration`, `enableRecovery`, `enableEmailActivation`, `enableProfileHistory`, `readOnlyProfiles`, `loginType`, `mail_send_method`, `password_expiration_time`, `enableCaptcha`) VALUES ('1', 'Yum factory Default', '1', '1', '1', '1', '1', '1', '0', 'LOGIN_BY_USERNAME_OR_EMAIL', 'Instant', '30', '1');";
+						$sql = "INSERT INTO `".$settingsTable."` (`id`, `title`, `is_active`, `preserveProfiles`, `registrationType`, `enableRecovery`, `enableProfileHistory`, `readOnlyProfiles`, `loginType`, `mail_send_method`, `password_expiration_time`, `enableCaptcha`) VALUES ('1', 'Yum factory Default', '1', '1', '4', '1', '1', '0', 'LOGIN_BY_USERNAME_OR_EMAIL', 'Instant', '30', '1');";
 						$db->createCommand($sql)->execute();
 
 						// Create Text settings table
@@ -125,6 +124,7 @@ class YumInstallController extends YumController
 							`text_login_header` text,
 							`text_login_footer` text,
 							`text_email_registration` text,
+							`subject_email_registration` text,
 							`text_email_recovery` text,
 							`text_email_activation` text,
 							PRIMARY KEY (`id`)
@@ -132,7 +132,34 @@ class YumInstallController extends YumController
 						$db->createCommand($sql)->execute();
 
 						$sql = "
-							INSERT INTO `".$textSettingsTable."` (`id`, `language`, `text_registration_header`, `text_registration_footer`, `text_login_header`, `text_login_footer`, `text_email_registration`, `text_email_recovery`, `text_email_activation`) VALUES ('1', 'en_us', 'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.', 'Welcome!', '', 'Thank you for your registration. Please check your email or login.', 'You have requested a new Password. To set your new Password, please go to {activation_url}', 'Your account has been activated. Thank you for your registration.'), ('2', 'de', 'Willkommen zum System.', 'Mit der Anmeldung bestätigen Sie unsere allgemeinen Bedingungen.', 'Willkommen!', '', 'Sie haben sich für unsere Appliation registriert.', 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}', 'Ihr Konto wurde freigeschaltet.');
+							INSERT INTO `".$textSettingsTable."` (`id`,
+ `language`,
+ `text_registration_header`,
+ `text_registration_footer`,
+ `text_login_header`,
+ `text_login_footer`,
+ `text_email_registration`,
+ `subject_email_registration`,
+ `text_email_recovery`,
+ `text_email_activation`) VALUES ('1',
+ 'en_us',
+ 'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.',
+ 'Welcome!',
+ '',
+ 'You have registered for this Application. To confirm your E-Mail address, please visit {activation_url}',
+ 'You have registered for an application',
+ 'You have requested a new Password. To set your new Password,
+ please go to {activation_url}',
+ 'Your account has been activated. Thank you for your registration.'),
+ ('2',
+ 'de',
+ 'Willkommen zum System.',
+ 'Mit der Anmeldung bestätigen Sie unsere allgemeinen Bedingungen.',
+ 'Willkommen!',
+ '',
+ 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
+	'Sie haben sich für eine Applikation registriert.',
+ 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}', 'Ihr Konto wurde freigeschaltet.');
 						";
 
 						$db->createCommand($sql)->execute();

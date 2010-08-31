@@ -1,5 +1,7 @@
 <?php
 
+Yii::import('application.modules.user.controllers.YumController');
+
 class YumMessagesController extends YumController
 {
 	private $_model;

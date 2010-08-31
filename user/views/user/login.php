@@ -4,6 +4,7 @@ if(!isset($model))
 $this->pageTitle = Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login");
 $this->title = Yii::t("UserModule.user", "Login");
 $this->breadcrumbs=array(Yii::t('user', 'Login'));
+$module = $this->getModule('user');
 
 if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
@@ -45,17 +46,15 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 	<div class="row">
 	<p class="hint">
 	<?php 
-	if(Yii::app()->getModule('user')->allowRegistration)
-		echo CHtml::link(Yii::t("UserModule.user", "Registration"),
-			$this->module->registrationUrl);
-	if(Yii::app()->getModule('user')->allowRegistration 
-		&& Yii::app()->getModule('user')->allowRecovery)
-		echo ' | ';
-	if(Yii::app()->getModule('user')->allowRecovery)
-		echo CHtml::link(Yii::t("UserModule.user", "Lost password?"),
-			$this->module->recoveryUrl);
-?>
-</p>
+if($module->registrationType != YumRegistration::REG_DISABLED)
+	echo CHtml::link(Yum::t("Registration"), $this->module->registrationUrl);
+	if($module->registrationType != YumRegistration::REG_DISABLED 
+			&& $module->allowRecovery)
+	echo ' | ';
+if($module->allowRecovery)
+	echo CHtml::link(Yum::t("Lost password?"), $this->module->recoveryUrl);
+	?>
+	</p>
 </div>
 
 <div class="row rememberMe">

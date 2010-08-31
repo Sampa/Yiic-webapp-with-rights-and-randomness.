@@ -25,9 +25,10 @@ class UserModule extends YumWebModule
 	public $preserveProfiles = true;
 	public $baseLayout = 'application.views.layouts.main';
 	public $layout = 'yum';
+	public $loginLayout = 'yum';
 	public $adminLayout = 'yum';
 	public $useYiiCheckAccess = false;
-	public $allowRegistration = true;
+	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
 	public $allowRecovery = true;
 	public $enableRoles = true;
 	public $enableProfiles = true;
@@ -40,7 +41,6 @@ class UserModule extends YumWebModule
 	// Messaging System can be MSG_NONE, MSG_PLAIN or MSG_DIALOG
 	public $messageSystem = YumMessage::MSG_DIALOG;
 
-	public $enableEmailActivation = true;
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';	
@@ -50,17 +50,14 @@ class UserModule extends YumWebModule
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 	public $dateTimeFormat = 'm-d-Y G:i:s';  //"d.m.Y H:i:s"
 
-	// Allow login of inactive User Account
-	public static $allowInactiveAcctLogin = false;
-
 	private $_urls=array(
-		'registration'=>array('//user/user/registration'),
-		'recovery'=>array('//user/user/recovery'),
-		'login'=>array('//user/user/login'),
-		'return'=>array('//user/user/profile'),
+		'registration'=>array('//user/registration/'),
+		'recovery'=>array('//user/registration/recovery'),
+		'login'=>array('//user/user'),
+		'return'=>false,
 		// Page to go after admin logs in
 		'returnAdmin'=>array('//user/statistics/index'),
-		// Page to go to after registration, login etc.	
+		// Page to go to after logout
 		'returnLogout'=>array('//user/user/login'),
 	);
 
@@ -102,9 +99,12 @@ class UserModule extends YumWebModule
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
+		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
 		'hierarchy'=>array('class'=>'YumModule.controllers.YumHierarchyController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
+		// workaround to allow the url application/user/login: 
+		'login'=>array('class'=>'YumModule.controllers.YumUserController'),	
 		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),	
 		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),	
 		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),	
@@ -168,8 +168,8 @@ class UserModule extends YumWebModule
 		try {
 			$settings = YumSettings::model()->find('is_active');
 			
-			$options = array('preserveProfiles', 'enableRegistration', 'enableRecovery',
-					'enableEmailActivation', 'readOnlyProfiles', 'messageSystem', 
+			$options = array('preserveProfiles', 'registrationType', 'enableRecovery',
+					'readOnlyProfiles', 'messageSystem', 
 					'mail_send_method', 'password_expiration_time', 'enableCaptcha');
 			foreach($options as $option) 
 				$this->$option = $settings->$option;

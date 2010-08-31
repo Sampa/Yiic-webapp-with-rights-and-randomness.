@@ -165,23 +165,21 @@ class YumUser extends YumActiveRecord
 		$this->createtime = time();
 		$this->superuser = 0;
 
-		if(YumWebModule::yum()->enableEmailActivation == false) 
-			$this->status = YumUser::STATUS_ACTIVE;
-		else
-			$this->status = YumUser::STATUS_NOTACTIVE;
+		switch(Yii::app()->getModule('user')->registrationType) {
+			case YumRegistration::REG_SIMPLE:
+				$this->status = YumUser::STATUS_ACTIVE;
+				break;
+			case YumRegistration::REG_EMAIL_CONFIRMATION:
+			case YumRegistration::REG_CONFIRMATION_BY_ADMIN:
+				$this->status = YumUser::STATUS_NOTACTIVE;
+				break;
+			case YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION:
+				// User stay banned until they confirm their email address.
+				$this->status = YumUser::STATUS_BANNED;
+				break;
+		}
 
-		$this->lastvisit = ((Yii::app()->user->allowAutoLogin &&
-			UserModule::$allowInactiveAcctLogin) ? time() : 0);
-
-		if($this->save()) 
-		{
-			$profile = new YumProfile();
-			$profile->user_id = $this->id;
-			$profile->save();
-			return true;
-		} 
-		else
-			return false;
+		return $this->save();
 	}
 
 	public function isPasswordExpired() 

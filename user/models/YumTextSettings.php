@@ -21,7 +21,7 @@ class YumTextSettings extends YumActiveRecord
 	public function rules()
 	{
 		return array(
-			array('text_registration_header, text_registration_footer, text_login_header, text_login_footer, text_email_registration, text_email_recovery, text_email_activation', 'safe'),
+			array('text_registration_header, text_registration_footer, text_login_header, text_login_footer, text_email_registration, subject_email_confirmation, text_email_recovery, text_email_activation', 'safe'),
 			array('language', 'length', 'max'=>5),
 			array('id, language, text_registration_header, text_registration_footer, text_login_header, text_login_footer, text_email_registration, text_email_recovery, text_email_activation', 'safe', 'on'=>'search'),
 		);
@@ -42,6 +42,7 @@ class YumTextSettings extends YumActiveRecord
 			'text_login_header' => Yii::t('UserModule.user', 'Text Login Header'),
 			'text_login_footer' => Yii::t('UserModule.user', 'Text Login Footer'),
 			'text_email_registration' => Yii::t('UserModule.user', 'Text Email Registration'),
+			'subject_email_registration' => Yii::t('UserModule.user', 'Subject of Email Registration'),
 			'text_email_recovery' => Yii::t('UserModule.user', 'Text Email Recovery'),
 			'text_email_activation' => Yii::t('UserModule.user', 'Text Email Activation'),
 		);

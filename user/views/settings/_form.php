@@ -42,12 +42,16 @@
 </div>
 
 		<div class="row">
-<?php echo $form->labelEx($model,'enableRegistration'); ?>
-<?php echo $form->dropDownList($model,'enableRegistration', array(
+<?php echo $form->labelEx($model,'registrationType'); ?>
+<?php echo $form->dropDownList($model,'registrationType', array(
 0 => Yum::t('Disable registration'),
-1 => Yum::t('Enable registration')
+1 => Yum::t('Simple registration '),
+2 => Yum::t('Confirmation by E-Mail'), 
+3 => Yum::t('Confirmation by Admin'),
+4 => Yum::t('Confirmation by E-Mail and Admin '),
 )); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If enable Registration is set, users are able to register his own account. The link will be available beneath the login Form.')); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Simple Registration: User is instantly activated after registration <br />Confirmation by Email: Activation link is send to user, and he needs to confirm with this link<br /> Confirmation by Admin: Administrator decides which users are accepted and which don\'t.<br />Confirmation by Email and Admin: Administrator sees if E-Mail has already been confirmed or not, but still decides whether to Accept or Decline the User'));
+?>
 <?php echo $form->error($model,'enableRegistration'); ?>
 </div>
 
@@ -59,16 +63,6 @@
 )); ?>
 <?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If enable Recovery is set, registerd users will have the possibility to recover his own password. The link will be available beneath the login Form.')); ?>
 <?php echo $form->error($model,'enableRecovery'); ?>
-</div>
-
-		<div class="row">
-<?php echo $form->labelEx($model,'enableEmailActivation'); ?>
-<?php echo $form->dropDownList($model,'enableEmailActivation', array(
-0 => Yum::t('Disable activation by E-Mail'),
-1 => Yum::t('Enable activation by E-Mail')
-)); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If enable Email Activation is set, a user needs to confirm his account by an Activation Email that is send out to the user after the Registration process. If the link gets confirmed, his account will be set to status active.')); ?>
-<?php echo $form->error($model,'enableEmailActivation'); ?>
 </div>
 
 <div class="row">

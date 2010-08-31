@@ -29,6 +29,7 @@ return array(
 		'Update role' => 'Rolle bearbeiten',
 		'Sent messages' => 'Gesendete Nachrichten',
 		'Delete account' => 'Zugang löschen',
+'Your account has been activated. Thank you for your registration.' => 'Ihr Zugang wurde aktiviert. Danke für ihre Registrierung',
 		'Your message has been sent' => 'Ihre Nachricht wurde gesendet',
 		'Enable Profile History' => 'Profilhistorie einschalten',
 		'Read Only Profiles' => 'Nur-Lese Profile',

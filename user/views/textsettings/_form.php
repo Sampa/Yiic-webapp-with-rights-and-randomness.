@@ -49,6 +49,14 @@
 </div>
 
 		<div class="row">
+<?php echo $form->labelEx($model,'subject_email_registration'); ?>
+<?php echo $form->textArea($model,'subject_email_registration',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'subject_email_registration'); ?>
+</div>
+
+
+
+		<div class="row">
 <?php echo $form->labelEx($model,'text_email_recovery'); ?>
 <?php echo $form->textArea($model,'text_email_recovery',array('rows'=>6, 'cols'=>50)); ?>
 <?php echo $form->error($model,'text_email_recovery'); ?>
