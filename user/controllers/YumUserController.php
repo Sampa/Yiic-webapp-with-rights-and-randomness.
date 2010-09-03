@@ -18,7 +18,7 @@ class YumUserController extends YumController
 					'users'=>array('@'),
 					),
 				array('allow',
-					'actions'=>array('admin','delete','create','update', 'list', 'assign'),
+					'actions'=>array('admin','delete','create','update', 'list', 'assign', 'generateData'),
 					'users'=>array(Yii::app()->user->name ),
 					'expression' => 'Yii::app()->user->isAdmin()'
 					),
@@ -42,6 +42,29 @@ class YumUserController extends YumController
 						'users'=>array('*'),
 						),
 				);
+	}
+
+	public function actionGenerateData() {
+		if(isset($_POST['user_amount'])) {
+			for($i = 0; $i < $_POST['user_amount']; $i++) {
+				$user = new YumUser();
+				$user->username = sprintf('Demo_%d_%d', rand(1, 50000), $i);
+				$user->roles = array($_POST['role']);
+				$user->password = 'Demopassword123';
+				$user->createtime = time();
+				$user->status = $_POST['status'];
+
+				if($user->save()) {
+					if(Yii::app()->getModule('user')->enableProfiles) {
+						$profile = new Profile();
+						$profile->user_id = $user->id;
+						$profile->save();
+					}
+				}
+			}
+			echo 'Users have been generated. Password for each user is <em>Demopassword123</em>';
+		}
+		$this->render('generate_data');	
 	}
 
 	public function actionIndex() {

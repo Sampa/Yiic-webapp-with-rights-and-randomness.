@@ -104,7 +104,8 @@ class YumRegistrationController extends YumController
 		$activation_url = 'http://' .
 			$_SERVER['HTTP_HOST'] .
 			$this->createUrl('user/activation',array(
-						'activationKey' => $user->activationKey, 'email' => $user->profile[0]->email)
+						'activationKey' => $user->activationKey,
+						'email' => $user->profile[0]->email)
 					);
 
 		$content = YumTextSettings::model()->find('language = :lang', array(

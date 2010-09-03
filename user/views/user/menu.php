@@ -45,6 +45,8 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Admin inbox', 'messages/index');
 		$messagesmenu[] = e('Admin sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
+		if(Yii::app()->getModule('user')->debug)
+			$othermenu[] = e('Generate Demo Data', 'user/generateData');
 		$othermenu[] = e('Change admin Password', 'user/changePassword');
 		$othermenu[] = e('Logout', 'user/logout');
 

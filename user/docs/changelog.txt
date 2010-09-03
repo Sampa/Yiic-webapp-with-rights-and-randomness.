@@ -1,6 +1,7 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- Added user Generator (available under 'other' when debug mode is enabled)
 - New default URL route '<app>/user/login' instead of less beautiful '<app>/user/user/login' (thyseus)
 - Refactored Registration Process into YumRegistrationController (makes YumUserController less fussy) (thyseus)
 - Removed AllowInactiveAccountLogin (don't needed anymore because of the new registration Options) (thyseus)

@@ -1,8 +1,8 @@
 <?php
 $this->title = Yii::t('UserModule.user', 'User Management settings configuration'); 
 $this->breadcrumbs=array(
-		Yii::t('UserModule.user','User administration panel')=>array('//user/user/adminpanel'),
-		Yii::t('UserModule.user', 'Manage'),
+		Yum::t('User administration')=>array('//user/user/admin'),
+		Yum::t('Manage'),
 		);
 
 ?>
