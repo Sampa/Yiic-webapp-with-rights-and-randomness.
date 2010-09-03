@@ -177,7 +177,7 @@ class YumRegistrationController extends YumController
 
 					$activation_url = sprintf('http://%s%s',
 							$_SERVER['HTTP_HOST'],
-							$this->createUrl('user/recovery',array(
+							$this->createUrl('/user/recovery',array(
 									'activationKey' => $user->activationKey,
 									'email' => $user->email)));
 
@@ -193,7 +193,7 @@ class YumRegistrationController extends YumController
 					$this->redirect(array('/user/user/login'));
 				}
 			}
-			$this->render('recovery',array('form'=>$form));
+			$this->render('/user/recovery',array('form'=>$form));
 		}
 	}
 

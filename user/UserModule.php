@@ -165,6 +165,7 @@ class UserModule extends YumWebModule
 			$controller->layout = Yii::app()->getModule('user')->adminLayout;
 
 		// Assign options from settings table, if available
+		if(Yii::app()->controller->id != 'install')
 		try {
 			$settings = YumSettings::model()->find('is_active');
 			
