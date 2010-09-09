@@ -44,15 +44,13 @@ if($settings)
 	</div>
 
 	<?php 
-	$profileFields=YumProfileField::model()->forRegistration()->sort()->findAll();
+	$profileFields = YumProfileField::model()->forRegistration()->sort()->findAll();
 
-if ($profileFields) 
-{
+if ($profileFields) {
 	if(!isset($profile))
 		$profile = new YumProfile();
 
-	foreach($profileFields as $field) 
-	{
+	foreach($profileFields as $field) {
 		?>
 			<div class="row">
 			<?php echo CHtml::activeLabelEx($profile, $field->varname); ?>
@@ -69,6 +67,15 @@ if ($profileFields)
 					$field->varname, 
 					array('rows'=>6, 'cols'=>50));
 		}
+		elseif ($field->field_type == "DROPDOWNLIST") 
+		{
+			echo CHtml::activeDropDownList($profile,
+					$field->varname, 
+					CHtml::listData(CActiveRecord::model(ucfirst($field->varname))->findAll(),
+						'id',
+						$field->related_field_name));
+		}
+
 			else 
 			{
 				echo CHtml::activeTextField($profile,

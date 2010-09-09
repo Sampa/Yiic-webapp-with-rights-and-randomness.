@@ -78,7 +78,7 @@ class YumProfileField extends YumActiveRecord
 			array('varname, field_type', 'length', 'max'=>50),
 			array('field_group_id, field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
 			array('hint','safe'),
-			array('title, match, range, error_message, other_validator, default', 'length', 'max'=>255),
+			array('related_field_name, title, match, range, error_message, other_validator, default', 'length', 'max'=>255),
 		);
 	}
 
@@ -137,10 +137,11 @@ class YumProfileField extends YumActiveRecord
 	public static function itemAlias($type,$code=NULL) {
 		$_items = array(
 			'field_type' => array(
-				'INTEGER' => Yii::t("UserModule.user", 'INTEGER'),
-				'VARCHAR' => Yii::t("UserModule.user", 'VARCHAR'),
-				'TEXT'=> Yii::t("UserModule.user", 'TEXT'),
-				'DATE'=> Yii::t("UserModule.user", 'DATE'),
+				'INTEGER' => Yum::t('INTEGER'),
+				'VARCHAR' => Yum::t( 'VARCHAR'),
+				'TEXT'=> Yum::t( 'TEXT'),
+				'DATE'=> Yum::t( 'DATE'),
+				'DROPDOWNLIST' => Yum::t('DROPDOWNLIST'),
 			//	'FLOAT'=> Yii::t("user", 'FLOAT'),
 			//	'BOOL'=> Yii::t("user", 'BOOL'),
 			//	'BLOB'=> Yii::t("user", 'BLOB'),

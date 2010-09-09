@@ -27,29 +27,31 @@ class YumFieldsController extends YumController
 		));
 	}
 
-	public function actionCreate()
-	{
+	public function actionCreate() {
 		$this->layout = YumWebModule::yum()->adminLayout;
 		$model = new YumProfileField;
 
 		// add to group?
 		if(isset($_GET['in_group']))
 			$model->field_group_id=$_GET['in_group'];
-		if(isset($_POST['YumProfileField']))
-		{
-			$model->attributes=$_POST['YumProfileField'];
 
-			if($model->validate()) 
-			{
+		if(isset($_POST['YumProfileField'])) {
+			$model->attributes = $_POST['YumProfileField'];
+
+			$field_type = $model->field_type;
+			if($field_type == 'DROPDOWNLIST')
+				$field_type = 'INTEGER';
+
+			if($model->validate()) {
 				$sql = 'ALTER TABLE '.YumProfile::model()->tableName().' ADD `'.$model->varname.'` ';
-				$sql .= $model->field_type;
-				if ($model->field_type!='TEXT'&&$model->field_type!='DATE')
+				$sql .= $field_type;
+				if ($field_type!='TEXT' && $field_type!='DATE')
 					$sql .= '('.$model->field_size.')';
 				$sql .= ' NOT NULL ';
 				if ($model->default)
 					$sql .= " DEFAULT '".$model->default."'";
 				else
-					$sql .= (($model->field_type=='TEXT'||$model->field_type=='VARCHAR')?" DEFAULT ''":" DEFAULT 0");
+					$sql .= (($field_type =='TEXT' || $model->field_type=='VARCHAR')?" DEFAULT ''":" DEFAULT 0");
 
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();

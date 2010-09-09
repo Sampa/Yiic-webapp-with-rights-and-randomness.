@@ -64,7 +64,6 @@ class YumRegistrationController extends YumController
 
 				if ($user->register($form->username, $form->password, $form->email)) {
 					if(isset($_POST['YumProfile'])) {
-						$profile->attributes = $_POST['YumProfile'];
 						$profile->user_id = $user->id;
 						$profile->save();
 					}

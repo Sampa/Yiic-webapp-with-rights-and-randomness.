@@ -27,18 +27,25 @@
 		<p class="hint"><?php echo Yii::t("UserModule.user",'Hint displayed to user e.g "You can enter more values and separate them using comma".'); ?></p>
 	</div>	
 	
-	<div lass="row">
+	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_group_id'); ?>
 		<?php echo CHtml::activeDropDownList($model,'field_group_id',CHtml::listData(YumProfileFieldsGroup::model()->findAll(),'id','title')); ?>
 		<?php echo CHtml::error($model,'field_group_id'); ?>
 		<p class="hint"><?php echo Yii::t("UserModule.user", 'Select group where field belongs to or leave empty.'); ?></p>
 	</div>
 	
-	<div lass="row">
+	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_type'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'field_type',array('size'=>60,'maxlength'=>50,'readonly'=>true)):CHtml::activeDropDownList($model,'field_type',YumProfileField::itemAlias('field_type'))); ?>
+		<?php echo (($model->id)
+				? CHtml::activeTextField($model,'field_type',array(
+						'size'=>60,
+						'maxlength'=>50,
+						'readonly'=>true))
+				: CHtml::activeDropDownList($model,
+					'field_type',
+					YumProfileField::itemAlias('field_type'))); ?>
 		<?php echo CHtml::error($model,'field_type'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user", 'Column field type in the database.'); ?></p>
+		<p class="hint"><?php echo Yii::t("UserModule.user", 'Column field type in the database. See documentation for the DROPDOWNLIST type.'); ?></p>
 	</div>
 
 	<div class="row">
@@ -108,6 +115,15 @@
 		<?php echo CHtml::activeDropDownList($model,'visible',YumProfileField::itemAlias('visible')); ?>
 		<?php echo CHtml::error($model,'visible'); ?>
 	</div>
+
+	<div class="row">
+		<?php echo CHtml::activeLabelEx($model,'related_field_name'); ?>
+		<?php echo CHtml::activeTextField($model,'related_field_name',array('size'=>60,'maxlength'=>255)); ?>
+		<?php echo CHtml::error($model,'related_field_name'); ?>
+		<p class="hint"><?php echo Yum::t('Which related field should be rendered? This is used only for the DROPDOWNLIST field type.'); ?></p>
+	</div>
+
+
 
 	<div class="row buttons">
 	<?php echo CHtml::submitButton($model->isNewRecord 

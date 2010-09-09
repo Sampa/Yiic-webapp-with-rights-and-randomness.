@@ -86,6 +86,7 @@ class YumProfile extends YumActiveRecord
 
 			if ($field->field_type == 'int' 
 					|| $field->field_type == 'FLOAT'
+					|| $field->field_type == 'DROPDOWNLIST'
 					|| $field->field_type =='INTEGER')
 				array_push($numerical,$field->varname);
 

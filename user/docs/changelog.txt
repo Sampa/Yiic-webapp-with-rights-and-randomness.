@@ -1,6 +1,7 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- Added DROPDOWNLIST field type to profile fields. see docs/dropdownlist_in_registration_form.txt for information on how to use this (thyseus)
 - Added possibility to make roles selectable on registration (thyseus)
 - Added user Generator (available under 'other' when debug mode is enabled)
 - New default URL route '<app>/user/login' instead of less beautiful '<app>/user/user/login' (thyseus)
