@@ -83,6 +83,14 @@ if ($profileFields)
 			<?php
 	}
 }
+
+$roles = YumRole::model()->selectable()->findAll();
+if(count($roles) > 0) {
+	printf('<p>%s:</p>', Yum::t('Please select one of this possible roles'));
+	echo CHtml::checkBoxList('roles', array(),
+			CHtml::listData($roles, 'id', 'title'));
+}
+
 ?>
 
 	<?php if(extension_loaded('gd') && Yii::app()->getModule('user')->enableCaptcha): ?>

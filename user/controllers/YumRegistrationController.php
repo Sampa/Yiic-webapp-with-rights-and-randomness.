@@ -59,12 +59,14 @@ class YumRegistrationController extends YumController
 			if($form->validate() && !$profile->hasErrors()) {
 				$user = new YumUser();
 
+				if(isset($_POST['roles']))
+					$user->roles = $_POST['roles'];
+
 				if ($user->register($form->username, $form->password, $form->email)) {
 					if(isset($_POST['YumProfile'])) {
 						$profile->attributes = $_POST['YumProfile'];
 						$profile->user_id = $user->id;
 						$profile->save();
-						$user->email = $profile->attributes['email'];
 					}
 
 					if($registrationType == YumRegistration::REG_EMAIL_CONFIRMATION || 
@@ -111,7 +113,7 @@ class YumRegistrationController extends YumController
 		$content = YumTextSettings::model()->find('language = :lang', array(
 					'lang' => Yii::app()->language));
 
-		$msgheader = $content->header_email_registration;
+		$msgheader = $content->subject_email_registration;
 		$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
 
 		mail($user->profile[0]->email, $msgheader, $msgbody, $headers);

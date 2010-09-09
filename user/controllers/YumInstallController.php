@@ -229,7 +229,8 @@ class YumInstallController extends YumController
 						$sql = "CREATE TABLE IF NOT EXISTS `".$rolesTable."` (
 							`id` INT unsigned NOT NULL AUTO_INCREMENT ,
 							`title` VARCHAR(255) NOT NULL ,
-							`description` VARCHAR(255) NULL ,
+							`description` VARCHAR(255) NULL,
+							`selectable` tinyint(1) NOT NULL COMMENT 'Selectable on Registration?',
 							PRIMARY KEY (`id`)) 
 								ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 

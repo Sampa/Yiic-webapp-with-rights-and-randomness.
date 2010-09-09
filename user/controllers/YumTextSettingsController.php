@@ -115,7 +115,6 @@ class YumTextSettingsController extends YumController
 	public function actionAdmin()
 	{
 		$model=new YumTextSettings('search');
-		$model->unsetAttributes();
 
 		$YumTextSettingsData = Yii::app()->request->getQuery('YumTextSettings');
 		if($YumTextSettingsData !== null)

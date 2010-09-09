@@ -170,7 +170,7 @@ class UserModule extends YumWebModule
 			$settings = YumSettings::model()->find('is_active');
 			
 			$options = array('preserveProfiles', 'registrationType', 'enableRecovery',
-					'readOnlyProfiles', 'messageSystem', 
+					'readOnlyProfiles', 'messageSystem', 'loginType',
 					'mail_send_method', 'password_expiration_time', 'enableCaptcha');
 			foreach($options as $option) 
 				$this->$option = $settings->$option;

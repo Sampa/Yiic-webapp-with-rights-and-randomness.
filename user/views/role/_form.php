@@ -45,11 +45,12 @@ $this->widget('YumModule.components.Relation',
 			'showAddButton' => false
 			));
 echo CHtml::closeTag('div');
-
-
 ?>
 
-
+<div class="row">
+<?php echo CHtml::activeLabelEx($model,'selectable'); ?>
+<?php echo CHtml::activeCheckBox($model, 'selectable'); ?>
+</div>
 
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord 

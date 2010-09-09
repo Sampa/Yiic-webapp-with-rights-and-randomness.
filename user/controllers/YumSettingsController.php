@@ -96,7 +96,6 @@ class YumSettingsController extends YumController
 	public function actionIndex()
 	{
 		$model=new YumSettings('search');
-		$model->unsetAttributes();
 
 		$YumSettingsData = Yii::app()->request->getQuery('YumSettings');
 		if($YumSettingsData !== null)

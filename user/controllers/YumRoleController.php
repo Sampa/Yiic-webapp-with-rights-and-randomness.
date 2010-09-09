@@ -18,6 +18,7 @@ class YumRoleController extends YumController
 		$this->performAjaxValidation($model);
 		if(isset($_POST['YumRole'])) {
 			$model->attributes = $_POST['YumRole'];
+
 			if(isset($_POST['YumRole']['YumUser']))
 				$model->users = $_POST['YumRole']['YumUser'];
 			else
@@ -43,10 +44,9 @@ class YumRoleController extends YumController
 
 	 $this->performAjaxValidation($model);
 
-		if(isset($_POST['YumRole']))
-		{
-			$model->title = $_POST['YumRole']['title'];
-			$model->description = $_POST['YumRole']['description'];
+		if(isset($_POST['YumRole'])) {
+			$model->attributes = $_POST['YumRole'];
+
 			if(isset($_POST['YumRole']['YumUser']))
 				$model->users = $_POST['YumRole']['YumUser'];
 			else

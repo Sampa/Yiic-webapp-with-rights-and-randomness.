@@ -43,8 +43,14 @@ class YumRole extends YumActiveRecord
 	{
 		return array(
 			array('title', 'required'),
+			array('selectable', 'numerical'),
 			array('title, description', 'length', 'max' => '255'),
 		);
+	}
+
+
+	public function scopes() {
+		return array('selectable' => array('condition' => 'selectable = 1'));
 	}
 
 	public function relations()
@@ -58,9 +64,10 @@ class YumRole extends YumActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id'=>Yii::t("UserModule.user", "#"),
-			'title'=>Yii::t("UserModule.user", "Title"),
-			'description'=>Yii::t("UserModule.user", "Description"),
+			'id'=>Yum::t("#"),
+			'title'=>Yum::t("Title"),
+			'description'=>Yum::t("Description"),
+			'selectable'=>Yum::t("Selectable on registration"),
 		);
 	}
 }

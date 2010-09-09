@@ -34,7 +34,11 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 	<?php echo CHtml::errorSummary($model); ?>
 	
 	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'username'); ?>
+		<?php 
+		if($module->loginType == 'LOGIN_BY_EMAIL')
+			printf ('<label for="username">%s</label>', Yum::t('E-Mail address'));
+		else
+			echo CHtml::activeLabelEx($model,'username'); ?>
 		<?php echo CHtml::activeTextField($model,'username') ?>
 	</div>
 	
