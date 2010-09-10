@@ -111,7 +111,7 @@ class YumRegistrationController extends YumController
 		$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 		$activation_url = 'http://' .
 			$_SERVER['HTTP_HOST'] .
-			$this->createUrl('user/activation',array(
+			$this->createUrl('registration/activation',array(
 						'activationKey' => $user->activationKey,
 						'email' => $user->profile[0]->email)
 					);
@@ -133,11 +133,11 @@ class YumRegistrationController extends YumController
 	public function actionActivation ()
 	{
 		if(YumUser::activate($_GET['email'], $_GET['activationKey'])) {
-			$this->render('message', array(
+			$this->render('/user/message', array(
 						'title'=>Yum::t("User activation"),
 						'content'=>Yum::t("Your account has been activated.")));
 		} else {
-			$this->render('message',array(
+			$this->render('/user/message',array(
 						'title'=>Yum::t("User activation"),
 						'content'=>Yum::t("Incorrect activation URL")));
 		}

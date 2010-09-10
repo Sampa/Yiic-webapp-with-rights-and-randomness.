@@ -7,22 +7,21 @@ class YumUserIdentity extends CUserIdentity
 	const ERROR_STATUS_NOTACTIVE=4;
 	const ERROR_STATUS_BANNED=5;
 
-	public function authenticate()
-	{
+	public function authenticate() {
 		$user=null;
 		$loginType = Yii::app()->controller->module->loginType; 
 
-		if ($loginType == UserModule::LOGIN_BY_USERNAME)
+		if ($loginType == 'LOGIN_BY_USERNAME')
 		{
 			$user = YumUser::model()->findByAttributes(array('username'=>$this->username));
 		}
-		else if ($loginType == UserModule::LOGIN_BY_EMAIL) 
+		else if ($loginType == 'LOGIN_BY_EMAIL') 
 		{
 			$profile = YumProfile::model()->findByAttributes(array('email'=>$this->username));
 			if($profile instanceof YumProfile)
 				$user = $profile->user;
 		}
-		else if ($loginType == UserModule::LOGIN_BY_USERNAME_OR_EMAIL) 
+		else if ($loginType == 'LOGIN_BY_USERNAME_OR_EMAIL') 
 		{
 			$user=YumUser::model()->findByAttributes(array('username'=>$this->username));
 			if(!is_object($user)) 
@@ -31,7 +30,7 @@ class YumUserIdentity extends CUserIdentity
 		}
 
 		if($user===null)
-			if ($loginType == 1) 
+			if ($loginType == 'LOGIN_BY_EMAIL') 
 			{
 				$this->errorCode=self::ERROR_EMAIL_INVALID;
 			}
@@ -41,7 +40,7 @@ class YumUserIdentity extends CUserIdentity
 			}
 		else if(YumUser::encrypt($this->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-		else if($user->status == 0 && UserModule::$allowInactiveAcctLogin==false)
+		else if($user->status == 0)
 			$this->errorCode=self::ERROR_STATUS_NOTACTIVE;
 		else if($user->status==-1)
 			$this->errorCode=self::ERROR_STATUS_BANNED;

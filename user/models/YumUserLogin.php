@@ -18,26 +18,27 @@ class YumUserLogin extends YumFormModel
 	 */
 	public function rules()
 	{
-		return array(
+		$rules = array(
 			array('username, password', 'required'),
 			array('rememberMe', 'boolean'),
 			array('password', 'authenticate'),
 		);
+
+		return $rules;
 	}
 
-	public function attributeLabels()
-	{
-	if(Yii::app()->getModule('user')->loginType == 0)
-		$username = Yii::t("UserModule.user", "Username");
-	else if(Yii::app()->getModule('user')->loginType == 1)
-		$username = Yii::t("UserModule.user", "Email Address");
-	else if(Yii::app()->getModule('user')->loginType == 2)
-		$username = Yii::t("UserModule.user", "Username or Email");
+	public function attributeLabels() {
+	if(Yii::app()->getModule('user')->loginType == 'LOGIN_BY_USERNAME')
+		$username = Yum::t("Username");
+	else if(Yii::app()->getModule('user')->loginType == 'LOGIN_BY_EMAIL')
+		$username = Yum::t("Email Address");
+	else if(Yii::app()->getModule('user')->loginType == 'LOGIN_BY_USERNAME_OR_EMAIL')
+		$username = Yum::t("Username or Email");
 
 		return array(
 			'username'=>$username,
-			'password'=>Yii::t("UserModule.user", "Password"),
-			'rememberMe'=>Yii::t("UserModule.user", "Remember me next time"),
+			'password'=>Yum::t("Password"),
+			'rememberMe'=>Yum::t("Remember me next time"),
 		);
 	}
 
@@ -45,8 +46,7 @@ class YumUserLogin extends YumFormModel
 	 * Authenticates the password.
 	 * This is the 'authenticate' validator as declared in rules().
 	 */
-	public function authenticate($attribute,$params)
-	{
+	public function authenticate($attribute,$params) {
 		if(!$this->hasErrors())  // we only want to authenticate when no input errors
 		{
 			$identity=new YumUserIdentity($this->username,$this->password);
