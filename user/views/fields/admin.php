@@ -10,7 +10,7 @@ $this->breadcrumbs=array(
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(
-		'id',
+		'position',
 		'varname',
 		array(
 			'name'=>'title',

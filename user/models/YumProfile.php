@@ -76,6 +76,7 @@ class YumProfile extends YumActiveRecord
 		$required = array();
 		$numerical = array();           
 		$rules = array();
+		$safe = array();
 
 		foreach (self::$fields as $field)
 		{
@@ -86,9 +87,12 @@ class YumProfile extends YumActiveRecord
 
 			if ($field->field_type == 'int' 
 					|| $field->field_type == 'FLOAT'
-					|| $field->field_type == 'DROPDOWNLIST'
 					|| $field->field_type =='INTEGER')
 				array_push($numerical,$field->varname);
+
+			if ($field->field_type == 'DROPDOWNLIST')
+				array_push($safe, $field->varname);
+
 
 			if ($field->field_type =='VARCHAR' 
 					||$field->field_type=='TEXT') 
@@ -154,6 +158,9 @@ class YumProfile extends YumActiveRecord
 				array(implode(',',$required), 'required'));
 		array_push($rules,
 				array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
+		array_push($rules,
+				array(implode(',',$safe), 'safe'));
+
 		return $rules;
 	}
 

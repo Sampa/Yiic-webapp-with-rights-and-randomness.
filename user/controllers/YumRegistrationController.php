@@ -56,10 +56,17 @@ class YumRegistrationController extends YumController
 				$profile->validate();
 			}
 
+			$loginType = Yii::app()->getModule('user')->loginType;
+
+			if($loginType == 'LOGIN_BY_EMAIL') 
+				$form->username = strtr($profile->firstname . '_' . $profile->lastname, array(' ' => '_'));
+
 			if($form->validate() && !$profile->hasErrors()) {
 				$user = new YumUser();
 
-				if(isset($_POST['roles']))
+				if(isset($_POST['roles']) && is_numeric($_POST['roles']))
+					$user->roles = array($_POST['roles']);
+				if(isset($_POST['roles']) && is_array($_POST['roles']))
 					$user->roles = $_POST['roles'];
 
 				if ($user->register($form->username, $form->password, $form->email)) {

@@ -97,16 +97,17 @@ class YumUser extends YumActiveRecord
 				$passwordRequirements);
 
 		$rules[] = $passwordrule;
-		$rules[] = array('username', 'length', 'max'=>20, 'min' => 3,'message' => Yii::t("UserModule.user", "Incorrect username (length between 3 and 20 characters)."));
-			$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
-			$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
-			$rules[] = array('status', 'in', 'range'=>array(0,1,-1));
-			$rules[] = array('superuser', 'in', 'range'=>array(0,1));
-			$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
-			$rules[] = array('password', 'required', 'on'=>array('insert'));
-			$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
+		$rules[] = array('username', 'length', 'max'=>20, 'min' => 3,
+				'message' => Yum::t("Incorrect username (length between 3 and 20 characters)."));
+		$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
+		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
+		$rules[] = array('status', 'in', 'range'=>array(0,1,-1));
+		$rules[] = array('superuser', 'in', 'range'=>array(0,1));
+		$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
+		$rules[] = array('password', 'required', 'on'=>array('insert'));
+		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
-			return $rules;
+		return $rules;
 	}
 
 	public function hasRole($role_title) {
@@ -153,9 +154,8 @@ class YumUser extends YumActiveRecord
 	);
 	}
 
-	public function register($username=null, $password=null, $email=null)
-	{
-		// this function can be used external to
+	public function register($username=null, $password=null, $email=null) {
+
 		if($username!==null && $password!==null) {
 			// Password equality is checked in Registration Form
 			$this->username = $username;
