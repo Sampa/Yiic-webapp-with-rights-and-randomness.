@@ -62,8 +62,8 @@ if($module->allowRecovery)
 </div>
 
 <div class="row rememberMe">
-<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
-<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
+<?php echo CHtml::activeCheckBox($model,'rememberMe', array('style' => 'display: inline;')); ?>
+<?php echo CHtml::activeLabelEx($model,'rememberMe', array('style' => 'display: inline;')); ?>
 </div>
 <?php
 	if($this->module->tableSettingsDisabled != true) {

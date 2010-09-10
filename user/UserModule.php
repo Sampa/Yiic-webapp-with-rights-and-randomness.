@@ -34,6 +34,7 @@ class UserModule extends YumWebModule
 	public $enableProfiles = true;
 	public $mail_send_method = 'Instant';
 	public $password_expiration_time = 30;
+	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
 
 	// determines whether configuration by Database Table is enabled or disabled
 	public $tableSettingsDisabled = false;

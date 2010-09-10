@@ -27,6 +27,21 @@ if($settings)
 
 	<?php echo Yum::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
+
+<?php
+if(Yii::app()->getModule('user')->enableRoles) {
+	$roles = YumRole::model()->selectable()->findAll();
+	if(count($roles) > 0) {
+		printf('<p>%s:</p>', Yum::t('Designation'));
+		// render a Radio Button list and preselect the first entry:
+		$data = CHtml::listData($roles, 'id', 'title');
+		echo CHtml::radioButtonList('roles', key($data), $data, array('labelOptions' => array('style' => 'display: inline;')));
+
+	}
+}
+?>
+
+
 	
 
 <?php
@@ -96,21 +111,6 @@ if ($profileFields) {
 	<?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
 	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
 	</div>
-
-<?php
-
-
-if(Yii::app()->getModule('user')->enableRoles) {
-	$roles = YumRole::model()->selectable()->findAll();
-	if(count($roles) > 0) {
-		printf('<p>%s:</p>', Yum::t('Designation'));
-		// render a Radio Button list and preselect the first entry:
-		$data = CHtml::listData($roles, 'id', 'title');
-		echo CHtml::radioButtonList('roles', key($data), $data);
-
-	}
-}
-?>
 
 	<?php if(extension_loaded('gd') && Yii::app()->getModule('user')->enableCaptcha): ?>
 	<div class="row">

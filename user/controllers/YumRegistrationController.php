@@ -108,23 +108,32 @@ class YumRegistrationController extends YumController
 			throw new CException(Yii::t('UserModule.user', 'Email is not set when trying to send Registration Email'));	
 		}
 
-		$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-		$activation_url = 'http://' .
-			$_SERVER['HTTP_HOST'] .
-			$this->createUrl('registration/activation',array(
-						'activationKey' => $user->activationKey,
-						'email' => $user->profile[0]->email)
+			$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+
+			$activation_url = 'http://' .  $_SERVER['HTTP_HOST'] .  $this->createUrl('registration/activation',array(
+				'activationKey' => $user->activationKey,
+				'email' => $user->profile[0]->email)
 					);
 
-		$content = YumTextSettings::model()->find('language = :lang', array(
-					'lang' => Yii::app()->language));
+			$content = YumTextSettings::model()->find('language = :lang', array(
+						'lang' => Yii::app()->language));
 
-		$msgheader = $content->subject_email_registration;
-		$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
+			$msgheader = $content->subject_email_registration;
+			$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
 
-		mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
+			if(Yii::app()->getModule('user')->mailer == 'swift') {
+				$sm = Yii::app()->swiftMailer;
+				$mailer = $sm->mailer($sm->mailTransport());
+				$message = $sm->newMessage($msgheader)   
+					->setFrom(Yii::app()->params['adminEmail'])
+					->setTo($user->profile[0]->email)
+					->setBody($msgbody);                                                    
+				return $mailer->send($message);
+			} else {
+				mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
+			}
 
-		return true;
+			return true;
 	}
 
 	/**
