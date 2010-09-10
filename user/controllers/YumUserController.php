@@ -167,8 +167,7 @@ class YumUserController extends YumController
 		} 
 	}
 
-	public function actionProfile()
-	{
+	public function actionProfile() {
 		// Display my own profile:
 		if(!isset($_GET['id']) || $_GET['id'] == Yii::app()->user->id)
 		{

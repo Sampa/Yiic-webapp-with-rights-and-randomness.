@@ -10,11 +10,11 @@ if(empty($tabularIdx))
 			Yii::t("UserModule.user", 'Update'));
 }
 
-echo $this->renderPartial('_form', array(
+echo $this->renderPartial('/user/_form', array(
 			'model'=>$model,
 			'passwordform'=>$passwordform,
-			'changepassword' => $changepassword,
+			'changepassword' => isset($changepassword) ? $changepassword : false,
 			'profile'=>$profile,
-			'tabularIdx'=>$tabularIdx)
+			'tabularIdx'=> isset($tabularIdx) ? $tabularIdx : 0)
 		);
 ?>

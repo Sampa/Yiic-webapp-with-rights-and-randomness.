@@ -9,11 +9,11 @@ class YumProfileController extends YumController
 	{
 		return array(
 			array('allow', 
-				'actions'=>array('index', 'create', 'update', 'admin','delete'),
+				'actions'=>array('index', 'create', 'admin','delete'),
 				'expression' => 'Yii::app()->user->isAdmin()'
 				),
 			array('allow', 
-				'actions'=>array('view'),
+				'actions'=>array('view', 'update'),
 				'users' => array('@'),
 				),
 
@@ -50,7 +50,16 @@ class YumProfileController extends YumController
 
 	public function actionUpdate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		if(Yii::app()->user->isAdmin()) 
+			$this->layout = YumWebModule::yum()->adminLayout;
+		else
+			$this->layout = YumWebModule::yum()->layout;
+
+		if(!isset($_GET['id'])) {
+			$profile = YumProfile::model()->find('user_id = ' . Yii::app()->user->id);
+			$_GET['id'] = $profile->profile_id;
+		}
+
 		$model=$this->loadModel();
 		if(isset($_POST['YumProfile']))
 		{
@@ -60,7 +69,11 @@ class YumProfileController extends YumController
 				$this->redirect(array('admin'));
 		}
 
-		$this->render('update',array( 'model'=>$model ));
+		$this->render('/user/update',array(
+'model'=>$model->user,
+'profile' => $model,
+'passwordform' => new YumUserChangePassword(),
+ ));
 	}
 
 	public function actionDelete()

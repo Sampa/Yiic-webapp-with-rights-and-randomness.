@@ -34,7 +34,7 @@ echo CHtml::openTag('div',array(
 			'style' => $changepassword ? '' : 'display: none;',
 			'id' => 'password',
 			'class'=>'row'));
-$this->renderPartial('passwordfields', array('form'=>$passwordform));
+$this->renderPartial('/user/passwordfields', array('form'=>$passwordform));
 echo CHtml::closeTag('div');
 
 	if($profile != false) {

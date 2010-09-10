@@ -162,29 +162,31 @@ class YumRegistrationController extends YumController
 
 		if (isset($_GET['email']) && isset($_GET['activationKey'])) {
 			$passwordform = new YumUserChangePassword;
-			$user = YumProfile::model()->findByAttributes(array('email'=>$email))->user;
+			$user = YumProfile::model()->findByAttributes(
+					array('email'=>$_GET['email']))->user;
+
 			if($user->activationKey == $_GET['activationKey']) {
 				if(isset($_POST['YumUserChangePassword'])) {
 					$passwordform->attributes = $_POST['YumUserChangePassword'];
 					if($passwordform->validate()) {
-						$user->password = YumUser::encrypt($form2->password);
+						$user->password = YumUser::encrypt($passwordform->password);
 						$user->activationKey = YumUser::encrypt(microtime().$passwordform->password);
 						$user->save();
 
 						Yii::app()->user->setFlash('loginMessage',
-								Yii::t("user", "Your new password has been saved."));
+								Yum::t("Your new password has been saved."));
 						$this->redirect(Yii::app()->controller->module->loginUrl);
 					}
 				}
-				$this->render('changepassword',array('form'=>$passwordform));
+				$this->render('/user/changepassword',array('form'=>$passwordform));
 			} else {
 				Yii::app()->user->setFlash('recoveryMessage',
-						Yii::t("user", "Incorrect recovery link."));
-				$this->redirect('http://' . $_SERVER['HTTP_HOST'] . $this->createUrl('user/recovery'));
+						Yum::t("Incorrect recovery link."));
+				$this->redirect('http://' . $_SERVER['HTTP_HOST'] . $this->createUrl('registration/recovery'));
 			}
 		} else {
 			if(isset($_POST['YumUserRecoveryForm'])) {
-				$form->attributes=$_POST['YumUserRecoveryForm'];
+				$form->attributes = $_POST['YumUserRecoveryForm'];
 
 				if($form->validate()) {
 					$user = YumUser::model()->findbyPk($form->user_id);
@@ -194,9 +196,9 @@ class YumRegistrationController extends YumController
 
 					$activation_url = sprintf('http://%s%s',
 							$_SERVER['HTTP_HOST'],
-							$this->createUrl('/user/recovery',array(
+							$this->createUrl('registration/recovery',array(
 									'activationKey' => $user->activationKey,
-									'email' => $user->email)));
+									'email' => $user->profile[0]->email)));
 
 					mail($user->profile[0]->email,
 							Yum::t('Password recovery'), 
