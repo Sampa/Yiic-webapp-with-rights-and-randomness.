@@ -6,9 +6,6 @@
  * @package Yum.models
  */
 class YumRegistrationForm extends YumUser {
-	/**
-	 * @var string
-	 */
 	public $verifyPassword;
 	
 	/**
@@ -29,5 +26,4 @@ class YumRegistrationForm extends YumUser {
 
 
 	}
-
 }

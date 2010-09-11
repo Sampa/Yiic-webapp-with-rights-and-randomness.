@@ -99,7 +99,8 @@ class YumUser extends YumActiveRecord
 		$rules[] = $passwordrule;
 		$rules[] = array('username', 'length', 'max'=>20, 'min' => 3,
 				'message' => Yum::t("Incorrect username (length between 3 and 20 characters)."));
-		$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
+		if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL')
+			$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
 		$rules[] = array('status', 'in', 'range'=>array(0,1,-1));
 		$rules[] = array('superuser', 'in', 'range'=>array(0,1));
@@ -155,12 +156,17 @@ class YumUser extends YumActiveRecord
 	}
 
 	public function register($username=null, $password=null, $email=null) {
-
 		if($username!==null && $password!==null) {
 			// Password equality is checked in Registration Form
 			$this->username = $username;
 			$this->password = $this->encrypt($password);
 		}
+
+		foreach(YumProfile::model()->findAll() as $profile) {
+			if($email == $profile->email)
+				return false;
+		}
+
 		$this->activationKey = $this->generateActivationKey(false,$password);
 		$this->createtime = time();
 		$this->superuser = 0;
@@ -174,7 +180,7 @@ class YumUser extends YumActiveRecord
 				$this->status = YumUser::STATUS_NOTACTIVE;
 				break;
 			case YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION:
-				// User stay banned until they confirm their email address.
+				// Users stay banned until they confirm their email address.
 				$this->status = YumUser::STATUS_BANNED;
 				break;
 		}

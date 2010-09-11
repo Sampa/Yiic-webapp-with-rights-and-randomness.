@@ -58,8 +58,12 @@ class YumRegistrationController extends YumController
 
 			$loginType = Yii::app()->getModule('user')->loginType;
 
-			if($loginType == 'LOGIN_BY_EMAIL') 
+			if($loginType == 'LOGIN_BY_EMAIL')  {
 				$form->username = strtr($profile->firstname . '_' . $profile->lastname, array(' ' => '_'));
+
+				if($form->email != '' && YumProfile::model()->find('email = "'.$form->email .'"')) 
+					$profile->addError('email', Yum::t('E-Mail already in use. If you have not registered before, please contact our System administrator.'));
+			}
 
 			if($form->validate() && !$profile->hasErrors()) {
 				$user = new YumUser();
@@ -88,7 +92,7 @@ class YumRegistrationController extends YumController
 					} 
 				} else {
 					Yii::app()->user->setFlash('registration',
-							Yum::t("Your registration didn't work. Please contact our System Administrator."));
+							Yum::t("Your registration didn't work. Please try another E-Mail address. If this problem persists, please contact our System Administrator."));
 					$this->refresh();
 				}
 			}
@@ -105,7 +109,7 @@ class YumRegistrationController extends YumController
 	public function sendRegistrationEmail($user) {
 		if(!isset($user->profile[0]->email))
 		{
-			throw new CException(Yii::t('UserModule.user', 'Email is not set when trying to send Registration Email'));	
+			throw new CException(Yum::t('Email is not set when trying to send Registration Email'));	
 		}
 
 			$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
