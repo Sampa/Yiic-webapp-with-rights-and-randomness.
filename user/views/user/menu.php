@@ -73,6 +73,7 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 
 		$menu[] = e('edit personal Data', 'user/edit');
+		$menu[] = e('browse users', 'user/index');
 
 		if($module->messageSystem != YumMessage::MSG_NONE) 
 			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 

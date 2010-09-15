@@ -41,6 +41,7 @@ class YumInstallController extends YumController
 					$profileFieldsTable = $_POST['profileFieldsTable'];
 					$profileFieldsGroupTable = $_POST['profileFieldsGroupTable'];
 					$profileTable = $_POST['profileTable'];
+					$profileVisitTable = $_POST['profileVisitTable'];
 					$messagesTable = $_POST['messagesTable'];
 					$rolesTable = $_POST['rolesTable'];
 					$userRoleTable = $_POST['userRoleTable'];
@@ -84,6 +85,7 @@ class YumInstallController extends YumController
 						`lastpasswordchange` int(10) NOT NULL default '0',
 						`superuser` int(1) NOT NULL default '0',
 						`status` int(1) NOT NULL default '0',
+						`avatar` varchar(255) default NULL,
 						PRIMARY KEY  (`id`),
 						UNIQUE KEY `username` (`username`),
 						KEY `status` (`status`),
@@ -222,6 +224,17 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
+
+						$sql = "CREATE TABLE IF NOT EXISTS `".$profileVisitTable."` (
+							`visitor_id` int(11) NOT NULL,
+							`visited_id` int(11) NOT NULL,
+							`timestamp_first_visit` int(11) NOT NULL,
+							`timestamp_last_visit` int(11) NOT NULL,
+							`num_of_visits` int(11) NOT NULL,
+							PRIMARY KEY (`visitor_id`,`visited_id`)
+								) ENGINE=InnoDB;";
+
+						$db->createCommand($sql)->execute();
 					}
 
 					if(isset($_POST['installRole']))  
@@ -342,6 +355,7 @@ class YumInstallController extends YumController
 					'rolesTable' => Yum::resolveTableName($this->module->rolesTable,Yii::app()->db),
 					'messagesTable' => Yum::resolveTableName($this->module->messagesTable,Yii::app()->db),
 					'profileTable' => Yum::resolveTableName($this->module->profileTable,Yii::app()->db),
+					'profileVisitTable' => Yum::resolveTableName($this->module->profileVisitTable,Yii::app()->db),
 					'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable,Yii::app()->db),
 					'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
 					'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable,Yii::app()->db),

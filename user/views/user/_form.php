@@ -4,7 +4,8 @@ if(empty($tabularIdx))
 {
 // don' t display when used in multiform
 	echo CHtml::openTag('div',array('class'=>'form'));
-	echo CHtml::beginForm();
+	echo CHtml::beginForm('', 'POST', array(
+					'enctype' => 'multipart/form-data'));
 	echo Yum::requiredFieldNote();
 }
 
@@ -20,6 +21,13 @@ echo CHtml::activeLabelEx($model,$attribute);
 echo CHtml::activeTextField($model,$attribute,array('size'=>20,'maxlength'=>20));
 echo CHtml::error($model,$attribute);
 echo CHtml::closeTag('div');
+
+if(Yii::app()->getModule('user')->enableAvatars) {
+		printf('<label>%s</label>', Yum::t('Avatar image of User'));
+		echo CHtml::activeFileField($model, 'avatar');
+		if($model->avatar) 
+			echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $model->avatar);
+}
 
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]password" : "password";
 if(!$model->isNewRecord) {

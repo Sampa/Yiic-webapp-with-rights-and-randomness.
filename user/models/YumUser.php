@@ -108,6 +108,8 @@ class YumUser extends YumActiveRecord
 		$rules[] = array('password', 'required', 'on'=>array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
+		if(Yii::app()->getModule('user')->enableAvatars) 
+			$rules[] = array('avatar', 'safe');
 		return $rules;
 	}
 
@@ -152,6 +154,7 @@ class YumUser extends YumActiveRecord
 		'profile'=>array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
 		'roles'=>array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
 		'users'=>array(self::MANY_MANY, 'YumUser', $relationUHUTableName . '(owner_id, child_id)'),
+		'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id')
 	);
 	}
 

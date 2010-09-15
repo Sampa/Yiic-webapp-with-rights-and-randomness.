@@ -60,3 +60,31 @@ $this->renderPartial('/messages/new_messages');?>
 </td>
 </tr>
 </table>
+
+<h2> <?php echo Yum::t('This users have visited my profile'); ?> </h2>
+<?php
+	if($model->visits) {
+		$format = Yii::app()->getModule('user')->dateTimeFormat;
+		echo '<table>';
+		printf('<th>%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th>',
+			Yum::t('Visitor'),
+			Yum::t('Time of first Visit'),
+			Yum::t('Time of last Visit'),
+			Yum::t('Num of Visits'),
+			Yum::t('Message')
+);
+
+		foreach($model->visits as $visit) {
+			printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+					CHtml::link($visit->visitor->username, array('user/view', 'id' => $visit->visitor_id)),
+					date($format, $visit->timestamp_first_visit),
+					date($format, $visit->timestamp_last_visit),
+					$visit->num_of_visits,
+					CHtml::link(Yum::t('Write a message'), array('messages/compose', 'to_user_id' => $visit->visitor_id))
+					);
+		}
+		echo '<table>';
+	} else {
+		echo Yum::t('Nobody has visited your profile yet');
+	}
+?>

@@ -387,6 +387,17 @@ class YumUserController extends YumController
 				$profile->validate();
 
 				if(!$model->hasErrors() && !$profile->hasErrors()) {
+					if(Yii::app()->getModule('user')->enableAvatars 
+							&& isset($_FILES['YumUser']['name']['avatar'])
+							&& $_FILES['YumUser']['name']['avatar'] != '') {
+						$fileobject = CUploadedFile::getInstanceByName('YumUser[avatar]');
+						if($fileobject) {
+							$filename = $_FILES['YumUser']['name']['avatar'];
+							$fileobject->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
+							$model->avatar = $filename;
+						}
+
+					}
 					$model->save();
 					$profile->save();
 					$this->redirect(array('view','id'=>$model->id));

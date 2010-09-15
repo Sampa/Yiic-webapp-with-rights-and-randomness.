@@ -17,6 +17,7 @@ class UserModule extends YumWebModule
 	public $profileFieldsTable = 'profile_fields';
 	public $profileFieldsGroupTable = 'profile_fields_group';
 	public $profileTable = 'profiles';
+	public $profileVisitTable = 'profile_visit';
 	public $rolesTable = 'roles';
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
@@ -27,6 +28,8 @@ class UserModule extends YumWebModule
 	public $layout = 'yum';
 	public $loginLayout = 'yum';
 	public $adminLayout = 'yum';
+	public $profileLayout = 'yumprofile';
+	public $profileView = '/profile/view';
 	public $useYiiCheckAccess = false;
 	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
 	public $allowRecovery = true;
@@ -34,6 +37,8 @@ class UserModule extends YumWebModule
 	public $enableProfiles = true;
 	public $mail_send_method = 'Instant';
 	public $password_expiration_time = 30;
+	public $enableAvatars = true;
+	public $avatarPath = 'images';
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
 
 	// determines whether configuration by Database Table is enabled or disabled

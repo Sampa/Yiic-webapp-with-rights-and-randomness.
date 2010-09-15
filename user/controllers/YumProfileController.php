@@ -25,8 +25,28 @@ class YumProfileController extends YumController
 
 	public function actionView()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
-		$this->render('view',array( 'model'=>$this->loadModel()));
+		$this->layout = Yii::app()->getModule('user')->profileLayout;
+		$view = Yii::app()->getModule('user')->profileView;
+
+		$model = $this->loadModel();
+
+		$this->render($view, array('model' => $model));
+		$this->updateVisitor(Yii::app()->user->id, $model->user_id);
+	}
+
+	public function updateVisitor($visitor_id, $visited_id) {
+		$visit = YumProfileVisit::model()->find('visitor_id = :visitor_id and visited_id = :visited_id', array(
+					':visitor_id' => $visitor_id,
+					':visited_id' => $visited_id));
+		if($visit) {
+			$visit->save();	
+		} else {
+			$visit = new YumProfileVisit();
+			$visit->visitor_id = $visitor_id;
+			$visit->visited_id = $visited_id;
+			$visit->save();
+			print_r($visit->getErrors());
+		}
 	}
 
 	public function actionCreate()

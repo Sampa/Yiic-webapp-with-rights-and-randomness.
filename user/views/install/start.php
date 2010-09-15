@@ -103,6 +103,11 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('profileFieldsGroupTable', $profileFieldsGroupTable);?> </td> 
 			</tr>			
 			<tr> 
+				<td> Table for the Profile Visits</td>
+				<td> <?php echo CHtml::textField('profileVisitTable', $profileVisitTable);?> </td> 
+			</tr>			
+
+			<tr> 
 				<td> Table for the Profiles </td>
 				<td> <?php echo CHtml::textField('profileTable', $profileTable); ?> </td> 
 			</tr>

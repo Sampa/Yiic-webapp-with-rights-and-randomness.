@@ -28,6 +28,7 @@ if (Yii::app()->controller->module->enableRoles)
     printf($f, Yum::t('Roles'), $roles);
 if (Yii::app()->controller->module->enableProfiles) {
     printf($f, Yum::t('Profiles'), $profiles);
+    printf($f, Yum::t('Different viewn Profiles'), $profile_views);
     printf($f, Yum::t('Profile fields'), $profile_fields);
     printf($f, Yum::t('Profile field groups'), $profile_field_groups);
 }

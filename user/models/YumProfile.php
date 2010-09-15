@@ -167,7 +167,7 @@ class YumProfile extends YumActiveRecord
 	public function relations()
 	{
 		return array(
-			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id')
+			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
 		);
 	}
 
