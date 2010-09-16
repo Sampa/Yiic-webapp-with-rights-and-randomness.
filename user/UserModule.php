@@ -104,6 +104,7 @@ class UserModule extends YumWebModule
 	 */
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
+		'avatar'=>array('class'=>'YumModule.controllers.YumAvatarController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),

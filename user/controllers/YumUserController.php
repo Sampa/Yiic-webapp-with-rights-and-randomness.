@@ -203,13 +203,10 @@ class YumUserController extends YumController
 		}
 	}
 
-	/**
-	 * Edits a User profile.
-	 */
+
 	public function actionEdit()
 	{
-		if($this->module->readOnlyProfiles == true)
-		{
+		if($this->module->readOnlyProfiles) {
 			Yii::app()->user->setFlash('profileMessage',
 					Yii::t("UserModule.user",
 						"You are not allowed to edit your own profile. Please contact your System Administrator."));

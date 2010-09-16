@@ -34,6 +34,7 @@ if(!Yii::app()->user->isGuest) {
 		$profilegroupsettings[] = e('Manage field groups', 'fieldsgroup/admin');
 		$profilegroupsettings[] = e('Create new field group', 'fieldsgroup/create');
 
+		$profilemenu[] = e('Show profile visits', 'profile/visits');
 		$profilemenu[] = array('children' => $profilesettings, 'text' => Yum::t('Manage profile fields'));
 		$profilemenu[] = array('children' => $profilegroupsettings, 'text' => Yum::t('Manage profile field groups'));
 
@@ -55,7 +56,7 @@ if(!Yii::app()->user->isGuest) {
 		if($module->enableRoles)
 			$menu[] = array('children' => $rolemenu, 'text' => Yum::t('Role Administration'));	
 		if($module->enableProfiles) 
-			$menu[] = array('children' => $profilemenu, 'text' => Yum::t('Profile fields'));	
+			$menu[] = array('children' => $profilemenu, 'text' => Yum::t('Profiles'));	
 		if($module->messageSystem != YumMessage::MSG_NONE) 
 			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 
 
@@ -73,6 +74,8 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 
 		$menu[] = e('edit personal Data', 'user/edit');
+		if(Yii::app()->getModule('user')->enableAvatars) 
+			$menu[] = e('upload Avatar Image', 'avatar/editAvatar');
 		$menu[] = e('browse users', 'user/index');
 
 		if($module->messageSystem != YumMessage::MSG_NONE) 

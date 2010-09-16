@@ -4,8 +4,7 @@ if(empty($tabularIdx))
 {
 // don' t display when used in multiform
 	echo CHtml::openTag('div',array('class'=>'form'));
-	echo CHtml::beginForm('', 'POST', array(
-					'enctype' => 'multipart/form-data'));
+	echo CHtml::beginForm('', 'POST', array('enctype' => 'multipart/form-data'));
 	echo Yum::requiredFieldNote();
 }
 

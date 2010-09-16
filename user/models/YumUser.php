@@ -59,7 +59,13 @@ class YumUser extends YumActiveRecord
 	}
 
 	public function beforeValidate() {
-		$this->avatar = CUploadedFile::getInstanceByName('YumUser[avatar]');
+		$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
+		if($file instanceof CUploadedFile)
+			$this->avatar = $file;
+		else
+			if($this->scenario == 'avatarUpload') 
+				$this->avatar = NULL;
+
 		return true;
   }
 	
@@ -121,6 +127,7 @@ class YumUser extends YumActiveRecord
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
 		if(Yii::app()->getModule('user')->enableAvatars)  {
+			$rules[] = array('avatar', 'required', 'on' => 'avatarUpload');
 			$rules[] = array('avatar', 'EPhotoValidator',
 					'allowEmpty' => true,
 					'mimeType' => array('image/jpeg', 'image/png', 'image/gif'),
@@ -249,16 +256,17 @@ class YumUser extends YumActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id'=>Yii::t('UserModule.user', '#'),
-			'username'=>Yii::t("UserModule.user", "Username"),
-			'password'=>Yii::t("UserModule.user", "Password"),
-			'verifyPassword'=>Yii::t("UserModule.user", "Retype password"),
-			'verifyCode'=>Yii::t("UserModule.user", "Verification code"),
-			'activationKey' => Yii::t("UserModule.user", "Activation key"),
-			'createtime' => Yii::t("UserModule.user", "Registration date"),
-			'lastvisit' => Yii::t("UserModule.user", "Last visit"),
-			'superuser' => Yii::t("UserModule.user", "Superuser"),
-			'status' => Yii::t("UserModule.user", "Status"),
+			'id'=>Yum::t('#'),
+			'username'=>Yum::t("Username"),
+			'password'=>Yum::t("Password"),
+			'verifyPassword'=>Yum::t("Retype password"),
+			'verifyCode'=>Yum::t("Verification code"),
+			'activationKey' => Yum::t("Activation key"),
+			'createtime' => Yum::t("Registration date"),
+			'lastvisit' => Yum::t("Last visit"),
+			'superuser' => Yum::t("Superuser"),
+			'status' => Yum::t("Status"),
+			'avatar' => Yum::t("Avatar image"),
 		);
 	}
 	
@@ -341,8 +349,10 @@ class YumUser extends YumActiveRecord
 	public function updateAvatar() {
 		if($this->avatar !== NULL) {
 			$filename = $_FILES['YumUser']['name']['avatar'];
-			$this->avatar->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
-			$this->avatar = $filename;
+			if(is_object($this->avatar)) {
+				$this->avatar->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
+				$this->avatar = $filename;
+			}
 		}
 	}
 

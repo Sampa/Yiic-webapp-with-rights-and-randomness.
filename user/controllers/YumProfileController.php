@@ -9,7 +9,7 @@ class YumProfileController extends YumController
 	{
 		return array(
 			array('allow', 
-				'actions'=>array('index', 'create', 'admin','delete'),
+				'actions'=>array('index', 'create', 'admin','delete', 'visits'),
 				'expression' => 'Yii::app()->user->isAdmin()'
 				),
 			array('allow', 
@@ -21,6 +21,15 @@ class YumProfileController extends YumController
 				'users'=>array('*'),
 			),
 		);
+	}
+
+	public function actionVisits() {
+		$this->layout = YumWebModule::yum()->adminLayout;
+
+		$this->render('visits',array(
+			'model'=>new YumProfileVisit(),
+		));
+
 	}
 
 	public function actionView()
