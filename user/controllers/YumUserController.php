@@ -307,6 +307,8 @@ class YumUserController extends YumController
 			$model->validate();
 			if($profiles) $profile->validate();
 			if(!$model->hasErrors() && !$passwordform->hasErrors()) {
+
+
 				if($model->save()) {
 					$profile->user_id = $model->id;
 					$profile->save();
@@ -382,22 +384,12 @@ class YumUserController extends YumController
 				} else
 				 $errors = true;
 			} 
+				$model->validate();
 
 			if($profiles) {
 				$profile->validate();
 
 				if(!$model->hasErrors() && !$profile->hasErrors()) {
-					if(Yii::app()->getModule('user')->enableAvatars 
-							&& isset($_FILES['YumUser']['name']['avatar'])
-							&& $_FILES['YumUser']['name']['avatar'] != '') {
-						$fileobject = CUploadedFile::getInstanceByName('YumUser[avatar]');
-						if($fileobject) {
-							$filename = $_FILES['YumUser']['name']['avatar'];
-							$fileobject->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
-							$model->avatar = $filename;
-						}
-
-					}
 					$model->save();
 					$profile->save();
 					$this->redirect(array('view','id'=>$model->id));

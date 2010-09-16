@@ -58,6 +58,18 @@ class YumUser extends YumActiveRecord
 					));
 	}
 
+	public function beforeValidate() {
+		$this->avatar = CUploadedFile::getInstanceByName('YumUser[avatar]');
+		return true;
+  }
+	
+	public function beforeSave() {
+		if(Yii::app()->getModule('user')->enableAvatars) 
+			$this->updateAvatar();
+
+		return true;
+	}
+
 	public function getAdministerableUsers() {
 		$users = array();
 		$users = $this->users;
@@ -108,8 +120,15 @@ class YumUser extends YumActiveRecord
 		$rules[] = array('password', 'required', 'on'=>array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
-		if(Yii::app()->getModule('user')->enableAvatars) 
-			$rules[] = array('avatar', 'safe');
+		if(Yii::app()->getModule('user')->enableAvatars)  {
+			$rules[] = array('avatar', 'EPhotoValidator',
+					'allowEmpty' => true,
+					'mimeType' => array('image/jpeg', 'image/png', 'image/gif'),
+					'maxWidth' => 200,
+					'maxHeight' => 200,
+					'minWidth' => 50, 
+					'minHeight' => 50);
+		}
 		return $rules;
 	}
 
@@ -318,6 +337,19 @@ class YumUser extends YumActiveRecord
 			array_push($returnarray, $admin->username);
 		return $returnarray;
 	}
+
+	public function updateAvatar() {
+		if($this->avatar !== NULL) {
+			$filename = $_FILES['YumUser']['name']['avatar'];
+			$this->avatar->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
+			$this->avatar = $filename;
+		}
+	}
+
+		public function renderAvatar() {
+			echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
+		}
+
 
 	
 }

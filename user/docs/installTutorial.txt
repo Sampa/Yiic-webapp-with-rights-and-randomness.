@@ -69,7 +69,7 @@ Authentification Method in the Application Configuration:
  'user'=>array(
       'class' => 'application.modules.user.components.YumWebUser',
       'allowAutoLogin'=>true,
-      'loginUrl' => array('/user/user/login'),
+      'loginUrl' => array('//user/user/login'),
       [...]
     ),
 

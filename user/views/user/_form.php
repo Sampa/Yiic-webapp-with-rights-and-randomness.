@@ -24,9 +24,9 @@ echo CHtml::closeTag('div');
 
 if(Yii::app()->getModule('user')->enableAvatars) {
 		printf('<label>%s</label>', Yum::t('Avatar image of User'));
-		echo CHtml::activeFileField($model, 'avatar');
+		echo CHtml::fileField('YumUser[avatar]', $model->avatar);
 		if($model->avatar) 
-			echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $model->avatar);
+			$model->renderAvatar();
 }
 
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]password" : "password";
