@@ -1,76 +1,76 @@
 <?php
 
 class YumProfileVisit extends YumActiveRecord {
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
 
-	public function primaryKey()
-	{
-		return array('visitor_id', 'visited_id');
-	}
+    public static function model($className=__CLASS__) {
+	return parent::model($className);
+    }
 
-	public function beforeValidate() 
-	{
-		if($this->timestamp_first_visit === NULL)
-			$this->timestamp_first_visit = time();
+    public function primaryKey() {
+	return array('visitor_id', 'visited_id');
+    }
 
-		$this->timestamp_last_visit = time();
-		$this->num_of_visits++;
-		return true;
-	}
+    public function beforeValidate() {
+	if ($this->timestamp_first_visit === NULL)
+	    $this->timestamp_first_visit = time();
 
-	public function tableName()
-	{
-		return 'profile_visit';
-	}
+	$this->timestamp_last_visit = time();
+	$this->num_of_visits++;
+	return true;
+    }
 
-	public function rules()
-	{
-		return array(
-			array('visitor_id, visited_id, timestamp_first_visit, timestamp_last_visit, num_of_visits', 'required'),
-			array('visitor_id, visited_id, timestamp_first_visit, timestamp_last_visit, num_of_visits', 'numerical', 'integerOnly'=>true),
-			array('visitor_id, visited_id, timestamp_first_visit, timestamp_last_visit, num_of_visits', 'safe', 'on'=>'search'),
-		);
-	}
+    public function tableName() {
+	if (isset(Yii::app()->controller->module->profileVisitTable))
+	    $this->_tableName = Yii::app()->controller->module->profileVisitTable;
+	elseif (isset(Yii::app()->modules['user']['profileVisitTable']))
+	    $this->_tableName = Yii::app()->modules['user']['profileVisitTable'];
+	else
+	    $this->_tableName = '{{profile_visit}}';
 
-	public function relations()
-	{
-		return array(
-			'visitor' => array(self::BELONGS_TO, 'YumUser', 'visitor_id'),
-			'visited' => array(self::BELONGS_TO, 'YumUser', 'visited_id'),
-		);
-	}
+	return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
+    }
 
-	public function attributeLabels()
-	{
-		return array(
-			'visitor_id' => Yum::t('Visitor'),
-			'visited_id' => Yum::t('Visited'),
-			'timestamp_first_visit' => Yum::t('Time of first visit'),
-			'timestamp_last_visit' => Yum::t('Time of last visit'),
-			'num_of_visits' => Yum::t('Total Num of Visits'),
-		);
-	}
+    public function rules() {
+	return array(
+	    array('visitor_id, visited_id, timestamp_first_visit, timestamp_last_visit, num_of_visits', 'required'),
+	    array('visitor_id, visited_id, timestamp_first_visit, timestamp_last_visit, num_of_visits', 'numerical', 'integerOnly' => true),
+	    array('visitor_id, visited_id, timestamp_first_visit, timestamp_last_visit, num_of_visits', 'safe', 'on' => 'search'),
+	);
+    }
 
-	public function __toString() {
-		return $this->visitor->username;
+    public function relations() {
+	return array(
+	    'visitor' => array(self::BELONGS_TO, 'YumUser', 'visitor_id'),
+	    'visited' => array(self::BELONGS_TO, 'YumUser', 'visited_id'),
+	);
+    }
 
-	}
+    public function attributeLabels() {
+	return array(
+	    'visitor_id' => Yum::t('Visitor'),
+	    'visited_id' => Yum::t('Visited'),
+	    'timestamp_first_visit' => Yum::t('Time of first visit'),
+	    'timestamp_last_visit' => Yum::t('Time of last visit'),
+	    'num_of_visits' => Yum::t('Total Num of Visits'),
+	);
+    }
 
-	public function search()
-	{
-		$criteria=new CDbCriteria;
+    public function __toString() {
+	return $this->visitor->username;
+    }
 
-		$criteria->compare('visitor_id', $this->visitor_id);
-		$criteria->compare('visited_id', $this->visited_id);
-		$criteria->compare('timestamp_first_visit', $this->timestamp_first_visit);
-		$criteria->compare('timestamp_last_visit', $this->timestamp_last_visit);
-		$criteria->compare('num_of_visits', $this->num_of_visits);
+    public function search() {
+	$criteria = new CDbCriteria;
 
-		return new CActiveDataProvider(get_class($this), array(
-			'criteria'=>$criteria,
-		));
-	}
+	$criteria->compare('visitor_id', $this->visitor_id);
+	$criteria->compare('visited_id', $this->visited_id);
+	$criteria->compare('timestamp_first_visit', $this->timestamp_first_visit);
+	$criteria->compare('timestamp_last_visit', $this->timestamp_last_visit);
+	$criteria->compare('num_of_visits', $this->num_of_visits);
+
+	return new CActiveDataProvider(get_class($this), array(
+	    'criteria' => $criteria,
+	));
+    }
+
 }
