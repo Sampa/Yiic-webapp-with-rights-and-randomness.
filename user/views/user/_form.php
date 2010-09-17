@@ -13,6 +13,8 @@ if($profile != false)
 else
 	echo CHtml::errorSummary(array($model, $passwordform));
 
+
+	if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL') {
 $attribute = !empty($tabularIdx) ? "[{$tabularIdx}]username" : "username";
 
 echo CHtml::openTag('div',array('class'=>'row'));
@@ -20,6 +22,8 @@ echo CHtml::activeLabelEx($model,$attribute);
 echo CHtml::activeTextField($model,$attribute,array('size'=>20,'maxlength'=>20));
 echo CHtml::error($model,$attribute);
 echo CHtml::closeTag('div');
+} else
+	echo CHtml::hiddenField('YumUser[username]', $model->username);
 
 if(Yii::app()->getModule('user')->enableAvatars) {
 		printf('<label>%s</label>', Yum::t('Avatar image of User'));

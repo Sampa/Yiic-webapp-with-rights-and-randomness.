@@ -12,6 +12,10 @@ $this->renderPartial('/messages/new_messages');?>
 <?php echo Yii::app()->user->getFlash('profileMessage'); ?>
 </div>
 <?php endif; ?>
+<div class="avatar">
+<?php echo $model->renderAvatar(); ?>
+</div>
+
 <table class="dataGrid">
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('username')); ?>

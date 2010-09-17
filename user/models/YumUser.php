@@ -347,8 +347,10 @@ class YumUser extends YumActiveRecord
 	}
 
 	public function updateAvatar() {
-		if($this->avatar !== NULL) {
-			$filename = $_FILES['YumUser']['name']['avatar'];
+		if($this->avatar !== NULL && isset($_FILES['YumUser'])) {
+			// prepend user id to avoid conflicts when two users upload an avatar with the
+			// same file name
+			$filename = $this->id . '_' . $_FILES['YumUser']['name']['avatar'];
 			if(is_object($this->avatar)) {
 				$this->avatar->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
 				$this->avatar = $filename;
@@ -357,7 +359,8 @@ class YumUser extends YumActiveRecord
 	}
 
 		public function renderAvatar() {
-			echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
+			if($this->avatar)
+				echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
 		}
 
 

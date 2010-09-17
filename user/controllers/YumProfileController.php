@@ -32,15 +32,14 @@ class YumProfileController extends YumController
 
 	}
 
-	public function actionView()
-	{
+	public function actionView() {
 		$this->layout = Yii::app()->getModule('user')->profileLayout;
 		$view = Yii::app()->getModule('user')->profileView;
 
-		$model = $this->loadModel();
+		$model = YumUser::model()->findByPk($_GET['id']);
 
 		$this->render($view, array('model' => $model));
-		$this->updateVisitor(Yii::app()->user->id, $model->user_id);
+		$this->updateVisitor(Yii::app()->user->id, $model->id);
 	}
 
 	public function updateVisitor($visitor_id, $visited_id) {

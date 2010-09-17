@@ -21,10 +21,31 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 			array(
 				'name'=>'username',
+				'visible' => Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL' ,
 				'type'=>'raw',
 				'value'=>'CHtml::link(CHtml::encode($data->username),
 				array(Yum::route("{user}/view"),"id"=>$data->id))',
 			),
+			array(
+				'header'=>Yum::t('First name'),
+				'visible' => Yii::app()->getModule('user')->enableProfiles,
+				'type'=>'raw',
+				'value'=>'CHtml::link(CHtml::encode($data->profile[0]->firstname),
+				array(Yum::route("{user}/view"),"id"=>$data->id))',
+			),
+			array(
+				'header'=>Yum::t('Last name'),
+				'visible' => Yii::app()->getModule('user')->enableProfiles,
+				'type'=>'raw',
+				'value'=>'CHtml::link(CHtml::encode($data->profile[0]->lastname),
+				array(Yum::route("{user}/view"),"id"=>$data->id))',
+			),
+			array(
+				'header'=>Yum::t('Email'),
+				'visible' => Yii::app()->getModule('user')->enableProfiles,
+				'type'=>'raw',
+				'value'=>'CHtml::link($data->profile[0]->email,
+					\'mailto: \'.$data->profile[0]->email)'),
 			array(
 				'name'=>'createtime',
 				'filter' => false,

@@ -1,3 +1,10 @@
+<?php
+if(Yii::app()->getModule('user')->rtepath != false)
+  Yii::app()->clientScript-> registerScriptFile(Yii::app()->getModule('user')->rtepath);                                                                         
+if(Yii::app()->getModule('user')->rteadapter != false)
+  Yii::app()->clientScript-> registerScriptFile(Yii::app()->getModule('user')->rteadapter); 
+?>
+
 <?php 
 $this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Profile");
 $this->breadcrumbs=array(
@@ -33,9 +40,17 @@ if ($profileFields)
 				echo CHtml::activeTextArea($profile,
 						$field->varname,
 						array('rows'=>6, 'cols'=>50));
+				if(Yii::app()->getModule('user')->rtepath != false)
+					Yii::app()->clientScript->registerScript("ckeditor", "$('#YumProfile_".$field->varname."').ckeditor();"); 
 			} 
-			else 
-			{
+			else if($field->field_type == "DROPDOWNLIST") {
+			echo CHtml::activeDropDownList($profile,
+					$field->varname, 
+					CHtml::listData(CActiveRecord::model(ucfirst($field->varname))->findAll(),
+						'id',
+						$field->related_field_name));
+
+			} else {
 				echo CHtml::activeTextField($profile,
 						$field->varname,
 						array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));

@@ -4,38 +4,47 @@ $this->breadcrumbs=array(Yum::t('Profile'));
 $this->title = Yum::t('Profile');
 ?>
 
+<div class="avatar">
+<?php echo $model->renderAvatar(); ?>
+	</div>
 <table class="dataGrid">
 <tr>
-	<th class="label"><?php echo CHtml::encode($model->user->username); ?>
+<th class="label"><?php echo CHtml::encode($model->username); ?>
 </th>
-    <td><?php echo CHtml::encode($model->user->username); ?>
+<td><?php echo CHtml::encode($model->username); ?>
 </td>
 </tr>
 <?php 
-		$profileFields = YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
-		if ($profileFields) {
-			foreach($profileFields as $field) {
-				?>
-					<tr>
-					<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
-					</th>
-					<td><?php echo CHtml::encode($model->getAttribute($field->varname)); ?>
-					</td>
-					</tr>
-					<?php
-			}
-		}
+$profileFields = YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
+if ($profileFields) {
+	foreach($profileFields as $field) {
+		?>
+			<tr>
+			<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
+			</th>
+			<td><?php echo CHtml::encode($model->profile[0]->getAttribute($field->varname)); ?>
+			</td>
+			</tr>
+			<?php
+	}
+}
 ?>
 <tr>
 <th class="label"><?php echo Yum::t('first visit'); ?>
 </th>
-<td><?php echo date(UserModule::$dateFormat,$model->user->createtime); ?>
+<td><?php echo date(UserModule::$dateFormat,$model->createtime); ?>
 </td>
 </tr>
 <tr>
 	<th class="label"><?php echo Yum::t('last visit'); ?>
 </th>
-    <td><?php echo date(UserModule::$dateFormat,$model->user->lastvisit); ?>
+    <td><?php echo date(UserModule::$dateFormat,$model->lastvisit); ?>
 </td>
 </tr>
 </table>
+
+<?php
+	if(Yii::app()->getModule('user')->messageSystem != YumMessage::MSG_NONE) {
+		echo CHtml::link('Write a Message to this User', array('messages/compose', 'to_user_id' => $model->id));
+	}
+?>

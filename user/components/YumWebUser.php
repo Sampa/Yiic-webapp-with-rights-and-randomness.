@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('application.modules.user.core.*');
+Yii::import('application.modules.user.models.*');
 Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) . '/../');
 
 class YumWebUser extends CWebUser

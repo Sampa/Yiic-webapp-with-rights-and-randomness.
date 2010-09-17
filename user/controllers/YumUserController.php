@@ -468,6 +468,7 @@ class YumUserController extends YumController
 		$this->layout = YumWebModule::yum()->adminLayout;
 
 		$dataProvider=new CActiveDataProvider('YumUser', array(
+					'criteria' => array('condition' => 'status = 1'),
 					'pagination'=>array(
 						'pageSize'=>self::PAGE_SIZE,
 						)));

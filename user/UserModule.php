@@ -41,6 +41,12 @@ class UserModule extends YumWebModule
 	public $avatarPath = 'images';
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
 
+
+	// if you want the users to be able to edit their profile TEXTAREAs with an
+	// rich text Editor like CKEditor, set that here
+  public $rtepath = false; // Don't use an Rich text Editor                     
+  public $rteadapter = false; // Don't use an Adapter
+
 	// determines whether configuration by Database Table is enabled or disabled
 	public $tableSettingsDisabled = false;
 

@@ -9,8 +9,11 @@ $this->breadcrumbs = array(Yum::t('Users') => array('index'), $model->username);
 if(Yii::app()->user->isAdmin()) {
 	$attributes = array(
 			'id',
-			'username',
 	);
+
+
+	if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL')
+		$attributes[] = 'username';
 	
 	if($profiles) {
 		$profileFields = YumProfileField::model()->forOwner()->sort()->findAll();
@@ -66,7 +69,7 @@ if(Yii::app()->user->isAdmin()) {
 				array_push($attributes,array(
 							'label' => Yii::t('UserModule.user', $field->title),
 							'name' => $field->varname,
-							'value' => $model->profile->getAttribute($field->varname),
+							'value' => $model->profile[0]->getAttribute($field->varname),
 							));
 			}
 		}

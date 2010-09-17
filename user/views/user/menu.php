@@ -11,6 +11,8 @@ if(!function_exists('e')) {
 // Draw menu only when logged in into the System
 $module = Yii::app()->getModule('user');
 if(!Yii::app()->user->isGuest) {
+		$user = User::model()->findByPk(Yii::app()->user->id);
+			
 	$menu = array();
 	// Gather available menu entries
 	if(Yii::app()->user->isAdmin()) {
@@ -90,7 +92,10 @@ if(!Yii::app()->user->isGuest) {
 
 	echo '<div class="yum-menu">'; 	
 	$this->beginWidget('zii.widgets.CPortlet', array(
-				'title'=>Yum::t('User Operations')));
+				'title'=>	sprintf('<h3>%s %s (%s)</h3>',
+			$user->profile[0]->firstname,
+			$user->profile[0]->lastname,
+			$user->getRoles())));
 	$this->widget('CTreeView', array(
 				'data' => $menu, 
 				));
