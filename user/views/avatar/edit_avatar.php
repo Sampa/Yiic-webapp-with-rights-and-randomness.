@@ -13,6 +13,7 @@ else
 
 	echo '<br />';
 
+	echo '<p>' . Yum::t('The image should have at least 50px and a maximum of 200px in width and height. Supported filetypes are .jpg, .gif and .png') . '</p>';
 	echo CHtml::errorSummary($model);
 	echo CHtml::beginForm(array('//user/avatar/editAvatar'), 'POST', array(
 				'enctype' => 'multipart/form-data'));

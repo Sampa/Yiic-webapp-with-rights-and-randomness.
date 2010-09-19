@@ -8,6 +8,7 @@ $this->title = Yum::t('Profile');
 <?php echo $model->renderAvatar(); ?>
 	</div>
 <table class="dataGrid">
+<?php if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL') {?>
 <tr>
 <th class="label"><?php echo CHtml::encode($model->username); ?>
 </th>
@@ -15,17 +16,29 @@ $this->title = Yum::t('Profile');
 </td>
 </tr>
 <?php 
+}
 $profileFields = YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
 if ($profileFields) {
 	foreach($profileFields as $field) {
-		?>
+		if($field->field_type == 'DROPDOWNLIST') {
+			?>
 			<tr>
-			<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
-			</th>
-			<td><?php echo CHtml::encode($model->profile[0]->getAttribute($field->varname)); ?>
-			</td>
-			</tr>
-			<?php
+				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
+				</th>
+				<td><?php echo CHtml::encode($model->profile[0]->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
+				</td>
+				</tr>
+				<?php
+		} else {
+			?>
+				<tr>
+				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
+				</th>
+				<td><?php echo CHtml::encode($model->profile[0]->getAttribute($field->varname)); ?>
+				</td>
+				</tr>
+				<?php
+		}
 	}
 }
 ?>

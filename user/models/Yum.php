@@ -11,7 +11,7 @@ class Yum {
 	public static function register($file) {
 		$url = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('YumAssets'));
 
-		$path = $url . DIRECTORY_SEPARATOR . $file;
+		$path = $url . '/' . $file;
 		if(strpos($file, 'js') !== false)
 			Yii::app()->clientScript->registerScriptFile($path);
 		else if(strpos($file, 'css') !== false)

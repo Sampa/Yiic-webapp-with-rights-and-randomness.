@@ -14,7 +14,7 @@ class YumUserController extends YumController
 					'users'=>array('*'),
 					),
 				array('allow',
-					'actions'=>array('profile', 'edit', 'logout', 'changepassword', 'passwordexpired', 'delete'),
+					'actions'=>array('profile', 'logout', 'changepassword', 'passwordexpired', 'delete'),
 					'users'=>array('@'),
 					),
 				array('allow',
@@ -203,48 +203,6 @@ class YumUserController extends YumController
 		}
 	}
 
-
-	public function actionEdit()
-	{
-		if($this->module->readOnlyProfiles) {
-			Yii::app()->user->setFlash('profileMessage',
-					Yii::t("UserModule.user",
-						"You are not allowed to edit your own profile. Please contact your System Administrator."));
-
-			$this->redirect(array('profile', 'id'=>$model->id));
-		}
-
-		$model = YumUser::model()->findByPk(Yii::app()->user->id);
-		$profile = $model->profile[0];
-
-		if(isset($_POST['YumUser'])) {
-			$model->attributes=$_POST['YumUser'];
-			if($this->module->profileHistory == true)
-				$profile = new YumProfile();
-
-			if(isset($_POST['YumProfile'])) {
-				$profile->attributes=$_POST['YumProfile'];
-				$profile->timestamp = time();
-				$profile->privacy = $_POST['YumProfile']['privacy'];
-				$profile->user_id = $model->id;
-			}
-			$model->validate();
-			$profile->validate();
-			if(!$model->hasErrors() && !$profile->hasErrors()) {
-				$model->save();
-				$profile->save();
-				Yii::app()->user->setFlash('profileMessage',
-						Yii::t("UserModule.user", "Your changes have been saved"));
-				$this->redirect(array('profile', 'id'=>$model->id));
-			}
-		}
-
-		$this->render('/profile/profile-edit',array(
-					'model'=>$model,
-					'profile'=>$profile,
-					));
-
-	}
 
 	/**
 	 * Displays a User

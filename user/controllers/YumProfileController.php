@@ -1,5 +1,7 @@
 <?php
 
+Yii::import('application.modules.user.controllers.YumController');
+
 class YumProfileController extends YumController
 {
 	const PAGE_SIZE=10;
@@ -13,7 +15,7 @@ class YumProfileController extends YumController
 				'expression' => 'Yii::app()->user->isAdmin()'
 				),
 			array('allow', 
-				'actions'=>array('view', 'update'),
+				'actions'=>array('view', 'update', 'edit'),
 				'users' => array('@'),
 				),
 
@@ -21,6 +23,47 @@ class YumProfileController extends YumController
 				'users'=>array('*'),
 			),
 		);
+	}
+
+	public function actionEdit() {
+		if(Yii::app()->getModule('user')->readOnlyProfiles) {
+			Yii::app()->user->setFlash('profileMessage',
+					Yii::t("UserModule.user",
+						"You are not allowed to edit your own profile. Please contact your System Administrator."));
+
+			$this->redirect(array('profile', 'id'=>$model->id));
+		}
+
+		$model = YumUser::model()->findByPk(Yii::app()->user->id);
+		$profile = $model->profile[0];
+
+		if(isset($_POST['YumUser'])) {
+			$model->attributes=$_POST['YumUser'];
+			if(Yii::app()->getModule('user')->profileHistory == true)
+				$profile = new YumProfile();
+
+			if(isset($_POST['YumProfile'])) {
+				$profile->attributes=$_POST['YumProfile'];
+				$profile->timestamp = time();
+				$profile->privacy = $_POST['YumProfile']['privacy'];
+				$profile->user_id = $model->id;
+			}
+			$model->validate();
+			$profile->validate();
+			if(!$model->hasErrors() && !$profile->hasErrors()) {
+				$model->save();
+				$profile->save();
+				Yii::app()->user->setFlash('profileMessage',
+						Yii::t("UserModule.user", "Your changes have been saved"));
+			$this->redirect(array('/user/user/profile', 'id'=>$model->id));
+			}
+		}
+
+		$this->render('/profile/profile-edit',array(
+					'model'=>$model,
+					'profile'=>$profile,
+					));
+
 	}
 
 	public function actionVisits() {
@@ -33,6 +76,9 @@ class YumProfileController extends YumController
 	}
 
 	public function actionView() {
+		if(!isset($_GET['id']))
+			$_GET['id'] = Yii::app()->user->id;
+
 		$this->layout = Yii::app()->getModule('user')->profileLayout;
 		$view = Yii::app()->getModule('user')->profileView;
 
@@ -43,6 +89,10 @@ class YumProfileController extends YumController
 	}
 
 	public function updateVisitor($visitor_id, $visited_id) {
+		// Visiting my own profile doesn't count as visit
+		if($visitor_id == $visited_id)
+			return true;
+
 		$visit = YumProfileVisit::model()->find('visitor_id = :visitor_id and visited_id = :visited_id', array(
 					':visitor_id' => $visitor_id,
 					':visited_id' => $visited_id));
@@ -53,7 +103,6 @@ class YumProfileController extends YumController
 			$visit->visitor_id = $visitor_id;
 			$visit->visited_id = $visited_id;
 			$visit->save();
-			print_r($visit->getErrors());
 		}
 	}
 
@@ -62,8 +111,7 @@ class YumProfileController extends YumController
 		$this->layout = YumWebModule::yum()->adminLayout;
 		$model = new YumProfile;
 
-		if(isset($_POST['YumProfile']))
-		{
+		if(isset($_POST['YumProfile'])) {
 			$model->attributes=$_POST['YumProfile'];
 
 			if($model->validate()) 
@@ -98,10 +146,10 @@ class YumProfileController extends YumController
 		}
 
 		$this->render('/user/update',array(
-'model'=>$model->user,
-'profile' => $model,
-'passwordform' => new YumUserChangePassword(),
- ));
+					'model'=>$model->user,
+					'profile' => $model,
+					'passwordform' => new YumUserChangePassword(),
+					));
 	}
 
 	public function actionDelete()
@@ -123,7 +171,10 @@ class YumProfileController extends YumController
 
 	public function actionIndex()
 	{
-		$this->actionAdmin();
+		if(Yii::app()->user->isAdmin())
+			$this->actionAdmin();
+		else
+			$this->redirect('view');
 	}
 
 	public function actionAdmin()

@@ -40,7 +40,7 @@ class UserModule extends YumWebModule
 	public $enableAvatars = true;
 	public $avatarPath = 'images';
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
-
+	public $menuView = '/user/menu';
 
 	// if you want the users to be able to edit their profile TEXTAREAs with an
 	// rich text Editor like CKEditor, set that here

@@ -35,7 +35,9 @@ if(Yii::app()->getModule('user')->enableRoles) {
 		printf('<p>%s:</p>', Yum::t('Designation'));
 		// render a Radio Button list and preselect the first entry:
 		$data = CHtml::listData($roles, 'id', 'title');
-		echo CHtml::radioButtonList('roles', key($data), $data, array('labelOptions' => array('style' => 'display: inline;')));
+		echo CHtml::radioButtonList('roles', key($data),
+				$data,
+				array('labelOptions' => array('style' => 'display: inline;')));
 
 	}
 }
@@ -79,11 +81,16 @@ if ($profileFields) {
 		}
 		elseif ($field->field_type == "DROPDOWNLIST") 
 		{
+			if($field->required == 2)
+				$req = array('empty' => '--');
+			else
+				$req = array();
 			echo CHtml::activeDropDownList($profile,
 					$field->varname, 
 					CHtml::listData(CActiveRecord::model(ucfirst($field->varname))->findAll(),
 						'id',
-						$field->related_field_name));
+						$field->related_field_name), $req);
+
 		}
 
 			else 

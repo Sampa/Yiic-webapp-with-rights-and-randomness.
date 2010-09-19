@@ -1,5 +1,7 @@
 <?php
 
+Yii::import('application.modules.user.controllers.YumController');
+
 class YumRegistrationController extends YumController
 {
 	private $_model;
@@ -15,7 +17,7 @@ class YumRegistrationController extends YumController
 				array('allow',
 					'actions'=>array('captcha'),
 					'users'=>array('*'),
-					'expression'=>'Yii::app()->controller->module->enableCaptcha',
+					'expression'=>'Yii::app()->getModule(\'user\')->enableCaptcha',
 					),
 				array('deny',  // deny all other users
 						'users'=>array('*'),
@@ -25,7 +27,7 @@ class YumRegistrationController extends YumController
 
 	public function actions()
 	{
-		return Yii::app()->controller->module->enableCaptcha 
+		return Yii::app()->getModule('user')->enableCaptcha 
 			? array(
 					'captcha'=>array(
 						'class'=>'CCaptchaAction',
@@ -122,19 +124,21 @@ class YumRegistrationController extends YumController
 			$content = YumTextSettings::model()->find('language = :lang', array(
 						'lang' => Yii::app()->language));
 
-			$msgheader = $content->subject_email_registration;
-			$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
+			if(is_object($content)) {
+				$msgheader = $content->subject_email_registration;
+				$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
 
-			if(Yii::app()->getModule('user')->mailer == 'swift') {
-				$sm = Yii::app()->swiftMailer;
-				$mailer = $sm->mailer($sm->mailTransport());
-				$message = $sm->newMessage($msgheader)   
-					->setFrom(Yii::app()->params['adminEmail'])
-					->setTo($user->profile[0]->email)
-					->setBody($msgbody);                                                    
-				return $mailer->send($message);
-			} else {
-				mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
+				if(Yii::app()->getModule('user')->mailer == 'swift') {
+					$sm = Yii::app()->swiftMailer;
+					$mailer = $sm->mailer($sm->mailTransport());
+					$message = $sm->newMessage($msgheader)   
+						->setFrom(Yii::app()->params['adminEmail'])
+						->setTo($user->profile[0]->email)
+						->setBody($msgbody);                                                    
+					return $mailer->send($message);
+				} else {
+					mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
+				}
 			}
 
 			return true;

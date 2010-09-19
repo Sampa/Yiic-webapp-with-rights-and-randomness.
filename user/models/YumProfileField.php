@@ -84,9 +84,11 @@ class YumProfileField extends YumActiveRecord
 
 	public function relations()
 	{
-		return array(
+		$relations = array(
 			'group'=>array(self::BELONGS_TO, 'YumProfileFieldsGroup', 'field_group_id')
 		);
+
+		return $relations;
 	}
 
 	public function attributeLabels()

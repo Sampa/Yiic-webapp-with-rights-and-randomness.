@@ -75,7 +75,7 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 
-		$menu[] = e('edit personal Data', 'user/edit');
+		$menu[] = e('edit personal Data', 'profile/edit');
 		if(Yii::app()->getModule('user')->enableAvatars) 
 			$menu[] = e('upload Avatar Image', 'avatar/editAvatar');
 		$menu[] = e('browse users', 'user/index');
