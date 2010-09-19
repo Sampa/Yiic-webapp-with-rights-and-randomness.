@@ -11,7 +11,7 @@ if(!function_exists('e')) {
 // Draw menu only when logged in into the System
 $module = Yii::app()->getModule('user');
 if(!Yii::app()->user->isGuest) {
-		$user = User::model()->findByPk(Yii::app()->user->id);
+		$user = YumUser::model()->findByPk(Yii::app()->user->id);
 			
 	$menu = array();
 	// Gather available menu entries
