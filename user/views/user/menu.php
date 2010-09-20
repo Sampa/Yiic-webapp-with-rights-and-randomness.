@@ -28,6 +28,10 @@ if(!Yii::app()->user->isGuest) {
 
 		$rolemenu[] = e('Show roles' ,'role/admin');
 		$rolemenu[] = e('Create new role', 'role/create');
+		$rolemenu[] = e('Permissions', 'permission/admin');
+		$rolemenu[] = e('Grant permission', 'permission/create');
+		$rolemenu[] = e('Actions', 'action/admin');
+		$rolemenu[] = e('Create new action', 'action/create');
 		$rolemenu[] = e('Show administration Hierarchy', 'hierarchy/index');
 
 		$profilesettings[] = e('Manage profile fields', 'fields/admin');

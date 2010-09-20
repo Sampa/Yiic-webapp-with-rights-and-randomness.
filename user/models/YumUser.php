@@ -176,6 +176,8 @@ class YumUser extends YumActiveRecord
     $relationUHUTableName=Yum::resolveTableName($this->_userUserTable,$this->getDbConnection());
 
 	return array(
+		'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
+		'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
 		'messages'=>array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.id DESC'),
 		'profile'=>array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
 		'roles'=>array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),

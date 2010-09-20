@@ -19,6 +19,8 @@ class UserModule extends YumWebModule
 	public $profileTable = 'profiles';
 	public $profileVisitTable = 'profile_visit';
 	public $rolesTable = 'roles';
+	public $permissionTable = 'permission';
+	public $actionTable = 'action';
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
 	public $roleRoleTable = 'role_has_role';
@@ -110,6 +112,8 @@ class UserModule extends YumWebModule
 	 */
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
+		'action'=>array('class'=>'YumModule.controllers.YumActionController'),
+		'permission'=>array('class'=>'YumModule.controllers.YumPermissionController'),
 		'avatar'=>array('class'=>'YumModule.controllers.YumAvatarController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),

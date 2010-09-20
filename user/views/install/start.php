@@ -63,14 +63,24 @@ your Yii Web Application </p>
 				<td> Table for the Role Assignment </td>
 				<td> <?php echo CHtml::textField('userRoleTable', $userRoleTable); ?> </td>
 			</tr>
+				</table>
+				</div>
+
+	<div style="clear:both;"> </div>
+
+	<label for="installPermission"> Install permission Submodule </label>
+	<?php echo CHtml::checkBox('installPermission', true); ?>
+
+	<div id="permission">
+		<table>
 			<tr>
-				<td> This table holds the assignment, which user can administrate which other users </td>
-				<td> <?php echo CHtml::textField('userUserTable', $userUserTable); ?> </td>
-				</tr>
-				<tr>
-				<td> This table holds the assignment, which roles can administrate which other roles </td>
-				<td> <?php echo CHtml::textField('roleRoleTable', $roleRoleTable); ?> </td>
-				</tr>
+				<td> Table for the permission Assignment </td>
+				<td> <?php echo CHtml::textField('permissionTable', $permissionTable); ?> </td>
+			</tr>
+			<tr>
+				<td> Table for the available Actions </td>
+				<td> <?php echo CHtml::textField('actionTable', $actionTable); ?> </td>
+			</tr>
 				</table>
 				</div>
 
@@ -145,6 +155,9 @@ your Yii Web Application </p>
 	});
 	$('#installRole').click(function() {
 	$('#roles').toggle();
+	});
+	$('#installPermission').click(function() {
+	$('#permission').toggle();
 	});
 	$('#installMessages').click(function() {
 	$('#messages').toggle();
