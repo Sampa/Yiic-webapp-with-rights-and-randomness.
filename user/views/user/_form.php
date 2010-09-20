@@ -84,6 +84,10 @@ echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('UserStatus'
 echo CHtml::error($model,$attribute);
 echo CHtml::closeTag('div');
 
+echo CHtml::openTag('div',array('class'=>'row'));
+echo CHtml::activeLabelEx($model, 'notifyType');
+echo CHtml::activeDropDownList($model,'notifyType',YumUser::itemAlias('NotifyType'));
+echo CHtml::error($model,'notifyType');
 
 
 echo CHtml::openTag('div',array( 'class'=>'row'));
@@ -103,21 +107,6 @@ $this->widget('YumModule.components.Relation',
 				));
 	echo CHtml::closeTag('div');
 
-	echo CHtml::openTag('div',array('class'=>'row'));
-	echo CHtml::tag('p',array(),
-			Yum::t('This user can administer this users'),
-			true);
-$this->widget('YumModule.components.Relation',
-		array('model' => $model,
-			'relation' => 'users',
-			'style' => 'checkbox',
-			'fields' => 'username',
-			'htmlOptions' => array(
-				'checkAll' => Yii::t('UserModule.user', 'Choose All'),
-				'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
-			'showAddButton' => false
-			));
-echo CHtml::closeTag('div');
 if(empty($tabularIdx))
 {
 	echo CHtml::openTag('div',array('class'=>'row buttons'));

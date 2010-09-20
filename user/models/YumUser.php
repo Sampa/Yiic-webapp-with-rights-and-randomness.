@@ -122,7 +122,7 @@ class YumUser extends YumActiveRecord
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
 		$rules[] = array('status', 'in', 'range'=>array(0,1,-1));
 		$rules[] = array('superuser', 'in', 'range'=>array(0,1));
-		$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
+		$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status, notifyType', 'required');
 		$rules[] = array('password', 'required', 'on'=>array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
@@ -309,14 +309,19 @@ class YumUser extends YumActiveRecord
 	public static function itemAlias($type,$code=NULL) 
 	{
 		$_items = array(
-			'UserStatus' => array(
-				'0' => Yii::t("UserModule.user", 'Not active'),
-				'1' => Yii::t("UserModule.user", 'Active'),
-				'-1'=> Yii::t("UserModule.user", 'Banned'),
+				'NotifyType' => array(
+				'None' => Yum::t('None'),
+				'Digest' => Yum::t('Digest'),
+				'Instant'=> Yum::t('Instant'),
+					),
+				'UserStatus' => array(
+				'0' => Yum::t('Not active'),
+				'1' => Yum::t('Active'),
+				'-1'=> Yum::t('Banned'),
 			),
 			'AdminStatus' => array(
-				'0' => Yii::t("UserModule.user", 'No'),
-				'1' => Yii::t("UserModule.user", 'Yes'),
+				'0' => Yum::t('No'),
+				'1' => Yum::t('Yes'),
 			),
 		);
 		if (isset($code))
