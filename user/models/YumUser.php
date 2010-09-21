@@ -70,7 +70,7 @@ class YumUser extends YumActiveRecord
   }
 	
 	public function beforeSave() {
-		if(Yii::app()->getModule('user')->enableAvatars) 
+		if(Yii::app()->getModule('user')->enableAvatar) 
 			$this->updateAvatar();
 
 		return true;
@@ -126,7 +126,7 @@ class YumUser extends YumActiveRecord
 		$rules[] = array('password', 'required', 'on'=>array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
-		if(Yii::app()->getModule('user')->enableAvatars)  {
+		if(Yii::app()->getModule('user')->enableAvatar)  {
 			$rules[] = array('avatar', 'required', 'on' => 'avatarUpload');
 			$rules[] = array('avatar', 'EPhotoValidator',
 					'allowEmpty' => true,
@@ -366,10 +366,10 @@ class YumUser extends YumActiveRecord
 	}
 
 		public function renderAvatar() {
-			if($this->avatar)
-				echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
-		}
-
-
-	
+			if(Yii::app()->getModule('user')->enableAvatar) 
+				if($this->avatar)
+					echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
+				else
+					echo '<div style="width:200px; height:200px;"> No image available </div>';
+			}
 }

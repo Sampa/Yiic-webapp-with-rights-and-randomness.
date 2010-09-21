@@ -77,14 +77,16 @@
 </div>
 
 <div class="row">
-<?php echo $form->labelEx($model,'mail_send_method'); ?>
-<?php echo $form->dropDownList($model,'mail_send_method', array(
-			'Disabled' => Yum::t('Disable email sending'),
-			'Daily' => Yum::t('Daily summary of new Messages (if any)'),
-			'Instant' => Yum::t('One E-mail per Message (instant)')
+<?php echo $form->labelEx($model,'notifyType'); ?>
+<?php echo $form->dropDownList($model,'notifyType', array(
+			'None' => Yum::t('none'),
+			'Digest' => Yum::t('daily/weekly digest'),
+			'Instant' => Yum::t('one email per message(instant)'),
+			'User' => Yum::t('user specific'),
+			'Treshhold' => Yum::t('specify treshhold'),
 			)); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If activated, the System tries to inform every user about ew Messages that have been sent. Can be set to daily Summary or to one E-Mail per message')); ?>
-<?php echo $form->error($model,'auto_mail_sending'); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('How should users be notified about new messages? Select digest and read docs/messages_daily_digest on how to configure this feature. Please note that this is the system-wide configuration option. Keep this at \'User\' to let the user choose his preferred way of notification.')); ?>
+<?php echo $form->error($model,'notifyType'); ?>
 </div>
 
 <div class="row">
@@ -102,7 +104,7 @@
 			'LOGIN_BY_EMAIL' => Yii::t('UserModule.user', 'Login allowed only by Email') ,
 			'LOGIN_BY_USERNAME_OR_EMAIL' => Yii::t('UserModule.user', 'Login allowed by Email and Username') ,
 )); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'This option sets how the login should be allowed')); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('This option sets how the login should be allowed')); ?>
 <?php echo $form->error($model,'loginType'); ?>
 </div>
 
@@ -111,14 +113,22 @@
 <?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'Display a Captcha the user needs to enter in the Registration Form?')); ?>
 
 <?php echo $form->dropDownList($model,'enableCaptcha', array(
-0 => Yii::t('UserModule.user', 'No'),
-1 => Yii::t('UserModule.user', 'Yes')
-)); ?>
+			0 => Yii::t('UserModule.user', 'No'),
+			1 => Yii::t('UserModule.user', 'Yes')
+			)); ?>
 
-
-<?php echo $form->error($model,'enableCaptcha'); ?>
 </div>
-<div style="clear:both;"></div>
+<div class="row">
+<?php echo $form->labelEx($model,'enableAvatar'); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Allow the upload of an Avatar image for each user')); ?>
+
+<?php echo $form->dropDownList($model,'enableAvatar', array(
+			0 => Yum::t('No'),
+			1 => Yum::t('Yes')
+			)); ?>
+<?php echo $form->error($model,'enableAvatar'); ?>
+</div>
+</div>
 
 <?php
 Yum::register('js/tools.tooltip-1.1.3.min.js');

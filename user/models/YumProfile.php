@@ -16,6 +16,8 @@
  * Relations:
  * @property YumUser $user
  */
+
+Yii::import('application.modules.user.components.Compare');
 class YumProfile extends YumActiveRecord
 {
 	const PRIVACY_PRIVATE = 'private';

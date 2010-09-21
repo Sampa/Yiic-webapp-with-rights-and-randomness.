@@ -25,7 +25,7 @@ echo CHtml::closeTag('div');
 } else
 	echo CHtml::hiddenField('YumUser[username]', $model->username);
 
-if(Yii::app()->getModule('user')->enableAvatars) {
+if(Yii::app()->getModule('user')->enableAvatar) {
 		printf('<label>%s</label>', Yum::t('Avatar image of User'));
 		echo CHtml::fileField('YumUser[avatar]', $model->avatar);
 		if($model->avatar) 
@@ -88,7 +88,7 @@ echo CHtml::openTag('div',array('class'=>'row'));
 echo CHtml::activeLabelEx($model, 'notifyType');
 echo CHtml::activeDropDownList($model,'notifyType',YumUser::itemAlias('NotifyType'));
 echo CHtml::error($model,'notifyType');
-
+echo CHtml::closeTag('div');
 
 echo CHtml::openTag('div',array( 'class'=>'row'));
 echo CHtml::tag('p',

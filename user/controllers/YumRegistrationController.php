@@ -27,14 +27,12 @@ class YumRegistrationController extends YumController
 
 	public function actions()
 	{
-		return Yii::app()->getModule('user')->enableCaptcha 
-			? array(
-					'captcha'=>array(
-						'class'=>'CCaptchaAction',
-						'backColor'=>0xFFFFFF,
-						),
-					)
-			: array();
+		return array(
+				'captcha'=>array(
+					'class'=>'CCaptchaAction',
+					'backColor'=>0xFFFFFF,
+					),
+				);
 	}
 
 	/* 

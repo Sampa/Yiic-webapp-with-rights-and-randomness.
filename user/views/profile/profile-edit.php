@@ -61,11 +61,23 @@ if ($profileFields)
 			}
 		}
 ?>
+		<?php if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL'): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'username'); ?>
 		<?php echo CHtml::activeTextField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo CHtml::error($model,'username'); ?>
 	</div>
+		<?php endif; ?>
+
+		<?php if(Yii::app()->getModule('user')->notifyType == 'User'): ?>
+	<div class="row">
+		<?php echo CHtml::activeLabelEx($model,'notifyType'); ?>
+		<?php echo CHtml::activeDropDownList($model,'notifyType',YumUser::itemAlias('NotifyType')); ?>
+		<?php echo CHtml::error($model,'notifyType'); ?>
+	</div>
+		<?php endif; ?>
+
+
 
 	<div class="row">
 		<?php 

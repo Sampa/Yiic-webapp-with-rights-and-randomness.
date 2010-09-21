@@ -101,10 +101,10 @@ class YumUserController extends YumController
 				$user->lastvisit = time();
 				$user->save();
 
-				if($this->module->messageSystem != YumMessage::MSG_NONE
+		/*		if($this->module->messageSystem != YumMessage::MSG_NONE
 						&& count($user->messages) > 0) {
 					$this->renderPartial('/messages/new_messages');
-				}
+				} */
 
 				if($user->superuser) {
 					$this->redirect(Yii::app()->getModule('user')->returnAdminUrl);

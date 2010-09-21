@@ -12,15 +12,16 @@
 				));
 
 echo '<table>';
-foreach($messages as $message) {
-	printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-			$message->from_user->username,
-			CHtml::link($message->title, array('//user/messages/view', 'id' => $message->id)),
-			CHtml::link(Yum::t('View'), array('//user/messages/view', 'id' => $message->id)),
-			CHtml::link(Yum::t('Reply'), array('//user/messages/compose', 'to_user_id' => $message->from_user_id)));
+	foreach($messages as $message) {
+		if(is_object($message) && $message->from_user instanceof YumUser )
+				printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+					$message->from_user->username,
+					CHtml::link($message->title, array('//user/messages/view', 'id' => $message->id)),
+					CHtml::link(Yum::t('View'), array('//user/messages/view', 'id' => $message->id)),
+					CHtml::link(Yum::t('Reply'), array('//user/messages/compose', 'to_user_id' => $message->from_user_id)));
 
 
-}
-	echo '</table>';
-	$this->endWidget('zii.widgets.jui.CJuiDialog');
-?>
+				}
+				echo '</table>';
+				$this->endWidget('zii.widgets.jui.CJuiDialog');
+				?>

@@ -37,12 +37,17 @@ class UserModule extends YumWebModule
 	public $allowRecovery = true;
 	public $enableRoles = true;
 	public $enableProfiles = true;
-	public $mail_send_method = 'Instant';
 	public $password_expiration_time = 30;
-	public $enableAvatars = true;
+	public $enableAvatar = true;
 	public $avatarPath = 'images';
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
 	public $menuView = '/user/menu';
+
+	// System-wide configuration option on how users should be notified about
+  // new internal messages by email. Available options:
+  // None, Digest, Instant, User, Treshhold
+	// 'User' means to use the user-specific option in the user table
+	public $notifyType = 'user';
 
 	// if you want the users to be able to edit their profile TEXTAREAs with an
 	// rich text Editor like CKEditor, set that here
@@ -183,17 +188,17 @@ class UserModule extends YumWebModule
 
 		// Assign options from settings table, if available
 		if(Yii::app()->controller->id != 'install')
-		try {
-			$settings = YumSettings::model()->find('is_active');
-			
-			$options = array('preserveProfiles', 'registrationType', 'enableRecovery',
-					'readOnlyProfiles', 'messageSystem', 'loginType',
-					'mail_send_method', 'password_expiration_time', 'enableCaptcha');
-			foreach($options as $option) 
-				$this->$option = $settings->$option;
-		} catch (CDbException $e) {
-			$this->tableSettingsDisabled = true;
-		}
+			try {
+				$settings = YumSettings::model()->find('is_active');
+
+				$options = array('preserveProfiles', 'registrationType', 'enableRecovery',
+						'readOnlyProfiles', 'messageSystem', 'loginType', 'enableAvatar', 'notifyType',
+						'password_expiration_time', 'enableCaptcha');
+				foreach($options as $option) 
+					$this->$option = $settings->$option;
+			} catch (CDbException $e) {
+				$this->tableSettingsDisabled = true;
+			}
 		return true;
 	}
 

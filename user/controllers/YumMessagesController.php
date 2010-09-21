@@ -10,9 +10,13 @@ class YumMessagesController extends YumController
 	{
 		return array(
 			array('allow',
-				'users'=>array('@')
-			),
-			#deny all other users
+				'actions' => array('view', 'compose', 'index', 'delete', 'sent'),
+				'users'=>array('@'),
+				),
+			array('allow',
+				'actions' => array('sendDigest'),
+				'users'=>array('admin'),
+				),
 			array('deny',
 				'users'=>array('*')
 			)
@@ -55,8 +59,9 @@ class YumMessagesController extends YumController
 					$model->from_user_id = Yii::app()->user->id;
 					$model->to_user_id = $user_id;
 					$model->save();
-					if(Yii::app()->getModule('user')->mail_send_method == 'Instant') {
-						$this->mailMessage($model);
+					if(Yii::app()->getModule('user')->notifyType == 'Instant'
+							|| YumUser::model()->findByPk(Yii::app()->user->id)->notifyType == 'Instant') {
+							$this->mailMessage($model);
 					}
 				}
 				$this->redirect(array('success'));
@@ -72,35 +77,18 @@ class YumMessagesController extends YumController
 	{
 		$headers = sprintf("From: %s\r\nReply-To: %s",
 				Yii::app()->params['adminEmail'],
-				Yii::app()->params['adminEmail']);;
-		mail($model->to_user->profile[0]->email,
-				$model->title,
-				$model->message,
-				$headers);
+				Yii::app()->params['adminEmail']);
+		if(isset($model->to_user) && isset($model->to_user->profile[0]))
+			mail($model->to_user->profile[0]->email,
+					$model->title,
+					$model->message,
+					$headers);
 
 	}
 
 	public function actionSuccess() 
 	{
 		$this->render('success');
-	}
-
-	public function actionUpdate()
-	{
-		$model=$this->loadModel();
-
-	 $this->performAjaxValidation($model);
-
-		if(isset($_POST['YumMessage']))
-		{
-			$model->attributes=$_POST['YumMessage'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
 	}
 
 	public function actionDelete()
@@ -129,6 +117,22 @@ class YumMessagesController extends YumController
 					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
 							'criteria' => array(
 								'condition' => 'from_user_id = '. Yii::app()->user->id)))));
+	}
+
+	public function actionSendDigest() {
+		$message = '';
+		$users = 0;
+		if(isset($_POST['sendDigest'])) {
+			foreach(YumMessage::model()->with('to_user')->findAll('not message_read') as $message) {
+				if((is_object($message->to_user) && $message->to_user->notifyType == 'Digest')
+						|| Yii::app()->getModule('user')->notifyType == 'Digest') { 
+					$this->mailMessage($message);
+					$users++;
+				}
+			}
+			$message = Yum::t('Digest has been sent to {users} users', array('{users}' => $users));
+		}
+		$this->render('send_digest', array('message' => $message));
 	}
 
 

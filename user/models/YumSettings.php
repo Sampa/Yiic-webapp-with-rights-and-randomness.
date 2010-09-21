@@ -22,7 +22,7 @@ class YumSettings extends YumActiveRecord {
 
     public function rules() {
         return array(
-            array('title, loginType, messageSystem, mail_send_method', 'required'),
+            array('title, loginType, messageSystem, notifyType, enableAvatar', 'required'),
             array('password_expiration_time, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 255),
             array('loginType', 'length', 'max' => 26),
@@ -37,16 +37,18 @@ class YumSettings extends YumActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('UserModule.user', 'ID'),
-            'title' => Yii::t('UserModule.user', 'Title'),
-            'preserveProfiles' => Yii::t('UserModule.user', 'Preserve Profiles'),
-            'registrationType' => Yii::t('UserModule.user', 'Registration type'),
-            'enableRecovery' => Yii::t('UserModule.user', 'Enable Recovery'),
-            'enableProfileHistory' => Yii::t('UserModule.user', 'Enable Profile History'),
-            'messageSystem' => Yii::t('UserModule.user', 'Messaging system'),
-            'readOnlyProfiles' => Yii::t('UserModule.user', 'Read Only Profiles'),
-            'loginType' => Yii::t('UserModule.user', 'Login Type'),
-            'enableCaptcha' => Yii::t('UserModule.user', 'Enable Captcha'),
+            'id' => Yum::t('ID'),
+            'title' => Yum::t('Title'),
+            'preserveProfiles' => Yum::t('Preserve profiles'),
+            'registrationType' => Yum::t('Registration type'),
+            'enableRecovery' => Yum::t('Enable recovery'),
+            'enableProfileHistory' => Yum::t('Enable profile History'),
+            'messageSystem' => Yum::t('Messaging system'),
+            'notifyType' => Yum::t('Notify type'),
+            'enableAvatar' => Yum::t('Enable avatar upload'),
+            'readOnlyProfiles' => Yum::t('Read only Profiles'),
+            'loginType' => Yum::t('Login Type'),
+            'enableCaptcha' => Yum::t('Enable Captcha'),
         );
     }
 

@@ -18,7 +18,7 @@ if (Yii::app()->getModule('user')->debug === true) {
     echo CHtml::closeTag('div');
 }
 
-echo '<table style="width:300px;">';
+echo '<table class="statistics" cellspacing=0 cellpadding=0>';
 $f = '<tr><td>%s</td><td>%s</td></tr>';
 printf($f, Yum::t('Active users'), $active_users);
 printf($f, Yum::t('Inactive users'), $inactive_users);

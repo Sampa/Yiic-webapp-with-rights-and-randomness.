@@ -54,6 +54,9 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 		if(Yii::app()->getModule('user')->debug)
 			$othermenu[] = e('Generate Demo Data', 'user/generateData');
+		if(Yii::app()->getModule('user')->messageType != 'None')
+			$othermenu[] = e('Send message notifier emails', 'messages/sendDigest');
+
 		$othermenu[] = e('Change admin Password', 'user/changePassword');
 		$othermenu[] = e('Logout', 'user/logout');
 
@@ -80,7 +83,7 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 
 		$menu[] = e('edit personal Data', 'profile/edit');
-		if(Yii::app()->getModule('user')->enableAvatars) 
+		if(Yii::app()->getModule('user')->enableAvatar) 
 			$menu[] = e('upload Avatar Image', 'avatar/editAvatar');
 		$menu[] = e('browse users', 'user/index');
 

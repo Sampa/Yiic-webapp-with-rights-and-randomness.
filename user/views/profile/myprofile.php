@@ -34,9 +34,11 @@ $this->renderPartial('/messages/new_messages');?>
 			<tr>
 				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 				</th>
-				<td><?php echo CHtml::encode($model->profile[0]->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
-				</td>
-				</tr>
+				<td><?php 
+				if(is_object($model->profile[0]->{ucfirst($field->varname)}))
+					echo CHtml::encode($model->profile[0]->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
+						</td>
+						</tr>
 				<?php
 		} else {
 			?>
@@ -100,7 +102,7 @@ $this->renderPartial('/messages/new_messages');?>
 					CHtml::link(Yum::t('Write a message'), array('messages/compose', 'to_user_id' => $visit->visitor_id))
 					);
 		}
-		echo '<table>';
+		echo '</table>';
 	} else {
 		echo Yum::t('Nobody has visited your profile yet');
 	}

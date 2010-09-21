@@ -57,7 +57,8 @@ if ($profileFields) {
 </table>
 
 <?php
-	if(Yii::app()->getModule('user')->messageSystem != YumMessage::MSG_NONE) {
-		echo CHtml::link('Write a Message to this User', array('messages/compose', 'to_user_id' => $model->id));
-	}
+if(Yii::app()->getModule('user')->messageSystem != YumMessage::MSG_NONE) {
+	echo CHtml::link('Write a Message to this User', array(
+				'messages/compose', 'to_user_id' => $model->id));
+}
 ?>
