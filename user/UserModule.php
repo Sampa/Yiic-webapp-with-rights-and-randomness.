@@ -123,7 +123,6 @@ class UserModule extends CWebModule
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
-		'hierarchy'=>array('class'=>'YumModule.controllers.YumHierarchyController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
 		// workaround to allow the url application/user/login: 
 		'login'=>array('class'=>'YumModule.controllers.YumUserController'),	

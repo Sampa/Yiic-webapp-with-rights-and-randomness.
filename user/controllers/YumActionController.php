@@ -97,7 +97,7 @@ class YumActionController extends YumController
 	public function actionAdmin()
 	{
 		$model=new YumAction('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();  
 		if(isset($_GET['YumAction']))
 			$model->attributes=$_GET['YumAction'];
 
