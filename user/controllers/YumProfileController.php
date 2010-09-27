@@ -26,10 +26,10 @@ class YumProfileController extends YumController
 	}
 
 	public function actionEdit() {
-		if(Yii::app()->getModule('user')->readOnlyProfiles) {
+		if(Yum::module()->readOnlyProfiles) {
 			Yii::app()->user->setFlash('profileMessage',
-					Yii::t("UserModule.user",
-						"You are not allowed to edit your own profile. Please contact your System Administrator."));
+					Yum::t('You are not allowed to edit your own profile.
+						Please contact your System Administrator.'));
 
 			$this->redirect(array('profile', 'id'=>$model->id));
 		}
@@ -39,7 +39,7 @@ class YumProfileController extends YumController
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
-			if(Yii::app()->getModule('user')->profileHistory == true)
+			if(Yum::module()->profileHistory == true)
 				$profile = new YumProfile();
 
 			if(isset($_POST['YumProfile'])) {
@@ -54,7 +54,7 @@ class YumProfileController extends YumController
 				$model->save();
 				$profile->save();
 				Yii::app()->user->setFlash('profileMessage',
-						Yii::t("UserModule.user", "Your changes have been saved"));
+						Yum::t('Your changes have been saved'));
 			$this->redirect(array('/user/user/profile', 'id'=>$model->id));
 			}
 		}
@@ -67,7 +67,7 @@ class YumProfileController extends YumController
 	}
 
 	public function actionVisits() {
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 
 		$this->render('visits',array(
 			'model'=>new YumProfileVisit(),
@@ -79,8 +79,8 @@ class YumProfileController extends YumController
 		if(!isset($_GET['id']))
 			$_GET['id'] = Yii::app()->user->id;
 
-		$this->layout = Yii::app()->getModule('user')->profileLayout;
-		$view = Yii::app()->getModule('user')->profileView;
+		$this->layout = Yum::module()->profileLayout;
+		$view = Yum::module()->profileView;
 
 		$model = YumUser::model()->findByPk($_GET['id']);
 
@@ -108,7 +108,7 @@ class YumProfileController extends YumController
 
 	public function actionCreate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 		$model = new YumProfile;
 
 		if(isset($_POST['YumProfile'])) {
@@ -127,9 +127,9 @@ class YumProfileController extends YumController
 	public function actionUpdate()
 	{
 		if(Yii::app()->user->isAdmin()) 
-			$this->layout = YumWebModule::yum()->adminLayout;
+			$this->layout = Yum::module()->adminLayout;
 		else
-			$this->layout = YumWebModule::yum()->layout;
+			$this->layout = Yum::module()->layout;
 
 		if(!isset($_GET['id'])) {
 			$profile = YumProfile::model()->find('user_id = ' . Yii::app()->user->id);
@@ -154,7 +154,7 @@ class YumProfileController extends YumController
 
 	public function actionDelete()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 
 		if(Yii::app()->request->isPostRequest)
 		{
@@ -179,7 +179,7 @@ class YumProfileController extends YumController
 
 	public function actionAdmin()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 
 		$dataProvider=new CActiveDataProvider('YumProfile', array(
 			'pagination'=>array(

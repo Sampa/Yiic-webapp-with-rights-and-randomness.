@@ -39,7 +39,7 @@ class YumRegistrationController extends YumController
 		 Registration of an new User in the system.
 	 */
 	public function actionRegistration() {
-		$registrationType = Yii::app()->getModule('user')->registrationType;
+		$registrationType = Yum::module()->registrationType;
 
 		if($registrationType == YumRegistration::REG_DISABLED)
 			$this->redirect(Yii::app()->user->returnUrl);
@@ -56,7 +56,7 @@ class YumRegistrationController extends YumController
 				$profile->validate();
 			}
 
-			$loginType = Yii::app()->getModule('user')->loginType;
+			$loginType = Yum::module()->loginType;
 
 			if($loginType == 'LOGIN_BY_EMAIL')  {
 				$form->username = strtr($profile->firstname . '_' . $profile->lastname, array(' ' => '_'));
@@ -126,7 +126,7 @@ class YumRegistrationController extends YumController
 				$msgheader = $content->subject_email_registration;
 				$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
 
-				if(Yii::app()->getModule('user')->mailer == 'swift') {
+				if(Yum::module()->mailer == 'swift') {
 					$sm = Yii::app()->swiftMailer;
 					$mailer = $sm->mailer($sm->mailTransport());
 					$message = $sm->newMessage($msgheader)   
@@ -212,8 +212,7 @@ class YumRegistrationController extends YumController
 								$activation_url),$headers);
 
 					Yii::app()->user->setFlash('loginMessage',
-							Yii::t('UserModule.user',
-								'Instructions have been sent to you. Please check your email.'));
+							Yum::t('Instructions have been sent to you. Please check your email.'));
 
 					$this->redirect(array('/user/user/login'));
 				}

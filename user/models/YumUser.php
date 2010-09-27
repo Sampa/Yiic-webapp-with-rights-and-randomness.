@@ -278,8 +278,8 @@ class YumUser extends YumActiveRecord
 	 */
 	public static function encrypt($string = "")
 	{
-		$salt = YumWebModule::yum()->salt;
-		$hashFunc = YumWebModule::yum()->hashFunc;
+		$salt = Yum::module()->salt;
+		$hashFunc = Yum::module()->hashFunc;
 		$string = sprintf("%s%s%s", $salt, $string, $salt);
 		
 		if(!function_exists($hashFunc))

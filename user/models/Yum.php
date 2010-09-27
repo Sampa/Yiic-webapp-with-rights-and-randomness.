@@ -41,6 +41,31 @@ class Yum {
 		}
 		return $dbConnection->createCommand($tablename)->getText();
 	}
+
+	// returns the yii user module. Mostly used for accessing options
+	// by calling Yum::module->option
+	public static function module()
+	{
+		if(Yii::app()->controller->module instanceof UserModule)
+			return Yii::app()->controller->module;
+		elseif(isset(Yii::app()->params['YumModuleAlias']))
+		{
+			$object = Yii::app();
+			foreach(explode('.',Yii::app()->params['YumModuleAlias']) as $subModule)
+				$object=$object->getModule($subModule);	
+			return $object;
+		}
+		elseif(Yii::app()->getModule('user') instanceof UserModule)
+			return Yii::app()->getModule('user');
+		else
+		{
+			while (($parent=$this->getParentModule())!==null)
+				if($parent instanceof UserModule)	
+					return $parent;
+		}
+		throw new CException(Yum::t('Yum Module cannot be found'));		
+	}
+
 	
 	/**
 	 * Parses url for predefined symbols and returns real routes
@@ -56,7 +81,7 @@ class Yum {
 	 */
 	public static function route($url)
 	{
-		$yumBaseRoute=YumWebModule::yum()->yumBaseRoute;
+		$yumBaseRoute=Yum::module()->yumBaseRoute;
 		$tr=array();
 		$tr['{yum}']=$yumBaseRoute;
 		$tr['{messages}']=$yumBaseRoute.'/messages';

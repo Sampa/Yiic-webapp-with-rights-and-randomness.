@@ -1,10 +1,12 @@
 <?php
 if(!isset($model)) 
 	$model = new YumUserLogin();
-$this->pageTitle = Yii::app()->name . ' - '.Yii::t("UserModule.user", "Login");
-$this->title = Yii::t("UserModule.user", "Login");
-$this->breadcrumbs=array(Yii::t('user', 'Login'));
-$module = $this->getModule('user');
+
+$module = Yum::module();
+
+$this->pageTitle = Yii::app()->name . ' - '.Yum::t('Login');
+$this->title = Yum::t('Login');
+$this->breadcrumbs=array(Yum::t('Login'));
 
 if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
@@ -14,7 +16,7 @@ if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
 <?php endif; ?>
 <?php
-if($this->module->tableSettingsDisabled != true) {
+if($module->tableSettingsDisabled != true) {
 	$settings = YumTextSettings::model()->find("language = :language", array(
 				':language' => Yii::app()->language));
 
@@ -79,7 +81,6 @@ if($module->allowRecovery)
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->
 
-
 <?php
 $form = new CForm(array(
 			'elements'=>array(
@@ -104,3 +105,4 @@ $form = new CForm(array(
 				),
 			), $model);
 ?>
+

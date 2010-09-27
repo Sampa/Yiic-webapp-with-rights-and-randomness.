@@ -32,7 +32,7 @@ class YumFieldsGroupController extends YumController
 	 */
 	public function actionView()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 		$this->render('view',array(
 			'model'=>$this->loadModel(),
 		));
@@ -44,7 +44,7 @@ class YumFieldsGroupController extends YumController
 	 */
 	public function actionCreate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 		$model=new YumProfileFieldsGroup;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -68,7 +68,7 @@ class YumFieldsGroupController extends YumController
 	 */
 	public function actionUpdate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 		$model=$this->loadModel();
 
 		// Uncomment the following line if AJAX validation is needed
@@ -92,7 +92,7 @@ class YumFieldsGroupController extends YumController
 	 */
 	public function actionDelete()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
@@ -111,7 +111,7 @@ class YumFieldsGroupController extends YumController
 	 */
 	public function actionAdmin()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 
 		$model = new YumProfileFieldsGroup('search');
 		if(isset($_GET['YumProfileFieldsGroup']))

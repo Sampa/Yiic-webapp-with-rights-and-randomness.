@@ -19,7 +19,7 @@
 </div>	
 
 <div class="row">
-<p> <?php echo Yii::t('UserModule.user', 'This users have been assigned to this role'); ?> </p>
+<p> <?php echo Yum::t('This users have been assigned to this role'); ?> </p>
 
 <?php 
 $this->widget('YumModule.components.Relation',
@@ -32,19 +32,6 @@ $this->widget('YumModule.components.Relation',
 				'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
 			'showAddButton' => false
 			));  
-
-printf('<p>%s:</p>', Yum::t('This role can administer users of this roles'));
-$this->widget('YumModule.components.Relation',
-		array('model' => $model,
-			'relation' => 'roles',
-			'style' => 'checkbox',
-			'fields' => 'title',
-			'htmlOptions' => array(
-				'checkAll' => Yum::t('Choose All'),
-				'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
-			'showAddButton' => false
-			));
-echo CHtml::closeTag('div');
 ?>
 
 <div class="row">

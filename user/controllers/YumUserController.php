@@ -55,7 +55,7 @@ class YumUserController extends YumController
 				$user->status = $_POST['status'];
 
 				if($user->save()) {
-					if(Yii::app()->getModule('user')->enableProfiles) {
+					if(Yum::module()->enableProfiles) {
 						$profile = new Profile();
 						$profile->user_id = $user->id;
 						$profile->save();
@@ -88,7 +88,7 @@ class YumUserController extends YumController
 	}
 
 	public function actionLogin() {
-		$this->layout = Yii::app()->getModule('user')->loginLayout;
+		$this->layout = Yum::module()->loginLayout;
 		$loginForm = new YumUserLogin;
 
 		// collect user input data
@@ -101,18 +101,18 @@ class YumUserController extends YumController
 				$user->lastvisit = time();
 				$user->save();
 
-		/*		if($this->module->messageSystem != YumMessage::MSG_NONE
+				if($this->module->messageSystem != YumMessage::MSG_NONE
 						&& count($user->messages) > 0) {
 					$this->renderPartial('/messages/new_messages');
-				} */
+				} 
 
 				if($user->superuser) {
-					$this->redirect(Yii::app()->getModule('user')->returnAdminUrl);
+					$this->redirect(Yum::module()->returnAdminUrl);
 				} else {
 					if ($user->isPasswordExpired())
 						$this->redirect(array('passwordexpired'));
-					else if(Yii::app()->getModule('user')->returnUrl !== '')
-						$this->redirect(Yii::app()->getModule('user')->returnUrl);
+					else if(Yum::module()->returnUrl !== '')
+						$this->redirect(Yum::module()->returnUrl);
 					else
 						$this->redirect(Yii::app()->user->returnUrl);
 				}
@@ -130,7 +130,7 @@ class YumUserController extends YumController
 	public function actionLogout()
 	{
 		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->controller->module->returnLogoutUrl);
+		$this->redirect(Yum::module()->returnLogoutUrl);
 	}
 
 	/**
@@ -187,7 +187,7 @@ class YumUserController extends YumController
 			// Display a foreign profile:
 			$model = $this->loadUser($uid = $_GET['id']);
 
-			if($this->module->forceProtectedProfiles == true ||
+			if(Yum::module()->forceProtectedProfiles == true ||
 					$model->profile[0]->privacy == 'protected' ||
 					$model->profile[0]->privacy == 'private')
 			{
@@ -220,8 +220,8 @@ class YumUserController extends YumController
 	 */
 	public function actionCreate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
-		$profiles = $this->module->enableProfiles;
+		$this->layout = Yum::module()->adminLayout;
+		$profiles = Yum::module()->enableProfiles;
 		$model = new YumUser;
 		$profile = new YumProfile;
 		$passwordform = new YumUserChangePassword;
@@ -238,29 +238,24 @@ class YumUserController extends YumController
 			else
 				$model->roles = array();
 
-			if(isset($_POST['YumUser']['YumUser']))
-				$model->users = $_POST['YumUser']['YumUser'];
-			else
-				$model->users = array();
-
 			$model->activationKey = YumUser::encrypt(microtime() . $model->password);
 			$model->createtime=time();
 			$model->lastvisit=time();
 
-			if($profiles) {
-				if(isset($_POST['YumProfile']))
-					$profile->attributes = $_POST['YumProfile'];
+			if($profiles && isset($_POST['YumProfile'])) {
+				$profile->attributes = $_POST['YumProfile'];
 				$profile->user_id = 0;
 			}
 
-			if(isset($_POST['YumUserChangePassword'])) {
+			$model->validate();
+			if(!$model->hasErrors() && isset($_POST['YumUserChangePassword'])) {
 				$passwordform->attributes = $_POST['YumUserChangePassword'];
 				if($passwordform->validate())
 					$model->password = YumUser::encrypt($passwordform->password);
 			}
 
-			$model->validate();
 			if($profiles) $profile->validate();
+
 			if(!$model->hasErrors() && !$passwordform->hasErrors()) {
 
 
@@ -282,10 +277,10 @@ class YumUserController extends YumController
 
 	public function actionUpdate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 
 		// determine if profiles are enabled
-		$profiles = Yii::app()->getModule('user')->enableProfiles;
+		$profiles = Yum::module()->enableProfiles;
 		$changepassword = isset($_POST['change_password']);
 
 		$model = $this->loadUser();
@@ -318,7 +313,7 @@ class YumUserController extends YumController
 
 			if($profiles) {
 				if(isset($_POST['YumProfile'])) {
-					if($this->module->profileHistory)
+					if(Yum::module()->profileHistory)
 						$profile = new YumProfile();
 
 					$profile->attributes = $_POST['YumProfile'];
@@ -372,7 +367,7 @@ class YumUserController extends YumController
 	public function actionDelete()
 	{
 		if(Yii::app()->user->isAdmin()) {
-			$this->layout = YumWebModule::yum()->adminLayout;
+			$this->layout = Yum::module()->adminLayout;
 			if(isset($_GET['id']) && $model = $this->loadUser($_GET['id'])) {
 				if($model->id == Yii::app()->user->id) {
 					Yii::app()->user->setFlash('adminMessage', 'You can not delete your own admin account');
@@ -382,13 +377,13 @@ class YumUserController extends YumController
 					$model->delete();	
 			}
 		} else {
-			$this->layout = YumWebModule::yum()->layout;
+			$this->layout = Yum::module()->layout;
 			$model = $this->loadUser(Yii::app()->user->id);
 
-			$preserveProfiles = Yii::app()->getModule('user')->preserveProfiles;
+			$preserveProfiles = Yum::module()->preserveProfiles;
 			if(isset($_POST['confirmPassword'])) {
 				if($model->encrypt($_POST['confirmPassword']) == $model->password) {
-					if(Yii::app()->controller->module->profileHistory == false) {
+					if(Yum::module()->profileHistory == false) {
 						if(is_array($model->profile) && !$preserveProfiles) {
 							foreach($model->profile as $profile) {
 								$profile->delete();
@@ -423,7 +418,7 @@ class YumUserController extends YumController
 
 	public function actionList()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'criteria' => array('condition' => 'status = 1'),
@@ -438,7 +433,7 @@ class YumUserController extends YumController
 
 	public function actionAdmin()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 
 		if(Yii::app()->user->isAdmin()) {
 			$model = new YumUser('search');

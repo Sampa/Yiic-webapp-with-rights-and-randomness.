@@ -59,7 +59,7 @@ class YumMessagesController extends YumController
 					$model->from_user_id = Yii::app()->user->id;
 					$model->to_user_id = $user_id;
 					$model->save();
-					if(Yii::app()->getModule('user')->notifyType == 'Instant'
+					if(Yum::module()->notifyType == 'Instant'
 							|| YumUser::model()->findByPk(Yii::app()->user->id)->notifyType == 'Instant') {
 							$this->mailMessage($model);
 					}
@@ -125,7 +125,7 @@ class YumMessagesController extends YumController
 		if(isset($_POST['sendDigest'])) {
 			foreach(YumMessage::model()->with('to_user')->findAll('not message_read') as $message) {
 				if((is_object($message->to_user) && $message->to_user->notifyType == 'Digest')
-						|| Yii::app()->getModule('user')->notifyType == 'Digest') { 
+						|| Yum::module()->notifyType == 'Digest') { 
 					$this->mailMessage($message);
 					$users++;
 				}

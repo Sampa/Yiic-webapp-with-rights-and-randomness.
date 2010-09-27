@@ -39,13 +39,13 @@ class YumActionController extends YumController
 
 	public function actionCreate()
 	{
-		$model=new Action;
+		$model=new YumAction;
 
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['Action']))
+		if(isset($_POST['YumAction']))
 		{
-			$model->attributes=$_POST['Action'];
+			$model->attributes=$_POST['YumAction'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -61,9 +61,9 @@ class YumActionController extends YumController
 
 		$this->performAjaxValidation($model);
 
-		if(isset($_POST['Action']))
+		if(isset($_POST['YumAction']))
 		{
-			$model->attributes=$_POST['Action'];
+			$model->attributes=$_POST['YumAction'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -88,7 +88,7 @@ class YumActionController extends YumController
 
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Action');
+		$dataProvider=new CActiveDataProvider('YumAction');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -96,10 +96,10 @@ class YumActionController extends YumController
 
 	public function actionAdmin()
 	{
-		$model=new Action('search');
+		$model=new YumAction('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Action']))
-			$model->attributes=$_GET['Action'];
+		if(isset($_GET['YumAction']))
+			$model->attributes=$_GET['YumAction'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -111,7 +111,7 @@ class YumActionController extends YumController
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=Action::model()->findByPk($_GET['id']);
+				$this->_model=YumAction::model()->findByPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 		}

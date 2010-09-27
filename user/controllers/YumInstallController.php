@@ -118,7 +118,7 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `".$settingsTable."` (`id`, `title`, `is_active`, `preserveProfiles`, `registrationType`, `enableRecovery`, `enableProfileHistory`, `readOnlyProfiles`, `loginType`, `mail_send_method`, `password_expiration_time`, `enableCaptcha`) VALUES ('1', 'Yum factory Default', '1', '1', '4', '1', '1', '0', 'LOGIN_BY_USERNAME_OR_EMAIL', 'Instant', '30', '1');";
+						$sql = "INSERT INTO `".$settingsTable."` (`id`, `title`, `is_active`, `preserveProfiles`, `registrationType`, `enableRecovery`, `enableProfileHistory`, `readOnlyProfiles`, `loginType`, `notifyType`, `password_expiration_time`, `enableCaptcha`) VALUES ('1', 'Yum factory Default', '1', '1', '4', '1', '1', '0', 'LOGIN_BY_USERNAME_OR_EMAIL', 'Instant', '30', '1');";
 						$db->createCommand($sql)->execute();
 
 						// Create Text settings table
@@ -285,7 +285,6 @@ class YumInstallController extends YumController
 
 								$db->createCommand($sql)->execute();
 						}
-
 						if(isset($_POST['installDemoData'])) 
 						{
 							$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
@@ -323,8 +322,7 @@ class YumInstallController extends YumController
 					} 
 					else 
 					{
-						throw new CException(Yii::t('UserModule.user',
-									'Database connection is not working'));	
+						throw new CException(Yum::t('Database connection is not working'));	
 					}
 				}
 			}

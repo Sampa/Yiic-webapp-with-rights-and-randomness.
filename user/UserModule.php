@@ -6,7 +6,7 @@ Yii::setPathOfAlias('YumAssets' , dirname(__FILE__) . '/assets/');
 Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
-class UserModule extends YumWebModule
+class UserModule extends CWebModule
 {
 	public $version = '0.8';
 	public $debug = false;

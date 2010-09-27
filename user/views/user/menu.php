@@ -54,7 +54,7 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 		if(Yii::app()->getModule('user')->debug)
 			$othermenu[] = e('Generate Demo Data', 'user/generateData');
-		if(Yii::app()->getModule('user')->messageType != 'None')
+		if(Yii::app()->getModule('user')->messageSystem != 'None')
 			$othermenu[] = e('Send message notifier emails', 'messages/sendDigest');
 
 		$othermenu[] = e('Change admin Password', 'user/changePassword');

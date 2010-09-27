@@ -33,7 +33,7 @@ class YumSettingsController extends YumController
 
 	public function actionCreate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 		$model=new YumSettings;
 
 		$this->performAjaxValidation($model);
@@ -53,7 +53,7 @@ class YumSettingsController extends YumController
 
 	public function actionUpdate()
 	{
-		$this->layout = YumWebModule::yum()->adminLayout;
+		$this->layout = Yum::module()->adminLayout;
 		if(!isset($_GET['id']))	
 			$_GET['id'] = 0;
 		if($_GET['id'] == 0)
