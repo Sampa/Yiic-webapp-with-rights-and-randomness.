@@ -171,9 +171,9 @@ class YumProfile extends YumActiveRecord
 		$relations = array(
 			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
 		);
-
+		
 		$fields = Yii::app()->db->createCommand(
-					"select * from profile_fields where field_type = 'DROPDOWNLIST'")->queryAll();
+				"select * from ".YumProfileField::model()->tableName()." where field_type = 'DROPDOWNLIST'")->queryAll();
 
 		foreach($fields as $field) {
 			$relations[ucfirst($field['varname'])] = array(self::BELONGS_TO, ucfirst($field['varname']), $field['varname']);
