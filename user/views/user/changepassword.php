@@ -1,12 +1,13 @@
 <?php 
-$this->pageTitle=Yii::app()->name . ' - '.Yii::t('UserModule.user', "Change password");
-$this->title = Yii::t('UserModule.user', "Change password");
+$this->pageTitle = Yii::app()->name . ' - ' . Yum::t("change password");
+$this->title = Yum::t('change password');
+
 $this->breadcrumbs = array(
-	Yii::t('UserModule.user', "Profile") => array('profile'),
-	Yii::t('UserModule.user', "Change password"));
+	Yum::t("Profile") => array('profile'),
+	Yum::t("Change password"));
 
 if($expired)
-$this->renderPartial('password_expired');
+	$this->renderPartial('password_expired');
 ?>
 
 <div class="form">
@@ -14,11 +15,11 @@ $this->renderPartial('password_expired');
 
 	<?php echo Yum::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
-	<?php $this->renderPartial('passwordfields', array( 'form'=>$form)); ?>
+	<?php $this->renderPartial('/user/passwordfields', array('form'=>$form)); ?>
 
 	
 	<div class="row submit">
-	<?php echo CHtml::submitButton(Yii::t('UserModule.user', "Save")); ?>
+	<?php echo CHtml::submitButton(Yum::t("Save")); ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

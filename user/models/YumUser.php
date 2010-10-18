@@ -1,7 +1,7 @@
 <?php
 /**
- * This is the model class for table "{{users}}".
- *
+ * This is the model class for a User in Yum
+ * 
  * The followings are the available columns in table '{{users}}':
  * @property integer $id
  * @property string $username
@@ -62,8 +62,7 @@ class YumUser extends YumActiveRecord
 		$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
 		if($file instanceof CUploadedFile)
 			$this->avatar = $file;
-		else
-			if($this->scenario == 'avatarUpload') 
+		else if($this->scenario == 'avatarUpload') 
 				$this->avatar = NULL;
 
 		return true;
@@ -122,7 +121,8 @@ class YumUser extends YumActiveRecord
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
 		$rules[] = array('status', 'in', 'range'=>array(0,1,-1));
 		$rules[] = array('superuser', 'in', 'range'=>array(0,1));
-		$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status, notifyType', 'required');
+		$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
+		$rules[] = array('notifyType', 'safe');
 		$rules[] = array('password', 'required', 'on'=>array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true);
 
@@ -231,7 +231,7 @@ class YumUser extends YumActiveRecord
 	public function activate($email, $activationKey)
 	{
 		$find = YumProfile::model()->findByAttributes(array('email'=>$email))->user;
-		if ($find->status) {
+		if ($find->status == 1) {
 			return true;
 		} else if($find->activationKey == $activationKey) {
 			$find->activationKey = $find->generateActivationKey(true);
@@ -355,8 +355,8 @@ class YumUser extends YumActiveRecord
 
 	public function updateAvatar() {
 		if($this->avatar !== NULL && isset($_FILES['YumUser'])) {
-			// prepend user id to avoid conflicts when two users upload an avatar with the
-			// same file name
+			// prepend user id to avoid conflicts when two users upload an avatar 
+			// with the same file name
 			$filename = $this->id . '_' . $_FILES['YumUser']['name']['avatar'];
 			if(is_object($this->avatar)) {
 				$this->avatar->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
@@ -369,7 +369,10 @@ class YumUser extends YumActiveRecord
 			if(Yii::app()->getModule('user')->enableAvatar) 
 				if($this->avatar)
 					echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
-				else
-					echo '<div style="width:200px; height:200px;"> No image available </div>';
-			}
+				else 
+					echo CHtml::image(Yii::app()->getAssetManager()->publish(
+								Yii::getPathOfAlias('YumAssets.images'). '/no_avatar_available.jpg',
+								Yum::t('No image available'), array(
+									'title' => Yum::t('No image available'))));
+		}
 }

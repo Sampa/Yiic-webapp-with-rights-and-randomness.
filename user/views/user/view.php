@@ -1,7 +1,12 @@
 <?php
 $profiles = Yii::app()->getModule('user')->enableProfiles;
 
-$this->title = Yii::t('UserModule.user', 'View user "{username}"',array(
+if(Yii::app()->getModule('user')->loginType == 'LOGIN_BY_EMAIL')
+$this->title = Yum::t('View user "{firstname} {lastname}"',array(
+			'{firstname}'=>$model->profile[0]->firstname,
+			'{lastname}'=>$model->profile[0]->lastname));
+else
+$this->title = Yum::t('View user "{username}"',array(
 			'{username}'=>$model->username));
 
 $this->breadcrumbs = array(Yum::t('Users') => array('index'), $model->username);

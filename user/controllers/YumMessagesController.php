@@ -10,7 +10,7 @@ class YumMessagesController extends YumController
 	{
 		return array(
 			array('allow',
-				'actions' => array('view', 'compose', 'index', 'delete', 'sent'),
+				'actions' => array('view', 'compose', 'index', 'delete', 'sent', 'success'),
 				'users'=>array('@'),
 				),
 			array('allow',
