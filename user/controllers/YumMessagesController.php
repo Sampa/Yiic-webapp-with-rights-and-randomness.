@@ -43,7 +43,7 @@ class YumMessagesController extends YumController
 
 	public function actionCompose()
 	{
-		$model=new YumMessage;
+		$model = new YumMessage;
 
 		$this->performAjaxValidation($model);
 
@@ -70,6 +70,7 @@ class YumMessagesController extends YumController
 
 		$this->render('compose',array(
 			'model'=>$model,
+			'to_user_id' => isset($_GET['to_user_id']) ? $_GET['to_user_id'] : false,
 		));
 	}
 
