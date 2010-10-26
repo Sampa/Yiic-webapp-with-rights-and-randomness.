@@ -79,6 +79,11 @@ class YumRegistrationController extends YumController
 						$profile->save();
 					}
 
+					Yii::log(Yum::t('User {username} registered himself in the adminstration form ', array(
+									'{username}' => $form->username)),
+							'info',
+							'modules.user.controllers.YumUserController');
+
 					if($registrationType == YumRegistration::REG_EMAIL_CONFIRMATION || 
 							$registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION) {
 						$this->sendRegistrationEmail($user);

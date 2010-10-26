@@ -174,6 +174,15 @@ Note, that you can assign several Roles to a user holding your CTRL key
 in the Listbox. This will be changed to a two-pane view (like in srbac)
 in a later Version.
 
+Tracing:
+since yum 0.8 the login, logout and registration of users will be traced to
+the log level 'info'.
+
+Wrong login attempts will always be logged to the log info 'warning' so
+a admin can get informed when too many wrong attempts are made for a 
+specific user. Please see the Yii documentation about logging on how to
+configure logging into files, the database, on screen or via e-mail.
+
 available Application Configuration Parameters:
 
  Version number of the Module:

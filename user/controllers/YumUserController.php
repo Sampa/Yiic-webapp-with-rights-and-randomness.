@@ -93,13 +93,17 @@ class YumUserController extends YumController
 
 		// collect user input data
 		if(isset($_POST['YumUserLogin'])) {
-			$loginForm->attributes=$_POST['YumUserLogin'];
+			$loginForm->attributes = $_POST['YumUserLogin'];
 
 			// validate user input and redirect to previous page if valid
 			if($loginForm->validate()) {
 				$user = YumUser::model()->findByPk(Yii::app()->user->id);
 				$user->lastvisit = time();
 				$user->save();
+				Yii::log(Yum::t('User {username} successfully logged in', array(
+								'{username}' => $user->username)),
+						'info',
+						'modules.user.controllers.YumUserController');
 
 				if($this->module->messageSystem != YumMessage::MSG_NONE
 						&& count($user->messages) > 0) {
@@ -116,7 +120,13 @@ class YumUserController extends YumController
 					else
 						$this->redirect(Yii::app()->user->returnUrl);
 				}
-			}
+			} else {
+				Yii::log(Yum::t('Wrong password for {username} entered', array(
+								'{username}' => $user->username)),
+						'warning',
+						'modules.user.controllers.YumUserController');
+
+}
 
 			// if the login Action is called from the Quick Login widget, just refresh
 			// the page, otherwise render the Login Form 
@@ -129,6 +139,11 @@ class YumUserController extends YumController
 
 	public function actionLogout()
 	{
+		Yii::log(Yum::t('User {username} successfully logged off', array(
+						'{username}' => $user->username)),
+				'info',
+				'modules.user.controllers.YumUserController');
+
 		Yii::app()->user->logout();
 		$this->redirect(Yum::module()->returnLogoutUrl);
 	}
@@ -153,6 +168,11 @@ class YumUserController extends YumController
 					$new_password->activationKey = YumUser::encrypt(microtime().$form->password);
 
 					if($new_password->save()) {
+						Yii::log(Yum::t('User {username} changed his password', array(
+										'{username}' => $user->username)),
+								'info',
+								'modules.user.controllers.YumUserController');
+
 						Yii::app()->user->setFlash('profileMessage',
 								Yii::t("UserModule.user", "The new password has been saved."));
 						$this->redirect(array("user/profile"));

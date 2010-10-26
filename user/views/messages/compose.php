@@ -18,7 +18,7 @@ $this->breadcrumbs = array(
 echo $form->errorSummary($model); 
 
 if(isset($to_user_id) && $to_user_id !== false) {
-	echo CHtml::hiddenField('YumMessage[to_user_id]', $to_user_id);
+	echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
 	echo Yum::t('This message will be sent to {username}', array(
 				'{username}' => YumUser::model()->findByPk($to_user_id)->username));
 } else {
