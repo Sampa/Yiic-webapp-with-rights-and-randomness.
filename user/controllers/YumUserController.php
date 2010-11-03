@@ -100,10 +100,7 @@ class YumUserController extends YumController
 				$user = YumUser::model()->findByPk(Yii::app()->user->id);
 				$user->lastvisit = time();
 				$user->save();
-				Yii::log(Yum::t('User {username} successfully logged in', array(
-								'{username}' => $user->username)),
-						'info',
-						'modules.user.controllers.YumUserController');
+				YumActivityController::logActivity($user, 'login');	
 
 				if($this->module->messageSystem != YumMessage::MSG_NONE
 						&& count($user->messages) > 0) {
@@ -121,12 +118,10 @@ class YumUserController extends YumController
 						$this->redirect(Yii::app()->user->returnUrl);
 				}
 			} else {
-				Yii::log(Yum::t('Wrong password for {username} entered', array(
-								'{username}' => $user->username)),
-						'warning',
-						'modules.user.controllers.YumUserController');
+				$user = YumUser::model()->find('username = \''.$loginForm->username.'\'');
+				YumActivityController::logActivity($user, 'failed_login_attempt');
 
-}
+			}
 
 			// if the login Action is called from the Quick Login widget, just refresh
 			// the page, otherwise render the Login Form 
@@ -139,11 +134,8 @@ class YumUserController extends YumController
 
 	public function actionLogout()
 	{
-		Yii::log(Yum::t('User {username} successfully logged off', array(
-						'{username}' => $user->username)),
-				'info',
-				'modules.user.controllers.YumUserController');
 
+		YumActivityController::logActivity(Yii::app()->user->id, 'logout');
 		Yii::app()->user->logout();
 		$this->redirect(Yum::module()->returnLogoutUrl);
 	}

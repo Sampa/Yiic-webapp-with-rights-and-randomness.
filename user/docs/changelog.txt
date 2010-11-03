@@ -1,8 +1,7 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
-- Added logging of User login, logout and registration to trace level 'info'
-- Added logging of wrong password to trace level 'warning'
+- New User activity logging subsystem (see YumActivityController) - logging of login, logout, wrong password attempt, recovery and registration into database and Yii log file
 - Added avatar upload possibility for users
 - Added 'visitors' to profiles (who visited whom when, and display it)
 - Added support for send emails out of SwiftMailer (docs/swiftMailer.txt)

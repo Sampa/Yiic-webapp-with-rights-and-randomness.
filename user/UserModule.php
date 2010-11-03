@@ -24,6 +24,7 @@ class UserModule extends CWebModule
 	public $userRoleTable = 'user_has_role';
 	public $userUserTable = 'user_has_user';
 	public $roleRoleTable = 'role_has_role';
+	public $activityTable = 'activities';
 	public $installDemoData = true;
 	public $preserveProfiles = true;
 	public $baseLayout = 'application.views.layouts.main';
@@ -39,6 +40,7 @@ class UserModule extends CWebModule
 	public $enableProfiles = true;
 	public $password_expiration_time = 30;
 	public $enableAvatar = true;
+	public $enableLogging = true;
 	public $avatarPath = 'images';
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
 	public $menuView = '/user/menu';
@@ -118,6 +120,7 @@ class UserModule extends CWebModule
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'action'=>array('class'=>'YumModule.controllers.YumActionController'),
+		'activities'=>array('class'=>'YumModule.controllers.YumActivityController'),
 		'permission'=>array('class'=>'YumModule.controllers.YumPermissionController'),
 		'avatar'=>array('class'=>'YumModule.controllers.YumAvatarController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
@@ -173,6 +176,7 @@ class UserModule extends CWebModule
 	public function init()
 	{
 		$this->setImport(array(
+			'YumModule.controllers.*',
 			'YumModule.models.*',
 			'YumModule.components.*',
 			'YumModule.core.*',

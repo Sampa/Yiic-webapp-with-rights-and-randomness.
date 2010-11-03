@@ -40,9 +40,10 @@ class YumInstallController extends YumController
 							'profileVisitTable',
 							'messagesTable',
 							'rolesTable',
+							'userRoleTable',
 							'permissionTable',
 							'actionTable',
-							'userRoleTable',
+							'activityTable',
 							'settingsTable',
 							'textSettingsTable');
 
@@ -74,6 +75,19 @@ class YumInstallController extends YumController
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 					$db->createCommand($sql)->execute();
 
+					if(isset($_POST['installActivityLog'])) {  
+						$sql = "CREATE TABLE IF NOT EXISTS `".$activityTable."` (
+							`id` int(11) NOT NULL AUTO_INCREMENT,
+							`timestamp` int NOT NULL,
+							`user_id` int(11),
+							`action` enum('Login', 'Logout', 'Recovery', 'Registration', 'failed_login_attempt'),
+							PRIMARY KEY (`id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+						";
+
+						$db->createCommand($sql)->execute();
+
+					}
 					if(isset($_POST['installPermission'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$actionTable."` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -339,6 +353,7 @@ class YumInstallController extends YumController
 							'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
 							'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable,Yii::app()->db),
 							'permissionTable' => Yum::resolveTableName($this->module->permissionTable,Yii::app()->db),
+							'activityTable' => Yum::resolveTableName($this->module->activityTable, Yii::app()->db),
 							'actionTable' => Yum::resolveTableName($this->module->actionTable,Yii::app()->db),
 							));
 			}

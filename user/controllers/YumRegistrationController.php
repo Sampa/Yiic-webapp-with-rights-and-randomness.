@@ -79,10 +79,7 @@ class YumRegistrationController extends YumController
 						$profile->save();
 					}
 
-					Yii::log(Yum::t('User {username} registered himself in the adminstration form ', array(
-									'{username}' => $form->username)),
-							'info',
-							'modules.user.controllers.YumUserController');
+					YumActivityController::log($user, 'register');
 
 					if($registrationType == YumRegistration::REG_EMAIL_CONFIRMATION || 
 							$registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION) {
@@ -211,6 +208,7 @@ class YumRegistrationController extends YumController
 									'activationKey' => $user->activationKey,
 									'email' => $user->profile[0]->email)));
 
+					YumActivityController::logActivity($user, 'recovery');
 					mail($user->profile[0]->email,
 							Yum::t('Password recovery'), 
 							sprintf('You have requested to reset your Password. To receive a new password, go to %s',

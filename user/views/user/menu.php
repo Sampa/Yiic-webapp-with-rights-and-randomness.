@@ -57,6 +57,7 @@ if(!Yii::app()->user->isGuest) {
 		if(Yii::app()->getModule('user')->messageSystem != 'None')
 			$othermenu[] = e('Send message notifier emails', 'messages/sendDigest');
 
+		$othermenu[] = e('Browse logged user activities', 'activities/index');
 		$othermenu[] = e('Change admin Password', 'user/changePassword');
 		$othermenu[] = e('Logout', 'user/logout');
 
