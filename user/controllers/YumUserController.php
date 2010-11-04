@@ -50,19 +50,18 @@ class YumUserController extends YumController
 				$user = new YumUser();
 				$user->username = sprintf('Demo_%d_%d', rand(1, 50000), $i);
 				$user->roles = array($_POST['role']);
-				$user->password = 'Demopassword123';
+				$user->password = YumUser::encrypt($_POST['password']);
 				$user->createtime = time();
 				$user->status = $_POST['status'];
 
 				if($user->save()) {
 					if(Yum::module()->enableProfiles) {
-						$profile = new Profile();
+						$profile = new YumProfile();
 						$profile->user_id = $user->id;
 						$profile->save();
 					}
 				}
 			}
-			echo 'Users have been generated. Password for each user is <em>Demopassword123</em>';
 		}
 		$this->render('generate_data');	
 	}

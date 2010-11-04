@@ -6,7 +6,7 @@ $this->breadcrumbs = array(
 	Yum::t("Profile") => array('profile'),
 	Yum::t("Change password"));
 
-if($expired)
+if(isset($expired))
 	$this->renderPartial('password_expired');
 ?>
 

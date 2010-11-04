@@ -122,16 +122,26 @@ class YumMessagesController extends YumController
 
 	public function actionSendDigest() {
 		$message = '';
-		$users = 0;
+
+		$recipients = array();
 		if(isset($_POST['sendDigest'])) {
 			foreach(YumMessage::model()->with('to_user')->findAll('not message_read') as $message) {
 				if((is_object($message->to_user) && $message->to_user->notifyType == 'Digest')
 						|| Yum::module()->notifyType == 'Digest') { 
 					$this->mailMessage($message);
-					$users++;
+					$recipients[] = $message->to_user->profile[0]->email;
 				}
 			}
-			$message = Yum::t('Digest has been sent to {users} users', array('{users}' => $users));
+			if(count($recipients) == 0)
+				$message = Yum::t('No messages are pending. No message has been sent.'); 
+			else {
+				$message = Yum::t('Digest has been sent to {users} users:', array('{users}' => count($recipients)));
+				$message .= '<ul>';
+				foreach($recipients as $recipient) {
+					$message .= sprintf('<li> %s </li>', $recipient);
+				}
+				$message .= '</ul>';
+			}
 		}
 		$this->render('send_digest', array('message' => $message));
 	}

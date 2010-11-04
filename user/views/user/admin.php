@@ -1,12 +1,13 @@
 <?php
-$this->title = Yii::t('UserModule.user', 'Manage users');
+$this->title = Yum::t('Manage users');
 
 $this->breadcrumbs = array(
-	Yii::t("UserModule.user", 'Users') => array('index'),
-	Yii::t("UserModule.user", 'Manage'));
+	Yum::t('Users') => array('index'),
+	Yum::t('Manage'));
 
 if(Yii::app()->user->hasFlash('adminMessage')) 
-	printf('<div class="errorSummary">%s</div>', Yii::app()->user->getFlash('adminMessage')); 
+printf('<div class="errorSummary">%s</div>',
+		Yii::app()->user->getFlash('adminMessage')); 
 
 $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$model->search(),
@@ -21,31 +22,31 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 			array(
 				'name'=>'username',
-				'visible' => Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL' ,
+				'visible' => Yum::module()->loginType != 'LOGIN_BY_EMAIL' ,
 				'type'=>'raw',
 				'value'=>'CHtml::link(CHtml::encode($data->username),
 				array(Yum::route("{user}/view"),"id"=>$data->id))',
 			),
 			array(
 				'header'=>Yum::t('First name'),
-				'visible' => Yii::app()->getModule('user')->enableProfiles,
+				'visible' => Yum::module()->enableProfiles,
 				'type'=>'raw',
-				'value'=>'CHtml::link(CHtml::encode($data->profile[0]->firstname),
+				'value'=>';CHtml::link(CHtml::encode($data->profile[0]->firstname),
 				array(Yum::route("{user}/view"),"id"=>$data->id))',
 			),
 			array(
 				'header'=>Yum::t('Last name'),
-				'visible' => Yii::app()->getModule('user')->enableProfiles,
+				'visible' => Yum::module()->enableProfiles,
 				'type'=>'raw',
-				'value'=>'CHtml::link(CHtml::encode($data->profile[0]->lastname),
+				'value'=>';CHtml::link(CHtml::encode($data->profile[0]->lastname),
 				array(Yum::route("{user}/view"),"id"=>$data->id))',
 			),
 			array(
 				'header'=>Yum::t('Email'),
-				'visible' => Yii::app()->getModule('user')->enableProfiles,
+				'visible' => Yum::module()->enableProfiles,
 				'type'=>'raw',
-				'value'=>'CHtml::link($data->profile[0]->email,
-					\'mailto: \'.$data->profile[0]->email)'),
+				'value'=>';CHtml::link($data->profile[0]->email,
+					\'mailto: \'.$data->profile[0]->email)'), 
 			array(
 				'name'=>'createtime',
 				'filter' => false,
