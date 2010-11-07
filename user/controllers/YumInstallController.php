@@ -42,6 +42,7 @@ class YumInstallController extends YumController
 							'rolesTable',
 							'userRoleTable',
 							'permissionTable',
+							'friendshipTable',
 							'actionTable',
 							'activityTable',
 							'settingsTable',
@@ -185,6 +186,21 @@ class YumInstallController extends YumController
 						$db->createCommand($sql)->execute();
 					}
 
+					if(isset($_POST['installFriendship']))  
+					{
+						$sql = "CREATE TABLE  `".$friendshipTable."` (
+							`inviter_id` INT NOT NULL ,
+							`friend_id` INT NOT NULL ,
+							`status` INT NOT NULL ,
+							`message` VARCHAR( 255 ) NOT NULL ,
+							`requesttime` INT NOT NULL ,
+							`acknowledgetime` INT NOT NULL ,
+							`updatetime` INT NOT NULL,
+							PRIMARY KEY (`friend_id`,`inviter_id`)
+								) ENGINE = INNODB;";
+
+						$db->createCommand($sql)->execute();
+					}
 
 					if(isset($_POST['installProfiles']))  
 					{
@@ -353,6 +369,7 @@ class YumInstallController extends YumController
 							'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
 							'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable,Yii::app()->db),
 							'permissionTable' => Yum::resolveTableName($this->module->permissionTable,Yii::app()->db),
+							'friendshipTable' => Yum::resolveTableName($this->module->friendshipTable,Yii::app()->db),
 							'activityTable' => Yum::resolveTableName($this->module->activityTable, Yii::app()->db),
 							'actionTable' => Yum::resolveTableName($this->module->actionTable,Yii::app()->db),
 							));

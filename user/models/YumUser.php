@@ -36,6 +36,7 @@ class YumUser extends YumActiveRecord
 	public $email;
 	private $_userRoleTable;
 	private $_userUserTable;
+	private $_friendshipTable;
 
 	public static function model($className=__CLASS__)
 	{
@@ -171,26 +172,79 @@ class YumUser extends YumActiveRecord
 		else
 			$this->_userRoleTable = '{{user_has_role}}';
 
-		if(isset(Yii::app()->controller->module->userUserTable))
-			$this->_userUserTable = Yii::app()->controller->module->userUserTable;
-		elseif(isset(Yii::app()->modules['user']['userUserTable']))
-			$this->_tableName = Yii::app()->modules['user']['userUserTable'];
+		if(isset(Yii::app()->controller->module->friendshipTable))
+			$this->_friendshipTable = Yii::app()->controller->module->friendshipTable;
+		elseif(isset(Yii::app()->modules['user']['friendshipTable']))
+			$this->_tableName = Yii::app()->modules['user']['friendshipTable'];
 		else
-			$this->_userUserTable = '{{user_has_user}}';
+			$this->_friendshipTable = '{{friendship}}';
 
 		// resolve table names to use them in relations definition
 		$relationUHRTableName = Yum::resolveTableName($this->_userRoleTable, $this->getDbConnection());
-		$relationUHUTableName = Yum::resolveTableName($this->_userUserTable, $this->getDbConnection());
+		$relationFRSPTableName = Yum::resolveTableName($this->_friendshipTable, $this->getDbConnection());
 
 		return array(
 			'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 			'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
 			'messages' => array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.id DESC'),
+			'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id'),
 			'profile' => array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
+			'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
+			'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 			'roles' => array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
-			'users' => array(self::MANY_MANY, 'YumUser', $relationUHUTableName . '(owner_id, child_id)'),
-			'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id')
 		);
+	}
+
+	public function isFriendOf($invited_id) {
+		foreach($this->getFriendships() as $friendship) {
+			if($friendship->inviter_id == $this->id)
+				return $friendship->status;
+		}
+
+		return false;
+	}
+
+	public function getFriendships() {
+		$condition = 'inviter_id = :uid or friend_id = :uid';
+		return YumFriendship::model()->findAll($condition, array(
+					':uid' => $this->id));
+	}
+
+	// Friends can not be retrieve via the relations() method because a friend
+	// can either be in the invited_id or in the friend_id column.
+	// set $everything to true to also return pending and rejected friendships
+	public function getFriends($everything = false) {
+		if($everything)
+			$condition = 'inviter_id = :uid';
+		else
+			$condition = 'inviter_id = :uid and status = 3';
+
+		$friends = array();
+		$friendships = YumFriendship::model()->findAll($condition, array(
+					':uid' => $this->id));
+		if($friendships != NULL && !is_array($friendships))
+			$friendships = array($friendships);
+
+		if($friendships)
+			foreach($friendships as $friendship)
+				$friends[] = YumUser::model()->findByPk($friendship->friend_id);
+
+		if($everything)
+			$condition = 'friend_id = :uid';
+		else
+			$condition = 'friend_id = :uid and status = 3';
+
+		$friendships = YumFriendship::model()->findAll($condition, array(
+					':uid' => $this->id));
+
+		if($friendships != NULL && !is_array($friendships))
+			$friendships = array($friendships);
+
+		if($friendships)
+			foreach($friendships as $friendship)
+				$friends[] = YumUser::model()->findByPk($friendship->inviter_id);
+
+		return $friends;
 	}
 
 	public function register($username=null, $password=null, $email=null)

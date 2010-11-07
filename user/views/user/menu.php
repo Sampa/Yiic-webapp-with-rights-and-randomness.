@@ -79,14 +79,17 @@ if(!Yii::app()->user->isGuest) {
 		if(Yii::app()->user->hasUsers() || Yii::app()->user->hasRoles())
 			$menu[] = e('Manage my users', 'user/admin');
 
+		if(Yum::module()->enableFriendship)
+			$menu[] = e('Manage my friends', 'friendship/admin');
+
 		$messagesmenu[] = e('My Inbox', 'messages/index');
 		$messagesmenu[] = e('Sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 
-		$menu[] = e('edit personal Data', 'profile/edit');
+		$menu[] = e('Edit personal Data', 'profile/edit');
 		if(Yii::app()->getModule('user')->enableAvatar) 
-			$menu[] = e('upload Avatar Image', 'avatar/editAvatar');
-		$menu[] = e('browse users', 'user/index');
+			$menu[] = e('Upload Avatar Image', 'avatar/editAvatar');
+		$menu[] = e('Browse users', 'user/index');
 
 		if($module->messageSystem != YumMessage::MSG_NONE) 
 			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 

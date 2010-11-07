@@ -19,6 +19,7 @@ class UserModule extends CWebModule
 	public $profileTable = 'profiles';
 	public $profileVisitTable = 'profile_visit';
 	public $rolesTable = 'roles';
+	public $friendshipTable = 'friendship';
 	public $permissionTable = 'permission';
 	public $actionTable = 'action';
 	public $userRoleTable = 'user_has_role';
@@ -38,10 +39,11 @@ class UserModule extends CWebModule
 	public $allowRecovery = true;
 	public $enableRoles = true;
 	public $enableProfiles = true;
-	public $password_expiration_time = 30;
-	public $enableAvatar = true;
+	public $enableFriendship = true;
 	public $enableLogging = true;
+	public $enableAvatar = true;
 	public $avatarPath = 'images';
+	public $password_expiration_time = 30;
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
 	public $menuView = '/user/menu';
 
@@ -133,6 +135,7 @@ class UserModule extends CWebModule
 		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),	
 		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),	
 		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),	
+		'friendship'=>array('class'=>'YumModule.controllers.YumFriendshipController'),	
 		'fieldsgroup'=>array('class'=>'YumModule.controllers.YumFieldsGroupController'),	
 	);
 

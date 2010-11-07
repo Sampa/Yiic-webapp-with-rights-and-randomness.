@@ -97,11 +97,12 @@ if(Yii::app()->user->isAdmin()) {
 				));
 }
 
+
 if(Yii::app()->user->isAdmin()) {
 	if($profiles && $this->module->profileHistory) {
 		$this->renderPartial('/profile/profile_history', array('model' => $model));
 	}
-	echo Yii::t('UserModule.user', 'This user belongs to these roles:');  
+	echo Yum::t('This user belongs to these roles:');  
 
 	if($model->roles) {
 		echo "<ul>";
@@ -114,7 +115,7 @@ if(Yii::app()->user->isAdmin()) {
 		printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
 	}
 
-	echo Yii::t('UserModule.user', 'This user can administer this users:');  
+	echo Yum::t('This user can administer this users:');  
 
 	if($model->superuser) {
 		printf('<p>%s</p>', Yum::t('Everyone, cause he is an admin'));
@@ -128,8 +129,12 @@ if(Yii::app()->user->isAdmin()) {
 	}
 	else 
 	{
-		printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
+		printf('<p>%s</p>', Yum::t('None'));
 	}
+}
+
+if(Yum::module()->enableFriendship) {
+	$this->renderPartial('friends', array('user' => $model));
 }
 
 if(Yii::app()->user->isAdmin())
