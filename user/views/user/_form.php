@@ -101,7 +101,7 @@ $this->widget('YumModule.components.Relation',
 			'style' => 'checkbox',
 			'fields' => 'title',
 			'htmlOptions' => array(
-				'checkAll' => Yii::t('UserModule.user', 'Choose All'),
+				'checkAll' => Yum::t('Choose All'),
 				'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
 				'showAddButton' => false
 				));

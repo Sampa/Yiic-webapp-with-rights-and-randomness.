@@ -297,10 +297,9 @@ class YumUserController extends YumController
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
-
 		if($profiles) {
 			// Always operate on most actual profile
-			if($model->profile === false)
+			if(!$model->profile)
 				$model->profile = new YumProfile();
 
 			if(!is_array($model->profile))
@@ -320,7 +319,6 @@ class YumUserController extends YumController
 				$_POST['YumUser']['YumUser'] = array();
 
 			$model->roles = $_POST['YumUser']['YumRole'];
-			$model->users = $_POST['YumUser']['YumUser'];
 
 			if($profiles) {
 				if(isset($_POST['YumProfile'])) {
