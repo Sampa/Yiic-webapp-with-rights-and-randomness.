@@ -240,6 +240,7 @@ class YumUser extends YumActiveRecord
 		if($friendships != NULL && !is_array($friendships))
 			$friendships = array($friendships);
 
+
 		if($friendships)
 			foreach($friendships as $friendship)
 				$friends[] = YumUser::model()->findByPk($friendship->inviter_id);

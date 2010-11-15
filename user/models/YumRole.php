@@ -57,7 +57,6 @@ class YumRole extends YumActiveRecord
 	{
 		return array(
 				'users'=>array(self::MANY_MANY, 'YumUser', Yii::app()->getModule('user')->userRoleTable . '(role_id, user_id)'),
-				'roles'=>array(self::MANY_MANY, 'YumRole', Yii::app()->getModule('user')->roleRoleTable . '(role_id, child_id)'),
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
 

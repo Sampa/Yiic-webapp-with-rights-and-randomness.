@@ -57,7 +57,7 @@ if ($profileFields) {
 </table>
 
 <?php
-if($model->profile[0]->show_friends ==2)
+if($model->profile[0]->show_friends == 2)
 {
 ?>
 <div id="friends">

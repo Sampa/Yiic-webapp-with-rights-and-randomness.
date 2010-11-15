@@ -58,6 +58,11 @@ class YumUserController extends YumController
 					if(Yum::module()->enableProfiles) {
 						$profile = new YumProfile();
 						$profile->user_id = $user->id;
+						$profile->timestamp = time();
+						$profile->privacy = 'protected';
+						$profile->firstname = $user->username;
+						$profile->lastname = $user->username;
+						$profile->email = 'e@mail.de';
 						$profile->save();
 					}
 				}

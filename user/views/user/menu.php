@@ -104,15 +104,20 @@ if(!Yii::app()->user->isGuest) {
 		$menu[] = e('Logout', 'user/logout');
 	}
 
-	If($this->module->layout == 'yum')
+	If(isset($this->module->layout) && $this->module->layout == 'yum')
 		Yum::register('css/yum.css');
 
 	echo '<div class="yum-menu">'; 	
+	if(isset($user->profile[0])) 
+		$title = sprintf('<h3>%s %s (%s)</h3>',
+				$user->profile[0]->firstname,
+				$user->profile[0]->lastname,
+				$user->getRoles());
+	else
+		$title = sprintf('<h3>%s</h3>', $user->username);
+
 	$this->beginWidget('zii.widgets.CPortlet', array(
-				'title'=>	sprintf('<h3>%s %s (%s)</h3>',
-			$user->profile[0]->firstname,
-			$user->profile[0]->lastname,
-			$user->getRoles())));
+				'title'=> $title));
 	$this->widget('CTreeView', array(
 				'data' => $menu, 
 				));

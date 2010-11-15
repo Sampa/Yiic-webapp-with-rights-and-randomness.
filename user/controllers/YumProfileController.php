@@ -35,7 +35,10 @@ class YumProfileController extends YumController
 		}
 
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
-		$profile = $model->profile[0];
+		if(isset($model->profile[0])) 
+			$profile = $model->profile[0];
+		else
+			$profile = new YumProfile();
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];

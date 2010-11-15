@@ -59,9 +59,10 @@ class YumWebUser extends CWebUser
 		$user = YumUser::model()->findByPk($uid);
 
 		$flag = false;
-		foreach($user->roles as $role) 
-			if (isset($role->roles) && $role->roles !== array())
-				$flag = true;
+		if(isset($user->roles))
+			foreach($user->roles as $role) 
+				if (isset($role->roles) && $role->roles !== array())
+					$flag = true;
 
 		return $flag;
 	}

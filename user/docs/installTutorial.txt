@@ -8,7 +8,7 @@ Management Module on a fresh created Yii Web Application.
 
 1.) Generate your Webapp:
 
-$ php yii-1.1-4/framework/yiic webapp testdrive
+$ php yii-1.1.5/framework/yiic webapp testdrive
 Create a Web application under '/var/www/testdrive'? [Yes|No] Yes
 
 [...]

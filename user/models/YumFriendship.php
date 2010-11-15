@@ -37,6 +37,7 @@ class YumFriendship extends YumActiveRecord{
 		$this->friend_id = $invited->id;
 		$this->acknowledgetime = 0;
 		$this->requesttime = time();
+		$this->updatetime = time();
 		if($message !== null)
 			$this->message = $message;
 		$this->status = 1;

@@ -117,6 +117,7 @@ class YumFriendshipController extends YumController {
 					'friendship' => isset($friendship) ? $friendship : null,
 					));
 	}
+
 	public function ActionConfirmFriendship($id,$key)
 	{
 	$friendship=YumFriendship::model()->findByPK($id);
@@ -195,8 +196,10 @@ class YumFriendshipController extends YumController {
 		if(!is_object($invited))
 			$invited = YumUser::model()->findByPk($invited);
 
-		foreach($inviter->getFriends(true) as $friend) 
-			if($friend->id == $invited->id)
+		$friends = $inviter->getFriends(true);
+		if($friends && $friends[0] != NULL)
+			foreach($friends as $friend) 
+				if($friend->id == $invited->id)
 				return false; // already friends, rejected or request pending
 
 			return CHtml::link(Yum::t('Add as a friend'), array(
