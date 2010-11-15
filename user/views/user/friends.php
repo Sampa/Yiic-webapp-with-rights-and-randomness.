@@ -1,6 +1,7 @@
 <?php
 $friends = $user->getFriends();
-if($friends) {
+if(isset($friends)) {
+	echo '<h2>My friends</h2>';
 	echo '<ul>';
 	foreach($friends as $friend) {
 		printf('<li>%s</li>', $friend->username);	

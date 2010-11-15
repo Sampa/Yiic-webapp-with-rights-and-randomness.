@@ -47,6 +47,7 @@ class YumProfileController extends YumController
 				$profile->timestamp = time();
 				$profile->privacy = $_POST['YumProfile']['privacy'];
 				$profile->user_id = $model->id;
+				$profile->show_friends=$_POST['YumProfile']['show_friends'];
 			}
 			$model->validate();
 			$profile->validate();
@@ -83,8 +84,9 @@ class YumProfileController extends YumController
 		$view = Yum::module()->profileView;
 
 		$model = YumUser::model()->findByPk($_GET['id']);
+		$friends=$model->getFriends();
 
-		$this->render($view, array('model' => $model));
+		$this->render($view, array('model' => $model,'friends'=>$friends));
 		$this->updateVisitor(Yii::app()->user->id, $model->id);
 	}
 
@@ -180,7 +182,7 @@ class YumProfileController extends YumController
 	public function actionAdmin()
 	{
 		$this->layout = Yum::module()->adminLayout;
-
+		$model= new YumProfile;
 		$dataProvider=new CActiveDataProvider('YumProfile', array(
 			'pagination'=>array(
 				'pageSize'=>self::PAGE_SIZE,
@@ -191,7 +193,7 @@ class YumProfileController extends YumController
 		));
 
 		$this->render('admin',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$dataProvider,'model'=>$model,
 		));
 	}
 

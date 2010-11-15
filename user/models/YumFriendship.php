@@ -37,7 +37,6 @@ class YumFriendship extends YumActiveRecord{
 		$this->friend_id = $invited->id;
 		$this->acknowledgetime = 0;
 		$this->requesttime = time();
-		$this->updatetime = time();
 		if($message !== null)
 			$this->message = $message;
 		$this->status = 1;
@@ -46,7 +45,6 @@ class YumFriendship extends YumActiveRecord{
 
 	public function acceptFriendship() {
 		$this->acknowledgetime = time();
-		$this->updatetime = time();
 		$this->status = 2;
 		return($this->save());
 	} 
@@ -74,11 +72,15 @@ class YumFriendship extends YumActiveRecord{
 
 	public function rejectFriendship() {
 		$this->acknowledgetime = time();
-		$this->updatetime = time();
 		$this->status = 3;
 		return($this->save());
 	} 
-
+	
+	public function ignoreFriendship() {
+		$this->acknowledgetime = time();
+		$this->status = 0;
+		return($this->save());
+	} 
 	public function tableName()
 	{
 		return 'friendship';
@@ -115,6 +117,10 @@ class YumFriendship extends YumActiveRecord{
 		);
 	}
 
+public function beforeSave() {
+		$this->updatetime = time();
+		return true;
+	}
 
 	public function search()
 	{

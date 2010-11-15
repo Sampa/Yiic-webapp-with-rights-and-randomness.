@@ -119,7 +119,7 @@ if(Yii::app()->user->isAdmin()) {
 
 	if($model->superuser) {
 		printf('<p>%s</p>', Yum::t('Everyone, cause he is an admin'));
-	} else if($model->users) {
+	} else if(isset($model->users)) {
 		echo "<ul>";
 		foreach($model->users as $user) {
 			echo CHtml::tag('li',array(),CHtml::link(

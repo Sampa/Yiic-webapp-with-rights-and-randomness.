@@ -185,11 +185,13 @@ class YumUserController extends YumController
 			if (Yii::app()->user->id)
 			{
 				$model = $this->loadUser(Yii::app()->user->id);
+				$friends=$model->getFriends();
 
 				$this->render('/profile/myprofile',array(
 							'model'=>$model,
 							'profile'=>$model->profile,
 							'messages'=>$model->messages,
+							'friends'=>$friends,
 							));
 			}
 		}
@@ -319,6 +321,7 @@ class YumUserController extends YumController
 				$_POST['YumUser']['YumUser'] = array();
 
 			$model->roles = $_POST['YumUser']['YumRole'];
+			$model->users = $_POST['YumUser']['YumUser'];
 
 			if($profiles) {
 				if(isset($_POST['YumProfile'])) {

@@ -25,7 +25,10 @@ if(!Yii::app()->user->isGuest) {
 		$usermenu[] = e('Statistics', 'statistics/index');
 		$usermenu[] = e('Show users', 'user/admin');
 		$usermenu[] = e('Create new user', 'user/create');
-
+		if(Yum::module()->enableFriendship)
+		{
+			$usermenu[] = e('Manage friends', 'friendship/admin');
+		}
 		$rolemenu[] = e('Show roles' ,'role/admin');
 		$rolemenu[] = e('Create new role', 'role/create');
 		$rolemenu[] = e('Permissions', 'permission/admin');
@@ -40,6 +43,7 @@ if(!Yii::app()->user->isGuest) {
 		$profilegroupsettings[] = e('Manage field groups', 'fieldsgroup/admin');
 		$profilegroupsettings[] = e('Create new field group', 'fieldsgroup/create');
 
+		$profilemenu[] = e('Manage Profiles', 'profile/admin');
 		$profilemenu[] = e('Show profile visits', 'profile/visits');
 		$profilemenu[] = array('children' => $profilesettings, 'text' => Yum::t('Manage profile fields'));
 		$profilemenu[] = array('children' => $profilegroupsettings, 'text' => Yum::t('Manage profile field groups'));
@@ -79,9 +83,7 @@ if(!Yii::app()->user->isGuest) {
 		if(Yii::app()->user->hasUsers() || Yii::app()->user->hasRoles())
 			$menu[] = e('Manage my users', 'user/admin');
 
-		if(Yum::module()->enableFriendship)
-			$menu[] = e('Manage my friends', 'friendship/admin');
-
+		
 		$messagesmenu[] = e('My Inbox', 'messages/index');
 		$messagesmenu[] = e('Sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
@@ -90,6 +92,10 @@ if(!Yii::app()->user->isGuest) {
 		if(Yii::app()->getModule('user')->enableAvatar) 
 			$menu[] = e('Upload Avatar Image', 'avatar/editAvatar');
 		$menu[] = e('Browse users', 'user/index');
+		if(Yum::module()->enableFriendship)
+		{
+			$menu[] = e('My friends', 'friendship');
+		}
 
 		if($module->messageSystem != YumMessage::MSG_NONE) 
 			$menu[] = array('children' => $messagesmenu, 'text' => Yum::t('Messages')); 

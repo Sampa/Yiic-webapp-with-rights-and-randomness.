@@ -217,7 +217,7 @@ class YumUser extends YumActiveRecord
 		if($everything)
 			$condition = 'inviter_id = :uid';
 		else
-			$condition = 'inviter_id = :uid and status = 3';
+			$condition = 'inviter_id = :uid and status = 2';
 
 		$friends = array();
 		$friendships = YumFriendship::model()->findAll($condition, array(
@@ -232,7 +232,7 @@ class YumUser extends YumActiveRecord
 		if($everything)
 			$condition = 'friend_id = :uid';
 		else
-			$condition = 'friend_id = :uid and status = 3';
+			$condition = 'friend_id = :uid and status = 2';
 
 		$friendships = YumFriendship::model()->findAll($condition, array(
 					':uid' => $this->id));
@@ -422,9 +422,20 @@ class YumUser extends YumActiveRecord
 		}
 	}
 
-	public function renderAvatar()
+	public function renderAvatar($friend='')
 	{
 		if(Yii::app()->getModule('user')->enableAvatar)
+		{
+			if(is_object($friend))
+			{
+				if($friend->avatar)
+				echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $friend->avatar);
+			else
+				echo CHtml::image(Yii::app()->getAssetManager()->publish(
+						Yii::getPathOfAlias('YumAssets.images') . '/no_avatar_available_thumb.jpg',
+						Yum::t('No image available'), array(
+						'title' => Yum::t('No image available'))));
+			}else{
 			if($this->avatar)
 				echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
 			else
@@ -432,6 +443,8 @@ class YumUser extends YumActiveRecord
 						Yii::getPathOfAlias('YumAssets.images') . '/no_avatar_available.jpg',
 						Yum::t('No image available'), array(
 						'title' => Yum::t('No image available'))));
+					}
+				}
 	}
 
 }

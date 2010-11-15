@@ -80,6 +80,28 @@ $this->renderPartial('/messages/new_messages');?>
 </tr>
 </table>
 
+<div id="friends">
+<h2> My friends </h2>
+<?php
+foreach($friends as $friend)
+{
+?>
+<div id="friend">
+<div id="avatar">
+<?php
+$model->renderAvatar($friend);
+?>
+<div id='user'>
+<?php 
+echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile/view',array('id'=>$friend->id)));
+?>
+</div>
+</div>
+</div>
+</div>
+<?php
+}
+?>
 <h2> <?php echo Yum::t('This users have visited my profile'); ?> </h2>
 <?php
 	if($model->visits) {

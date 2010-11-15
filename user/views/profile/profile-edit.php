@@ -92,7 +92,18 @@ if ($profileFields)
 				echo CHtml::error($profile,'privacy'); 
 ?>
 		</div>
-
+<div class="row">
+		<?php 
+		echo CHtml::activeLabelEx($profile, 'show_friends'); 
+		echo CHtml::activeDropDownList($profile, 'show_friends',
+				array(
+					'0' => Yii::t('UserModule.user', 'owner'),
+					'1' => Yii::t('UserModule.user', 'friends only'),
+					'2' => Yii::t('UserModule.user', 'public'),
+					)
+					);
+		?>
+</div>
 
 
 	<div class="row buttons">

@@ -198,9 +198,11 @@ class YumRegistrationController extends YumController
 
 				if($form->validate()) {
 					$user = YumUser::model()->findbyPk($form->user_id);
-					$headers = sprintf('From: %s\r\nReply-To: %s',
+
+					$headers = sprintf("From: %s\r\nReply-To: %s",
 							Yii::app()->params['adminEmail'],
 							Yii::app()->params['adminEmail']);
+
 
 					$activation_url = sprintf('http://%s%s',
 							$_SERVER['HTTP_HOST'],
