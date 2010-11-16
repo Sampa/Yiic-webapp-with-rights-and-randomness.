@@ -197,7 +197,7 @@ class YumUser extends YumActiveRecord
 
 	public function isFriendOf($invited_id) {
 		foreach($this->getFriendships() as $friendship) {
-			if($friendship->inviter_id == $this->id)
+			if($friendship->inviter_id == $this->id && $friendship->friend_id == $invited_id)
 				return $friendship->status;
 		}
 

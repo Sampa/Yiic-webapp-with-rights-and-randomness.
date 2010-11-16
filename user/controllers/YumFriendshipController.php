@@ -1,6 +1,7 @@
 <?php
 class YumFriendshipController extends YumController {
 	private $_model;
+
 	// make sure that friendship is enabled in the configuration
 	public function beforeAction($action) {
 		if(!Yum::module()->enableFriendship) 
@@ -8,89 +9,48 @@ class YumFriendshipController extends YumController {
 		return(parent::beforeAction($action));
 	}
 	
-	public function actionIndex()
-	{
-		if(isset($_POST['YumFriendship']['friendship_id']) )
-		{
-			$friendship=YumFriendship::model()->findByPK($_POST['YumFriendship']['friendship_id']);
+	public function actionIndex() {
+		if(isset($_POST['YumFriendship']['inviter_id']) 
+				&& isset($_POST['YumFriendship']['friend_id']) ) {
+			$friendship = YumFriendship::model()->find(
+					'inviter_id = :inviter_id and friend_id = :friend_id', array(
+						':inviter_id' => $_POST['YumFriendship']['inviter_id'],
+						':friend_id' => $_POST['YumFriendship']['friend_id']));
+
 			if($friendship->inviter_id == Yii::app()->user->id || $friendship->friend_id == Yii::app()->user->id)
 				if(isset($_POST['YumFriendship']['add_request']))
 				{
 					$friendship->status = 2;
 					$friendship->save();
-				}elseif(isset($_POST['YumFriendship']['deny_request']))
-				{
+				} elseif(isset($_POST['YumFriendship']['deny_request'])) {
 					$friendship->status = 3;
 					$friendship->save();
-				}elseif(isset($_POST['YumFriendship']['ignore_request']))
-				{
+				} elseif(isset($_POST['YumFriendship']['ignore_request'])) {
 					$friendship->status = 0;
 					$friendship->save();
-				}elseif(isset($_POST['YumFriendship']['cancel_request']) || isset($_POST['YumFriendship']['remove_friend']))
-				{
-			$friendship->delete();
+				}elseif(isset($_POST['YumFriendship']['cancel_request']) 
+						|| isset($_POST['YumFriendship']['remove_friend'])) {
+					$friendship->delete();
 			}
 		}
+
 		$user = YumUser::model()->findByPk(Yii::app()->user->id);
-		$myfriends=$user->getFriendships();
-		$this->render('myfriends', array('friends' => $myfriends,));
+		$this->render('myfriends', array('friends' => $user->getFriendships()));
 	}
 
 	public function actionAdmin() {
-		$user = YumUser::model()->findByPk(Yii::app()->user->id);
-		if(Yii::app()->user->isAdmin()) {
-			$model = new YumUser('search');
+		$friendships = new CActiveDataProvider('YumFriendship', array(
+					'criteria'=>array(
+						'order'=>'status ASC',
+						),
+					'pagination'=>array(
+						'pageSize'=>20,
+						),
+					));
 
-			if(isset($_GET['YumUser']))
-				$model->attributes = $_GET['YumUser'];                                    
+		$this->render('admin', array('friendships' => $friendships));
 
-
-
-			$this->render('admin', array('model'=>$model));
-		} else {
-			$model = YumUser::model()->findByPk(Yii::app()->user->id);
-			$this->render('restricted_admin', array('users'=>$model->getAdministerableUsers()));
-		}
-
-/*		$friendships = new CArrayDataProvider(
-				$user->getFriendships(), array(
-					'id' => 'friends',
-					'keyField' => 'friend_id',
-					'sort' => array('attributes' => array('friend_id', 'status')
-					)));
-
-		$this->render('admin', array(
-					'friendships' => $friendships,
-					'sortableAttributes' => array('friend_id' => 'Friend', 'status')
-					)); */
-
-
-		//$this->render('admin', array('friendships' => $user->friendships));
-	}
-
-	public function actionfriendAdmin() {
-		if(Yii::app()->user->isAdmin()) {
-			$user=YumUser::model()->findByPK($_GET['id']);
-			$friendships=$user->getFriendships();
-			
-			$friendships=new CActiveDataProvider('YumFriendship', array(
-    'criteria'=>array(
-        'condition'=>'inviter_id = :user_id || friend_id = :user_id',
-        'params'=>array(':user_id'=>$user->id),
-        'order'=>'status ASC',
-    ),
-    'pagination'=>array(
-        'pageSize'=>20,
-    ),
-));
-
-
-			$this->render('friendedit', array('friends' => $friendships,'user'=>$user));
-			
-		}else{
-			
-		}
-	}
+	} 
 	
 	public function actionInvite() {
 		if(isset($_GET['user_id']))

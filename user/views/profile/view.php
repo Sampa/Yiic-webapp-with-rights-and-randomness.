@@ -91,7 +91,7 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 <?php
 }
 if(Yum::module()->messageSystem != YumMessage::MSG_NONE) {
-	echo CHtml::link('Write a Message to this User', array(
+	echo CHtml::link(Yum::t('Write a message to this User'), array(
 				'messages/compose', 'to_user_id' => $model->id));
 }
 	echo '<br />';

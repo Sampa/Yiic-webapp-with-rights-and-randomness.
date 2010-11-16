@@ -189,15 +189,14 @@ class YumInstallController extends YumController
 					if(isset($_POST['installFriendship']))  
 					{
 						$sql = "CREATE TABLE  `".$friendshipTable."` (
-							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`inviter_id` int(11) NOT NULL,
-							`status` int(11) NOT NULL,
 							`friend_id` int(11) NOT NULL,
+							`status` int(11) NOT NULL,
 							`acknowledgetime` int(11) DEFAULT NULL,
 							`requesttime` int(11) DEFAULT NULL,
 							`updatetime` int(11) DEFAULT NULL,
 							`message` varchar(255) NOT NULL,
-							PRIMARY KEY (`id`)
+							PRIMARY KEY (`inviter_id`, `friend_id`)
 								) ENGINE = INNODB;";
 
 						$db->createCommand($sql)->execute();

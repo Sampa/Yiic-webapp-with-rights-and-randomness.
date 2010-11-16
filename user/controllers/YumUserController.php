@@ -165,7 +165,7 @@ class YumUserController extends YumController
 
 					if($new_password->save()) {
 						Yii::log(Yum::t('User {username} changed his password', array(
-										'{username}' => $user->username)),
+										'{username}' => $new_password->username)),
 								'info',
 								'modules.user.controllers.YumUserController');
 

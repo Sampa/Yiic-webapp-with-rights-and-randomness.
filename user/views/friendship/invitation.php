@@ -1,15 +1,15 @@
 <?php
 $this->title = Yum::t('Request friendship for user {username}', array('{username}' => $invited->username));
-$this->breadcrumbs = array('Friendship', 'Invitation', $invited->username);
+$this->breadcrumbs = array(Yum::t('Friendship'), Yum::t('Invitation'), $invited->username);
 
 $friendship_status = $invited->isFriendOf(Yii::app()->user->id);
 	if($friendship_status !== false)  {
 		if($friendship_status == 1)
 			echo Yum::t('Friendship request already sent');
 		if($friendship_status == 2)
-			echo Yum::t('Users already are friends');
+			echo Yum::t('You already are friends');
 		if($friendship_status == 3)
-			echo Yum::t('Friendship request has been rejected ');
+			echo Yum::t('Friendship request has been rejected');
 
 		return false;
 	} else {

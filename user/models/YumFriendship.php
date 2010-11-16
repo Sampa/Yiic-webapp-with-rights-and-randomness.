@@ -11,7 +11,6 @@ class YumFriendship extends YumActiveRecord{
 		return parent::model($className);
 	}
 
-
 	public function requestFriendship($inviter, $invited, $message = null) {
 		if(!is_object($inviter))
 			$inviter = YumUser::model()->findByPk($inviter);
@@ -60,13 +59,13 @@ class YumFriendship extends YumActiveRecord{
 	public function getStatus() {
 		switch($this->status) {
 			case '0':
-				return 'No friendship requested';
+				return Yum::t('No friendship requested');
 			case '1':
-				return 'Confirmation pending';
+				return Yum::t('Confirmation pending');
 			case '2':
-				return 'Friendship confirmed';
+				return Yum::t('Friendship confirmed');
 			case '3':
-				return 'Friendship rejected';
+				return Yum::t('Friendship rejected');
 
 		}
 	}

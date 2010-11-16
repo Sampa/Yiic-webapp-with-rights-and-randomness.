@@ -81,10 +81,9 @@ $this->renderPartial('/messages/new_messages');?>
 </table>
 
 <div id="friends">
-<h2> My friends </h2>
+<h2> <?php echo Yum::t('My friends'); ?> </h2>
 <?php
-foreach($friends as $friend)
-{
+foreach($friends as $friend) {
 ?>
 <div id="friend">
 <div id="avatar">

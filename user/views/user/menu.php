@@ -88,9 +88,9 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 
-		$menu[] = e('Edit personal Data', 'profile/edit');
+		$menu[] = e('Edit personal data', 'profile/edit');
 		if(Yii::app()->getModule('user')->enableAvatar) 
-			$menu[] = e('Upload Avatar Image', 'avatar/editAvatar');
+			$menu[] = e('Upload avatar image', 'avatar/editAvatar');
 		$menu[] = e('Browse users', 'user/index');
 		if(Yum::module()->enableFriendship)
 		{
