@@ -64,6 +64,13 @@ class YumRegistrationController extends YumController
 				if($form->email != '' && YumProfile::model()->find('email = "'.$form->email .'"')) 
 					$profile->addError('email', Yum::t('E-Mail already in use. If you have not registered before, please contact our System administrator.'));
 			}
+			
+			if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD)
+			{
+					$form->password=YumUserChangePassword::createRandomPassword(5,5,5);
+					$form->verifyPassword=$form->password;
+					
+				}
 
 			if($form->validate() && !$profile->hasErrors()) {
 				$user = new YumUser();
@@ -82,8 +89,8 @@ class YumRegistrationController extends YumController
 					YumActivityController::log($user, 'register');
 
 					if($registrationType == YumRegistration::REG_EMAIL_CONFIRMATION || 
-							$registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION) {
-						$this->sendRegistrationEmail($user);
+					$registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD || $registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION) {
+						$this->sendRegistrationEmail($user,$form->password);
 						Yii::app()->user->setFlash('registration',
 								Yum::t("Thank you for your registration. Please check your email."));
 						$this->refresh();
@@ -94,7 +101,7 @@ class YumRegistrationController extends YumController
 					} 
 				} else {
 					Yii::app()->user->setFlash('registration',
-							Yum::t("Your registration didn't work. Please try another E-Mail address. If this problem persists, please contact our System Administrator."));
+							Yum::t("Your registration didn't work. Please try another E-Mail address. If this problem persists, please contact our System Administrator. "));
 					$this->refresh();
 				}
 			}
@@ -102,13 +109,14 @@ class YumRegistrationController extends YumController
 
 		$this->render('/user/registration', array(
 					'form' => $form,
-					'profile' => $profile
+					'profile' => $profile,
+					'registrationtype'=>$registrationType,
 					)
 				);
 	}
 
 	// Send the Email to the given user object. $user->email needs to be set.
-	public function sendRegistrationEmail($user) {
+	public function sendRegistrationEmail($user,$password=null) {
 		if(!isset($user->profile[0]->email))
 		{
 			throw new CException(Yum::t('Email is not set when trying to send Registration Email'));	
@@ -126,8 +134,12 @@ class YumRegistrationController extends YumController
 
 			if(is_object($content)) {
 				$msgheader = $content->subject_email_registration;
+				if(YumRegistration::REG_NO_PASSWORD || YumRegistration::REG_NO_USERNAME_OR_PASSWORD)
+				{
+				$msgbody = strtr($content->text_email_registration . "\n\n Your temporary password is $password", array('{activation_url}' => $activation_url));
+				}else{
 				$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
-
+			}
 				if(Yum::module()->mailer == 'swift') {
 					$sm = Yii::app()->swiftMailer;
 					$mailer = $sm->mailer($sm->mailTransport());

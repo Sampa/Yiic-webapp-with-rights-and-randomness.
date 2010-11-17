@@ -48,9 +48,13 @@
 1 => Yum::t('Simple registration '),
 2 => Yum::t('Confirmation by E-Mail'), 
 3 => Yum::t('Confirmation by Admin'),
-4 => Yum::t('Confirmation by E-Mail and Admin '),
+4=> Yum::t('Confirmation by E-Mail and Admin '),
+5 => Yum::t('Auto-generate password '),
+6 => Yum::t('No Username and Auto-generate password '),
+7 => Yum::t('Auto-generate password -admin'),
+8 => Yum::t('No Username and Auto-generate password -admin'),
 )); ?>
-<?php printf('<p class="tooltip">%s</p>', Yum::t('Simple Registration: User is instantly activated after registration <br />Confirmation by Email: Activation link is send to user, and he needs to confirm with this link<br /> Confirmation by Admin: Administrator decides which users are accepted and which don\'t.<br />Confirmation by Email and Admin: Administrator sees if E-Mail has already been confirmed or not, but still decides whether to Accept or Decline the User'));
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Simple Registration: User is instantly activated after registration <br />Confirmation by Email: Activation link is send to user, and he needs to confirm with this link<br /> Confirmation by Admin: Administrator decides which users are accepted and which don\'t.<br />Confirmation by Email and Admin: Administrator sees if E-Mail has already been confirmed or not, but still decides whether to Accept or Decline the User.<br />Auto-Generate password: No password will appear on the registration form, instead it will be auto-generated and emailed to the user.<br />No username auto-Generate password: No username or password will appear on the registration form, instead it will be auto-generated and emailed to the user.<br /<br />Auto-Generate password -admin: No password will appear on the registration form, instead it will be auto-generated and emailed to the user the admin will activate.No username auto-Generate password-admin: No username or password will appear on the registration form, instead it will be auto-generated and the admin will activate '));
 ?>
 <?php echo $form->error($model,'enableRegistration'); ?>
 </div>

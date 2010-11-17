@@ -49,7 +49,7 @@ if(Yii::app()->getModule('user')->enableRoles) {
 <?php
 	$loginType = Yii::app()->getModule('user')->loginType;
 
-	if($loginType != 'LOGIN_BY_EMAIL') {
+	if($loginType != 'LOGIN_BY_EMAIL'  &&  $registrationtype !=6 &&  $registrationtype !=7 &&  $registrationtype !=8) {
 		echo CHtml::activeLabelEx($form,'username'); 
 		echo CHtml::activeTextField($form,'username'); 
 	}
@@ -108,7 +108,11 @@ if ($profileFields) {
 	}
 }
 ?>
+<?php 
 
+if($registrationtype != 5 &&  $registrationtype !=6  &&  $registrationtype !=7 &&  $registrationtype !=8)
+{
+	?>
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($form,'password'); ?>
 	<?php echo CHtml::activePasswordField($form,'password'); ?>
@@ -118,7 +122,9 @@ if ($profileFields) {
 	<?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
 	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
 	</div>
-
+<?php 
+}
+?>
 	<?php if(extension_loaded('gd') && Yii::app()->getModule('user')->enableCaptcha): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>

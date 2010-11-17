@@ -36,4 +36,47 @@ class YumUserChangePassword extends YumFormModel
 			'verifyPassword'=>Yii::t("UserModule.user", "Retype password"),
 		);
 	}
+	
+	
+	public function createRandomPassword($lowercase=0,$uppercase=0,$numbers=0) {
+	$max=$lowercase + $uppercase + $numbers;
+    $chars = "abcdefghijkmnopqrstuvwxyz";
+    $numbers = "1023456789";
+    srand((double)microtime()*1000000);
+    $i = 0;
+    $current_lc=0;
+    $current_uc=0;
+    $current_dd=0;
+    $password = '' ;
+    while ($i <= $max) {
+		if ($current_lc < $lowercase)
+		{
+        $charnum = rand() % 22;
+        $tmpchar = substr($chars, $charnum, 1);
+        $password = $password . $tmpchar;
+        $i++;
+	    }
+	    
+	    if ($current_uc < $uppercase)
+		{
+        $charnum = rand() % 22;
+        $tmpchar = substr($chars, $charnum, 1);
+        $password = $password . strtoupper($tmpchar);
+        $i++;
+	    }
+	    
+	     if ($current_dd < $numbers)
+		{
+        $charnum = rand() % 9;
+        $tmpchar = substr($numbers, $charnum, 1);
+        $password = $password . $tmpchar;
+        $i++;
+	    }
+    }
+    return $password;
+}
+
+
+
+
 } 

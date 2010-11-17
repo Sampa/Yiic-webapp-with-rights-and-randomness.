@@ -6,6 +6,8 @@ class YumRegistration extends YumActiveRecord {
 	const REG_EMAIL_CONFIRMATION = 2;
 	const REG_CONFIRMATION_BY_ADMIN = 3;
 	const REG_EMAIL_AND_ADMIN_CONFIRMATION = 4;
+	const REG_NO_PASSWORD = 5;
+	const REG_NO_USERNAME_OR_PASSWORD =6;
 }
 
 ?>
