@@ -38,8 +38,8 @@ class YumUserChangePassword extends YumFormModel
 	}
 	
 	
-	public function createRandomPassword($lowercase=0,$uppercase=0,$numbers=0) {
-	$max=$lowercase + $uppercase + $numbers;
+	public function createRandomPassword($lowercase=0,$uppercase=0,$numbers=0,$max=0) {
+	
     $chars = "abcdefghijkmnopqrstuvwxyz";
     $numbers = "1023456789";
     srand((double)microtime()*1000000);
@@ -71,6 +71,29 @@ class YumUserChangePassword extends YumFormModel
         $tmpchar = substr($numbers, $charnum, 1);
         $password = $password . $tmpchar;
         $i++;
+	    }
+	    
+	    if($current_lc == $lowercase && $current_uc == $uppercase && $current_dd == $numbers && $i < $max)
+	    {
+	    $charnum = rand() % 22;
+	    $tmpchar = substr($chars, $charnum, 1);
+	    $password = $password . $tmpchar;
+	    $i++;
+	    if($i < $max)
+	    {
+	    $charnum = rand() % 9;
+	    $tmpchar = substr($numbers, $charnum, 1);
+	    $password = $password . $tmpchar;
+	    $i++;
+	    }
+	    if($i < $max)
+	    {
+	    $charnum = rand() % 22;
+	    $tmpchar = substr($chars, $charnum, 1);
+	    $password = $password . strtoupper($tmpchar);
+	    $i++;
+	    }
+	   
 	    }
     }
     return $password;

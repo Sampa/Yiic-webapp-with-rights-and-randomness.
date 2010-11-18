@@ -10,7 +10,7 @@ $cssfile = Yii::app()->assetManager->publish($path);
 Yii::app()->clientScript->registerCssFile($cssfile);
 $this->renderPartial('/messages/new_messages');
 
-if (Yii::app()->getModule('user')->debug === true) {
+if (Yum::module()->debug == true) {
     echo CHtml::openTag('div', array('style' => 'background-color: red;color:white;'));
     echo Yii::t('UserModule.user',
             'You are running the Yii User Management Module {version} in Debug Mode!',

@@ -52,6 +52,7 @@ if(Yii::app()->getModule('user')->enableRoles) {
 	if($loginType != 'LOGIN_BY_EMAIL'  &&  $registrationtype !=6 &&  $registrationtype !=7 &&  $registrationtype !=8) {
 		echo CHtml::activeLabelEx($form,'username'); 
 		echo CHtml::activeTextField($form,'username'); 
+		echo CHtml::error($form,'username'); 
 	}
 ?>
 

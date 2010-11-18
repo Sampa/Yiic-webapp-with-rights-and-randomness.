@@ -115,19 +115,21 @@ class YumUser extends YumActiveRecord
 	public function rules()
 	{
 		$passwordRequirements = Yii::app()->getModule('user')->passwordRequirements;
+		$usernameRequirements = Yum::module()->usernameRequirements;
 
 		$passwordrule = array_merge(array('password', 'YumPasswordValidator'),
 				$passwordRequirements);
 
 		$rules[] = $passwordrule;
-		$rules[] = array('username', 'length', 'max' => 20, 'min' => 3,
-			'message' => Yum::t("Incorrect username (length between 3 and 20 characters)."));
+
+		$rules[] = array('username', 'length', 'max' => $usernameRequirements['maxLen'], 'min' => $usernameRequirements['minLen'],'message' => Yum::t("Incorrect username (length between" . $usernameRequirements['minLen']." and " . $usernameRequirements['maxLen'] . "characters)."));
+
 		if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL')
 			$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
 		$rules[] = array('status', 'in', 'range' => array(0, 1, -1));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
-		$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
+		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
 		$rules[] = array('notifyType', 'safe');
 		$rules[] = array('password', 'required', 'on' => array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly' => true);

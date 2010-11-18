@@ -16,7 +16,7 @@ class YumRegistrationForm extends YumUser {
 	public function rules() 
 	{
 		$rules = parent::rules();
-		if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL')
+		if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL' || Yum::module()->registrationType ==REG_NO_USERNAME_OR_PASSWORD || Yum::module()->registrationType == REG_NO_USERNAME_OR_PASSWORD_ADMIN)
 			$rules[] = array('username', 'required');
 		$rules[] = array('password, verifyPassword', 'required');
 		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword', 'message' => Yii::t("UserModule.user", "Retype password is incorrect."));
@@ -26,4 +26,16 @@ class YumRegistrationForm extends YumUser {
 
 
 	}
+	
+	public function genRandomString( $length = 10)
+	{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+    $string ='';    
+    for ($p = 0; $p < $length; $p++)
+     {
+        $string .= $characters[mt_rand(0, strlen($characters))];
+    }
+    return $string;
+	}
+
 }

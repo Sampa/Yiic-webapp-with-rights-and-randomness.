@@ -143,10 +143,15 @@ class UserModule extends CWebModule
 			'minLen' => 8,
 			'maxLen' => 32,
 			'minLowerCase' => 1,
-			'minDigits' => 1,
+			'minUpperCase'=>0,
 			'minDigits' => 1,
 			'maxRepetition' => 3,
 			);
+			
+	public $usernameRequirements=array(
+		'minLen'=>3,
+		'maxLen'=>20,
+		);
 
 	/**
 	 * Additionally implements support for getting URLs
