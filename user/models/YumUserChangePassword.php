@@ -22,6 +22,7 @@ class YumUserChangePassword extends YumFormModel
 		$rules[] = array('password, verifyPassword', 'required');
 		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword',
 				'message' => Yii::t("UserModule.user", "Retype password is incorrect."));
+				
 
 		return $rules; 
 	}
@@ -38,7 +39,7 @@ class YumUserChangePassword extends YumFormModel
 	}
 	
 	
-	public function createRandomPassword($lowercase=0,$uppercase=0,$numbers=0,$max=0) {
+	public function createRandomPassword($lowercase=0,$uppercase=0,$minnumbers=0,$max=0) {
 	
     $chars = "abcdefghijkmnopqrstuvwxyz";
     $numbers = "1023456789";
@@ -65,7 +66,7 @@ class YumUserChangePassword extends YumFormModel
         $i++;
 	    }
 	    
-	     if ($current_dd < $numbers)
+	     if ($current_dd < $minnumbers)
 		{
         $charnum = rand() % 9;
         $tmpchar = substr($numbers, $charnum, 1);

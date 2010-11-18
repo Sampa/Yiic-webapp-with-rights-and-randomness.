@@ -15,7 +15,7 @@
 0 => Yum::t('Disable profile History'),
 1 => Yum::t('Enable profile History')
 )); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If enable History is set, user profiles are kept in the System if the user changes his profile Data. This way the admin is able to see what has changed in the profile history log.')); ?>
+<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If enable History is set, user profiles are kept in the system even if the user changes his profile Data. This way the admin is able to see what has changed in the profile history log.')); ?>
 <?php echo $form->error($model,'enableProfileHistory'); ?>
 </div>
 
@@ -37,7 +37,7 @@
 0 => Yum::t('Do not keep user profiles'),
 1 => Yum::t('Keep all User profiles')
 )); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If preserveProfiles is set, the profiles are not being removed then the user gets deleted. This way the administrator keeps his user profile history forever')); ?>
+<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If preserveProfiles is set, the profiles are not removed when the user gets deleted. This way the administrator keeps his user profile history forever')); ?>
 <?php echo $form->error($model,'preserveProfiles'); ?>
 </div>
 
@@ -50,11 +50,11 @@
 3 => Yum::t('Confirmation by Admin'),
 4=> Yum::t('Confirmation by E-Mail and Admin '),
 5 => Yum::t('Auto-generate password '),
-6 => Yum::t('No Username and Auto-generate password '),
-7 => Yum::t('Auto-generate password -admin'),
-8 => Yum::t('No Username and Auto-generate password -admin'),
+6 => Yum::t('Auto-generate password -admin'),
+
 )); ?>
-<?php printf('<p class="tooltip">%s</p>', Yum::t('Simple Registration: User is instantly activated after registration <br />Confirmation by Email: Activation link is send to user, and he needs to confirm with this link<br /> Confirmation by Admin: Administrator decides which users are accepted and which don\'t.<br />Confirmation by Email and Admin: Administrator sees if E-Mail has already been confirmed or not, but still decides whether to Accept or Decline the User.<br />Auto-Generate password: No password will appear on the registration form, instead it will be auto-generated and emailed to the user.<br />No username auto-Generate password: No username or password will appear on the registration form, instead it will be auto-generated and emailed to the user.<br /<br />Auto-Generate password -admin: No password will appear on the registration form, instead it will be auto-generated and emailed to the user the admin will activate.No username auto-Generate password-admin: No username or password will appear on the registration form, instead it will be auto-generated and the admin will activate '));
+<?php printf('<p class="tooltip">%s</p>', Yum::t(' *** Simple Registration: User is instantly activated after registration <br /> *** Confirmation by Email: Activation link is send to user, and he needs to confirm with this link<br />  *** Confirmation by Admin: Administrator decides which users are accepted and which don\'t.<br /> *** Confirmation by Email and Admin: Administrator sees if E-Mail has already been confirmed or not, but still decides whether to Accept or Decline the User.<br /> *** Auto-Generate password: No password will appear on the registration form, instead it will be auto-generated and emailed to the user.<br /> *** Auto-Generate password -admin: No password will appear on the registration form, instead it will be auto-generated and emailed to the user the admin will activate.
+<br /> '));
 ?>
 <?php echo $form->error($model,'enableRegistration'); ?>
 </div>
@@ -65,7 +65,7 @@
 0 => Yum::t('Disable recovery'),
 1 => Yum::t('Enable recovery')
 )); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If enable Recovery is set, registerd users will have the possibility to recover his own password. The link will be available beneath the login Form.')); ?>
+<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'If enable Recovery is set, registered users will have the possibility to recover their password. The link will be available beneath the login Form.')); ?>
 <?php echo $form->error($model,'enableRecovery'); ?>
 </div>
 
@@ -114,8 +114,8 @@
 
 <div class="row">
 <?php echo $form->labelEx($model,'enableCaptcha'); ?>
-<?php printf('<p class="tooltip">%s</p>', Yii::t('UserModule.user', 'Display a Captcha the user needs to enter in the Registration Form?')); ?>
-
+<?php //printf('<p class="tooltip">%s</p>', Yum::t('Display a Captcha the user needs to enter in the Registration Form?')); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('This option sets how the login should be allowed')); ?>
 <?php echo $form->dropDownList($model,'enableCaptcha', array(
 			0 => Yii::t('UserModule.user', 'No'),
 			1 => Yii::t('UserModule.user', 'Yes')

@@ -52,6 +52,10 @@ class YumRegistrationController extends YumController
 		if(isset($_POST['YumRegistrationForm'])) {
 			$form->attributes = $_POST['YumRegistrationForm'];
 			$form->email = $_POST['YumProfile']['email'];
+			if($loginType == 'LOGIN_BY_EMAIL' )  
+			{
+			$form->username = YumRegistrationForm::genRandomString($usernameRequirements['maxLen']);
+			}
 
 			if(isset($_POST['YumProfile'])) {
 				$profile->attributes = $_POST['YumProfile'];
@@ -59,15 +63,13 @@ class YumRegistrationController extends YumController
 			}
 
 	
-			if($loginType == 'LOGIN_BY_EMAIL' || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD_ADMIN || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD)  
-			{
-			$form->username=YumRegistrationForm::genRandomString($usernameRequirements['maxLen']);
-	
+			
+			
 			if($form->email != '' && YumProfile::model()->find('email = "'.$form->email .'"')) 
 			$profile->addError('email', Yum::t('E-Mail already in use. If you have not registered before, please contact our System administrator.'));
-			}
 			
-			if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD_ADMIN)
+			
+			if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
 			{
 			$form->password=YumUserChangePassword::createRandomPassword(Yum::module()->passwordRequirements['minLowerCase'],Yum::module()->passwordRequirements['minUpperCase'],Yum::module()->passwordRequirements['minDigits'],Yum::module()->passwordRequirements['minLen']); 
 			$form->verifyPassword=$form->password;
@@ -90,7 +92,7 @@ class YumRegistrationController extends YumController
 
 					//YumActivityController::log($user, 'register');
 			if($registrationType == YumRegistration::REG_EMAIL_CONFIRMATION || 
-			$registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD || $registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION ||$registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN || $registrationType == YumRegistration::REG_NO_USERNAME_OR_PASSWORD_ADMIN) 
+			$registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION ||$registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION ) 
 			{
 			$this->sendRegistrationEmail($user,$form->password);
 				Yii::app()->user->setFlash('registration',
@@ -139,7 +141,7 @@ class YumRegistrationController extends YumController
 
 			if(is_object($content)) {
 				$msgheader = $content->subject_email_registration;
-				if(YumRegistration::REG_NO_PASSWORD || YumRegistration::REG_NO_USERNAME_OR_PASSWORD)
+				if(YumRegistration::REG_NO_PASSWORD  || YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
 				{
 				$msgbody = strtr($content->text_email_registration . "\n\n Your temporary password is $password", array('{activation_url}' => $activation_url));
 				}else{

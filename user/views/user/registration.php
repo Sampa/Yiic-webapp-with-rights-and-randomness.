@@ -49,11 +49,12 @@ if(Yii::app()->getModule('user')->enableRoles) {
 <?php
 	$loginType = Yii::app()->getModule('user')->loginType;
 
-	if($loginType != 'LOGIN_BY_EMAIL'  &&  $registrationtype !=6 &&  $registrationtype !=7 &&  $registrationtype !=8) {
+	if($loginType != 'LOGIN_BY_EMAIL' ) {
 		echo CHtml::activeLabelEx($form,'username'); 
 		echo CHtml::activeTextField($form,'username'); 
 		echo CHtml::error($form,'username'); 
 	}
+	
 ?>
 
 	<?php 
@@ -111,7 +112,7 @@ if ($profileFields) {
 ?>
 <?php 
 
-if($registrationtype != 5 &&  $registrationtype !=6  &&  $registrationtype !=7 &&  $registrationtype !=8)
+if($registrationtype != YumRegistration::REG_NO_PASSWORD &&  $registrationtype != YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
 {
 	?>
 	<div class="row">

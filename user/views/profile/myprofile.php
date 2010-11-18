@@ -83,6 +83,8 @@ $this->renderPartial('/messages/new_messages');?>
 <div id="friends">
 <h2> <?php echo Yum::t('My friends'); ?> </h2>
 <?php
+if($model->friends)
+{
 foreach($friends as $friend) {
 ?>
 <div id="friend">
@@ -100,7 +102,12 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 </div>
 <?php
 }
+}else {
+		echo Yum::t('You have no friends yet');
+	}
 ?>
+</div>
+<div id="visits">
 <h2> <?php echo Yum::t('This users have visited my profile'); ?> </h2>
 <?php
 	if($model->visits) {
@@ -115,6 +122,8 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 );
 
 		foreach($model->visits as $visit) {
+			if(isset($visit->visitor))  //we need this in case a user quits
+			{
 			printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
 					CHtml::link($visit->visitor->username, array('user/view', 'id' => $visit->visitor_id)),
 					date($format, $visit->timestamp_first_visit),
@@ -123,6 +132,7 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 					CHtml::link(Yum::t('Write a message'), array('messages/compose', 'to_user_id' => $visit->visitor_id))
 					);
 		}
+	}
 		echo '</table>';
 	} else {
 		echo Yum::t('Nobody has visited your profile yet');
