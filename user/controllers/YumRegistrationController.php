@@ -222,26 +222,49 @@ class YumRegistrationController extends YumController
 	 */
 	public function actionRecovery () {
 		$form = new YumUserRecoveryForm;
-
+		
+		$headers = sprintf("From: %s\r\nReply-To: %s",
+							Yii::app()->params['adminEmail'],
+							Yii::app()->params['adminEmail']);
+							
 		if (isset($_GET['email']) && isset($_GET['activationKey'])) {
+			$registrationType = Yum::module()->registrationType;
 			$passwordform = new YumUserChangePassword;
 			$user = YumProfile::model()->findByAttributes(
 					array('email'=>$_GET['email']))->user;
+			
+			if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION){
+			        $password=YumUserChangePassword::createRandomPassword(Yum::module()->passwordRequirements['minLowerCase'],Yum::module()->passwordRequirements['minUpperCase'],Yum::module()->passwordRequirements['minDigits'],Yum::module()->passwordRequirements['minLen']); 
+			        $user->password = YumUser::encrypt($password);
+			        $user->save();
+					
+					mail($user->profile[0]->email,
+					Yum::t('Password recovery'), 
+					sprintf('You have requested to reset your Password. Your new password, is %s',
+					$password),$headers);
+								
+				Yii::app()->user->setFlash('loginMessage',
+				Yum::t('Instructions have been sent to you. Please check your email.'));
+			}
 
 			if($user->activationKey == $_GET['activationKey']) {
 				if(isset($_POST['YumUserChangePassword'])) {
 					$passwordform->attributes = $_POST['YumUserChangePassword'];
 					if($passwordform->validate()) {
-						$user->password = YumUser::encrypt($passwordform->password);
-						$user->activationKey = YumUser::encrypt(microtime().$passwordform->password);
-						$user->save();
-
-						Yii::app()->user->setFlash('loginMessage',
+						
+				$user->password = YumUser::encrypt($passwordform->password);
+				$user->activationKey = YumUser::encrypt(microtime().$passwordform->password);
+				$user->save();
+				Yii::app()->user->setFlash('loginMessage',
 								Yum::t("Your new password has been saved."));
 						$this->redirect(Yii::app()->controller->module->loginUrl);
 					}
 				}
+				if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION){
+					$this->redirect(array('/user/user/login'));
+				}else{
 				$this->render('/user/changepassword',array('form'=>$passwordform));
+			}
 			} else {
 				Yii::app()->user->setFlash('recoveryMessage',
 						Yum::t("Incorrect recovery link."));
@@ -254,10 +277,7 @@ class YumRegistrationController extends YumController
 				if($form->validate()) {
 					$user = YumUser::model()->findbyPk($form->user_id);
 
-					$headers = sprintf("From: %s\r\nReply-To: %s",
-							Yii::app()->params['adminEmail'],
-							Yii::app()->params['adminEmail']);
-
+			
 
 					$activation_url = sprintf('http://%s%s',
 							$_SERVER['HTTP_HOST'],
@@ -265,14 +285,16 @@ class YumRegistrationController extends YumController
 									'activationKey' => $user->activationKey,
 									'email' => $user->profile[0]->email)));
 
-					YumActivityController::logActivity($user, 'recovery');
+					//YumActivityController::logActivity($user, 'recovery');
+					Yii::app()->user->setFlash('loginMessage',
+							Yum::t('Instructions have been sent to you. Please check your email.'));
+							
 					mail($user->profile[0]->email,
 							Yum::t('Password recovery'), 
 							sprintf('You have requested to reset your Password. To receive a new password, go to %s',
 								$activation_url),$headers);
 
-					Yii::app()->user->setFlash('loginMessage',
-							Yum::t('Instructions have been sent to you. Please check your email.'));
+					
 
 					$this->redirect(array('/user/user/login'));
 				}

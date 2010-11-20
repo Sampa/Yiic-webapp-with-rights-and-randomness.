@@ -123,7 +123,7 @@ class YumUserController extends YumController
 				}
 			} else {
 				$user = YumUser::model()->find('username = \''.$loginForm->username.'\'');
-				YumActivityController::logActivity($user, 'failed_login_attempt');
+				//YumActivityController::logActivity($user, 'failed_login_attempt');
 
 			}
 
