@@ -53,6 +53,8 @@ if(Yii::app()->getModule('user')->enableRoles) {
 		echo CHtml::activeLabelEx($form,'username'); 
 		echo CHtml::activeTextField($form,'username'); 
 		echo CHtml::error($form,'username'); 
+	}else{
+		echo CHtml::activeHiddenField($form,'username');
 	}
 	
 ?>

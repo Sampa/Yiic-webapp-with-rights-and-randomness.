@@ -34,6 +34,7 @@ class YumUser extends YumActiveRecord
 	public $username;
 	public $password;
 	public $email;
+	public $activationKey;
 	private $_userRoleTable;
 	private $_userUserTable;
 	private $_friendshipTable;

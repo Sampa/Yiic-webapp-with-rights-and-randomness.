@@ -11,7 +11,7 @@ class YumRegistrationController extends YumController
 	{
 		return array(
 				array('allow',
-					'actions'=>array('index', 'registration', 'recovery', 'activation'),
+					'actions'=>array('index', 'registration', 'recovery', 'activation','resendactivation'),
 					'users'=>array('*'),
 					),
 				array('allow',
@@ -62,9 +62,6 @@ class YumRegistrationController extends YumController
 				$profile->validate();
 			}
 
-	
-			
-			
 			if($form->email != '' && YumProfile::model()->find('email = "'.$form->email .'"')) 
 			$profile->addError('email', Yum::t('E-Mail already in use. If you have not registered before, please contact our System administrator.'));
 			
@@ -92,12 +89,15 @@ class YumRegistrationController extends YumController
 
 					//YumActivityController::log($user, 'register');
 			if($registrationType == YumRegistration::REG_EMAIL_CONFIRMATION || 
-			$registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION ||$registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION ) 
+			 $registrationType == YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION || $registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION ) 
 			{
-			$this->sendRegistrationEmail($user,$form->password);
+			$success=$this->sendRegistrationEmail($user,$form->password);
+			
 				Yii::app()->user->setFlash('registration',
 					Yum::t("Thank you for your registration. Please check your email."));
-						$this->refresh();
+					$this->actionActivate($user,$form);
+					Yii::app()->end();
+					
 					} else if($registrationType == YumRegistration::REG_SIMPLE) 
 					{
 						Yii::app()->user->setFlash('registration',
@@ -122,6 +122,33 @@ class YumRegistrationController extends YumController
 				);
 	}
 
+	public function actionActivate($user=null,$form=null)
+	{
+		
+		$this->render('/user/resend_activation', array(
+					'form' => $form,
+					'user'=>$user,
+					)
+					);	
+	}
+	
+	public function actionResendActivation()
+	{
+		$registrationType = Yum::module()->registrationType;
+		$email=$_POST['YumRegistrationForm']['email'];
+		//$email='mithereal@gmail.com';
+		$profile=YumProfile::model()->findAll($condition='email = :email',array(':email'=>$email));
+		$user=$profile[0]->user;
+		if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
+			{
+			$password=YumUserChangePassword::createRandomPassword(Yum::module()->passwordRequirements['minLowerCase'],Yum::module()->passwordRequirements['minUpperCase'],Yum::module()->passwordRequirements['minDigits'],Yum::module()->passwordRequirements['minLen']); 
+			$user->password=YumUser::model()->encrypt($password);
+			$user->save();
+			}
+		$this->sendRegistrationEmail($user,$password);
+		$this->redirect(Yii::app()->controller->module->loginUrl);
+	}
+	
 	// Send the Email to the given user object. $user->email needs to be set.
 	public function sendRegistrationEmail($user,$password=null) {
 		if(!isset($user->profile[0]->email))
@@ -138,12 +165,13 @@ class YumRegistrationController extends YumController
 
 			$content = YumTextSettings::model()->find('language = :lang', array(
 						'lang' => Yii::app()->language));
+			$sent=null;
 
 			if(is_object($content)) {
 				$msgheader = $content->subject_email_registration;
 				if(YumRegistration::REG_NO_PASSWORD  || YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
 				{
-				$msgbody = strtr($content->text_email_registration . "\n\n Your temporary password is $password", array('{activation_url}' => $activation_url));
+				$msgbody = strtr($content->text_email_registration . "\n\nYour Activation Key is $user->activationKey ,\n\n Your temporary password is $password,", array('{activation_url}' => $activation_url));
 				}else{
 				$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
 			}
@@ -154,21 +182,29 @@ class YumRegistrationController extends YumController
 						->setFrom(Yii::app()->params['adminEmail'])
 						->setTo($user->profile[0]->email)
 						->setBody($msgbody);                                                    
-					return $mailer->send($message);
+					$sent=$mailer->send($message);
 				} else {
-					mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
+					$sent=mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
 				}
-			}
+			}else{
+			throw new CException(Yum::t('no object'));	
+		}
 
-			return true;
+			return $sent;
 	}
 
 	/**
 	 * Activation of an user account
 	 */
-	public function actionActivation ()
+	public function actionActivation ($email=null,$key=null)
 	{
-		if(YumUser::activate($_GET['email'], $_GET['activationKey'])) {
+		if(isset($_GET['email']) && isset($_GET['activationKey']))
+		{
+		$email=$_GET['email'];
+		$key=$_GET['activationKey'];
+		}
+		
+		if(YumUser::activate($email, $key)) {
 			$this->render('/user/message', array(
 						'title'=>Yum::t("User activation"),
 						'content'=>Yum::t("Your account has been activated.")));
