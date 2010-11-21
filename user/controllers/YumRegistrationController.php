@@ -124,6 +124,18 @@ class YumRegistrationController extends YumController
 
 	public function actionActivate($user=null,$form=null)
 	{
+		if (!isset($user) && isset($_POST['YumProfile']['email']))
+		{
+		$email=$_POST['YumProfile']['email'];
+		$profile=YumProfile::model()->findAll($condition='email = :email',array(':email'=>$email));
+		$user=$profile[0]->user;
+		}else{
+			$user=new YumUser;
+		}
+		if(!isset($form))
+		{
+			$form = new YumRegistrationForm;
+		}
 		
 		$this->render('/user/resend_activation', array(
 					'form' => $form,
@@ -134,8 +146,12 @@ class YumRegistrationController extends YumController
 	
 	public function actionResendActivation()
 	{
+		
+		if(isset($_POST['email']))
+		{
+		$email=$_POST['email'];
 		$registrationType = Yum::module()->registrationType;
-		$email=$_POST['YumRegistrationForm']['email'];
+		$password=null;
 		//$email='mithereal@gmail.com';
 		$profile=YumProfile::model()->findAll($condition='email = :email',array(':email'=>$email));
 		$user=$profile[0]->user;
@@ -146,6 +162,7 @@ class YumRegistrationController extends YumController
 			$user->save();
 			}
 		$this->sendRegistrationEmail($user,$password);
+	}
 		$this->redirect(Yii::app()->controller->module->loginUrl);
 	}
 	
@@ -155,7 +172,7 @@ class YumRegistrationController extends YumController
 		{
 			throw new CException(Yum::t('Email is not set when trying to send Registration Email'));	
 		}
-
+			$registrationType = Yum::module()->registrationType;
 			$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 
 			$activation_url = 'http://' .  $_SERVER['HTTP_HOST'] .  $this->createUrl('registration/activation',array(
@@ -169,7 +186,7 @@ class YumRegistrationController extends YumController
 
 			if(is_object($content)) {
 				$msgheader = $content->subject_email_registration;
-				if(YumRegistration::REG_NO_PASSWORD  || YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
+				if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
 				{
 				$msgbody = strtr($content->text_email_registration . "\n\nYour Activation Key is $user->activationKey ,\n\n Your temporary password is $password,", array('{activation_url}' => $activation_url));
 				}else{
@@ -209,9 +226,12 @@ class YumRegistrationController extends YumController
 						'title'=>Yum::t("User activation"),
 						'content'=>Yum::t("Your account has been activated.")));
 		} else {
+			$this->actionActivate();
+/*
 			$this->render('/user/message',array(
 						'title'=>Yum::t("User activation"),
 						'content'=>Yum::t("Incorrect activation URL")));
+*/
 		}
 	}
 

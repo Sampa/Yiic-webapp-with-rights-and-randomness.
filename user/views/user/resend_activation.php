@@ -27,7 +27,14 @@ if(Yii::app()->user->hasFlash('registration'))
 <?php echo Yii::t("UserModule.user", "Enter the activation code you recieved below."); ?>
 </div>
 <div class="row">
-<?php echo CHtml::hiddenField('email',$form->email);  ?>
+<?php if(isset($form->email)){ 
+echo CHtml::hiddenField('email',$form->email);  
+ }else{ 
+	echo CHtml::activeLabelEx($user,'email');
+	echo CHtml::textField('email',$form->email);
+		}
+?>
+
 <?php echo CHtml::activeLabelEx($user,'activationKey'); ?>
 <?php echo CHtml::textField('activationKey'); //fixme ?> 
 </div>
@@ -42,7 +49,13 @@ if(Yii::app()->user->hasFlash('registration'))
 <?php echo CHtml::beginForm(array('registration/ResendActivation'),'POST',array()); ?>
 	
 	<div id="email">
-	<?php echo CHtml::activeHiddenField($form,'email');  ?>
+	<?php if(isset($form->email)){ 
+echo CHtml::hiddenField('email',$form->email);  
+ }else{ 
+	echo CHtml::activeLabelEx($user,'email');
+	echo CHtml::textField('email',$form->email);
+		}
+?>
 	</div>
 	<div id="resend_activation_text">
 	<?php echo Yii::t("UserModule.user", "If you failed to recieve the activation email, click the Resend Activation button."); ?>

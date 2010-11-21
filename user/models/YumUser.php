@@ -296,18 +296,25 @@ class YumUser extends YumActiveRecord
 	/**
 	 * Activation of an user account
 	 */
-	public function activate($email, $activationKey)
+	public function activate($email=null, $activationKey=null)
 	{
+		if (isset($email) && isset($activationKey))
+		{
 		$find = YumProfile::model()->findByAttributes(array('email' => $email))->user;
 		if($find->status == 1) {
-			return true;
+			$return = true;
 		} else if($find->activationKey == $activationKey) {
 			$find->activationKey = $find->generateActivationKey(true);
 			$find->status = 1;
 			$find->save();
-			return true;
-		} else
-			return false;
+			$return=true;
+		} else{
+			$return=false;
+		}
+		}else{
+			$return=false;
+		}
+	return $return;
 	}
 
 	/**
