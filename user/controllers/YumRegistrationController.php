@@ -173,7 +173,7 @@ class YumRegistrationController extends YumController
 			throw new CException(Yum::t('Email is not set when trying to send Registration Email'));	
 		}
 			$registrationType = Yum::module()->registrationType;
-			$headers = "From: " . Yii::app()->params['adminEmail']."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+			$headers = "From: " . Yii::app()->controller->module->registrationEmail ."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 
 			$activation_url = 'http://' .  $_SERVER['HTTP_HOST'] .  $this->createUrl('registration/activation',array(
 				'activationKey' => $user->activationKey,
@@ -244,8 +244,8 @@ class YumRegistrationController extends YumController
 		$form = new YumUserRecoveryForm;
 		
 		$headers = sprintf("From: %s\r\nReply-To: %s",
-							Yii::app()->params['adminEmail'],
-							Yii::app()->params['adminEmail']);
+							Yii::app()->controller->module->recoveryEmail,
+							Yii::app()->controller->module->recoveryEmail);
 							
 		if (isset($_GET['email']) && isset($_GET['activationKey'])) {
 			$registrationType = Yum::module()->registrationType;

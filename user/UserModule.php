@@ -46,6 +46,8 @@ class UserModule extends CWebModule
 	public $password_expiration_time = 30;
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
 	public $menuView = '/user/menu';
+	public $registrationEmail='register@website.com';
+	public $recoveryEmail='restore@website.com';
 
 	// System-wide configuration option on how users should be notified about
   // new internal messages by email. Available options:
