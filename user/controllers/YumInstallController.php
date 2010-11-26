@@ -81,6 +81,7 @@ class YumInstallController extends YumController
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`timestamp` int NOT NULL,
 							`user_id` int(11),
+							`remote_addr` varchar(16),
 							`action` enum('Login', 'Logout', 'Recovery', 'Registration', 'failed_login_attempt'),
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

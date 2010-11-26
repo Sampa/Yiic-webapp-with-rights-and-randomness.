@@ -287,34 +287,3 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 			return $this->_md=self::model(get_class($this))->_md;
 	}
 }
-
-/**
-	 * ExtendedActiveRecordMetaData is extended from CActiveRecordMetaData.  
-	 * It's modified to create tables that don't exist.
-	 */
-class ExtendedActiveRecordMetaData Extends CActiveRecordMetaData {
-	/**
-	 * Constructor.
-	 * @param CActiveRecord the model instance
-	 */
-	public function __construct($model)
-	{
-		$tableName=$model->tableName();
-		if(($table=$model->getDbConnection()->getSchema()->getTable($tableName))===null) {
-			if ($model->freeze===false)
-			{
-				$command=$model->getDbConnection()->createCommand('CREATE TABLE  `'.$tableName.'` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY) ENGINE = MYISAM ;');
-				$command->execute();
-
-				$model->getDbConnection()->getSchema()->refresh();
-				$table=$model->getDbConnection()->getSchema()->getTable($tableName);
-			}
-			else
-			{
-				throw new CDbException(Yii::t('yii','The table "{table}" for active record class "{class}" cannot be found in the database.',
-							array('{class}'=>get_class($model),'{table}'=>$tableName)));
-			}
-		}
-		return parent::__construct($model);
-	}
-}

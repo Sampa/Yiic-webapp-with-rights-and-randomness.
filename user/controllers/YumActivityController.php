@@ -26,6 +26,8 @@ class YumActivityController extends YumController {
 		$activity->user_id = $user->id;
 		$activity->timestamp = time();
 		$activity->action = $action; 
+		$activity->remote_addr = $_SERVER['REMOTE_ADDR'];
+
 		$activity->save();
 
 		if($action == 'login')
