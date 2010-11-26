@@ -86,7 +86,6 @@ your Yii Web Application </p>
 
 	<div style="clear:both;"> </div>
 
-
 	<label for="installMessages"> Install Messages submodule </label>
 	<?php echo CHtml::checkBox('installMessages', true); ?>
 	<div id="messages">
@@ -97,6 +96,8 @@ your Yii Web Application </p>
 			</tr>
 		</table>
 	</div>
+
+	<div style="clear:both;"> </div>
 
 	<label for="installMessages"> Install Friendship submodule </label>
 	<?php echo CHtml::checkBox('installFriendship', true); ?>
@@ -110,6 +111,34 @@ your Yii Web Application </p>
 	</div>
 
 	<div style="clear:both;"> </div>
+
+	<label for="installMessages"> Install Usergroups submodule </label>
+	<?php echo CHtml::checkBox('installUsergroup', true); ?>
+	<div id="usergroup">
+		<table>
+			<tr>
+				<td> Table for User groups </td>
+				<td> <?php echo CHtml::textField('usergroupTable', $usergroupTable); ?> </td> 
+			</tr>
+			<tr>
+				<td> Table for User to group belonging </td>
+				<td> <?php echo CHtml::textField('userUsergroupTable', $userUsergroupTable); ?> </td> 
+			</tr>
+		</table>
+	</div>
+
+	<div style="clear:both;"> </div>
+
+	<label for="installMessages"> Install Friendship submodule </label>
+	<?php echo CHtml::checkBox('installFriendship', true); ?>
+	<div id="friendship">
+		<table>
+			<tr>
+				<td> Table for Friendship assignment </td>
+				<td> <?php echo CHtml::textField('friendshipTable', $friendshipTable); ?> </td> 
+			</tr>
+		</table>
+	</div>
 
 
 	<div style="clear:both;"> </div>
@@ -181,6 +210,9 @@ your Yii Web Application </p>
 	$js = "
 	$('#installSettingsTable').click(function() {
 	$('#settings').toggle();
+	});
+	$('#installUsergroup').click(function() {
+	$('#usergroup').toggle();
 	});
 	$('#installFriendship').click(function() {
 	$('#friendship').toggle();

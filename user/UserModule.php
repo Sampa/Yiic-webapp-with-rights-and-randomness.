@@ -14,6 +14,8 @@ class UserModule extends CWebModule
 	public $settingsTable = 'yumsettings';
 	public $textSettingsTable = 'yumtextsettings';
 	public $messagesTable = 'messages';
+	public $usergroupTable = 'usergroup';
+	public $userUsergroupTable = 'user_has_usergroup';
 	public $profileFieldsTable = 'profile_fields';
 	public $profileFieldsGroupTable = 'profile_fields_group';
 	public $profileTable = 'profiles';

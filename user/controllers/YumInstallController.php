@@ -41,10 +41,12 @@ class YumInstallController extends YumController
 							'messagesTable',
 							'rolesTable',
 							'userRoleTable',
+							'userUsergroupTable',
 							'permissionTable',
 							'friendshipTable',
 							'actionTable',
 							'activityTable',
+							'usergroupTable',
 							'settingsTable',
 							'textSettingsTable');
 
@@ -75,6 +77,26 @@ class YumInstallController extends YumController
 						KEY `superuser` (`superuser`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 					$db->createCommand($sql)->execute();
+
+					if(isset($_POST['installUsergroup'])) {  
+						$sql = "CREATE TABLE IF NOT EXISTS `".$usergroupTable."` (
+									`id` int(11) NOT NULL,
+									`title` varchar(255) NOT NULL,
+									`description` text NOT NULL,
+									PRIMARY KEY (`id`)
+									) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+						$db->createCommand($sql)->execute();
+
+						$sql = " CREATE TABLE IF NOT EXISTS `".$userUsergroupTable."` (
+							`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+							`user_id` int(10) unsigned NOT NULL,
+							`role_id` int(10) unsigned NOT NULL,
+							PRIMARY KEY (`id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+
+						$db->createCommand($sql)->execute();
+					}
 
 					if(isset($_POST['installActivityLog'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$activityTable."` (
@@ -370,6 +392,8 @@ class YumInstallController extends YumController
 							'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable,Yii::app()->db),
 							'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
 							'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable,Yii::app()->db),
+							'userUsergroupTable' => Yum::resolveTableName($this->module->userUsergroupTable,Yii::app()->db),
+							'usergroupTable' => Yum::resolveTableName($this->module->usergroupTable,Yii::app()->db),
 							'permissionTable' => Yum::resolveTableName($this->module->permissionTable,Yii::app()->db),
 							'friendshipTable' => Yum::resolveTableName($this->module->friendshipTable,Yii::app()->db),
 							'activityTable' => Yum::resolveTableName($this->module->activityTable, Yii::app()->db),
