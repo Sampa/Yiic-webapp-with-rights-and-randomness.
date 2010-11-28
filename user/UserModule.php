@@ -44,6 +44,7 @@ class UserModule extends CWebModule
 	public $enableFriendship = true;
 	public $enableLogging = true;
 	public $enableAvatar = true;
+	public $enableUsergroups = true;
 	public $avatarPath = 'images';
 	public $password_expiration_time = 30;
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer

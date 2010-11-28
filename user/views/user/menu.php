@@ -25,10 +25,13 @@ if(!Yii::app()->user->isGuest) {
 		$usermenu[] = e('Statistics', 'statistics/index');
 		$usermenu[] = e('Show users', 'user/admin');
 		$usermenu[] = e('Create new user', 'user/create');
-		if(Yum::module()->enableFriendship)
-		{
+
+		if(Yum::module()->enableUsergroups) 
+			$usermenu[] = e('Manage user Groups', 'group/admin');
+
+		if(Yum::module()->enableFriendship) 
 			$usermenu[] = e('Manage friends', 'friendship/admin');
-		}
+
 		$rolemenu[] = e('Show roles' ,'role/admin');
 		$rolemenu[] = e('Create new role', 'role/create');
 		$rolemenu[] = e('Permissions', 'permission/admin');
