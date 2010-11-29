@@ -304,8 +304,8 @@ class YumRegistrationController extends YumController
 							$this->createUrl('registration/recovery',array(
 									'activationKey' => $user->activationKey,
 									'email' => $user->profile[0]->email)));
-
-					//YumActivityController::logActivity($user, 'recovery');
+					if(Yum::module()->enableLogging == true)
+					YumActivityController::logActivity($user, 'recovery');
 					Yii::app()->user->setFlash('loginMessage',
 							Yum::t('Instructions have been sent to you. Please check your email.'));
 							

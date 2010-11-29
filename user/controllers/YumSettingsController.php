@@ -26,7 +26,12 @@ class YumSettingsController extends YumController
 			}
 			$setting = YumSettings::model()->findByPk($_POST['active_profile']);
 			$setting->is_active = true;
-			$setting->save();	
+			$setting->save();
+			if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'profile_set_active');
+								}	
 		}
 		$this->redirect(array('//user/yumSettings/index'));
 	}
@@ -42,6 +47,11 @@ class YumSettingsController extends YumController
 			$model->attributes = $_POST['YumSettings'];
 
 			if($model->save()) {
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'settings_profile_created');
+								}
 				$this->redirect(array('index'));
 			}
 		}
@@ -69,8 +79,15 @@ class YumSettingsController extends YumController
 
 
 			if($model->save())
+			{
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'settings_updated');
+								}
 				$this->redirect(array('index'));
 		}
+	}
 
 		$this->render('/settings/update',array(
 			'model'=>$model,
@@ -81,6 +98,11 @@ class YumSettingsController extends YumController
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+			if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'settings_profile_removed');
+								}
 			$this->loadModel()->delete();
 
 			if(Yii::app()->request->getQuery('ajax') === null)

@@ -55,6 +55,11 @@ class YumFieldsController extends YumController
 
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'profile_field_created');
+								}
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
@@ -75,8 +80,15 @@ class YumFieldsController extends YumController
 			// ALTER TABLE `test` CHANGE `profiles` `field` INT( 10 ) NOT NULL 
 			// ALTER TABLE `test` CHANGE `profiles` `description` INT( 1 ) NOT NULL DEFAULT '0'
 			if($model->save())
+			{
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'profile_field_updated');
+								}
 				$this->redirect(array('view','id'=>$model->id));
 		}
+	}
 
 		$this->render('update',array(
 			'model'=>$model,
@@ -92,6 +104,11 @@ class YumFieldsController extends YumController
 			$model = $this->loadModel();
 			$sql = 'ALTER TABLE '.YumProfile::model()->tableName().' DROP `'.$model->varname.'`';
 			if ($model->dbConnection->createCommand($sql)->execute()) {
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'profile_field_removed');
+								}
 				$model->delete();
 			}
 

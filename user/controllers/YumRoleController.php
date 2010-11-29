@@ -31,7 +31,14 @@ class YumRoleController extends YumController
 
 
 			if($model->save())
+			{
+			if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'role_created');
+								}
 				$this->redirect(array('admin'));
+			}
 
 		}
 		$this->render('create', array('model' => $model));
@@ -57,8 +64,15 @@ class YumRoleController extends YumController
 				$model->roles = array();
 
 			if($model->validate() && $model->save())
+			{
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'role_updated');
+								}
 				$this->redirect(array('view','id'=>$model->id));
 		}
+	}
 
 		$this->render('update',array(
 			'model'=>$model,
@@ -85,6 +99,11 @@ class YumRoleController extends YumController
 		$this->layout = Yum::module()->adminLayout;	
 		if(Yii::app()->request->isPostRequest)
 		{
+			if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'role_removed');
+								}
 			$this->loadModel()->delete();
 
 			if(!isset($_POST['ajax']))

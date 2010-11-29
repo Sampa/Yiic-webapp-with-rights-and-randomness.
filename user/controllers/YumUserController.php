@@ -64,6 +64,11 @@ class YumUserController extends YumController
 						$profile->lastname = $user->username;
 						$profile->email = 'e@mail.de';
 						$profile->save();
+						if(Yum::module()->enableLogging == true)
+								{
+								$model= $this->loadUser(Yii::app()->user->id);
+								YumActivityController::logActivity($model, 'user_generated');
+								}
 					}
 				}
 			}
@@ -104,6 +109,7 @@ class YumUserController extends YumController
 				$user = YumUser::model()->findByPk(Yii::app()->user->id);
 				$user->lastvisit = time();
 				$user->save();
+				if(Yum::module()->enableLogging == true)
 				YumActivityController::logActivity($user, 'login');	
 
 				if($this->module->messageSystem != YumMessage::MSG_NONE
@@ -123,7 +129,8 @@ class YumUserController extends YumController
 				}
 			} else {
 				$user = YumUser::model()->find('username = \''.$loginForm->username.'\'');
-				//YumActivityController::logActivity($user, 'failed_login_attempt');
+				if(Yum::module()->enableLogging == true)
+				YumActivityController::logActivity($user, 'failed_login_attempt');
 
 			}
 
@@ -138,7 +145,7 @@ class YumUserController extends YumController
 
 	public function actionLogout()
 	{
-
+		if(Yum::module()->enableLogging == true)
 		YumActivityController::logActivity(Yii::app()->user->id, 'logout');
 		Yii::app()->user->logout();
 		$this->redirect(Yum::module()->returnLogoutUrl);
@@ -280,6 +287,11 @@ class YumUserController extends YumController
 				if($model->save()) {
 					$profile->user_id = $model->id;
 					$profile->save();
+					if(Yum::module()->enableLogging == true)
+					{
+					$user=$this->loadUser(Yii::app()->user->id);
+					YumActivityController::logActivity($user, 'new_user_created');
+					}
 					$this->redirect(array('view', 'id'=>$model->id));
 				}
 			}
@@ -359,11 +371,21 @@ class YumUserController extends YumController
 				if(!$model->hasErrors() && !$profile->hasErrors()) {
 					$model->save();
 					$profile->save();
+					if(Yum::module()->enableLogging == true)
+								{
+								YumActivityController::logActivity($model, 'user_updated');
+								}
 					$this->redirect(array('view','id'=>$model->id));
 				}
 			} else {
 				if($model->save() && !$errors)
+				{
+					if(Yum::module()->enableLogging == true)
+								{
+								YumActivityController::logActivity($model, 'user_updated');
+								}
 					$this->redirect(array('view','id'=>$model->id));
+				}
 			}
 		}
 
@@ -390,9 +412,15 @@ class YumUserController extends YumController
 					Yii::app()->user->setFlash('adminMessage', 'You can not delete your own admin account');
 					if(!Yii::app()->request->isAjaxRequest)
 						$this->redirect(array('//user/user/admin'));
-				} else
+				} else{
+					if(Yum::module()->enableLogging == true)
+					{
+					$user=$this->loadUser(Yii::app()->user->id);
+					YumActivityController::logActivity($user, 'user_created');
+					}
 					$model->delete();	
 			}
+		}
 		} else {
 			$this->layout = Yum::module()->layout;
 			$model = $this->loadUser(Yii::app()->user->id);
@@ -403,11 +431,25 @@ class YumUserController extends YumController
 					if(Yum::module()->profileHistory == false) {
 						if(is_array($model->profile) && !$preserveProfiles) {
 							foreach($model->profile as $profile) {
+								if(Yum::module()->enableLogging == true)
+								{
+								YumActivityController::logActivity($model, 'user_removed');
+								}
 								$profile->delete();
 							}
 						} else if (is_object($model->profile) && !$preserveProfiles) 
+						{
+							if(Yum::module()->enableLogging == true)
+								{
+								YumActivityController::logActivity($model, 'user_removed');
+								}
 							$model->profile->delete();
+						}
 					}
+					if(Yum::module()->enableLogging == true)
+								{
+								YumActivityController::logActivity($model, 'user_removed');
+								}
 					$model->delete();
 					$this->actionLogout();
 				} else {

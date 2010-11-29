@@ -54,8 +54,14 @@ class YumFieldsGroupController extends YumController
 		{
 			$model->attributes=$_POST['YumProfileFieldsGroup'];
 			if($model->save())
+			{
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'field_group_created');
+								}
 				$this->redirect(array('view','id'=>$model->id));
-		}
+		}}
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -78,8 +84,14 @@ class YumFieldsGroupController extends YumController
 		{
 			$model->attributes=$_POST['YumProfileFieldsGroup'];
 			if($model->save())
+			{
+				if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'field_group_updated');
+								}
 				$this->redirect(array('view','id'=>$model->id));
-		}
+		}}
 
 		$this->render('update',array(
 			'model'=>$model,
@@ -96,6 +108,11 @@ class YumFieldsGroupController extends YumController
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+			if(Yum::module()->enableLogging == true)
+								{
+								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+								YumActivityController::logActivity($user, 'field_group_removed');
+								}
 			$this->loadModel()->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
