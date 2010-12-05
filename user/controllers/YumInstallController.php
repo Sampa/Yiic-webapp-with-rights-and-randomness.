@@ -152,6 +152,7 @@ class YumInstallController extends YumController
 							`password_expiration_time` INT,
 							`readOnlyProfiles` tinyint(1) NOT NULL DEFAULT '0',
 							`loginType` enum('LOGIN_BY_USERNAME','LOGIN_BY_EMAIL','LOGIN_BY_USERNAME_OR_EMAIL') NOT NULL,
+							`notifyemailchange ` enum('oldemail','newemail',)  ,
 							`enableCaptcha` tinyint(1) NOT NULL DEFAULT '1',
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";

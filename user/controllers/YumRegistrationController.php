@@ -152,18 +152,27 @@ class YumRegistrationController extends YumController
 		$email=$_POST['email'];
 		$registrationType = Yum::module()->registrationType;
 		$password=null;
-		//$email='mithereal@gmail.com';
 		$profile=YumProfile::model()->findAll($condition='email = :email',array(':email'=>$email));
 		$user=$profile[0]->user;
+		$user->activationKey=$user->generateActivationKey();
 		if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
 			{
 			$password=YumUserChangePassword::createRandomPassword(Yum::module()->passwordRequirements['minLowerCase'],Yum::module()->passwordRequirements['minUpperCase'],Yum::module()->passwordRequirements['minDigits'],Yum::module()->passwordRequirements['minLen']); 
 			$user->password=YumUser::model()->encrypt($password);
-			$user->save();
 			}
-		$this->sendRegistrationEmail($user,$password);
-	}
-		$this->redirect(Yii::app()->controller->module->loginUrl);
+			$user->save();
+			
+	}else{
+		if(!isset($user) && !isset($_POST['email']))
+		$user= new YumUser;
+		}
+		$form = new YumRegistrationForm;
+		$this->render('/user/resend_activation', array(
+					'form' => $form,
+					'user'=>$user,
+					)
+					);	
+	return $success;
 	}
 	
 	// Send the Email to the given user object. $user->email needs to be set.
@@ -196,7 +205,7 @@ class YumRegistrationController extends YumController
 					$sm = Yii::app()->swiftMailer;
 					$mailer = $sm->mailer($sm->mailTransport());
 					$message = $sm->newMessage($msgheader)   
-						->setFrom(Yii::app()->params['adminEmail'])
+						->setFrom(Yii::app()->controller->module->registrationEmail)
 						->setTo($user->profile[0]->email)
 						->setBody($msgbody);                                                    
 					$sent=$mailer->send($message);

@@ -132,6 +132,18 @@
 			)); ?>
 <?php echo $form->error($model,'enableAvatar'); ?>
 </div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'notifyemailchange'); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Email the user when his/her email address is changed')); ?>
+
+<?php echo $form->dropDownList($model,'notifyemailchange', array(
+			0 => Yum::t('No'),
+			'oldemail' => Yum::t('Send email change notifications to old email address'),
+			'newemail' => Yum::t('Send email change notifications to new email address')
+			)); ?>
+<?php echo $form->error($model,'notifyemailchange'); ?>
+</div>
 </div>
 
 <?php

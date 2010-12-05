@@ -22,7 +22,7 @@ class YumSettings extends YumActiveRecord {
 
     public function rules() {
         return array(
-            array('title, loginType, messageSystem, notifyType, enableAvatar', 'required'),
+            array('title, loginType, messageSystem, notifyType, enableAvatar,notifyemailchange', 'required'),
             array('password_expiration_time, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 255),
             array('loginType', 'length', 'max' => 26),
@@ -49,6 +49,7 @@ class YumSettings extends YumActiveRecord {
             'readOnlyProfiles' => Yum::t('Read only Profiles'),
             'loginType' => Yum::t('Login Type'),
             'enableCaptcha' => Yum::t('Enable Captcha'),
+            'notifyemailchange'  => Yum::t('Notify user on email change,')
         );
     }
 

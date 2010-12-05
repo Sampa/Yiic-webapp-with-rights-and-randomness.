@@ -54,7 +54,25 @@ class YumProfileController extends YumController
 			}
 			$model->validate();
 			$profile->validate();
+			$settings=Yumsettings::model()->findByPK(1);
+			$notifyemailchange=$settings->notifyemailchange;
 			if(!$model->hasErrors() && !$profile->hasErrors()) {
+				
+				if($model->profile[0]->email != $profile->email && isset($notifyemailchange))
+				{
+					//send confirmation email
+					switch ($notifyemailchange)
+					{
+						case 'oldemail':
+						$this->sendAlertEmail($model->profile[0]->email,Yum::t('Email Change Requested'),'A request to change your email address to '.$profile->email.' was made from '.CHttpRequest::getUserHostAddress(). ' on ' . date('m/j/y g:ia'));
+						break;
+						case'newemail':
+						$this->sendAlertEmail($profile->email,Yum::t('Email Change Requested'),'A request to change your email address from '.$model->profile[0]->email.' was made from '.CHttpRequest::getUserHostAddress(). ' on ' . date('m/j/y g:ia'));
+						break;
+					}
+				
+				$profile->is_active=0;
+				}
 				$model->save();
 				$profile->save();
 				Yii::app()->user->setFlash('profileMessage',
@@ -199,7 +217,29 @@ class YumProfileController extends YumController
 			'dataProvider'=>$dataProvider,'model'=>$model,
 		));
 	}
-
+	
+	/**
+	 * this sends an email alerting the user that some profile setting has changed
+	 * @return:null
+	 */
+	public function sendAlertEmail($email,$subject=null,$message=null)
+	{
+		$headers = "From: " . Yii::app()->controller->module->recoveryEmail ."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+		$msgheader = $subject;
+		$msgbody = $message;
+		if(Yum::module()->mailer == 'swift') {
+					$sm = Yii::app()->swiftMailer;
+					$mailer = $sm->mailer($sm->mailTransport());
+					$message = $sm->newMessage($msgheader)   
+						->setFrom(Yii::app()->controller->module->recoveryEmail)
+						->setTo($email)
+						->setBody($msgbody);                                                    
+					$sent=$mailer->send($message);
+				} else {
+					$sent=mail($email, $msgheader, $msgbody, $headers);
+				}
+	}
+	
 	/**
 	 * @return YumProfileField
 	 */
