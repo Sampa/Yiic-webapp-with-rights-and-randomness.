@@ -43,26 +43,26 @@ class YumMessage extends YumActiveRecord
 	 *  - if not found user default {{message}} table name
 	 * @return string
 	 */
-  	public function tableName()
-  	{
-    	if (isset(Yii::app()->controller->module->messagesTable))
-      		$this->_tableName = Yii::app()->controller->module->messagesTable;
-    	elseif (isset(Yii::app()->modules['user']['messagesTable'])) 
-      		$this->_tableName = Yii::app()->modules['user']['messagesTable'];
-    	else
-      		$this->_tableName = '{{messages}}'; // fallback if nothing is set
+	public function tableName()
+	{
+		if (isset(Yii::app()->controller->module->messagesTable))
+			$this->_tableName = Yii::app()->controller->module->messagesTable;
+		elseif (isset(Yii::app()->modules['user']['messagesTable'])) 
+			$this->_tableName = Yii::app()->modules['user']['messagesTable'];
+		else
+			$this->_tableName = '{{messages}}'; // fallback if nothing is set
 
 		return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
-  	}
+	}
 
 	public function rules()
 	{
 		return array(
-			array('from_user_id, to_user_id, title', 'required'),
-			array('from_user_id, draft, message_read', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>255),
-			array('message', 'safe'),
-		);
+				array('from_user_id, to_user_id, title', 'required'),
+				array('from_user_id, draft, message_read, answered', 'numerical', 'integerOnly'=>true),
+				array('title', 'length', 'max'=>255),
+				array('message', 'safe'),
+				);
 	}
 
 	public function getTitle()
@@ -71,6 +71,33 @@ class YumMessage extends YumActiveRecord
 			return $this->title;
 		else
 			return '<strong>' . $this->title . '</strong>';
+	}
+
+	public function getStatus() {
+		if($this->from_user_id == Yii::app()->user->id)
+			return Yum::t('sent');
+		if($this->answered)
+			return Yum::t('answered');
+		if($this->message_read)
+			return Yum::t('read');
+		else
+			return Yum::t('new');
+	}
+
+	public function scopes() {
+		return array(
+				'all' => array(
+					'condition' => 'to_user_id = '.Yii::app()->user->id .
+					               ' or from_user_id = ' . Yii::app()->user->id), 
+				'read' => array(
+					'condition' => 'to_user_id = '.Yii::app()->user->id . '& message_read'),
+				'sent' => array(
+					'condition' => 'from_user_id = '.Yii::app()->user->id),
+				'unread' => array(
+					'condition' => 'to_user_id = '.Yii::app()->user->id . '& !message_read'),
+				'answered' => array(
+					'condition' => 'to_user_id = '.Yii::app()->user->id . '& answered'),
+				);
 	}
 
 	public function getDate()
@@ -82,20 +109,20 @@ class YumMessage extends YumActiveRecord
 	public function relations()
 	{
 		return array(
-			'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
-			'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
-		);
+				'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
+				'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
+				);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
-			'id' => Yii::t('UserModule.user', '#'),
-			'from_user_id' => Yii::t('UserModule.user', 'From'),
-			'to_user_id' => Yii::t('UserModule.user', 'To'),
-			'title' => Yii::t('UserModule.user', 'Title'),
-			'message' => Yii::t('UserModule.user', 'Message'),
-		);
+				'id' => Yii::t('UserModule.user', '#'),
+				'from_user_id' => Yii::t('UserModule.user', 'From'),
+				'to_user_id' => Yii::t('UserModule.user', 'To'),
+				'title' => Yii::t('UserModule.user', 'Title'),
+				'message' => Yii::t('UserModule.user', 'Message'),
+				);
 	}
 
 }

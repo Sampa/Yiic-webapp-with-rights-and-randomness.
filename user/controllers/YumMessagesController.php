@@ -94,14 +94,9 @@ class YumMessagesController extends YumController
 
 	public function actionDelete()
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
 			$this->loadModel()->delete();
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('index'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 
 	public function actionIndex()

@@ -333,6 +333,7 @@ class YumInstallController extends YumController
 										`title` varchar(45) NOT NULL,
 										`message` text,
 										`message_read` tinyint(1) NOT NULL,
+										`answered` tinyint(1) NOT NULL,
 										`draft` tinyint(1) default NULL,
 										PRIMARY KEY  (`id`),
 										KEY `fk_messages_users` (`from_user_id`),
