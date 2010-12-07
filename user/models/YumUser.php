@@ -268,7 +268,7 @@ class YumUser extends YumActiveRecord
 		$this->createtime = time();
 		$this->superuser = 0;
 
-		switch(Yii::app()->getModule('user')->registrationType) {
+		switch(Yum::module()->registrationType) {
 			case YumRegistration::REG_SIMPLE:
 				$this->status = YumUser::STATUS_ACTIVE;
 				break;

@@ -311,6 +311,8 @@ class YumUserController extends YumController
 
 		// determine if profiles are enabled
 		$profiles = Yum::module()->enableProfiles;
+
+		// determine if the password needs to be changed
 		$changepassword = isset($_POST['change_password']);
 
 		$model = $this->loadUser();
@@ -334,11 +336,8 @@ class YumUserController extends YumController
 			if(!isset($_POST['YumUser']['YumRole']))
 				$_POST['YumUser']['YumRole'] = array();
 
-			if(!isset($_POST['YumUser']['YumUser']))
-				$_POST['YumUser']['YumUser'] = array();
 
 			$model->roles = $_POST['YumUser']['YumRole'];
-			$model->users = $_POST['YumUser']['YumUser'];
 
 			if($profiles) {
 				if(isset($_POST['YumProfile'])) {
