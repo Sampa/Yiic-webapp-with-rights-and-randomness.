@@ -140,7 +140,7 @@ class YumUserController extends YumController
 				$this->refresh();
 
 		}
-		$this->render('/user/login', array('model' => $loginForm));
+		$this->render(Yum::module()->loginView, array('model' => $loginForm));
 	}
 
 	public function actionLogout()

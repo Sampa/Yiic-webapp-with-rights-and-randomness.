@@ -33,6 +33,7 @@ class UserModule extends CWebModule
 	public $baseLayout = 'application.views.layouts.main';
 	public $layout = 'yum';
 	public $loginLayout = 'yum';
+	public $loginView = '/user/login';
 	public $adminLayout = 'yum';
 	public $profileLayout = 'yumprofile';
 	public $profileView = '/profile/view';

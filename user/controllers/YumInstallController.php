@@ -105,9 +105,33 @@ class YumInstallController extends YumController
 							`timestamp` int NOT NULL,
 							`user_id` int(11),
 							`remote_addr` varchar(16),
-							`action` enum('Login','Logout','Recovery','Registration','failed_login_attempt','profile_set_active','settings_profile_created','settings_updated','settings_profile_removed','field_group_created','field_group_updated','field_group_removed','profile_field_created','profile_field_updated','profile_field_removed','role_created','role_updated','role_removed','text_settings_created','text_settings_updated','text_settings_removed','user_generated','user_created','user_updated','user_removed'),
-							PRIMARY KEY (`id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+							`action` enum('Login',
+									'Logout',
+									'Recovery',
+									'Registration',
+									'failed_login_attempt',
+									'profile_set_active',
+									'settings_profile_created',
+									'settings_updated',
+									'settings_profile_removed',
+									'field_group_created',
+									'field_group_updated',
+									'field_group_removed',
+									'profile_field_created',
+									'profile_field_updated',
+									'profile_field_removed',
+									'role_created',
+									'role_updated',
+									'role_removed',
+									'text_settings_created',
+									'text_settings_updated',
+									'text_settings_removed',
+									'user_generated',
+									'user_created',
+									'user_updated',
+									'user_removed'),
+									PRIMARY KEY (`id`)
+										) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 						";
 
 						$db->createCommand($sql)->execute();
@@ -150,6 +174,7 @@ class YumInstallController extends YumController
 							`messageSystem` enum('None', 'Plain', 'Dialog') NOT NULL DEFAULT 'Dialog',
 							`notifyType` enum('None', 'Digest', 'Instant', 'User', 'Treshhold') NOT NULL DEFAULT 'User',
 							`password_expiration_time` INT,
+							`notifyemailchange` tinyint(1) DEFAULT '1',
 							`readOnlyProfiles` tinyint(1) NOT NULL DEFAULT '0',
 							`loginType` enum('LOGIN_BY_USERNAME','LOGIN_BY_EMAIL','LOGIN_BY_USERNAME_OR_EMAIL') NOT NULL,
 							`notifyemailchange ` enum('oldemail','newemail',)  ,
@@ -158,7 +183,27 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `".$settingsTable."` (`id`, `title`, `is_active`, `preserveProfiles`, `registrationType`, `enableRecovery`, `enableProfileHistory`, `readOnlyProfiles`, `loginType`, `notifyType`, `password_expiration_time`, `enableCaptcha`) VALUES ('1', 'Yum factory Default', '1', '1', '4', '1', '1', '0', 'LOGIN_BY_USERNAME_OR_EMAIL', 'Instant', '30', '1');";
+						$sql = "INSERT INTO `".$settingsTable."` (`id`,
+							`title`,
+							`is_active`,
+							`preserveProfiles`,
+							`registrationType`,
+							`enableRecovery`,
+							`enableProfileHistory`,
+							`readOnlyProfiles`,
+							`loginType`,
+							`notifyType`,
+							`password_expiration_time`,
+							`enableCaptcha`) VALUES ('1',
+								'Yum factory Default',
+								'1',
+								'1',
+								'4',
+								'1',
+								'1',
+								'0',
+								'LOGIN_BY_USERNAME_OR_EMAIL',
+								'Instant', '30', '1');";
 						$db->createCommand($sql)->execute();
 
 						// Create Text settings table

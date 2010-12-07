@@ -12,6 +12,7 @@ class MessageWidget extends CPortlet
 
 	protected function renderContent()
 	{
+		if(!Yii::app()->user->isGuest)
 		$this->render('messages', array(
 					'messages' => YumMessage::model()->all()->findall()));
 	}
