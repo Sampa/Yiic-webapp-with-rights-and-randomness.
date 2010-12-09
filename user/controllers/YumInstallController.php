@@ -174,13 +174,11 @@ class YumInstallController extends YumController
 							`messageSystem` enum('None', 'Plain', 'Dialog') NOT NULL DEFAULT 'Dialog',
 							`notifyType` enum('None', 'Digest', 'Instant', 'User', 'Treshhold') NOT NULL DEFAULT 'User',
 							`password_expiration_time` INT,
-							`notifyemailchange` tinyint(1) DEFAULT '1',
 							`readOnlyProfiles` tinyint(1) NOT NULL DEFAULT '0',
 							`loginType` enum('LOGIN_BY_USERNAME','LOGIN_BY_EMAIL','LOGIN_BY_USERNAME_OR_EMAIL') NOT NULL,
-							`notifyemailchange ` enum('oldemail','newemail',)  ,
+							`notifyemailchange` enum('oldemail','newemail'),
 							`enableCaptcha` tinyint(1) NOT NULL DEFAULT '1',
-							PRIMARY KEY (`id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
 
 						$sql = "INSERT INTO `".$settingsTable."` (`id`,

@@ -138,3 +138,4 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 		echo Yum::t('Nobody has visited your profile yet');
 	}
 ?>
+</div>

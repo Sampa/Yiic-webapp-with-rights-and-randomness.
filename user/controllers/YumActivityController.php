@@ -10,6 +10,9 @@ class YumActivityController extends YumController {
 	}
 
 	public static function logActivity($user, $action) {
+		if($user === NULL)
+			return true;
+
 		$possible_actions = array('login',
 				'logout',
 				'register',
