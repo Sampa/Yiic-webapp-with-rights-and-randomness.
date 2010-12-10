@@ -2,6 +2,12 @@
 
 
 return array(
+		'No friendship requested' => 'Keine Freundschaft angefragt',
+		'New friendship requests' => 'Neue Freundschaftsanfragen',
+		'This message will be sent to {username}' => 'Diese Nachricht wird an {username} versandt',
+		'My profile' => 'Mein Profil',
+		'Friendship confirmed' => 'Freundschaft bestätigt',
+		'Remove friend' => 'Freundschaft kündigen',
 		'Confirmation pending' => 'Bestätigung ausstehend',
 		'Confirm' => 'Bestätigen',
 		'Ignore' => 'Ignorieren',

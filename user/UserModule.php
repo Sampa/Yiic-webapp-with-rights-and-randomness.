@@ -83,7 +83,7 @@ class UserModule extends CWebModule
 		'registration'=>array('//user/registration/'),
 		'recovery'=>array('//user/registration/recovery'),
 		'login'=>array('//user/user'),
-		'return'=>false,
+		'return'=>array('//user/profile/view'),
 		// Page to go after admin logs in
 		'returnAdmin'=>array('//user/statistics/index'),
 		// Page to go to after logout
@@ -135,6 +135,7 @@ class UserModule extends CWebModule
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
+		'groups'=>array('class'=>'YumModule.controllers.YumUsergroupController'),	
 		// workaround to allow the url application/user/login: 
 		'login'=>array('class'=>'YumModule.controllers.YumUserController'),	
 		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),	

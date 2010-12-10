@@ -1,14 +1,11 @@
 <?php
-$this->pageTitle=Yii::app()->name . ' - ' . Yum::t('Profile');
-$this->breadcrumbs=array(Yum::t('Profile'),$model->username);
+$this->pageTitle = Yii::app()->name . ' - ' . Yum::t('Profile');
+$this->breadcrumbs=array(Yum::t('Profile'), $model->username);
 $this->title = Yum::t('Profile');
-?>
-<div id="content">
-<div class="avatar">
-<?php echo $model->renderAvatar(); ?>
-	</div>
+echo $model->getAvatar(); ?>
+
 <table class="dataGrid">
-<?php if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL') {?>
+<?php if(Yum::module()->loginType != 'LOGIN_BY_EMAIL') {?>
 <tr>
 <th class="label"><?php echo CHtml::activeLabel($model,'username'); ?>
 </th>
@@ -25,7 +22,9 @@ if ($profileFields) {
 			<tr>
 				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 				</th>
-				<td><?php echo CHtml::encode($model->profile[0]->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
+				<td><?php
+				if(isset($model->profile[0]))
+					echo CHtml::encode($model->profile[0]->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
 				</td>
 				</tr>
 				<?php
@@ -34,8 +33,10 @@ if ($profileFields) {
 				<tr>
 				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 				</th>
-				<td><?php echo CHtml::encode($model->profile[0]->getAttribute($field->varname)); ?>
-				</td>
+				<td><?php 
+				if(isset($model->profile[0]))
+					echo CHtml::encode($model->profile[0]->getAttribute($field->varname)); ?>
+						</td>
 				</tr>
 				<?php
 		}
@@ -43,59 +44,19 @@ if ($profileFields) {
 }
 ?>
 <tr>
-<th class="label"><?php echo Yum::t('first visit'); ?>
+<th class="label"><?php echo Yum::t('First visit'); ?>
 </th>
-<td><?php echo date(UserModule::$dateFormat,$model->createtime); ?>
+<td><?php echo date(UserModule::$dateFormat, $model->createtime); ?>
 </td>
 </tr>
 <tr>
-	<th class="label"><?php echo Yum::t('last visit'); ?>
+	<th class="label"><?php echo Yum::t('Last visit'); ?>
 </th>
     <td><?php echo date(UserModule::$dateFormat,$model->lastvisit); ?>
 </td>
 </tr>
 </table>
 
-<?php
-if($model->profile[0]->show_friends == 2)
-{
-?>
-<div id="friends">
-<?php
-if(isset($friends))
-{
-echo ucwords($model->username . '\'s friends');
-foreach($friends as $friend)
-{
-	?>
-<div id="friend">
-<div id="avatar">
-<?php
-$model->renderAvatar($friend);
-?>
-<div id='username'>
-<?php 
-echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile/view',array('id'=>$friend->id)));
-?>
-</div>
-</div>
-</div>
-<?php
-//var_dump($friends);
-}
-}else{
-	echo 'you have no friends.';
-}
-?>
-</div>
-<?php
-}
-if(Yum::module()->messageSystem != YumMessage::MSG_NONE) {
-	echo CHtml::link(Yum::t('Write a message to this User'), array(
-				'messages/compose', 'to_user_id' => $model->id));
-}
-	echo '<br />';
-	echo YumFriendshipController::invitationLink(Yii::app()->user->id, $model->id);
+<?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> <br /> 
+<?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> 
 
-?>
-</div>

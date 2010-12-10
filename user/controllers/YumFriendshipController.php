@@ -17,7 +17,9 @@ class YumFriendshipController extends YumController {
 						':inviter_id' => $_POST['YumFriendship']['inviter_id'],
 						':friend_id' => $_POST['YumFriendship']['friend_id']));
 
-			if($friendship->inviter_id == Yii::app()->user->id || $friendship->friend_id == Yii::app()->user->id)
+			if(isset($friendship))
+			if($friendship->inviter_id == Yii::app()->user->id 
+        || $friendship->friend_id == Yii::app()->user->id)
 				if(isset($_POST['YumFriendship']['add_request']))
 				{
 					$friendship->status = 2;

@@ -27,7 +27,7 @@ if(!Yii::app()->user->isGuest) {
 		$usermenu[] = e('Create new user', 'user/create');
 
 		if(Yum::module()->enableUsergroups) 
-			$usermenu[] = e('Manage user Groups', 'group/admin');
+			$usermenu[] = e('Manage user Groups', 'groups/admin');
 
 		if(Yum::module()->enableFriendship) 
 			$usermenu[] = e('Manage friends', 'friendship/admin');
@@ -91,10 +91,16 @@ if(!Yii::app()->user->isGuest) {
 		$messagesmenu[] = e('Sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
 
+		$menu[] = e('My profile', 'profile/view');
 		$menu[] = e('Edit personal data', 'profile/edit');
-		if(Yii::app()->getModule('user')->enableAvatar) 
+
+		if(Yum::module()->enableUsergroups)
+			$menu[] = e('My groups', 'groups/index');
+
+		if(Yum::module()->enableAvatar) 
 			$menu[] = e('Upload avatar image', 'avatar/editAvatar');
 		$menu[] = e('Browse users', 'user/index');
+		$menu[] = e('Browse groups', 'groups/browse');
 		if(Yum::module()->enableFriendship)
 		{
 			$menu[] = e('My friends', 'friendship');
@@ -119,8 +125,10 @@ if(!Yii::app()->user->isGuest) {
 	else
 		$title = sprintf('<h3>%s</h3>', $user->username);
 
+	$this->renderPartial('/friendship/new_friends');
 	$this->beginWidget('zii.widgets.CPortlet', array(
 				'title'=> $title));
+	$this->renderPartial('/messages/new_messages');
 	$this->widget('CTreeView', array(
 				'data' => $menu, 
 				));

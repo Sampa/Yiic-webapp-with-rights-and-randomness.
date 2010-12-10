@@ -194,6 +194,7 @@ class YumUser extends YumActiveRecord
 			'profile' => array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
 			'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 			'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
+			'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
 			'roles' => array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
 		);
 	}
@@ -435,29 +436,27 @@ class YumUser extends YumActiveRecord
 		}
 	}
 
-	public function renderAvatar($friend='')
-	{
-		if(Yii::app()->getModule('user')->enableAvatar)
-		{
-			if(is_object($friend))
-			{
-				if($friend->avatar)
-				echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $friend->avatar);
-			else
-				echo CHtml::image(Yii::app()->getAssetManager()->publish(
-						Yii::getPathOfAlias('YumAssets.images') . '/no_avatar_available_thumb.jpg',
-						Yum::t('No image available'), array(
-						'title' => Yum::t('No image available'))));
-			}else{
-			if($this->avatar)
-				echo CHtml::image(Yii::app()->baseUrl . '/' . Yii::app()->getModule('user')->avatarPath . '/' . $this->avatar);
-			else
-				echo CHtml::image(Yii::app()->getAssetManager()->publish(
-						Yii::getPathOfAlias('YumAssets.images') . '/no_avatar_available.jpg',
-						Yum::t('No image available'), array(
-						'title' => Yum::t('No image available'))));
-					}
-				}
-	}
+	public function getAvatar($friend = null, $thumb = false) {
+		if(Yum::module()->enableAvatar) {
+			$return = '<div class="avatar">';
+			if(!is_object($friend))
+				$friend = $this;
 
+			$options = array();
+			if($thumb)
+				$options = array('style' => 'width: 50px; height:50px;');
+
+			if(isset($friend->avatar) && $friend->avatar)
+				$return .= CHtml::image(Yii::app()->baseUrl . '/' 
+						. Yum::module()->avatarPath . '/' 
+						. $friend->avatar, $options);
+			else
+				$return .= CHtml::image(Yii::app()->getAssetManager()->publish(
+							Yii::getPathOfAlias('YumAssets.images') . ($thumb ? '/no_avatar_available_thumb.jpg' : '/no_avatar_available.jpg'),
+							Yum::t('No image available'), array(
+								'title' => Yum::t('No image available'))));
+			$return .= '</div><!-- avatar -->';
+			return $return;
+		}
+	}
 }

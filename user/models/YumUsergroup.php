@@ -14,7 +14,7 @@ class YumUsergroup extends YumActiveRecord{
 	public function rules()
 	{
 		return array(
-			array('id, title, description', 'required'),
+			array('title, description', 'required'),
 			array('id, owner_id', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			array('id, title, description', 'safe', 'on'=>'search'),
@@ -33,8 +33,8 @@ class YumUsergroup extends YumActiveRecord{
 		return array(
 			'id' => Yum::t('group id'),
 			'title' => Yum::t('Group title'),
-			'description' => Yii::t('app', 'Description'),
-			'owner_id' => Yii::t('app', 'Description'),
+			'description' => Yum::t('Description'),
+			'owner_id' => Yum::t('Group owner'),
 		);
 	}
 

@@ -12,6 +12,7 @@ if($friends) {
 	echo '<th></th></th><th>Username</th><th>Status</th>';
 
 	foreach($friends as $friend) {
+		$options = array();
 		echo CHtml::activeHiddenField($friend, 'inviter_id');
 		echo CHtml::activeHiddenField($friend, 'friend_id');
 
@@ -32,9 +33,9 @@ if($friends) {
 						'id'=>'remove_friend','name'=>'YumFriendship[remove_friend]'));
 		}
 		printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-				$friend->inviter->renderAvatar(),
+				$friend->inviter->getAvatar($friend->inviter, true),
 				CHtml::link($friend->invited->username, array(
-						'user/profile/view', 'id'=>$friend->invited->id)),
+						'//user/profile/view', 'id'=>$friend->invited->id)),
 				$friend->getStatus(), 
 				$options);
 
@@ -42,7 +43,6 @@ if($friends) {
 	}
 } else {
 	echo Yum::t('You do not have any friends yet');
-
 }
 
 $this->endWidget();

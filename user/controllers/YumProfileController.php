@@ -2,8 +2,7 @@
 
 Yii::import('application.modules.user.controllers.YumController');
 
-class YumProfileController extends YumController
-{
+class YumProfileController extends YumController {
 	const PAGE_SIZE=10;
 	private $_model;
 
@@ -105,9 +104,11 @@ class YumProfileController extends YumController
 		$view = Yum::module()->profileView;
 
 		$model = YumUser::model()->findByPk($_GET['id']);
-		$friends=$model->getFriends();
+		$friends = $model->getFriends();
 
-		$this->render($view, array('model' => $model,'friends'=>$friends));
+		$this->render($view, array(
+					'model' => $model,
+					'friends'=>$friends));
 		$this->updateVisitor(Yii::app()->user->id, $model->id);
 	}
 
