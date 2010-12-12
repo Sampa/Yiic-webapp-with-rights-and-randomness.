@@ -251,7 +251,7 @@ class YumInstallController extends YumController
 									 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
 									 'Sie haben sich für eine Applikation registriert.',
 									 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
-									 'Ihr Konto wurde freigeschaltet.')
+									 'Ihr Konto wurde freigeschaltet.'),
 									('3',
 									 'es',
 									 'Bienvenido al sistema de registro',

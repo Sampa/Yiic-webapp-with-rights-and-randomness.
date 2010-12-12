@@ -99,19 +99,6 @@ your Yii Web Application </p>
 
 	<div style="clear:both;"> </div>
 
-	<label for="installMessages"> Install Friendship submodule </label>
-	<?php echo CHtml::checkBox('installFriendship', true); ?>
-	<div id="friendship">
-		<table>
-			<tr>
-				<td> Table for Friendship assignment </td>
-				<td> <?php echo CHtml::textField('friendshipTable', $friendshipTable); ?> </td> 
-			</tr>
-		</table>
-	</div>
-
-	<div style="clear:both;"> </div>
-
 	<label for="installMessages"> Install Usergroups submodule </label>
 	<?php echo CHtml::checkBox('installUsergroup', true); ?>
 	<div id="usergroup">

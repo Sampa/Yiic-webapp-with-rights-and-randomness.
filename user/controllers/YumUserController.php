@@ -247,7 +247,7 @@ class YumUserController extends YumController
 
 		$user = YumUser::model()->findByPk(Yii::app()->user->id);
 
-		if ($user->profile[0]->facebook_id)
+		if (Yii::app()->user->name == 'facebook')
 		{
 			$fbconfig = Yum::module()->facebook;
 			if (!$fbconfig || $fbconfig && !is_array($fbconfig))
