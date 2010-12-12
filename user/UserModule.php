@@ -50,7 +50,6 @@ class UserModule extends CWebModule
 	public $password_expiration_time = 30;
 	public $activationPasswordSet = false;
 	public $autoLogin = false;
-	public $facebook = false;
 	public $activateFromWeb = true;
 	public $recoveryFromWeb = false;
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer or PHPMailer to use PHPMailer as emailing lib.
@@ -58,6 +57,7 @@ class UserModule extends CWebModule
 	public $menuView = '/user/menu';
 	public $registrationEmail='register@website.com';
 	public $recoveryEmail='restore@website.com';
+	public $facebookConfig = false;
 
 	// System-wide configuration option on how users should be notified about
   // new internal messages by email. Available options:
@@ -110,16 +110,13 @@ class UserModule extends CWebModule
 	public $forceProtectedProfiles = false;
 
 	// LoginType :
-	// 0: Allow login only by Username
-	const LOGIN_BY_USERNAME		= 0;
-	// 1: Allow login only by E-Mail (needs profile module)
-	const LOGIN_BY_EMAIL			= 1; 
-	// 2: Allow login by E-Mail or Username (needs profile module)
-	const	LOGIN_BY_USERNAME_OR_EMAIL	= 2; 
-	// 3: Allow login only by OpenID (TODO FIXME needs to be implemented) 
-	//const LOGIN_OPENID		= 4;
-	public $loginType = self::LOGIN_BY_USERNAME;
-	
+	const LOGIN_BY_USERNAME   = 1;
+	const LOGIN_BY_EMAIL      = 2; 
+	const LOGIN_BY_OPENID        = 4;
+	const LOGIN_BY_FACEBOOK      = 8;
+	const LOGIN_BY_TWITTER       = 16;
+	public $loginType = 23; // All login methods allowed by default except facebook
+
 	/**
 	 * Whether to use captcha e.g. in registration process
 	 * @var boolean
@@ -133,6 +130,7 @@ class UserModule extends CWebModule
 	 */
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
+		'auth'=>array('class'=>'YumModule.controllers.YumAuthController'),
 		'action'=>array('class'=>'YumModule.controllers.YumActionController'),
 		'activities'=>array('class'=>'YumModule.controllers.YumActivityController'),
 		'permission'=>array('class'=>'YumModule.controllers.YumPermissionController'),
@@ -211,7 +209,7 @@ class UserModule extends CWebModule
 			$controller->layout = Yii::app()->getModule('user')->adminLayout;
 
 		// Assign options from settings table, if available
-		if(Yii::app()->controller->id != 'install')
+		if(Yii::app()->controller->id != 'install' && !Yum::module()->tableSettingsDisabled)
 			try {
 				$settings = YumSettings::model()->find('is_active');
 

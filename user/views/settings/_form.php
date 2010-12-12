@@ -103,11 +103,20 @@
 		<div class="row">
 <?php echo $form->labelEx($model,'loginType'); ?>
 
-<?php echo CHtml::activeDropDownList($model, 'loginType', array(
-			'LOGIN_BY_USERNAME' => Yii::t('UserModule.user', 'Login allowed only by Username') ,
-			'LOGIN_BY_EMAIL' => Yii::t('UserModule.user', 'Login allowed only by Email') ,
-			'LOGIN_BY_USERNAME_OR_EMAIL' => Yii::t('UserModule.user', 'Login allowed by Email and Username') ,
-)); ?>
+<?php 
+foreach(array(
+			'1' => 'by Username',
+			'2' => 'by email',
+			'4' => 'by Open ID',
+			'8' => 'by Facebook',
+			'16' => 'by Twitter',
+			) as $key => $value)  {
+	echo CHtml::checkBox('loginType['.$key.']', $model->loginType & $key);
+	echo CHtml::label(Yum::t($value), 'loginType_'.$key, array(
+				'style' => 'display: inline;')) . '<br />';
+}
+?> 
+
 <?php printf('<p class="tooltip">%s</p>', Yum::t('This option sets how the login should be allowed')); ?>
 <?php echo $form->error($model,'loginType'); ?>
 </div>

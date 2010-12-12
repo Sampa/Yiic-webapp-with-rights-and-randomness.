@@ -45,6 +45,7 @@ class YumSettingsController extends YumController
 
 		if(isset($_POST['YumSettings'])) {
 			$model->attributes = $_POST['YumSettings'];
+			$model->loginType = $this->setLoginType($_POST['loginType']);	
 
 			if($model->save()) {
 				if(Yum::module()->enableLogging == true)
@@ -59,6 +60,14 @@ class YumSettingsController extends YumController
 		$this->render('/settings/create',array(
 			'model'=>$model,
 		));
+	}
+
+	public function setLoginType($type) {
+		$logintype = 0;
+		foreach($type as $key => $value)
+			$logintype += $key;
+
+		return $logintype;
 	}
 
 	public function actionUpdate()
@@ -76,7 +85,7 @@ class YumSettingsController extends YumController
 		if($YumSettingsData !== null)
 		{
 			$model->attributes = $YumSettingsData;
-
+			$model->loginType = $this->setLoginType($_POST['loginType']);	
 
 			if($model->save())
 			{

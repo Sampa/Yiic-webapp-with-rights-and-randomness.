@@ -2,6 +2,7 @@
 
 
 return array(
+		'Username or Password incorrect' => 'Benutzername oder Passwort ist falsch',
 		'No friendship requested' => 'Keine Freundschaft angefragt',
 		'New friendship requests' => 'Neue Freundschaftsanfragen',
 		'This message will be sent to {username}' => 'Diese Nachricht wird an {username} versandt',

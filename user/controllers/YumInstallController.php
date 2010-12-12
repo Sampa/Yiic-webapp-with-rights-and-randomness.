@@ -177,7 +177,7 @@ class YumInstallController extends YumController
 							`notifyType` enum('None', 'Digest', 'Instant', 'User', 'Treshhold') NOT NULL DEFAULT 'User',
 							`password_expiration_time` INT,
 							`readOnlyProfiles` tinyint(1) NOT NULL DEFAULT '0',
-							`loginType` enum('LOGIN_BY_USERNAME','LOGIN_BY_EMAIL','LOGIN_BY_USERNAME_OR_EMAIL') NOT NULL,
+							`loginType` int(11) not null,
 							`notifyemailchange` enum('oldemail','newemail'),
 							`enableCaptcha` tinyint(1) NOT NULL DEFAULT '1',
 							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
@@ -202,7 +202,7 @@ class YumInstallController extends YumController
 								'1',
 								'1',
 								'0',
-								'LOGIN_BY_USERNAME_OR_EMAIL',
+								'23',
 								'Instant', '30', '1');";
 						$db->createCommand($sql)->execute();
 
