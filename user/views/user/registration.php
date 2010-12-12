@@ -106,7 +106,20 @@ if ($profileFields) {
 							'maxlength'=>(($field->field_size)?$field->field_size:255)));
 			}
 		?>
-			<?php echo CHtml::error($profile,$field->varname); ?>
+<?php
+if ($field->varname == 'email')
+{
+	$tmp_profile=YumProfile::model()->find('email=\''.$form->email.'\'');
+	if ($tmp_profile !== null)
+	{
+		$user=YumUser::model()->findByPk($tmp_profile->user_id);
+		if ($user !== null && $user->status == YumUser::STATUS_NOTACTIVE)
+				echo $this->renderPartial('/user/_resend_activation_partial', array('user'=>$user, 'form'=>$form));
+		
+	}
+}
+?>
+			<?php //echo CHtml::error($profile,$field->varname); ?>
 			</div>  
 			<?php
 	}

@@ -80,7 +80,7 @@ class YumInstallController extends YumController
 
 					if(isset($_POST['installUsergroup'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$usergroupTable."` (
-									`id` int(11) NOT NULL auto_increment,
+									`id` int(11) NOT NULL AUTO_INCREMENT,
 									`owner_id` int(11) NOT NULL,
 									`title` varchar(255) NOT NULL,
 									`description` text NOT NULL,
@@ -106,9 +106,12 @@ class YumInstallController extends YumController
 							`remote_addr` varchar(16),
 							`action` enum('Login',
 									'Logout',
+									'fb_login',
+									'fb_logout',
 									'Recovery',
 									'Registration',
 									'failed_login_attempt',
+									'fb_failed_login_attempt',
 									'profile_set_active',
 									'settings_profile_created',
 									'settings_updated',
@@ -206,7 +209,7 @@ class YumInstallController extends YumController
 						// Create Text settings table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $textSettingsTable . "` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
-							`language` enum('en_us','de','fr','pl','ru') NOT NULL DEFAULT 'en_us',
+							`language` enum('en_us','de','fr','pl','ru','es') NOT NULL DEFAULT 'en_us',
 							`text_registration_header` text,
 							`text_registration_footer` text,
 							`text_login_header` text,
@@ -247,7 +250,18 @@ class YumInstallController extends YumController
 									 '',
 									 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
 									 'Sie haben sich für eine Applikation registriert.',
-									 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}', 'Ihr Konto wurde freigeschaltet.');
+									 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
+									 'Ihr Konto wurde freigeschaltet.')
+									('3',
+									 'es',
+									 'Bienvenido al sistema de registro',
+									 'Al registrarse en este sistema, usted está aceptando nuestros términos.',
+									 '¡Bienvenido!',
+									 '',
+									 'Se ha registrado en esta aplicación. Para confirmar su dirección de e-mail, por favor, visite {activation_url}.',
+									 'Se ha registrado en esta aplicación.',
+									 'Ha solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor vaya a {activation_url}',
+									 'Su cuenta ha sido activada. Gracias por registrase.');
 						";
 
 						$db->createCommand($sql)->execute();

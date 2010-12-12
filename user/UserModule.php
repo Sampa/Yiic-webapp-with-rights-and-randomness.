@@ -48,7 +48,13 @@ class UserModule extends CWebModule
 	public $enableUsergroups = true;
 	public $avatarPath = 'images';
 	public $password_expiration_time = 30;
-	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer
+	public $activationPasswordSet = false;
+	public $autoLogin = false;
+	public $facebook = false;
+	public $activateFromWeb = true;
+	public $recoveryFromWeb = false;
+	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer or PHPMailer to use PHPMailer as emailing lib.
+	public $phpmailer = null; // PHPMailer array options.
 	public $menuView = '/user/menu';
 	public $registrationEmail='register@website.com';
 	public $recoveryEmail='restore@website.com';

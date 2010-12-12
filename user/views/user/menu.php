@@ -118,9 +118,8 @@ if(!Yii::app()->user->isGuest) {
 
 	echo '<div class="yum-menu">'; 	
 	if(isset($user->profile[0])) 
-		$title = sprintf('<h3>%s %s (%s)</h3>',
-				$user->profile[0]->firstname,
-				$user->profile[0]->lastname,
+		$title = sprintf('<h3>%s (%s)</h3>',
+				(Yum::module()->loginType == 'LOGIN_BY_EMAIL') ? $user->profile[0]->email : $user->username,
 				$user->getRoles());
 	else
 		$title = sprintf('<h3>%s</h3>', $user->username);

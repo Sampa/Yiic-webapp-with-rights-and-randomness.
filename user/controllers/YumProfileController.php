@@ -2,7 +2,8 @@
 
 Yii::import('application.modules.user.controllers.YumController');
 
-class YumProfileController extends YumController {
+class YumProfileController extends YumController
+{
 	const PAGE_SIZE=10;
 	private $_model;
 
@@ -76,7 +77,9 @@ class YumProfileController extends YumController {
 				$profile->save();
 				Yii::app()->user->setFlash('profileMessage',
 						Yum::t('Your changes have been saved'));
-			$this->redirect(array('/user/user/profile', 'id'=>$model->id));
+				#$this->redirect(array('/user/user/profile', 'id'=>$model->id));
+				$view = Yum::module()->profileView;
+				$this->redirect(array($view, 'id'=>$model->id));
 			}
 		}
 

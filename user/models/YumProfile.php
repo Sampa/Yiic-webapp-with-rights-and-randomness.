@@ -7,8 +7,8 @@
  * @property integer $user_id
  * @property integer $timestamp
  * @property string $privacy
- * @property string $lastname
- * @property string $firstname
+ * @property string $lastname  //FIXME: Shouldn't be mandatory field
+ * @property string $firstname //FIXME: Shouldn't be mandatory field
  * @property string $email
  * @property string $about
  * @property string $street
@@ -223,14 +223,15 @@ class YumProfile extends YumActiveRecord
 	 * @param string $template
 	 * @since 0.6
 	 * @return string
+	 * FIXME: Should be in extended class
 	 */
-	public function getFormattedName($template='{firstname} {lastname}')
+/*	public function getFormattedName($template='{firstname} {lastname}')
 	{
 		foreach($this->getAttributes() as $key=>$attribute)
 			$tr["{{$key}}"]=$attribute;
 		return strtr($template,$tr);
 	}
-
+*/
 
 }
 

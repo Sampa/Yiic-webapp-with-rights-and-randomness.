@@ -12,7 +12,7 @@ class YumWebUser extends CWebUser
 		parent::init();
 		$this->loginUrl=$this->loginUrl;
 	}
-	
+
 	/**
 	 * Performs access check for this user.
 	 * @param string the name of the role that need access check.
@@ -67,8 +67,7 @@ class YumWebUser extends CWebUser
 		return $flag;
 	}
 
-
-/**
+	/**
 	 * Checks if this (non-admin) User can administrate the given user
 	 */
 	public static function hasUser($username, $uid = 0)
@@ -95,7 +94,7 @@ class YumWebUser extends CWebUser
 		return false;
 	}
 
-/**
+	/**
 	 * Checks if this (non-admin) User can administrate the given user of a specific role
 	 */
 	public static function hasRoleOfUser($username, $uid = 0)

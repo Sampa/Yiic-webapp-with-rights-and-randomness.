@@ -15,9 +15,12 @@ class YumActivityController extends YumController {
 
 		$possible_actions = array('login',
 				'logout',
+				'fb_login',
+				'fb_logout',
 				'register',
 				'recovery',
 				'failed_login_attempt',
+				'fb_failed_login_attempt',
 				'profile_set_active',
 				'settings_profile_created',
 				'settings_updated',
@@ -55,14 +58,26 @@ class YumActivityController extends YumController {
 		
 		switch ($action) 
 		{
-			case 'login':
-				Yii::log(Yum::t('User {username} successfully logged in', array(
+				case 'login':
+					Yii::log(Yum::t('User {username} successfully logged in', array(
 							'{username}' => $user->username)),
 					'info',
 					'modules.user.controllers.YumUserController');
 					break;
 				case 'logout':
 					Yii::log(Yum::t('User {username} successfully logged off', array(
+							'{username}' => $user->username)),
+					'info',
+					'modules.user.controllers.YumUserController');
+					break;
+				case 'fb_login':
+					Yii::log(Yum::t('User {username} successfully logged in via Facebook', array(
+							'{username}' => $user->username)),
+					'info',
+					'modules.user.controllers.YumUserController');
+					break;
+				case 'fb_logout':
+					Yii::log(Yum::t('User {username} successfully logged off from Facebook', array(
 							'{username}' => $user->username)),
 					'info',
 					'modules.user.controllers.YumUserController');
@@ -81,6 +96,12 @@ class YumActivityController extends YumController {
 				case 'failed_login_attempt' :
 					Yii::log(Yum::t('Wrong password for {username} entered', array(
 							'{username}' => $user->username)),
+					'warning',
+					'modules.user.controllers.YumUserController');
+					break;
+				case 'fb_failed_login_attempt' :
+					Yii::log(Yum::t('Error trying to login {facebook_id}. Session expired.', array(
+							'{facebook_id}' => $user->profile[0]->facebook_id)),
 					'warning',
 					'modules.user.controllers.YumUserController');
 					break;

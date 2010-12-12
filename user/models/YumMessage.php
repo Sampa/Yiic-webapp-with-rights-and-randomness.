@@ -109,9 +109,9 @@ class YumMessage extends YumActiveRecord
 	public function relations()
 	{
 		return array(
-				'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
-				'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
-				);
+			'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
+			'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
+			);
 	}
 
 	public function attributeLabels()
