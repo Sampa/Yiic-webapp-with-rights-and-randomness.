@@ -94,13 +94,14 @@ if(!Yii::app()->user->isGuest) {
 		$menu[] = e('My profile', 'profile/view');
 		$menu[] = e('Edit personal data', 'profile/edit');
 
-		if(Yum::module()->enableUsergroups)
+		if(Yum::module()->enableUsergroups) {
 			$menu[] = e('My groups', 'groups/index');
+			$menu[] = e('Browse groups', 'groups/browse');
+		}
+		$menu[] = e('Browse users', 'user/index');
 
 		if(Yum::module()->enableAvatar) 
 			$menu[] = e('Upload avatar image', 'avatar/editAvatar');
-		$menu[] = e('Browse users', 'user/index');
-		$menu[] = e('Browse groups', 'groups/browse');
 		if(Yum::module()->enableFriendship)
 		{
 			$menu[] = e('My friends', 'friendship');

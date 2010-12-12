@@ -1,32 +1,39 @@
 <?php
 $this->breadcrumbs=array(
-'Usergroups'=>array('index'),
-	$model->title,
-	);
-
-$this->menu=array(
-		array('label'=>Yii::t('app', 'List') . ' Usergroup', 'url'=>array('index')),
-		array('label'=>Yii::t('app', 'Create') . ' Usergroup', 'url'=>array('create')),
-		array('label'=>Yii::t('app', 'Update') . ' Usergroup', 'url'=>array('update', 'id'=>$model->id)),
-		array('label'=>Yii::t('app', 'Delete') . ' Usergroup', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-		array('label'=>Yii::t('app', 'Manage') . ' Usergroup', 'url'=>array('admin')),
+		'Usergroups'=>array('index'),
+		$model->title,
 		);
+
 ?>
 
-<h1><?php echo Yii::t('app', 'View');?> Usergroup #<?php echo $model->id; ?></h1>
+<h1> <?php echo $model->title; ?> </h1>
 
 <?php
-$locale = CLocale::getInstance(Yii::app()->language);
+$this->widget('zii.widgets.CDetailView', array(
+			'data'=>$model,
+			'attributes'=>array(
+				'owner.username',
+				'title',
+				'description',
+				),
+			)); 
 
- $this->widget('zii.widgets.CDetailView', array(
-'data'=>$model,
-	'attributes'=>array(
-					'id',
-		'owner_id',
-		'title',
-		'description',
-),
-	)); ?>
+printf('<h2>%s</h2>', Yum::t('Participants'));
+
+$participants = new CActiveDataProvider('YumGroupParticipation', array(
+			'criteria' => array(
+				'condition' => 'group_id = :group_id',
+				'join' => 'left join usergroup on group_id = usergroup.id',
+				'params' => array(':group_id' => $model->id))));
+
+$this->widget('zii.widgets.CListView', array(
+    'dataProvider'=>$participants,
+    'itemView'=>'_participant', 
+));
+
+?>
+
+<div style="clear: both;"> </div>
 
 
-	
+

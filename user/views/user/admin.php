@@ -28,12 +28,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(Yum::route("{user}/view"),"id"=>$data->id))',
 			),
 			array(
-				'header'=>Yum::t('Email'),
-				'visible' => Yum::module()->enableProfiles,
-				'type'=>'raw',
-				'value'=>'CHtml::link($data->profile[0]->email,
-					\'mailto: \'.$data->profile[0]->email)'), 
-			array(
 				'name'=>'createtime',
 				'filter' => false,
 				'value'=>'date(UserModule::$dateFormat,$data->createtime)',

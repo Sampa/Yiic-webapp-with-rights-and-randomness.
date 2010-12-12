@@ -90,6 +90,7 @@ echo CHtml::activeDropDownList($model,'notifyType',YumUser::itemAlias('NotifyTyp
 echo CHtml::error($model,'notifyType');
 echo CHtml::closeTag('div');
 
+if(Yum::module()->enableRoles) {
 echo CHtml::openTag('div',array( 'class'=>'row'));
 echo CHtml::tag('p',
 		array(),
@@ -106,6 +107,7 @@ $this->widget('YumModule.components.Relation',
 				'showAddButton' => false
 				));
 	echo CHtml::closeTag('div');
+}
 
 if(empty($tabularIdx))
 {

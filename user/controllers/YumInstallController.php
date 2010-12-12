@@ -80,20 +80,21 @@ class YumInstallController extends YumController
 
 					if(isset($_POST['installUsergroup'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$usergroupTable."` (
-									`id` int(11) NOT NULL AUTO_INCREMENT,
-									`owner_id` int(11) NOT NULL,
-									`title` varchar(255) NOT NULL,
-									`description` text NOT NULL,
-									PRIMARY KEY (`id`)
-									) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+							`id` int(11) NOT NULL AUTO_INCREMENT,
+							`owner_id` int(11) NOT NULL,
+							`title` varchar(255) NOT NULL,
+							`description` text NOT NULL,
+							PRIMARY KEY (`id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
 
 						$db->createCommand($sql)->execute();
 
-						$sql = " CREATE TABLE IF NOT EXISTS `".$userUsergroupTable."` (
-							`user_id` int(11) unsigned NOT NULL,
-							`group_id` int(11) unsigned NOT NULL,
-							PRIMARY KEY (`user_id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+						$sql = "CREATE TABLE IF NOT EXISTS `user_has_usergroup` (
+							`user_id` int(10) unsigned NOT NULL,
+							`group_id` int(10) unsigned NOT NULL,
+							`jointime` int(11) NOT NULL,
+							PRIMARY KEY (`user_id`,`group_id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 						$db->createCommand($sql)->execute();
 					}

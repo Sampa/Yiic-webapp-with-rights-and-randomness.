@@ -10,12 +10,12 @@ class YumUserIdentity extends CUserIdentity {
 	const ERROR_STATUS_BANNED=5;
 
 	public function authenticateFacebook() {
-		$fbconfig = Yum::module()->facebook;
+		$fbconfig = Yum::module()->facebookConfig;
 		if (!$fbconfig || $fbconfig && !is_array($fbconfig))
-			throw new Exception('actionLogout for Facebook was called, but is not activated in main.php');
+			throw new Exception('actionLogout for Facebook was called, but is not activated in application configuration.php');
 
-		Yii::import('application.vendors.facebook.*');
-		require_once('facebook.php');
+		Yii::import('application.modules.user.vendors.facebook.*');
+		require_once('Facebook.php');
 		$facebook = new Facebook($fbconfig);
 
 		$fb_uid = $facebook->getUser();
@@ -35,7 +35,6 @@ class YumUserIdentity extends CUserIdentity {
 				//$this->facebook_user = $facebook->api('/me');
 				$this->errorCode = self::ERROR_NONE;
 			}
-
 	}
 
 	public function authenticate() {

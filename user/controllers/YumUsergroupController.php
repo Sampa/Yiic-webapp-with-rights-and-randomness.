@@ -17,7 +17,7 @@ class YumUsergroupController extends YumController {
 					'users'=>array('*'),
 					),
 				array('allow', 
-					'actions'=>array('getOptions', 'create','update', 'browse'),
+					'actions'=>array('getOptions', 'create','update', 'browse', 'join'),
 					'users'=>array('@'),
 					),
 				array('allow', 
@@ -28,6 +28,16 @@ class YumUsergroupController extends YumController {
 					'users'=>array('*'),
 					),
 				);
+	}
+
+	public function actionJoin() {
+		if(isset($_GET['id'])) {
+			$p = new YumGroupParticipation();
+			$p->user_id = Yii::app()->user->id;
+			$p->group_id = $_GET['id'];
+			if($p->save())
+				$this->redirect(array('//user/groups/view', 'id' => $_GET['id']));
+		}
 	}
 
 	public function actionView() {
@@ -54,18 +64,21 @@ class YumUsergroupController extends YumController {
 	public function actionCreate() {
 		$model = new YumUsergroup;
 
-//		$this->performAjaxValidation($model, 'usergroup-form');
-
 		if(isset($_POST['YumUsergroup'])) {
 			$model->attributes = $_POST['YumUsergroup'];
-
+			$model->owner_id = Yii::app()->user->id;
 
 			if($model->save()) {
-					$this->redirect(array('view','id'=>$model->id));
+				$participant = new YumGroupParticipation();
+				$participant->user_id = Yii::app()->user->id;
+				$participant->group_id = $model->id;
+				$participant->save();
+
+				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
-			$this->render('create',array( 'model'=>$model));
+		$this->render('create',array( 'model'=>$model));
 	}
 
 
@@ -112,7 +125,12 @@ class YumUsergroupController extends YumController {
 
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('YumUsergroup');
+		$dataProvider=new CActiveDataProvider('YumUsergroup', array(
+				'criteria' => array(
+					'condition' => 'owner_id = :owner_id',
+					'params' => array(':owner_id' => Yii::app()->user->id))));
+
+
 		$this->render('index',array(
 					'dataProvider'=>$dataProvider,
 					));

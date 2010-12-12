@@ -56,7 +56,7 @@ class YumAuthController extends YumController {
 				}
 
 				$identity = new YumUserIdentity($fb_uid, $user->id);
-				$identity->authenticate(true);
+				$identity->authenticateFacebook(true);
 
 				switch ($identity->errorCode)
 				{
@@ -100,7 +100,8 @@ class YumAuthController extends YumController {
 						':username' => $this->loginForm->username))) 
 			return $this->authenticate($user);
 		else
-			$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
+			$this->loginForm->addError("password",
+					Yum::t('Username or Password is incorrect'));
 
 		return false;
 	}

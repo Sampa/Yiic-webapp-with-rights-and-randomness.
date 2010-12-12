@@ -148,41 +148,8 @@ class YumUserController extends YumController
 	}
 
 	public function actionProfile() {
-		// Display my own profile:
-		if(!isset($_GET['id']) || $_GET['id'] == Yii::app()->user->id)
-		{
-			if (Yii::app()->user->id)
-			{
-				$model = $this->loadUser(Yii::app()->user->id);
-				$friends=$model->getFriends();
-
-				$this->render('/profile/myprofile',array(
-							'model'=>$model,
-							'profile'=>$model->profile,
-							'messages'=>$model->messages,
-							'friends'=>$friends,
-							));
-			}
-		}
-		else
-		{
-			// Display a foreign profile:
-			$model = $this->loadUser($uid = $_GET['id']);
-
-			if(Yum::module()->forceProtectedProfiles == true ||
-					$model->profile[0]->privacy == 'protected' ||
-					$model->profile[0]->privacy == 'private')
-			{
-				$this->render('/profile/profilenotallowed');
-			}
-			else
-			{
-				$this->render('foreignprofile',array(
-							'model'=>$model,
-							'profile'=>$model->profile,
-							));
-			}
-		}
+		$this->redirect(array('//user/profile/view',
+					'id' => isset($_GET['id']) ? $_GET['id'] : Yii::app()->user->id));
 	}
 
 
