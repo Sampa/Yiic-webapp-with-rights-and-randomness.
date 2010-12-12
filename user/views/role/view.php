@@ -24,21 +24,6 @@ if($model->users) {
 } else 
 printf('<p> %s </p>', Yum::t('None'));
 
-
-?> 
-
-<p> <?php echo Yum::t('This role can administer users of this roles'); ?> </p>
-
-<?php
-if($model->roles) {
-	foreach($model->roles as $role) {
-		printf("<li>%s</li>", CHtml::link($role->title, array(Yum::route('role/view'), 'id' => $role->id)));
-	}
-
-} else {
-	printf('<p> %s </p>', Yum::t('None'));
-}
-
 if(Yii::app()->user->isAdmin())
 	echo CHtml::Button(Yum::t('Update role'), array('submit' => array('role/update', 'id' => $model->id)));
 

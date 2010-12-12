@@ -24,12 +24,6 @@ class YumRoleController extends YumController
 			else
 				$model->users = array();
 
-			if(isset($_POST['YumRole']['YumRole']))
-				$model->roles = $_POST['YumRole']['YumRole'];
-			else
-				$model->roles = array();
-
-
 			if($model->save())
 			{
 			if(Yum::module()->enableLogging == true)
@@ -58,10 +52,6 @@ class YumRoleController extends YumController
 				$model->users = $_POST['YumRole']['YumUser'];
 			else
 				$model->users = array();
-			if(isset($_POST['YumRole']['YumRole']))
-				$model->roles = $_POST['YumRole']['YumRole'];
-			else
-				$model->roles = array();
 
 			if($model->validate() && $model->save())
 			{
@@ -100,10 +90,10 @@ class YumRoleController extends YumController
 		if(Yii::app()->request->isPostRequest)
 		{
 			if(Yum::module()->enableLogging == true)
-								{
-								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-								YumActivityController::logActivity($user, 'role_removed');
-								}
+			{
+				$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+				YumActivityController::logActivity($user, 'role_removed');
+			}
 			$this->loadModel()->delete();
 
 			if(!isset($_POST['ajax']))
