@@ -94,7 +94,6 @@ class YumAuthController extends YumController {
 			$this->redirect(Yum::module()->returnLogoutUrl);
 	}
 
-
 	public function loginByUsername() {
 		if($user = YumUser::model()->find('username = :username', array(
 						':username' => $this->loginForm->username))) 
@@ -143,7 +142,15 @@ class YumAuthController extends YumController {
 	}
 
 	public function loginByOpenid() {
-	}
+		if (!Yum::module()->loginType & UserModule::LOGIN_BY_OPENID)
+			throw new Exception('login by Open Id was called, but is not activated in application configuration');
+
+		Yii::app()->user->logout();
+		Yii::import('application.modules.user.vendors.openid.*');
+		$openid = new EOpenID;
+		$openid->authenticate($this->loginForm->username);
+    return Yii::app()->user->login($openid);
+		}	 
 
 	public function loginByTwitter() {
 	}
@@ -153,8 +160,13 @@ class YumAuthController extends YumController {
 		if (!Yii::app()->user->isGuest)
 			$this->redirect(Yum::module()->returnUrl);
 
+
 		$this->layout = Yum::module()->loginLayout;
-		$this->loginForm = new YumUserLogin;
+		$this->loginForm = new YumUserLogin('login');
+
+		if(Yum::module()->loginType & UserModule::LOGIN_BY_OPENID)
+			$this->loginForm->setScenario('openid');
+
 
 		if(isset($_POST['YumUserLogin'])) {
 			$this->loginForm->attributes = $_POST['YumUserLogin'];

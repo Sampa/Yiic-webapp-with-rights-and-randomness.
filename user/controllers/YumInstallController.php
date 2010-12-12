@@ -203,7 +203,7 @@ class YumInstallController extends YumController
 								'1',
 								'1',
 								'0',
-								'23',
+								'3',
 								'Instant', '30', '1');";
 						$db->createCommand($sql)->execute();
 

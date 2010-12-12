@@ -2,7 +2,7 @@
 
 
 return array(
-		'Username or Password incorrect' => 'Benutzername oder Passwort ist falsch',
+		'Username or Password is incorrect' => 'Benutzername oder Passwort ist falsch',
 		'No friendship requested' => 'Keine Freundschaft angefragt',
 		'New friendship requests' => 'Neue Freundschaftsanfragen',
 		'This message will be sent to {username}' => 'Diese Nachricht wird an {username} versandt',
@@ -219,7 +219,7 @@ return array(
 		'Manage Roles' => 'Rollenverwaltung',
 		'Logout' => 'Logout',
 		'username' => 'Benutzername',
-		'email address' => 'E-Mail Adresse',
+		'E-Mail address' => 'E-Mail Adresse',
 		'email' => 'E-Mail',
 		'username or email' => 'Benutzername oder E-Mail Adresse',
 		'password' => 'Passwort',

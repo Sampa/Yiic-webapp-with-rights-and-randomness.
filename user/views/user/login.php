@@ -37,16 +37,25 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 	
 	<div class="row">
 		<?php 
-		if($module->loginType == 'LOGIN_BY_EMAIL')
-			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('E-Mail address'));
-		else
-			echo CHtml::activeLabelEx($model,'username'); ?>
+		if($module->loginType & UserModule::LOGIN_BY_USERNAME)
+			echo CHtml::activeLabelEx($model,'username'); 
+		if($module->loginType & UserModule::LOGIN_BY_EMAIL)
+			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('E-Mail address')); 
+		if($module->loginType & UserModule::LOGIN_BY_FACEBOOK)
+			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('Facebook account')); 
+		if($module->loginType & UserModule::LOGIN_BY_OPENID)
+			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('OpenID username'));  ?>
+
 		<?php echo CHtml::activeTextField($model,'username') ?>
 	</div>
 	
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'password'); ?>
-		<?php echo CHtml::activePasswordField($model,'password') ?>
+		<?php echo CHtml::activePasswordField($model,'password');
+		if($module->loginType & UserModule::LOGIN_BY_OPENID)
+			echo '<br />'. Yum::t('When logging in with OpenID, password can be omitted');
+ ?>
+		
 	</div>
 	
 	<div class="row">
