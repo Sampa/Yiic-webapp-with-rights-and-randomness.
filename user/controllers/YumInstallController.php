@@ -37,6 +37,7 @@ class YumInstallController extends YumController
 							'profileFieldsTable',
 							'profileFieldsGroupTable',
 							'profileTable',
+							'profileCommentTable',
 							'profileVisitTable',
 							'messagesTable',
 							'rolesTable',
@@ -331,7 +332,8 @@ class YumInstallController extends YumController
 							`privacy` ENUM('protected', 'private', 'public') NOT NULL,
 							`lastname` varchar(50) NOT NULL default '',
 							`firstname` varchar(50) NOT NULL default '',
-							`show_friends` tinyint(1) DEFAULT NULL,
+							`show_friends` tinyint(1) DEFAULT 1,
+							`allow_comments` tinyint(1) DEFAULT 1,
 							`email` varchar(255) NOT NULL default '',
 							`street` varchar(255),
 							`city` varchar(255),
@@ -339,6 +341,17 @@ class YumInstallController extends YumController
 							PRIMARY KEY  (`profile_id`),
 							KEY `fk_profiles_users` (`user_id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+
+						$db->createCommand($sql)->execute();
+
+						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileCommentTable ."` (
+							`id` int(11) NOT NULL AUTO_INCREMENT,
+							`user_id` int(11) NOT NULL,
+							`profile_id` int(11) NOT NULL,
+							`comment` text NOT NULL,
+							`createtime` int(11) NOT NULL,
+							PRIMARY KEY (`id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
 
@@ -448,6 +461,7 @@ class YumInstallController extends YumController
 							'rolesTable' => Yum::resolveTableName($this->module->rolesTable,Yii::app()->db),
 							'messagesTable' => Yum::resolveTableName($this->module->messagesTable,Yii::app()->db),
 							'profileTable' => Yum::resolveTableName($this->module->profileTable,Yii::app()->db),
+							'profileCommentTable' => Yum::resolveTableName($this->module->profileCommentTable,Yii::app()->db),
 							'profileVisitTable' => Yum::resolveTableName($this->module->profileVisitTable,Yii::app()->db),
 							'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable,Yii::app()->db),
 							'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),

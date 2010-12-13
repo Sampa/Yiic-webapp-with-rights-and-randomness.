@@ -6,10 +6,10 @@ $this->breadcrumbs = array('Avatar upload');
 if($model->avatar) {
 	echo Yum::t('Your Avatar image');
 	echo '<br />';
-	$model->renderAvatar();
+	echo $model->getAvatar();
 }
 else
-	echo Yum::t('You do not have set an avatar image yet.');
+	echo Yum::t('You do not have set an avatar image yet');
 
 	echo '<br />';
 
@@ -22,9 +22,9 @@ else
 	echo CHtml::activeFileField($model, 'avatar');
 	echo CHtml::error($model, 'avatar');
 	echo '</div>';
-	echo CHtml::Button('Remove Avatar', array(
+	echo CHtml::Button(Yum::t('Remove Avatar'), array(
 				'submit' => array(
 					'avatar/removeAvatar')));
-	echo CHtml::submitButton('Upload Avatar');
+	echo CHtml::submitButton(Yum::t('Upload Avatar'));
 	echo CHtml::endForm();
 

@@ -19,6 +19,7 @@ class UserModule extends CWebModule
 	public $profileFieldsTable = 'profile_fields';
 	public $profileFieldsGroupTable = 'profile_fields_group';
 	public $profileTable = 'profiles';
+	public $profileCommentTable = 'profile_comment';
 	public $profileVisitTable = 'profile_visit';
 	public $rolesTable = 'roles';
 	public $friendshipTable = 'friendship';
@@ -42,6 +43,7 @@ class UserModule extends CWebModule
 	public $allowRecovery = true;
 	public $enableRoles = true;
 	public $enableProfiles = true;
+	public $enableProfileComments = true;
 	public $enableFriendship = true;
 	public $enableLogging = true;
 	public $enableAvatar = true;
@@ -135,6 +137,7 @@ class UserModule extends CWebModule
 		'action'=>array('class'=>'YumModule.controllers.YumActionController'),
 		'activities'=>array('class'=>'YumModule.controllers.YumActivityController'),
 		'permission'=>array('class'=>'YumModule.controllers.YumPermissionController'),
+		'comments'=>array('class'=>'YumModule.controllers.YumProfileCommentController'),
 		'avatar'=>array('class'=>'YumModule.controllers.YumAvatarController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),

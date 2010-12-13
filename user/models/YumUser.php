@@ -452,7 +452,7 @@ class YumUser extends YumActiveRecord
 			if(isset($friend->avatar) && $friend->avatar)
 				$return .= CHtml::image(Yii::app()->baseUrl . '/' 
 						. Yum::module()->avatarPath . '/' 
-						. $friend->avatar, $options);
+						. $friend->avatar, 'Avatar', $options);
 			else
 				$return .= CHtml::image(Yii::app()->getAssetManager()->publish(
 							Yii::getPathOfAlias('YumAssets.images') . ($thumb ? '/no_avatar_available_thumb.jpg' : '/no_avatar_available.jpg'),

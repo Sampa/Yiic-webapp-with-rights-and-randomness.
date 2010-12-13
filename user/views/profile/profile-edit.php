@@ -6,11 +6,11 @@ if(Yii::app()->getModule('user')->rteadapter != false)
 ?>
 
 <?php 
-$this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Profile");
+$this->pageTitle=Yii::app()->name . ' - '.Yum::t( "Profile");
 $this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Profile")=>array('profile'),
-	Yii::t("UserModule.user", "Edit"));
-$this->title = Yii::t("UserModule.user", 'Edit profile');
+	Yum::t( "Profile")=>array('profile'),
+	Yum::t( "Edit"));
+$this->title = Yum::t( 'Edit profile');
 ?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
@@ -84,26 +84,41 @@ if ($profileFields)
 		echo CHtml::activeLabelEx($profile, 'privacy'); 
 		echo CHtml::activeDropDownList($profile, 'privacy',
 				array(
-					'protected' => Yii::t('UserModule.user', 'protected'),
-					'private' => Yii::t('UserModule.user', 'private'),
-					'public' => Yii::t('UserModule.user', 'public'),
+					'protected' => Yum::t( 'protected'),
+					'private' => Yum::t( 'private'),
+					'public' => Yum::t( 'public'),
 					)
 ); 
 				echo CHtml::error($profile,'privacy'); 
 ?>
+
 		</div>
+
 <div class="row">
 		<?php 
 		echo CHtml::activeLabelEx($profile, 'show_friends'); 
 		echo CHtml::activeDropDownList($profile, 'show_friends',
 				array(
-					'0' => Yii::t('UserModule.user', 'owner'),
-					'1' => Yii::t('UserModule.user', 'friends only'),
-					'2' => Yii::t('UserModule.user', 'public'),
+					'0' => Yum::t( 'owner'),
+					'1' => Yum::t( 'friends only'),
+					'2' => Yum::t( 'public'),
 					)
 					);
 		?>
 </div>
+
+<div class="row">
+		<?php 
+		echo CHtml::activeLabelEx($profile, 'allow_comments'); 
+		echo CHtml::activeDropDownList($profile, 'allow_comments',
+				array(
+					'0' => Yum::t( 'No'),
+					'1' => Yum::t( 'Yes'),
+					)
+					);
+		?>
+</div>
+
 
 
 	<div class="row buttons">

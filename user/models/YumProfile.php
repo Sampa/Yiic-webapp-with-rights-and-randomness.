@@ -74,7 +74,6 @@ class YumProfile extends YumActiveRecord
 
 	public function rules()
 	{
-
 		$required = array();
 		$numerical = array();           
 		$rules = array();
@@ -117,7 +116,7 @@ class YumProfile extends YumActiveRecord
 						'dateFormat' => 'yyyy-mm-dd');
 
 				if ($field->error_message)
-					$field_rule['message'] = Yii::t("UserModule.user", $field->error_message);
+					$field_rule['message'] = Yum::t( $field->error_message);
 				array_push($rules,$field_rule);
 			}
 
@@ -128,7 +127,7 @@ class YumProfile extends YumActiveRecord
 						'pattern' => $field->match);
 
 				if ($field->error_message)
-					$field_rule['message'] = Yii::t("UserModule.user", $field->error_message);
+					$field_rule['message'] = Yum::t( $field->error_message);
 				array_push($rules,$field_rule);
 			}
 			if ($field->range) 
@@ -140,7 +139,7 @@ class YumProfile extends YumActiveRecord
 				$field_rule = array($field->varname,'in','range' => $range);
 
 				if ($field->error_message)
-					$field_rule['message'] = Yii::t("UserModule.user", $field->error_message);
+					$field_rule['message'] = Yum::t( $field->error_message);
 				array_push($rules,$field_rule);
 			}
 
@@ -150,7 +149,7 @@ class YumProfile extends YumActiveRecord
 						$field->other_validator);
 
 				if ($field->error_message)
-					$field_rule['message'] = Yii::t("UserModule.user", $field->error_message);
+					$field_rule['message'] = Yum::t( $field->error_message);
 				array_push($rules, $field_rule);
 			}
 
@@ -162,6 +161,9 @@ class YumProfile extends YumActiveRecord
 				array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 		array_push($rules,
 				array(implode(',',$safe), 'safe'));
+
+		$rules[] = array('allow_comments, show_friends', 'numerical');
+		$rules[] = array('privacy', 'safe');
 
 		return $rules;
 	}
@@ -187,9 +189,11 @@ class YumProfile extends YumActiveRecord
 	public function attributeLabels()
 	{
 		$labels = array(
-			'user_id' => Yii::t("UserModule.user", 'User ID'),
-			'profile_id' => Yii::t("UserModule.user", 'Profile ID'),
-			'privacy' => Yii::t('UserModule.user', 'Privacy'),
+			'user_id' => Yum::t( 'User ID'),
+			'profile_id' => Yum::t( 'Profile ID'),
+			'privacy' => Yum::t( 'Privacy'),
+			'show_friends' => Yum::t( 'Show friends'),
+			'allow_comments' => Yum::t( 'Allow comments'),
 		);
 
 		foreach (self::$fields as $field)

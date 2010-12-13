@@ -1,4 +1,5 @@
 <?php
+Yii::import('application.modules.user.UserModule');
 /**
  * EPhotoValidator class file.
  *
@@ -9,55 +10,54 @@
  *
  * Copyright (C) 2008 by emix
  * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
+ ][Ma][Ma]*
+ * Redistr[Ma]ibution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
- * - Redistributions of source code must retain the above copyright notice,
+ * - Redistrib[Ma]utions of source code must retain the above copyright notice,
  *   this list of conditions and the following disclaimer.
  * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
+ *   this list of [Ma]conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
  * - Neither the name of emix nor the names of its contributors may
- *   be used to endorse or promote products derived from this software without
+ *   be used to endors[Ma]e or promote products derived from this software without
  *   specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVID[Ma]ED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * ARE DISCLAIMED. IN NO EVENT[Ma\ SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * GOODS OR SERVICES; LOSS OF USE,[Ma\ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * EVEN IF ADVISED OF THE POSSIBILITY [Ma\OF SUCH DAMAGE.
  *
  * @author vladm
- * @version 0.2alpha_vladm revised version. date: February 14, 2010
+ * @version 0.2alpha_vladm revised version[Ma\. date: February 14, 2010
  */
 
 class EPhotoValidator extends CFileValidator {
 
 	/**
-	 * @var string Allowed mime type of the image, ie: image/jpeg
+	 * @var string Allowed mime type of the image, i[Ma\e: image/jpeg
 	 */
 	public $mimeType;
 
 	/**
-	 * @var string Mime type error message
+	 * @var string Mime type error message[Ma\
 	 */
 	public $mimeTypeError;
-	
 	/**
 	 * @var fixed image width required.
 	 */
 	public $width;
 	/*
-	 * @var string width error message.
+	 * @var[Ma\ string width error message.
 	 */
 	public $widthError;
-	/*
+	/*[Ma\
 	 * @var fixed image height required.
 	 */
 	public $height;
@@ -187,7 +187,7 @@ class EPhotoValidator extends CFileValidator {
 		$info = @getimagesize($file->getTempName());
 		
 		if(!$info){
-			$message = Yii::t(__CLASS__ . '.' . __CLASS__,'The file "{file}" is not an image.', array(), 'coreMessages');
+			$message = Yum::t('The file "{file}" is not an image.', array(), 'coreMessages');
 			$this->addError($object, $attribute, $message, array('{file}'=>$file->getName()));
 			return;
 		}
@@ -201,80 +201,80 @@ class EPhotoValidator extends CFileValidator {
 		
 		if ($this->width!==null){
 			if($info['width'] != $this->width) {
-				$message = $this->widthError ? $this->widthError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" width should be "{width}px".', array(), 'coreMessages');
+				$message = $this->widthError ? $this->widthError : Yum::t('The image "{file}" width should be "{width}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{width}'=>$this->width));
 			}
 		}
 		if ($this->minWidth!==null) {
 			if ($info['width'] < $this->minWidth) {
-				$message = $this->minWidthError ? $this->minWidthError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" width should be at least "{width}px".', array(), 'coreMessages');
+				$message = $this->minWidthError ? $this->minWidthError : Yum::t('The image "{file}" width should be at least "{width}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{width}'=>$this->minWidth));
 			}
 		}
 		if ($this->maxWidth!==null) {
 			if ($info['width'] > $this->maxWidth) {
-				$message = $this->maxWidthError ? $this->maxWidthError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" width should be at most "{width}px".', array(), 'coreMessages');
+				$message = $this->maxWidthError ? $this->maxWidthError : Yum::t('The image "{file}" width should be at most "{width}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{width}'=>$this->maxWidth));
 			}
 		}
 		if ($this->height!==null){
 			if($info['height'] != $this->height) {
-				$message = $this->heightError ? $this->heightError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" height should be "{height}px".', array(), 'coreMessages');
+				$message = $this->heightError ? $this->heightError : Yum::t('The image "{file}" height should be "{height}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{height}'=>$this->height));
 			}
 		}
 		if ($this->minHeight!==null) {
 			if ($info['height'] < $this->minHeight) {
-				$message = $this->minHeightError ? $this->minHeightError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" height should be at least "{height}px".', array(), 'coreMessages');
+				$message = $this->minHeightError ? $this->minHeightError : Yum::t('The image "{file}" height should be at least "{height}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{height}'=>$this->minHeight));
 			}
 		}
 		if ($this->maxHeight!==null) {
 			if ($info['height'] > $this->maxHeight) {
-				$message = $this->maxHeightError ? $this->maxHeightError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" height should be at most "{height}px".', array(), 'coreMessages');
+				$message = $this->maxHeightError ? $this->maxHeightError : Yum::t('The image "{file}" height should be at most "{height}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{height}'=>$this->maxHeight));
 			}
 		}
 		if ($this->smallSideSize!==null) {
 			if (min($info['height'], $info['width']) == $this->smallSideSize) {
-				$message = $this->smallSideSizeError ? $this->smallSideSizeError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" small side should be "{side}px".', array(), 'coreMessages');
+				$message = $this->smallSideSizeError ? $this->smallSideSizeError : Yum::t('The image "{file}" small side should be "{side}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{side}'=>$this->smallSideSize));
 			}
 		}
 		if ($this->smallSideMinSize!==null) {
 			if (min($info['height'], $info['width']) < $this->smallSideMinSize) {
-				$message = $this->smallSideMinSizeError ? $this->smallSideMinSizeError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" small side should be at least "{side}px".', array(), 'coreMessages');
+				$message = $this->smallSideMinSizeError ? $this->smallSideMinSizeError : Yum::t('The image "{file}" small side should be at least "{side}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{side}'=>$this->smallSideMinSize));
 			}
 		}
 		if ($this->smallSideMaxSize!==null) {
 			if (min($info['height'], $info['width']) > $this->smallSideMaxSize) {
-				$message = $this->smallSideMaxSizeError ? $this->smallSideMaxSizeError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" small side should be at most "{side}px".', array(), 'coreMessages');
+				$message = $this->smallSideMaxSizeError ? $this->smallSideMaxSizeError : Yum::t('The image "{file}" small side should be at most "{side}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{side}'=>$this->smallSideMaxSize));
 			}
 		}
 		if ($this->bigSideSize!==null) {
 			if (max($info['height'], $info['width']) == $this->bigSideSize) {
-				$message = $this->bigSideSizeError ? $this->bigSideSizeError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" big side should be "{side}px".', array(), 'coreMessages');
+				$message = $this->bigSideSizeError ? $this->bigSideSizeError : Yum::t('The image "{file}" big side should be "{side}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{side}'=>$this->bigSideSize));
 			}
 		}
 		if ($this->bigSideMinSize!==null) {
 			if (max($info['height'], $info['width']) < $this->bigSideMinSize) {
-				$message = $this->bigSideMinSizeError ? $this->bigSideMinSizeError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" big side should be at least "{side}px".', array(), 'coreMessages');
+				$message = $this->bigSideMinSizeError ? $this->bigSideMinSizeError : Yum::t('The image "{file}" big side should be at least "{side}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{side}'=>$this->bigSideMinSize));
 			}
 		}
 		if ($this->bigSideMaxSize!==null) {
 			if (max($info['height'], $info['width']) > $this->bigSideMaxSize) {
-				$message = $this->bigSideMaxSizeError ? $this->bigSideMaxSizeError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" big side should be at most "{side}px".', array(), 'coreMessages');
+				$message = $this->bigSideMaxSizeError ? $this->bigSideMaxSizeError : Yum::t('The image "{file}" big side should be at most "{side}px".', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{side}'=>$this->bigSideMaxSize));
 			}
 		}
 		if ($this->mimeType!==null) {
 			$mimeTypes = is_scalar($this->mimeType) ? array($this->mimeType) : $this->mimeType;
 			if (!in_array($info['mime'], $mimeTypes)) {
-				$message=$this->mimeTypeError ? $this->mimeTypeError : Yii::t(__CLASS__ . '.' . __CLASS__,'The image "{file}" mime type "{mime}" is not allowed.', array(), 'coreMessages');
+				$message=$this->mimeTypeError ? $this->mimeTypeError : Yum::t('The image "{file}" mime type "{mime}" is not allowed.', array(), 'coreMessages');
 				$this->addError($object, $attribute, $message, array('{file}'=>$file->getName(), '{mime}'=>$info['mime']));
 			}
 		}

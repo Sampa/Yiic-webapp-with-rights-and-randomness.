@@ -31,7 +31,7 @@ class YumProfileController extends YumController
 					Yum::t('You are not allowed to edit your own profile.
 						Please contact your System Administrator.'));
 
-			$this->redirect(array('profile', 'id'=>$model->id));
+				$this->redirect(array('/user/user/profile', 'id'=>$model->id));
 		}
 
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
@@ -48,9 +48,7 @@ class YumProfileController extends YumController
 			if(isset($_POST['YumProfile'])) {
 				$profile->attributes=$_POST['YumProfile'];
 				$profile->timestamp = time();
-				$profile->privacy = $_POST['YumProfile']['privacy'];
 				$profile->user_id = $model->id;
-				$profile->show_friends=$_POST['YumProfile']['show_friends'];
 			}
 			$model->validate();
 			$profile->validate();
@@ -77,9 +75,7 @@ class YumProfileController extends YumController
 				$profile->save();
 				Yii::app()->user->setFlash('profileMessage',
 						Yum::t('Your changes have been saved'));
-				#$this->redirect(array('/user/user/profile', 'id'=>$model->id));
-				$view = Yum::module()->profileView;
-				$this->redirect(array($view, 'id'=>$model->id));
+				$this->redirect(array('/user/user/profile', 'id'=>$model->id));
 			}
 		}
 
@@ -151,8 +147,7 @@ class YumProfileController extends YumController
 		$this->render('create',array( 'model'=>$model ));
 	}
 
-	public function actionUpdate()
-	{
+	public function actionUpdate() {
 		if(Yii::app()->user->isAdmin()) 
 			$this->layout = Yum::module()->adminLayout;
 		else
