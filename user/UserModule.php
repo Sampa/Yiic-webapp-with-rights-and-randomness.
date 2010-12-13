@@ -115,7 +115,8 @@ class UserModule extends CWebModule
 	const LOGIN_BY_OPENID        = 4;
 	const LOGIN_BY_FACEBOOK      = 8;
 	const LOGIN_BY_TWITTER       = 16;
-	public $loginType = 3; // Allow username and email login by default
+	// Allow username and email login by default
+	public $loginType = 3;
 
 	/**
 	 * Whether to use captcha e.g. in registration process
