@@ -174,20 +174,13 @@ class YumAuthController extends YumController {
 		 * knowing about this.
 		 */
 		$success = false;
-		$logTyp = Yum::module()->loginType;
-		if(Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK)
-		{
-			$success = $this->loginByFacebook();
-		}
-		else if(Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success)
-			$sucess = $this->loginByTwitter();
-		else if(isset($_POST['YumUserLogin']))
+		if(isset($_POST['YumUserLogin']))
 		{
 			$this->loginForm->attributes = $_POST['YumUserLogin'];
 			// validate user input for the rest of login methods
 			if($this->loginForm->validate())
 			{
-				if(Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME && !$success)
+				if(Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME)
 					$success = $this->loginByUsername();
 				if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL && !$success)
 					$success = $this->loginByEmail();
@@ -198,6 +191,10 @@ class YumAuthController extends YumController {
 				}
 			}
 		}
+		if(Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success)
+			$success = $this->loginByFacebook();
+		if(Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success)
+			$sucess = $this->loginByTwitter();
 		if($success instanceof YumUser)
 		{
 			$success->lastvisit = time();
