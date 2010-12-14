@@ -17,11 +17,11 @@ class YumProfileCommentController extends YumController
 					'users'=>array('*'),
 					),
 				array('allow', 
-					'actions'=>array('create'),
+					'actions'=>array('create', 'delete'),
 					'users'=>array('@'),
 					),
 				array('allow', 
-					'actions'=>array('admin','delete'),
+					'actions'=>array('admin'),
 					'users'=>array('admin'),
 					),
 				array('deny', 
@@ -30,8 +30,7 @@ class YumProfileCommentController extends YumController
 				);
 	}
 
-	public function actionCreate()
-	{
+	public function actionCreate() {
 		$model = new YumProfileComment;
 
 		if(isset($_POST['YumProfileComment'])) {
@@ -39,6 +38,13 @@ class YumProfileCommentController extends YumController
 
 			if($model->save()) {
 				$this->renderPartial('/profileComment/success');
+
+				// If the user has activated email receiving, send a email
+				if($user = YumUser::model()->findByPk($model->user_id)) 
+					if($user->privacy && $user->privacy->message_new_profilecomment)
+						YumMessageController::mailMessage($model->user->profile[0]->email,
+								Yum::t('New profile Comment'),
+								Yum::t('New profile Comment'));
 				Yii::app()->end();
 			}
 		}
@@ -50,35 +56,25 @@ class YumProfileCommentController extends YumController
 	}
 
 
-	public function actionDelete()
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			$this->loadModel()->delete();
-
-			if(!isset($_GET['ajax']))
-			{
-				if(isset($_POST['returnUrl']))
-					$this->redirect($_POST['returnUrl']); 
-				else
-					$this->redirect(array('admin'));
-			}
-		}
-		else
+	public function actionDelete() {
+		$comment = YumProfileComment::model()->findByPk($_GET['id']);
+		if($comment->user_id = Yii::app()->user->id
+				|| $comment->profile_id = Yii::app()->user->id) {
+			$comment->delete();
+			$this->redirect(array('//user/profile/view', 'id' => $comment->profile_id));
+		} else
 			throw new CHttpException(400,
-					Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
+					Yum::t('You are not the owner of this Comment or this Profile!'));
 	}
 
-	public function actionIndex()
-	{
+	public function actionIndex() {
 		$dataProvider=new CActiveDataProvider('ProfileComment');
 		$this->render('index',array(
 					'dataProvider'=>$dataProvider,
 					));
 	}
 
-	public function actionAdmin()
-	{
+	public function actionAdmin() {
 		$model=new ProfileComment('search');
 		$model->unsetAttributes();
 

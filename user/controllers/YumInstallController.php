@@ -34,6 +34,7 @@ class YumInstallController extends YumController
 
 					$tables = array(
 							'usersTable',
+							'privacySettingTable',
 							'profileFieldsTable',
 							'profileFieldsGroupTable',
 							'profileTable',
@@ -52,11 +53,13 @@ class YumInstallController extends YumController
 							'textSettingsTable');
 
 					foreach($tables as $table) {
-						${$table} = $_POST[$table];
+						if(isset($_POST[$table])) {
+							${$table} = $_POST[$table];
 
-						// Clean up existing Installation table-by-table
-						$db->createCommand(sprintf('drop table if exists %s',
-									${$table}))->execute();
+							// Clean up existing Installation table-by-table
+							$db->createCommand(sprintf('drop table if exists %s',
+										${$table}))->execute();
+						}
 					}
 
 					// Create User Table
@@ -77,6 +80,16 @@ class YumInstallController extends YumController
 						KEY `status` (`status`),
 						KEY `superuser` (`superuser`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+					$db->createCommand($sql)->execute();
+
+					$sql = "CREATE TABLE IF NOT EXISTS `". $privacySettingTable . "` (
+						`user_id` int unsigned NOT NULL,
+						`message_new_friendship` tinyint(1) NOT NULL,
+						`message_new_message` tinyint(1) NOT NULL,
+						`message_new_profilecomment` tinyint(1) NOT NULL,
+						PRIMARY KEY (`user_id`)
+							) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+					";
 					$db->createCommand($sql)->execute();
 
 					if(isset($_POST['installUsergroup'])) {  
@@ -147,9 +160,7 @@ class YumInstallController extends YumController
 							`title` varchar(255) NOT NULL,
 							`comment` text,
 							`subject` varchar(255) DEFAULT NULL,
-							PRIMARY KEY (`id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-						";
+							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
 						$sql = "CREATE TABLE IF NOT EXISTS `".$permissionTable."` (
@@ -220,6 +231,8 @@ class YumInstallController extends YumController
 							`subject_email_registration` text,
 							`text_email_recovery` text,
 							`text_email_activation` text,
+							`text_friendship_new` text,
+							`text_profilecomment_new` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
@@ -234,7 +247,10 @@ class YumInstallController extends YumController
 									`text_email_registration`,
 									`subject_email_registration`,
 									`text_email_recovery`,
-									`text_email_activation`) VALUES ('1',
+									`text_email_activation`,
+									`text_friendship_new`,
+									`text_profilecomment_new`
+									) VALUES ('1',
 										'en_us',
 										'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.',
 										'Welcome!',
@@ -243,27 +259,41 @@ class YumInstallController extends YumController
 										'You have registered for an application',
 										'You have requested a new Password. To set your new Password,
 										please go to {activation_url}',
-										'Your account has been activated. Thank you for your registration.'),
-									('2',
-									 'de',
-									 'Willkommen zum System.',
-									 'Mit der Anmeldung bestätigen Sie unsere allgemeinen Bedingungen.',
-									 'Willkommen!',
-									 '',
-									 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
-									 'Sie haben sich für eine Applikation registriert.',
-									 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
-									 'Ihr Konto wurde freigeschaltet.'),
-									('3',
-									 'es',
-									 'Bienvenido al sistema de registro',
-									 'Al registrarse en este sistema, usted está aceptando nuestros términos.',
-									 '¡Bienvenido!',
-									 '',
-									 'Se ha registrado en esta aplicación. Para confirmar su dirección de e-mail, por favor, visite {activation_url}.',
-									 'Se ha registrado en esta aplicación.',
-									 'Ha solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor vaya a {activation_url}',
-									 'Su cuenta ha sido activada. Gracias por registrase.');
+										'Your account has been activated. Thank you for your registration.',
+										'New friendship Request from {user_from}: {message} Go to your contacts: {link_contacts}', 'You have a new profile comment from {user}: {message} visit your profile: {link_profile}'),
+							('2',
+							 'de',
+							 'Willkommen zum System.',
+							 'Mit der Anmeldung bestätigen Sie unsere allgemeinen Bedingungen.',
+							 'Willkommen!',
+							 '',
+							 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
+							 'Sie haben sich für eine Applikation registriert.',
+							 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
+							 'Ihr Konto wurde freigeschaltet.',
+							 'Der Benutzer {user} hat Ihnen eine Freundschaftsanfrage gesendet. 
+
+							 Nachricht: {message}
+
+							 <a href=\"{link_contacts}\">Hier</a> geht es direkt zu Ihren Kontakten!',
+							 '
+							 Benutzer {username} hat Ihnen eine Nachricht auf Ihrer Pinnwand hinterlassen: 
+
+							 {message}
+
+							 <a href=\"{link_profile}\">hier</a> geht es direkt zu Ihrer Pinnwand!'),
+								 ('3',
+									'es',
+									'Bienvenido al sistema de registro',
+									'Al registrarse en este sistema, usted está aceptando nuestros términos.',
+									'¡Bienvenido!',
+									'',
+									'Se ha registrado en esta aplicación. Para confirmar su dirección de e-mail, por favor, visite {activation_url}.',
+									'Se ha registrado en esta aplicación.',
+									'Ha solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor vaya a {activation_url}',
+									'Su cuenta ha sido activada. Gracias por registrase.',
+									'',
+									'');
 						";
 
 						$db->createCommand($sql)->execute();
@@ -456,6 +486,7 @@ class YumInstallController extends YumController
 			else {
 				$this->render('start', array(
 							'usersTable' => Yum::resolveTableName($this->module->usersTable,Yii::app()->db),
+							'privacySettingTable' => Yum::resolveTableName($this->module->privacySettingTable,Yii::app()->db),
 							'settingsTable' => Yum::resolveTableName($this->module->settingsTable, Yii::app()->db),
 							'textSettingsTable' => Yum::resolveTableName($this->module->textSettingsTable,Yii::app()->db),
 							'rolesTable' => Yum::resolveTableName($this->module->rolesTable,Yii::app()->db),

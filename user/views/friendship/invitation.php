@@ -20,7 +20,7 @@ $friendship_status = $invited->isFriendOf(Yii::app()->user->id);
 		echo CHtml::hiddenField('user_id', $invited->id);
 		echo CHtml::label(Yum::t('Please enter a request Message up to 255 characters'), 'message');
 		echo '<br />';
-		echo CHtml::textArea('message');
+		echo CHtml::textArea('message', '', array('cols' =>60, 'rows' => 10));
 		echo '<br />';
 		echo CHtml::submitButton(Yum::t('Send invitation'));
 		echo CHtml::endForm();

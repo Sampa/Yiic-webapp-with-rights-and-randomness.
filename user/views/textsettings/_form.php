@@ -54,8 +54,6 @@
 <?php echo $form->error($model,'subject_email_registration'); ?>
 </div>
 
-
-
 		<div class="row">
 <?php echo $form->labelEx($model,'text_email_recovery'); ?>
 <?php echo $form->textArea($model,'text_email_recovery',array('rows'=>6, 'cols'=>50)); ?>
@@ -66,5 +64,17 @@
 <?php echo $form->labelEx($model,'text_email_activation'); ?>
 <?php echo $form->textArea($model,'text_email_activation',array('rows'=>6, 'cols'=>50)); ?>
 <?php echo $form->error($model,'text_email_activation'); ?>
+</div>
+
+	<div class="row">
+<?php echo $form->labelEx($model,'text_friendship_new'); ?>
+<?php echo $form->textArea($model,'text_friendship_new',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'text_friendship_new'); ?>
+</div>
+
+	<div class="row">
+<?php echo $form->labelEx($model,'text_profilecomment_new'); ?>
+<?php echo $form->textArea($model,'text_profilecomment_new',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'text_profilecomment_new'); ?>
 </div>
 

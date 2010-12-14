@@ -13,4 +13,12 @@
 
 	<?php echo CHtml::encode($data->comment); ?>
 
+	<?php if($data->user_id == Yii::app()->user->id
+			|| $data->profile_id == Yii::app()->user->id ) {
+		echo CHtml::Button(Yum::t('Remove comment'), array(
+					'confirm' => Yum::t('Are you sure to remove this comment from your profile?'),
+					'submit' => array( '//user/comments/delete', 'id' => $data->id)));
+	}
+?>
+
 <div style="clear: both;"> </div>

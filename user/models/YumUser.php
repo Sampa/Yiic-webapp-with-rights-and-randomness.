@@ -72,16 +72,23 @@ class YumUser extends YumActiveRecord
 		return true;
 	}
 
-	public function beforeSave()
-	{
-		if(Yii::app()->getModule('user')->enableAvatar)
+	public function beforeSave() {
+		if(Yum::module()->enableAvatar)
 			$this->updateAvatar();
 
 		return true;
 	}
 
-	public function getAdministerableUsers()
-	{
+	public function afterSave() {
+		$setting = YumPrivacySetting::model()->findByPk($this->id);
+		if(!$setting) {
+			$setting = new YumPrivacySetting();
+			$setting->save();	
+		}
+		return true;
+	}
+
+	public function getAdministerableUsers() {
 		$users = array();
 		$users = $this->users;
 		foreach($this->roles as $role) {
@@ -199,6 +206,7 @@ class YumUser extends YumActiveRecord
 			'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 			'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
 			'roles' => array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
+			'privacy' => array(self::HAS_ONE, 'YumPrivacySetting', 'user_id'),
 		);
 	}
 

@@ -57,9 +57,7 @@ if ($profileFields) {
 </tr>
 </table>
 
-</div>
-
 <?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> <br /> 
-<?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> 
+<?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> <br /> 
 <?php $this->renderPartial('/profileComment/index', array('model' => $model->profile[0])); ?> 
 

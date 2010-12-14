@@ -59,10 +59,13 @@ class YumMessagesController extends YumController
 					$model->from_user_id = Yii::app()->user->id;
 					$model->to_user_id = $user_id;
 					$model->save();
-					if(Yum::module()->notifyType == 'Instant'
-							|| YumUser::model()->findByPk(Yii::app()->user->id)->notifyType == 'Instant') {
-							$this->mailMessage($model);
-					}
+
+					// If the user has activated email receiving, send a email
+					if($user = YumUser::model()->findByPk($user_id)) 
+						if($user->privacy && $user->privacy->message_new_message)
+							YumMessageController::mailMessage($model->to_user->profile[0]->email,
+									$model->title,
+									$model->message);
 				}
 				$this->redirect(array('success'));
 			}
@@ -74,26 +77,18 @@ class YumMessagesController extends YumController
 		));
 	}
 
-	protected function mailMessage($model)
-	{
+	public static function mailMessage($to, $title, $message) {
 		$headers = sprintf("From: %s\r\nReply-To: %s",
 				Yii::app()->params['adminEmail'],
 				Yii::app()->params['adminEmail']);
-		if(isset($model->to_user) && isset($model->to_user->profile[0]))
-			mail($model->to_user->profile[0]->email,
-					$model->title,
-					$model->message,
-					$headers);
-
+		return mail($to, $title, $message, $headers);
 	}
 
-	public function actionSuccess() 
-	{
+	public function actionSuccess() {
 		$this->render('success');
 	}
 
-	public function actionDelete()
-	{
+	public function actionDelete() {
 			$this->loadModel()->delete();
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('index'));

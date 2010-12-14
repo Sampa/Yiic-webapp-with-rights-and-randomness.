@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-	'Usergroups'=>array(Yii::t('app', 'index')),
-	Yii::t('app', 'Manage'),
+	Yum::t('Usergroups')=>array(Yii::t('app', 'index')),
+	Yum::t( 'Manage'),
 );
 
 $this->menu=array(

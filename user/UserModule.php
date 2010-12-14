@@ -11,6 +11,7 @@ class UserModule extends CWebModule
 	public $version = '0.8';
 	public $debug = false;
 	public $usersTable = 'users';
+	public $privacySettingTable = 'privacysetting';
 	public $settingsTable = 'yumsettings';
 	public $textSettingsTable = 'yumtextsettings';
 	public $messagesTable = 'messages';
@@ -143,6 +144,7 @@ class UserModule extends CWebModule
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
+		'privacy'=>array('class'=>'YumModule.controllers.YumPrivacysettingController'),	
 		'groups'=>array('class'=>'YumModule.controllers.YumUsergroupController'),	
 		// workaround to allow the url application/user/login: 
 		'login'=>array('class'=>'YumModule.controllers.YumUserController'),	
@@ -196,8 +198,7 @@ class UserModule extends CWebModule
 		//parent::__set($name,$value);
 	}
 
-	public function init()
-	{
+	public function init() {
 		$this->setImport(array(
 			'YumModule.controllers.*',
 			'YumModule.models.*',

@@ -67,8 +67,11 @@ class YumUsergroupController extends YumController {
 		if(isset($_POST['YumUsergroup'])) {
 			$model->attributes = $_POST['YumUsergroup'];
 			$model->owner_id = Yii::app()->user->id;
+			
+			$model->validate();
 
-			if($model->save()) {
+			if(!$model->hasErrors()) {
+				$model->save();
 				$participant = new YumGroupParticipation();
 				$participant->user_id = Yii::app()->user->id;
 				$participant->group_id = $model->id;

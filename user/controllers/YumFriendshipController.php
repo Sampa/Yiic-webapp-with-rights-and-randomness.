@@ -8,7 +8,7 @@ class YumFriendshipController extends YumController {
 			return false;
 		return(parent::beforeAction($action));
 	}
-	
+
 	public function actionIndex() {
 		if(isset($_POST['YumFriendship']['inviter_id']) 
 				&& isset($_POST['YumFriendship']['friend_id']) ) {
@@ -18,22 +18,22 @@ class YumFriendshipController extends YumController {
 						':friend_id' => $_POST['YumFriendship']['friend_id']));
 
 			if(isset($friendship))
-			if($friendship->inviter_id == Yii::app()->user->id 
-        || $friendship->friend_id == Yii::app()->user->id)
-				if(isset($_POST['YumFriendship']['add_request']))
-				{
-					$friendship->status = 2;
-					$friendship->save();
-				} elseif(isset($_POST['YumFriendship']['deny_request'])) {
-					$friendship->status = 3;
-					$friendship->save();
-				} elseif(isset($_POST['YumFriendship']['ignore_request'])) {
-					$friendship->status = 0;
-					$friendship->save();
-				}elseif(isset($_POST['YumFriendship']['cancel_request']) 
-						|| isset($_POST['YumFriendship']['remove_friend'])) {
-					$friendship->delete();
-			}
+				if($friendship->inviter_id == Yii::app()->user->id 
+						|| $friendship->friend_id == Yii::app()->user->id)
+					if(isset($_POST['YumFriendship']['add_request']))
+					{
+						$friendship->status = 2;
+						$friendship->save();
+					} elseif(isset($_POST['YumFriendship']['deny_request'])) {
+						$friendship->status = 3;
+						$friendship->save();
+					} elseif(isset($_POST['YumFriendship']['ignore_request'])) {
+						$friendship->status = 0;
+						$friendship->save();
+					}elseif(isset($_POST['YumFriendship']['cancel_request']) 
+							|| isset($_POST['YumFriendship']['remove_friend'])) {
+						$friendship->delete();
+					}
 		}
 
 		$user = YumUser::model()->findByPk(Yii::app()->user->id);
@@ -53,7 +53,7 @@ class YumFriendshipController extends YumController {
 		$this->render('admin', array('friendships' => $friendships));
 
 	} 
-	
+
 	public function actionInvite() {
 		if(isset($_GET['user_id']))
 			$user_id = $_GET['user_id'];
@@ -70,9 +70,17 @@ class YumFriendshipController extends YumController {
 						$_POST['user_id'],
 						$_POST['message'])) {
 				$this->render('success', array('friendship' => $friendship));
+
+				// If the user has activated email receiving, send a email
+				if($user = YumUser::model()->findByPk($friendship->friend_id)) 
+					if($user->privacy && $user->privacy->message_new_friendship)
+						YumMessageController::mailMessage($user->profile[0]->email,
+								Yum::t('New friendship request'),
+								Yum::t('New friendship request'));
 				Yii::app()->end();
 			}
 		} 
+
 		$this->render('invitation', array(
 					'inviter' => YumUser::model()->findByPk(Yii::app()->user->id),
 					'invited' => YumUser::model()->findByPk($user_id),
@@ -82,17 +90,17 @@ class YumFriendshipController extends YumController {
 
 	public function ActionConfirmFriendship($id,$key)
 	{
-	$friendship=YumFriendship::model()->findByPK($id);
-	if($friendship->friend_id == $key)
-	{
-		$friendship->acceptFriendship();
-		$verified=true;
-	}else{
-		$verified=false;
+		$friendship=YumFriendship::model()->findByPK($id);
+		if($friendship->friend_id == $key)
+		{
+			$friendship->acceptFriendship();
+			$verified=true;
+		}else{
+			$verified=false;
+		}
+		return $verified;
 	}
-	return $verified;
-	}
-	
+
 	public function actionView()
 	{
 		$model = YumFriendship::model()->findByPK($_GET['id']);
@@ -103,7 +111,7 @@ class YumFriendshipController extends YumController {
 					'model'=>$model,
 					));
 	}
-	
+
 	public function actionDelete()
 	{
 		if(Yii::app()->request->isPostRequest)
@@ -118,7 +126,7 @@ class YumFriendshipController extends YumController {
 		else
 			throw new CHttpException(400,Yii::t('App','Invalid request. Please do not repeat this request again.'));
 	}
-	
+
 	public function actionUpdate()
 	{
 		$model=$this->loadModel();
@@ -134,10 +142,10 @@ class YumFriendshipController extends YumController {
 		}
 
 		$this->render('update',array(
-			'model'=>$model,
-		));
+					'model'=>$model,
+					));
 	}
-	
+
 	public function loadModel()
 	{
 		if($this->_model===null)
@@ -149,7 +157,7 @@ class YumFriendshipController extends YumController {
 		}
 		return $this->_model;
 	}
-	
+
 	public static function invitationLink($inviter, $invited) {
 		if($inviter === $invited)
 			return false;
@@ -162,10 +170,10 @@ class YumFriendshipController extends YumController {
 		if($friends && $friends[0] != NULL)
 			foreach($friends as $friend) 
 				if($friend->id == $invited->id)
-				return false; // already friends, rejected or request pending
+					return false; // already friends, rejected or request pending
 
-			return CHtml::link(Yum::t('Add as a friend'), array(
-						'friendship/invite', 'user_id' => $invited->id));
+		return CHtml::link(Yum::t('Add as a friend'), array(
+					'friendship/invite', 'user_id' => $invited->id));
 	}
 }
 

@@ -85,7 +85,6 @@ if(!Yii::app()->user->isGuest) {
 
 		if(Yii::app()->user->hasUsers() || Yii::app()->user->hasRoles())
 			$menu[] = e('Manage my users', 'user/admin');
-
 		
 		$messagesmenu[] = e('My Inbox', 'messages/index');
 		$messagesmenu[] = e('Sent messages', 'messages/sent');
@@ -93,6 +92,7 @@ if(!Yii::app()->user->isGuest) {
 
 		$menu[] = e('My profile', 'profile/view');
 		$menu[] = e('Edit personal data', 'profile/edit');
+		$menu[] = e('Privacy settings', 'privacy/update');
 
 		if(Yum::module()->enableUsergroups) {
 			$menu[] = e('My groups', 'groups/index');
