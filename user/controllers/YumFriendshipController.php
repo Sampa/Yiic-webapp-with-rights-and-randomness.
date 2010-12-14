@@ -76,7 +76,11 @@ class YumFriendshipController extends YumController {
 					if($user->privacy && $user->privacy->message_new_friendship)
 						YumMessageController::mailMessage($user->profile[0]->email,
 								Yum::t('New friendship request'),
-								Yum::t('New friendship request'));
+								YumTextSettings::getText('text_friendship_new', array(
+										'{user}' => $friendship->inviter->username,
+										'{message}' => $friendship->message,
+										'{link}' => $this->createUrl('//user/friendship/admin'))));
+
 				Yii::app()->end();
 			}
 		} 

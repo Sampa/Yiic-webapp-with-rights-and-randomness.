@@ -33,8 +33,23 @@ class YumTextSettings extends YumActiveRecord
 				);
 	}
 
-	public function relations()
-	{
+	public static function getText($column, $trans = array(), $language = NULL) {
+		if(!is_array($trans))
+			return false;
+
+		if(is_null($language))
+			$language = Yii::app()->language;
+
+		if($text = YumTextSettings::model()->find('language = :language', array(
+						':language' => $language)));
+
+		if(isset($text->$column))
+			return strtr($text->$column, $trans);
+
+		return false;
+	}
+
+	public function relations() {
 		return array();
 	}
 

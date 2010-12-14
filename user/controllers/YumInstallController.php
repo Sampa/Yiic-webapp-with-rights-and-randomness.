@@ -233,6 +233,7 @@ class YumInstallController extends YumController
 							`text_email_activation` text,
 							`text_friendship_new` text,
 							`text_profilecomment_new` text,
+							`text_message_new` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
@@ -249,7 +250,8 @@ class YumInstallController extends YumController
 									`text_email_recovery`,
 									`text_email_activation`,
 									`text_friendship_new`,
-									`text_profilecomment_new`
+									`text_profilecomment_new`,
+									`text_message_new`
 									) VALUES ('1',
 										'en_us',
 										'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.',
@@ -260,7 +262,9 @@ class YumInstallController extends YumController
 										'You have requested a new Password. To set your new Password,
 										please go to {activation_url}',
 										'Your account has been activated. Thank you for your registration.',
-										'New friendship Request from {user_from}: {message} Go to your contacts: {link_contacts}', 'You have a new profile comment from {user}: {message} visit your profile: {link_profile}'),
+										'New friendship Request from {user_from}: {message} Go to your contacts: {link_contacts}',
+ 'You have a new profile comment from {user}: {message} visit your profile: {link_profile}',
+'You have received a new message from {user}: {message}'),
 							('2',
 							 'de',
 							 'Willkommen zum System.',
@@ -281,7 +285,8 @@ class YumInstallController extends YumController
 
 							 {message}
 
-							 <a href=\"{link_profile}\">hier</a> geht es direkt zu Ihrer Pinnwand!'),
+							 <a href=\"{link_profile}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
+'Sie haben eine neue Nachricht von {user} bekommen: {message}'),
 								 ('3',
 									'es',
 									'Bienvenido al sistema de registro',
@@ -292,6 +297,7 @@ class YumInstallController extends YumController
 									'Se ha registrado en esta aplicación.',
 									'Ha solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor vaya a {activation_url}',
 									'Su cuenta ha sido activada. Gracias por registrase.',
+									'',
 									'',
 									'');
 						";

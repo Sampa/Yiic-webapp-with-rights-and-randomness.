@@ -63,9 +63,11 @@ class YumMessagesController extends YumController
 					// If the user has activated email receiving, send a email
 					if($user = YumUser::model()->findByPk($user_id)) 
 						if($user->privacy && $user->privacy->message_new_message)
-							YumMessageController::mailMessage($model->to_user->profile[0]->email,
+							YumMessagesController::mailMessage($model->to_user->profile[0]->email,
 									$model->title,
-									$model->message);
+									YumTextSettings::getText('text_message_new', array(
+											'{user}' => $model->from->username,
+											'{message}' => $model->message)));
 				}
 				$this->redirect(array('success'));
 			}

@@ -78,3 +78,10 @@
 <?php echo $form->error($model,'text_profilecomment_new'); ?>
 </div>
 
+	<div class="row">
+<?php echo $form->labelEx($model,'text_message_new'); ?>
+<?php echo $form->textArea($model,'text_message_new',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'text_message_new'); ?>
+</div>
+
+
