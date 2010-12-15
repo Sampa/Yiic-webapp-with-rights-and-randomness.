@@ -35,6 +35,7 @@ class YumUser extends YumActiveRecord
 	public $password;
 	public $email;
 	public $activationKey;
+	public $password_changed = false;
 	private $_userRoleTable;
 	private $_userUserTable;
 	private $_friendshipTable;
@@ -63,6 +64,9 @@ class YumUser extends YumActiveRecord
 
 	public function beforeValidate()
 	{
+		if($this->isNewRecord)
+			$this->createtime=time();
+
 		$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
 		if($file instanceof CUploadedFile)
 			$this->avatar = $file;
@@ -72,11 +76,31 @@ class YumUser extends YumActiveRecord
 		return true;
 	}
 
-	public function beforeSave() {
-		if(Yum::module()->enableAvatar)
-			$this->updateAvatar();
+	public function setPassword($password) {
+		if($password != '') {
+			$this->setAttribute('password', $password);
+			$this->password_changed = true;
+		}
+	}
 
-		return true;
+	public function beforeSave() {
+		if(parent::beforeSave()) {
+			if(Yum::module()->enableAvatar)
+				$this->updateAvatar();
+
+			if(Yum::module()->enableLogging) {
+				if($this->isNewRecord)
+					YumActivityController::logActivity($this, 'new_user_created');
+				if(!$this->isNewRecord)
+					YumActivityController::logActivity($this, 'user_updated');
+			}
+
+			if($this->password_changed)
+				$this->password = YumUser::encrypt($this->password);
+
+
+			return true;
+		}
 	}
 
 	public function afterSave() {

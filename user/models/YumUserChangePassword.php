@@ -21,8 +21,7 @@ class YumUserChangePassword extends YumFormModel
 		$rules[] = $passwordrule;
 		$rules[] = array('password, verifyPassword', 'required');
 		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword',
-				'message' => Yii::t("UserModule.user", "Retype password is incorrect."));
-				
+				'message' => Yum::t( "Retype password is incorrect."));
 
 		return $rules; 
 	}
@@ -33,8 +32,8 @@ class YumUserChangePassword extends YumFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'password'=>Yii::t("UserModule.user", "password"),
-			'verifyPassword'=>Yii::t("UserModule.user", "Retype password"),
+			'password'=>Yum::t( "password"),
+			'verifyPassword'=>Yum::t( "Retype password"),
 		);
 	}
 	
