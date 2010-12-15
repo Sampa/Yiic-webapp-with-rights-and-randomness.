@@ -35,6 +35,7 @@ class YumUser extends YumActiveRecord
 	public $password;
 	public $email;
 	public $activationKey;
+	public $password_changed = false;
 	private $_userRoleTable;
 	private $_userUserTable;
 	private $_friendshipTable;
@@ -43,6 +44,23 @@ class YumUser extends YumActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public static function generatePassword() { 
+		$chars = "abcdefghijkmnopqrstuvwxyz023456789"; 
+		srand((double)microtime()*1000000); 
+		$i = 0; 
+		$pass = '' ; 
+
+		while ($i <= 10) { 
+			$num = rand() % 33; 
+			$tmp = substr($chars, $num, 1); 
+			$pass = $pass . $tmp; 
+			$i++; 
+		} 
+
+		return $pass; 
+
+	} 	
 
 	public function search()
 	{
@@ -63,6 +81,10 @@ class YumUser extends YumActiveRecord
 
 	public function beforeValidate()
 	{
+
+		if($this->isNewRecord)
+			$this->createtime=time();
+
 		$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
 		if($file instanceof CUploadedFile)
 			$this->avatar = $file;
@@ -76,7 +98,18 @@ class YumUser extends YumActiveRecord
 		if(Yum::module()->enableAvatar)
 			$this->updateAvatar();
 
+		if($this->password_changed)
+			$this->password = YumUser::encrypt($this->password);
+
 		return true;
+	}
+
+	public function setPassword($password) {
+		if($password != '') {
+			$this->password = $password;
+			$this->lastpasswordchange = time();
+			$this->password_changed = true;
+		}
 	}
 
 	public function afterSave() {
@@ -85,6 +118,10 @@ class YumUser extends YumActiveRecord
 			$setting = new YumPrivacySetting();
 			$setting->save();	
 		}
+		if(Yum::module()->enableLogging == true)
+			YumActivityController::logActivity($this,
+					$this->isNewRecord ? 'user_created' : 'user_updated');
+
 		return true;
 	}
 
@@ -120,9 +157,8 @@ class YumUser extends YumActiveRecord
 			return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
 	}
 
-	public function rules()
-	{
-		$passwordRequirements = Yii::app()->getModule('user')->passwordRequirements;
+	public function rules() {
+		$passwordRequirements = Yum::module()->passwordRequirements;
 		$usernameRequirements = Yum::module()->usernameRequirements;
 
 		$passwordrule = array_merge(array('password', 'YumPasswordValidator'),
@@ -340,7 +376,7 @@ class YumUser extends YumActiveRecord
 	 */
 	public function generateActivationKey($activate=false, $password='', array $params=array())
 	{
-		return $activate ? $this->encrypt(microtime()) : $this->encrypt(microtime() . $this->password);
+		return $activate ? YumUser::encrypt(microtime()) : YumUser::encrypt(microtime() . $this->password);
 	}
 
 	public function attributeLabels()

@@ -3,3 +3,5 @@ div.form .tooltip { display: none; background-color:#EFFDFF; border:1px solid #7
 .avatar {float:left;}
 #yumcontent {padding: 20px; width:70%; margin: 5px;}
 label { display: inline }
+.checkbox { float: left; margin-right: 5px; }
+.roles {float: right; }

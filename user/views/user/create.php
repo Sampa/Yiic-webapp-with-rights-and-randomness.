@@ -1,16 +1,10 @@
 <?php
-    if(empty($tabularIdx))
-    {
-    $this->title = Yii::t('UserModule.user', "Create user");
-    $this->breadcrumbs = array(
-        Yii::t('UserModule.user', 'Users') => array('index'),
-    Yii::t('UserModule.user', 'Create'));
+$this->title = Yum::t("Create user");
+$this->breadcrumbs = array(
+		Yum::t('Users') => array('index'),
+		Yum::t('Create'));
 
-    echo $this->renderPartial('_form', array(
-		'model'=>$model,
-		'changepassword' => true,
-		'passwordform'=>$passwordform,
-		'profile'=>$profile,
-		'tabularIdx'=>$tabularIdx));
-	}
-?>
+echo $this->renderPartial('_form', array(
+			'model'=>$model,
+			'passwordform'=>$passwordform,
+			'profile'=>$profile)); ?>

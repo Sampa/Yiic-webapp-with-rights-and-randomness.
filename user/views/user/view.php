@@ -10,13 +10,22 @@ $this->title = Yum::t('View user "{username}"',array(
 
 $this->breadcrumbs = array(Yum::t('Users') => array('index'), $model->username);
 
+if(Yii::app()->user->hasFlash('password')): ?>
+ 
+<div class="hint">
+    <?php echo Yii::app()->user->getFlash('password'); ?>
+</div>
+ 
+<?php endif; ?>
+
+<?php
 if(Yii::app()->user->isAdmin()) {
 	$attributes = array(
 			'id',
 	);
 
 
-	if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL')
+	if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 		$attributes[] = 'username';
 	
 	if($profiles) {
@@ -111,25 +120,9 @@ if(Yii::app()->user->isAdmin()) {
 		}
 		echo "</ul>";
 	} else {
-		printf('<p>%s</p>', Yii::t('UserModule.user', 'None'));
-	}
-
-	echo Yum::t('This user can administer this users:');  
-
-	if($model->superuser) {
-		printf('<p>%s</p>', Yum::t('Everyone, cause he is an admin'));
-	} else if(isset($model->users)) {
-		echo "<ul>";
-		foreach($model->users as $user) {
-			echo CHtml::tag('li',array(),CHtml::link(
-						$user->username,array(Yum::route('{user}/view'),'id'=>$user->id)),true);		
-		}
-		echo "</ul>";
-	}
-	else 
-	{
 		printf('<p>%s</p>', Yum::t('None'));
 	}
+
 }
 
 if(Yum::module()->enableFriendship) {

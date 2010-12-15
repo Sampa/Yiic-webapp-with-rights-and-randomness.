@@ -1,124 +1,70 @@
-<?php
+<div class="form">
+<?php 
 
-if(empty($tabularIdx))
-{
-// don' t display when used in multiform
-	echo CHtml::openTag('div',array('class'=>'form'));
-	echo CHtml::beginForm('', 'POST', array('enctype' => 'multipart/form-data'));
-	echo Yum::requiredFieldNote();
-}
-
-if($profile != false)
-	echo CHtml::errorSummary(array($model, $profile, $passwordform));
-else
-	echo CHtml::errorSummary(array($model, $passwordform));
-
-
-	if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL') {
-$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]username" : "username";
-
-echo CHtml::openTag('div',array('class'=>'row'));
-echo CHtml::activeLabelEx($model,$attribute);
-echo CHtml::activeTextField($model,$attribute,array('size'=>20,'maxlength'=>20));
-echo CHtml::error($model,$attribute);
-echo CHtml::closeTag('div');
-} else
-	echo CHtml::hiddenField('YumUser[username]', $model->username);
-
-if(Yii::app()->getModule('user')->enableAvatar) {
-		printf('<label>%s</label>', Yum::t('Avatar image of User'));
-		echo CHtml::fileField('YumUser[avatar]', $model->avatar);
-		if($model->avatar) 
-			$model->renderAvatar();
-}
-
-$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]password" : "password";
-if(!$model->isNewRecord) {
-	$model->password = '';
-	$function = "$('#password').toggle()";
-	echo CHtml::label(Yum::t('change Password'), 'change_password');
-	echo CHtml::checkBox('change_password',
-			$changepassword,
-			array('onClick' => $function));
-}
-echo CHtml::openTag('div',array(
-			'style' => $changepassword ? '' : 'display: none;',
-			'id' => 'password',
-			'class'=>'row'));
-$this->renderPartial('/user/passwordfields', array('form'=>$passwordform));
-echo CHtml::closeTag('div');
-
-	if($profile != false) {
-		foreach($profile->loadProfileFields() as $field)
-		{
-			echo CHtml::openTag('div',array('class'=>'row'));
-			$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]{$field->varname}" : $field->varname;
-			echo CHtml::activeLabelEx($profile, $attribute);
-			if ($field->field_type=="TEXT")
-				echo CHtml::activeTextArea($profile, $attribute, array(
-							'rows'=>6,
-							'cols'=>50)
-						);
-			else
-				echo CHtml::activeTextField($profile, $attribute, array(
-							'size'=>60,
-							'maxlength'=>(($field->field_size)?$field->field_size:255)));
-			echo CHtml::error($profile, $attribute);
-			if($field->hint)
-				echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
-			echo CHtml::closeTag('div');
-		} 
-	}
-
-$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]superuser" : "superuser";
-echo CHtml::openTag('div',array('class'=>'row'));
-echo CHtml::activeLabelEx($model,$attribute);
-echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('AdminStatus'));
-echo CHtml::error($model,$attribute);
-echo CHtml::closeTag('div');
-
-$attribute = !empty($tabularIdx) ? "[{$tabularIdx}]status" : "status";
-echo CHtml::openTag('div',array('class'=>'row'));
-echo CHtml::activeLabelEx($model,$attribute);
-echo CHtml::activeDropDownList($model,$attribute,YumUser::itemAlias('UserStatus'));
-echo CHtml::error($model,$attribute);
-echo CHtml::closeTag('div');
-
-echo CHtml::openTag('div',array('class'=>'row'));
-echo CHtml::activeLabelEx($model, 'notifyType');
-echo CHtml::activeDropDownList($model,'notifyType',YumUser::itemAlias('NotifyType'));
-echo CHtml::error($model,'notifyType');
-echo CHtml::closeTag('div');
-
-if(Yum::module()->enableRoles) {
-echo CHtml::openTag('div',array( 'class'=>'row'));
-echo CHtml::tag('p',
-		array(),
-		Yii::t('UserModule.user', 'User belongs to these roles'),true);
-
-$this->widget('YumModule.components.Relation',
-		array('model' => $model,
-			'relation' => 'roles',
-			'style' => 'checkbox',
-			'fields' => 'title',
-			'htmlOptions' => array(
-				'checkAll' => Yum::t('Choose All'),
-				'template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'),
-				'showAddButton' => false
-				));
-	echo CHtml::closeTag('div');
-}
-
-if(empty($tabularIdx))
-{
-	echo CHtml::openTag('div',array('class'=>'row buttons'));
-	echo CHtml::submitButton($model->isNewRecord
-			? Yii::t('UserModule.user', 'Create')
-			: Yii::t('UserModule.user', 'Save'));
-	echo CHtml::closeTag('div');
-
-	echo CHtml::endForm();
-	echo CHtml::closeTag('div');
-	echo '<div style="clear:both;"></div>';
-}
+$form = $this->beginWidget('CActiveForm', array(
+			'id'=>'user-form',
+			'enableAjaxValidation'=>false));
 ?>
+
+<div class="note">
+<?php echo Yum::requiredFieldNote(); ?>
+<?php echo CHtml::errorSummary(array($model,
+ $passwordform,
+ isset($profile) ? $profile : null )); ?>
+</div>
+
+<?php if(Yum::module()->enableRoles) { ?>
+<div class="row roles">
+<p> <?php echo Yum::t('User belongs to these roles'); ?> </p>
+
+	<?php $this->widget('YumModule.components.Relation', array(
+				'model' => $model,
+				'relation' => 'roles',
+				'style' => 'checkbox',
+				'fields' => 'title',
+				'htmlOptions' => array(
+					'checkAll' => Yum::t('Choose All'),
+					'template' => '<div class="checkbox">{input}</div>{label}'),
+				'showAddButton' => false
+				)); ?>
+</div>
+<?php } ?>
+
+
+<div class="row">
+<?php echo $form->label($model, 'username');
+echo $form->textField($model, 'username');
+echo $form->error($model, 'username'); ?>
+</div>
+
+
+<div class="row">
+<p> Leave password <em> empty </em> to 
+<?php echo $model->isNewRecord ? 'generate a random Password' : 'keep it <em> unchanged </em>'; ?> </p>
+<?php $this->renderPartial('/user/passwordfields', array(
+			'form'=>$passwordform)); ?>
+</div>
+<?php if(isset($profile)) 
+		$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>
+
+<div class="row">
+<?php echo $form->label($model, 'superuser');
+echo $form->dropDownList($model, 'superuser',YumUser::itemAlias('AdminStatus'));
+echo $form->error($model, 'superuser'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->label($model,'status');
+echo $form->dropDownList($model,'status',YumUser::itemAlias('UserStatus'));
+echo $form->error($model,'status'); ?>
+</div>
+
+<div class="row buttons">
+<?php echo CHtml::submitButton($model->isNewRecord
+			? Yum::t('Create')
+			: Yum::t('Save')); ?>
+</div>
+
+<?php $this->endWidget(); ?>
+</div>
+	<div style="clear:both;"></div>

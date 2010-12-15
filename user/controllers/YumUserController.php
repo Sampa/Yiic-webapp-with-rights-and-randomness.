@@ -6,8 +6,7 @@ class YumUserController extends YumController
 	public $defaultAction = 'login';
 	private $_model;
 
-	public function accessRules()
-	{
+	public function accessRules() {
 		return array(
 				array('allow',
 					'actions'=>array('index', 'view', 'login'),
@@ -65,10 +64,10 @@ class YumUserController extends YumController
 						$profile->email = 'e@mail.de';
 						$profile->save();
 						if(Yum::module()->enableLogging == true)
-								{
-								$model= $this->loadUser(Yii::app()->user->id);
-								YumActivityController::logActivity($model, 'user_generated');
-								}
+						{
+							$model= $this->loadUser(Yii::app()->user->id);
+							YumActivityController::logActivity($model, 'user_generated');
+						}
 					}
 				}
 			}
@@ -91,7 +90,7 @@ class YumUserController extends YumController
 	}
 
 	public function actionStats() {
-			$this->redirect($this->urlCreate('/user/statistics/index'));
+		$this->redirect($this->urlCreate('/user/statistics/index'));
 	}
 
 
@@ -107,6 +106,13 @@ class YumUserController extends YumController
 	public function actionLogout() {
 		$this->redirect(array('//user/auth/logout'));
 	}
+
+	public function beforeAction($event) {
+		$this->layout = Yum::module()->adminLayout;
+		return parent::beforeAction($event);
+	}
+
+
 
 	/**
 	 * Change password
@@ -167,10 +173,7 @@ class YumUserController extends YumController
 	/**
 	 * Creates a new User.
 	 */
-	public function actionCreate()
-	{
-		$this->layout = Yum::module()->adminLayout;
-		$profiles = Yum::module()->enableProfiles;
+	public function actionCreate() {
 		$model = new YumUser;
 		$profile = new YumProfile;
 		$passwordform = new YumUserChangePassword;
@@ -184,139 +187,81 @@ class YumUserController extends YumController
 
 			if(isset($_POST['YumUser']['YumRole']))
 				$model->roles = $_POST['YumUser']['YumRole'];
-			else
-				$model->roles = array();
+
+			if(isset($_POST['YumProfile']) ) 
+				$profile->attributes = $_POST['YumProfile'];
+
+			if(isset($_POST['YumUserChangePassword'])) {
+				if($_POST['YumUserChangePassword']['password'] == '') {
+					$password = YumUser::generatePassword();
+						$model->setPassword($password);
+					Yii::app()->user->setFlash('password', Yum::t('The generated Password is {password}', array('{password}' => $password)));
+				} else {
+					$passwordform->attributes = $_POST['YumUserChangePassword'];
+
+					if($passwordform->validate())
+						$model->setPassword($_POST['YumUserChangePassword']['password']);
+				}
+			}
 
 			$model->activationKey = YumUser::encrypt(microtime() . $model->password);
-			$model->createtime=time();
-			$model->lastvisit=time();
-
-			if($profiles && isset($_POST['YumProfile'])) {
-				$profile->attributes = $_POST['YumProfile'];
-				$profile->user_id = 0;
-			}
 
 			$model->validate();
-			if(!$model->hasErrors() && isset($_POST['YumUserChangePassword'])) {
-				$passwordform->attributes = $_POST['YumUserChangePassword'];
-				if($passwordform->validate())
-					$model->password = YumUser::encrypt($passwordform->password);
-			}
-
-			if($profiles) $profile->validate();
-
-			if(!$model->hasErrors() && !$passwordform->hasErrors()) {
-
-
-				if($model->save()) {
-					$profile->user_id = $model->id;
-					$profile->save();
-					if(Yum::module()->enableLogging == true)
-					{
-					$user=$this->loadUser(Yii::app()->user->id);
-					YumActivityController::logActivity($user, 'new_user_created');
-					}
+			$profile->validate();
+			if(!$model->hasErrors() 
+					&& !$profile->hasErrors()
+					&& !$passwordform->hasErrors()) {
+				$model->save();
+				$profile->user_id = $model->id;
+				$profile->save();
 					$this->redirect(array('view', 'id'=>$model->id));
 				}
 			}
-		}
 
 		$this->render('create',array(
 					'model' => $model,
 					'passwordform' => $passwordform,
-					'profile' => $profiles ? $profile : false,
-					'tabularIdx' => null,
+					'profile' => $profile,
 					));
 	}
 
-	public function actionUpdate()
-	{
-		$this->layout = Yum::module()->adminLayout;
-
-		// determine if profiles are enabled
-		$profiles = Yum::module()->enableProfiles;
-
-		// determine if the password needs to be changed
-		$changepassword = isset($_POST['change_password']);
-
+	public function actionUpdate() {
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
-		if($profiles) {
-			// Always operate on most actual profile
-			if(!$model->profile)
-				$model->profile = new YumProfile();
-
-			if(!is_array($model->profile))
-				$model->profile = array($model->profile);
-
+		if(Yum::module()->enableProfiles) 
 			$profile = $model->profile[0];
-		}
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes = $_POST['YumUser'];
 
 			// Assign the roles and belonging Users to the model
-			if(!isset($_POST['YumUser']['YumRole']))
-				$_POST['YumUser']['YumRole'] = array();
+			if(isset($_POST['YumUser']['YumRole']))
+				$model->roles = $_POST['YumUser']['YumRole'];
 
-			$model->roles = $_POST['YumUser']['YumRole'];
-
-			if($profiles) {
-				if(isset($_POST['YumProfile'])) {
-					if(Yum::module()->profileHistory)
-						$profile = new YumProfile();
-
-					$profile->attributes = $_POST['YumProfile'];
-					$profile->user_id = $model->id;
-				}
+			if(isset($_POST['YumProfile']) ) 
+				$profile->attributes = $_POST['YumProfile'];
+	
+			if(isset($_POST['YumUserChangePassword']) 
+					&& $_POST['YumUserChangePassword']['password'] != '') {
+				$passwordform->attributes = $_POST['YumUserChangePassword'];
+				if($passwordform->validate())
+					$model->setPassword($_POST['YumUserChangePassword']['password']);
 			}
 
-			$errors = false;
-
-			if($changepassword) { 
-				$passwordform->attributes = $_POST['YumUserChangePassword'];
-				$passwordform->validate();
-
-				if(!$passwordform->hasErrors()) {
-					$model->password = YumUser::encrypt($passwordform->password);
-					$model->lastpasswordchange = time();
-					$model->save();
+			if(!$passwordform->hasErrors() && $model->save()) {
+				if(isset($profile)) {
+					if($profile->save())
+						$this->redirect(array('view','id'=>$model->id));
 				} else
-				 $errors = true;
-			} 
-				$model->validate();
-
-			if($profiles) {
-				$profile->validate();
-
-				if(!$errors && !$model->hasErrors() && !$profile->hasErrors()) {
-					$model->save();
-					$profile->save();
-					if(Yum::module()->enableLogging == true)
-								{
-								YumActivityController::logActivity($model, 'user_updated');
-								}
 					$this->redirect(array('view','id'=>$model->id));
-				}
-			} else {
-				if($model->save() && !$errors)
-				{
-					if(Yum::module()->enableLogging == true)
-								{
-								YumActivityController::logActivity($model, 'user_updated');
-								}
-					$this->redirect(array('view','id'=>$model->id));
-				}
 			}
 		}
 
 		$this->render('update', array(
 					'model'=>$model,
 					'passwordform' =>$passwordform,
-					'changepassword' => $changepassword,
-					'profile'=>$profiles ? $profile : false,
-					'tabularIdx'=>null,
+					'profile' => isset($profile) ? $profile : false,
 					));
 	}
 
@@ -337,12 +282,12 @@ class YumUserController extends YumController
 				} else{
 					if(Yum::module()->enableLogging == true)
 					{
-					$user=$this->loadUser(Yii::app()->user->id);
-					YumActivityController::logActivity($user, 'user_created');
+						$user=$this->loadUser(Yii::app()->user->id);
+						YumActivityController::logActivity($user, 'user_created');
 					}
 					$model->delete();	
+				}
 			}
-		}
 		} else {
 			$this->layout = Yum::module()->layout;
 			$model = $this->loadUser(Yii::app()->user->id);
@@ -355,23 +300,23 @@ class YumUserController extends YumController
 							foreach($model->profile as $profile) {
 								if(Yum::module()->enableLogging == true)
 								{
-								YumActivityController::logActivity($model, 'user_removed');
+									YumActivityController::logActivity($model, 'user_removed');
 								}
 								$profile->delete();
 							}
 						} else if (is_object($model->profile) && !$preserveProfiles) 
 						{
 							if(Yum::module()->enableLogging == true)
-								{
+							{
 								YumActivityController::logActivity($model, 'user_removed');
-								}
+							}
 							$model->profile->delete();
 						}
 					}
 					if(Yum::module()->enableLogging == true)
-								{
-								YumActivityController::logActivity($model, 'user_removed');
-								}
+					{
+						YumActivityController::logActivity($model, 'user_removed');
+					}
 					$model->delete();
 					$this->actionLogout();
 				} else {
@@ -383,7 +328,7 @@ class YumUserController extends YumController
 										'delete'))
 								)
 							);
-						$this->redirect('profile');
+					$this->redirect('profile');
 				}
 			} else {
 				$this->render('confirmDeletion', array('model' => $model));
