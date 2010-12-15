@@ -52,11 +52,16 @@ class YumRegistrationController extends YumController
 		if(isset($_POST['YumRegistrationForm'])) {
 			$form->attributes = $_POST['YumRegistrationForm'];
 			$form->email = $_POST['YumProfile']['email'];
-			if($loginType == 'LOGIN_BY_EMAIL' )  
+			if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
+			{
+				$form->email = $form->username;
 				$form->username = YumRegistrationForm::genRandomString($usernameRequirements['maxLen']);
+			}
 
 			if(isset($_POST['YumProfile'])) {
 				$profile->attributes = $_POST['YumProfile'];
+				if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
+					$profile->email = $form->email;
 				$profile->validate();
 			}
 
@@ -120,6 +125,9 @@ class YumRegistrationController extends YumController
 				$form->addErrors($profile->getErrors());
 			}
 		}
+
+		if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
+			$form->username = $form->email;
 
 		$this->render('/user/registration', array(
 					'form' => $form,
@@ -498,7 +506,7 @@ class YumRegistrationController extends YumController
 				$user->save();
 				Yii::app()->user->setFlash('loginMessage',
 								Yum::t("Your new password has been saved."));
-						$this->redirect(Yii::app()->controller->module->loginUrl);
+						$this->redirect(Yum::module()->loginUrl);
 					}
 				}
 				if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION){

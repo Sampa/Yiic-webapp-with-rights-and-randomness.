@@ -223,14 +223,14 @@ class YumProfileController extends YumController
 	 */
 	public function sendAlertEmail($email,$subject=null,$message=null)
 	{
-		$headers = "From: " . Yii::app()->controller->module->recoveryEmail ."\r\nReply-To: ".Yii::app()->params['adminEmail'];
+		$headers = "From: " . Yum::module()->recoveryEmail ."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 		$msgheader = $subject;
 		$msgbody = $message;
 		if(Yum::module()->mailer == 'swift') {
 					$sm = Yii::app()->swiftMailer;
 					$mailer = $sm->mailer($sm->mailTransport());
 					$message = $sm->newMessage($msgheader)   
-						->setFrom(Yii::app()->controller->module->recoveryEmail)
+						->setFrom(Yum::module()->recoveryEmail)
 						->setTo($email)
 						->setBody($msgbody);                                                    
 					$sent=$mailer->send($message);

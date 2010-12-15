@@ -25,8 +25,6 @@ class YumMessage extends YumActiveRecord
 	 * @param string $className
 	 * @return YumMessage
 	 */
-	public $emailNotification = true;
-
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -36,19 +34,6 @@ class YumMessage extends YumActiveRecord
 		$this->timestamp = time();
 		return true;
 	}
-
-	public function afterSave() {
-		// If the user has activated email receiving, send a email
-		if($this->emailNotification 
-				&& isset($this->to_user)
-				&& isset($this->to_user->privacy 
-				&& $this->to_user->privacy->message_new_message)
-			YumMessagesController::mailMessage($this->to_user->profile[0]->email,
-					$this->title,
-					YumTextSettings::getText('text_message_new', array(
-							'{user}' => $this->from->username,
-							'{message}' => $model->message)));
-}
 
 	/**
 	 * Returns resolved table name (incl. table prefix when it is set in db configuration)

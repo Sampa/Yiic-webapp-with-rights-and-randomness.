@@ -286,20 +286,20 @@ class YumInstallController extends YumController
 							 {message}
 
 							 <a href=\"{link_profile}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
-'Sie haben eine neue Nachricht von {user} bekommen: {message}'),
+                            'Sie haben eine neue Nachricht von {user} bekommen: {message}'),
 								 ('3',
 									'es',
 									'Bienvenido al sistema de registro',
 									'Al registrarse en este sistema, usted está aceptando nuestros términos.',
 									'¡Bienvenido!',
 									'',
-									'Se ha registrado en esta aplicación. Para confirmar su dirección de e-mail, por favor, visite {activation_url}.',
-									'Se ha registrado en esta aplicación.',
-									'Ha solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor vaya a {activation_url}',
-									'Su cuenta ha sido activada. Gracias por registrase.',
-									'',
-									'',
-									'');
+									'Te has registrado en esta aplicación. Para confirmar tu dirección de correo electrónico, por favor, visita {activation_url}.',
+									'Te has registrado en esta aplicación.',
+									'Has solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor ve a {activation_url}',
+									'Tu cuenta ha sido activada. Gracias por registrarte.',
+									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link_contacts}',
+                                    'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link_profile}',
+                                    'Has recibido un mensaje de {user}: {message}');
 						";
 
 						$db->createCommand($sql)->execute();

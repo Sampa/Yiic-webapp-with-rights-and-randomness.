@@ -41,8 +41,6 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 			echo CHtml::activeLabelEx($model,'username'); 
 		if($module->loginType & UserModule::LOGIN_BY_EMAIL)
 			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('E-Mail address')); 
-		if($module->loginType & UserModule::LOGIN_BY_FACEBOOK)
-			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('Facebook account')); 
 		if($module->loginType & UserModule::LOGIN_BY_OPENID)
 			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('OpenID username'));  ?>
 

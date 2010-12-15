@@ -12,11 +12,9 @@ if(isset($expired))
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
-
 	<?php echo Yum::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
 	<?php $this->renderPartial('/user/passwordfields', array('form'=>$form)); ?>
-
 	
 	<div class="row submit">
 	<?php echo CHtml::submitButton(Yum::t("Save")); ?>

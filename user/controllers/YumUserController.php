@@ -260,7 +260,6 @@ class YumUserController extends YumController
 			if(!isset($_POST['YumUser']['YumRole']))
 				$_POST['YumUser']['YumRole'] = array();
 
-
 			$model->roles = $_POST['YumUser']['YumRole'];
 
 			if($profiles) {
@@ -291,7 +290,7 @@ class YumUserController extends YumController
 			if($profiles) {
 				$profile->validate();
 
-				if(!$model->hasErrors() && !$profile->hasErrors()) {
+				if(!$errors && !$model->hasErrors() && !$profile->hasErrors()) {
 					$model->save();
 					$profile->save();
 					if(Yum::module()->enableLogging == true)
