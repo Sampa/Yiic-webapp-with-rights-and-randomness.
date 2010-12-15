@@ -20,8 +20,8 @@ class YumProfileVisit extends YumActiveRecord {
     }
 
     public function tableName() {
-	if (isset(Yii::app()->controller->module->profileVisitTable))
-	    $this->_tableName = Yii::app()->controller->module->profileVisitTable;
+	if (isset(Yum::module()->profileVisitTable))
+	    $this->_tableName = Yum::module()->profileVisitTable;
 	elseif (isset(Yii::app()->modules['user']['profileVisitTable']))
 	    $this->_tableName = Yii::app()->modules['user']['profileVisitTable'];
 	else

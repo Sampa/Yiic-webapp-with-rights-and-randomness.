@@ -14,7 +14,7 @@ if (Yum::module()->debug == true) {
     echo CHtml::openTag('div', array('style' => 'background-color: red;color:white;'));
     echo Yii::t('UserModule.user',
             'You are running the Yii User Management Module {version} in Debug Mode!',
-            array('{version}' => Yii::app()->controller->module->version));
+            array('{version}' => Yum::module()->version));
     echo CHtml::closeTag('div');
 }
 
@@ -24,9 +24,9 @@ printf($f, Yum::t('Active users'), $active_users);
 printf($f, Yum::t('Inactive users'), $inactive_users);
 printf($f, Yum::t('Banned users'), $banned_users);
 printf($f, Yum::t('Admin users'), $admin_users);
-if (Yii::app()->controller->module->enableRoles)
+if (Yum::module()->enableRoles)
     printf($f, Yum::t('Roles'), $roles);
-if (Yii::app()->controller->module->enableProfiles) {
+if (Yum::module()->enableProfiles) {
     printf($f, Yum::t('Profiles'), $profiles);
     printf($f, Yum::t('Different viewn Profiles'), $profile_views);
     printf($f, Yum::t('Profile fields'), $profile_fields);

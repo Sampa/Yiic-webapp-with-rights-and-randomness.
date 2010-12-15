@@ -30,8 +30,8 @@ class YumRole extends YumActiveRecord
 	 */		
   	public function tableName()
   	{
-  		if (isset(Yii::app()->controller->module->rolesTable))
-      		$this->_tableName = Yii::app()->controller->module->rolesTable;
+  		if (isset(Yum::module()->rolesTable))
+      		$this->_tableName = Yum::module()->rolesTable;
     	elseif (isset(Yii::app()->modules['user']['rolesTable'])) 
       		$this->_tableName = Yii::app()->modules['user']['rolesTable'];
     	else

@@ -506,7 +506,7 @@ class YumRegistrationController extends YumController
 				$user->save();
 				Yii::app()->user->setFlash('loginMessage',
 								Yum::t("Your new password has been saved."));
-						$this->redirect(Yii::app()->controller->module->loginUrl);
+						$this->redirect(Yum::module()->loginUrl);
 					}
 				}
 				if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION){

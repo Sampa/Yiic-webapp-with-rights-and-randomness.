@@ -7,8 +7,8 @@ class YumTextSettings extends YumActiveRecord
 	}
 
 	public function tableName() {
-            if (isset(Yii::app()->controller->module->textSettingsTable))
-                $this->_tableName = Yii::app()->controller->module->textSettingsTable;
+            if (isset(Yum::module()->textSettingsTable))
+                $this->_tableName = Yum::module()->textSettingsTable;
             elseif (isset(Yii::app()->modules['user']['textSettingsTable']))
                 $this->_tableName = Yii::app()->modules['user']['textSettingsTable'];
             else

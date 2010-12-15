@@ -84,8 +84,8 @@ class YumFriendship extends YumActiveRecord{
 
 		public function tableName()
 	{
-		if(isset(Yii::app()->controller->module->friendshipTable))
-			$this->_tableName = Yii::app()->controller->module->friendshipTable;
+		if(isset(Yum::module()->friendshipTable))
+			$this->_tableName = Yum::module()->friendshipTable;
 		elseif(isset(Yii::app()->modules['user']['friendshipTable']))
 			$this->_tableName = Yii::app()->modules['user']['friendshipTable'];
 		else

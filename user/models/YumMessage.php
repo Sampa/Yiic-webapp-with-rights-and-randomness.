@@ -45,8 +45,8 @@ class YumMessage extends YumActiveRecord
 	 */
 	public function tableName()
 	{
-		if (isset(Yii::app()->controller->module->messagesTable))
-			$this->_tableName = Yii::app()->controller->module->messagesTable;
+		if (isset(Yum::module()->messagesTable))
+			$this->_tableName = Yum::module()->messagesTable;
 		elseif (isset(Yii::app()->modules['user']['messagesTable'])) 
 			$this->_tableName = Yii::app()->modules['user']['messagesTable'];
 		else

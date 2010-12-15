@@ -110,8 +110,8 @@ class YumUser extends YumActiveRecord
 	 */
 	public function tableName()
 	{
-		if(isset(Yii::app()->controller->module->usersTable))
-			$this->_tableName = Yii::app()->controller->module->usersTable;
+		if(isset(Yum::module()->usersTable))
+			$this->_tableName = Yum::module()->usersTable;
 		elseif(isset(Yii::app()->modules['user']['usersTable']))
 			$this->_tableName = Yii::app()->modules['user']['usersTable'];
 		else
@@ -175,15 +175,15 @@ class YumUser extends YumActiveRecord
 
 	public function relations()
 	{
-		if(isset(Yii::app()->controller->module->userRoleTable))
-			$this->_userRoleTable = Yii::app()->controller->module->userRoleTable;
+		if(isset(Yum::module()->userRoleTable))
+			$this->_userRoleTable = Yum::module()->userRoleTable;
 		elseif(isset(Yii::app()->modules['user']['userRoleTable']))
 			$this->_tableName = Yii::app()->modules['user']['userRoleTable'];
 		else
 			$this->_userRoleTable = '{{user_has_role}}';
 
-		if(isset(Yii::app()->controller->module->friendshipTable))
-			$this->_friendshipTable = Yii::app()->controller->module->friendshipTable;
+		if(isset(Yum::module()->friendshipTable))
+			$this->_friendshipTable = Yum::module()->friendshipTable;
 		elseif(isset(Yii::app()->modules['user']['friendshipTable']))
 			$this->_tableName = Yii::app()->modules['user']['friendshipTable'];
 		else

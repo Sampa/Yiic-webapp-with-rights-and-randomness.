@@ -7,8 +7,8 @@ class YumSettings extends YumActiveRecord {
     }
 
     public function tableName() {
-        if (isset(Yii::app()->controller->module->settingsTable))
-            $this->_tableName = Yii::app()->controller->module->settingsTable;
+        if (isset(Yum::module()->settingsTable))
+            $this->_tableName = Yum::module()->settingsTable;
         elseif (isset(Yii::app()->modules['user']['settingsTable']))
             $this->_tableName = Yii::app()->modules['user']['settingsTable'];
         else
