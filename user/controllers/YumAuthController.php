@@ -184,7 +184,7 @@ class YumAuthController extends YumController {
 					$success = $this->loginByUsername();
 				if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL && !$success)
 					$success = $this->loginByEmail();
-				if(Yum::module()->loginType & UserModule::LOGIN_BY_OPENID && !$success) 
+				if(Yum::module()->loginType & UserModule::LOGIN_BY_OPENID && !$success)
 				{
 					$this->loginForm->setScenario('openid');
 					$success = $this->loginByOpenid();
