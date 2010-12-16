@@ -61,7 +61,7 @@ if ($profileFields)
 			}
 		}
 ?>
-		<?php if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL'): ?>
+		<?php if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'username'); ?>
 		<?php echo CHtml::activeTextField($model,'username',array('size'=>20,'maxlength'=>20)); ?>

@@ -1,6 +1,6 @@
 <?php
 
-class YumFriendship extends YumActiveRecord{
+class YumFriendship extends YumActiveRecord {
 	const FRIENDSHIP_NONE = 0; 
 	const FRIENDSHIP_REQUEST = 1;
 	const FRIENDSHIP_ACCEPTED = 2;

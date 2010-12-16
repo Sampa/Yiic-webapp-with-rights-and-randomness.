@@ -334,7 +334,7 @@ class YumRegistrationController extends YumController
 						//do autoLogin
 						if (Yum::module()->autoLogin)
 						{
-							$username = (Yum::module()->loginType=='LOGIN_BY_EMAIL') ? $email : $user->username;
+							$username = (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) ? $email : $user->username;
 							$identity=new YumUserIdentity($username, $form->password);
 							$identity->authenticate();
 							if ($identity->errorCode == UserIdentity::ERROR_NONE)
@@ -448,7 +448,7 @@ class YumRegistrationController extends YumController
 							$user->save();
 							if (Yum::module()->autoLogin)
 							{
-								$username = (Yum::module()->loginType=='LOGIN_BY_EMAIL') ? $email : $user->username;
+								$username = (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) ? $email : $user->username;
 								$identity=new YumUserIdentity($username, $passwordform->password);
 								$identity->authenticate();
 								if ($identity->errorCode == UserIdentity::ERROR_NONE)

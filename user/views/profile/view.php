@@ -5,7 +5,7 @@ $this->title = Yum::t('Profile');
 echo $model->getAvatar(); ?>
 
 <table class="dataGrid">
-<?php if(Yum::module()->loginType != 'LOGIN_BY_EMAIL') {?>
+<?php if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) {?>
 <tr>
 <th class="label"><?php echo CHtml::activeLabel($model,'username'); ?>
 </th>

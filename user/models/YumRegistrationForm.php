@@ -16,7 +16,7 @@ class YumRegistrationForm extends YumUser {
 	public function rules() 
 	{
 		$rules = parent::rules();
-		if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL')
+		if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 			$rules[] = array('username', 'required');
 		$rules[] = array('password, verifyPassword', 'required');
 		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword', 'message' => Yum::t("Retype password is incorrect."));

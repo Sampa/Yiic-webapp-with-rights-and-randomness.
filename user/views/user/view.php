@@ -1,7 +1,7 @@
 <?php
 $profiles = Yii::app()->getModule('user')->enableProfiles;
 
-if(Yii::app()->getModule('user')->loginType == 'LOGIN_BY_EMAIL')
+if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 $this->title = Yum::t('View user "{email}"',array(
 			'{email}'=>$model->profile[0]->email));
 else
@@ -25,7 +25,7 @@ if(Yii::app()->user->isAdmin()) {
 	);
 
 
-	if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
+	if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 		$attributes[] = 'username';
 	
 	if($profiles) {

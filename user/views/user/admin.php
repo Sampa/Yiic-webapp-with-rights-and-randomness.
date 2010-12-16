@@ -22,7 +22,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 			array(
 				'name'=>'username',
-				'visible' => Yum::module()->loginType != 'LOGIN_BY_EMAIL' ,
+				'visible' => Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL,
 				'type'=>'raw',
 				'value'=>'CHtml::link(CHtml::encode($data->username),
 				array(Yum::route("{user}/view"),"id"=>$data->id))',

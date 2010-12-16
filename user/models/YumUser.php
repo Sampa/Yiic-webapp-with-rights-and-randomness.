@@ -168,7 +168,7 @@ class YumUser extends YumActiveRecord
 
 		$rules[] = array('username', 'length', 'max' => $usernameRequirements['maxLen'], 'min' => $usernameRequirements['minLen'],'message' => Yum::t("Incorrect username (length between" . $usernameRequirements['minLen']." and " . $usernameRequirements['maxLen'] . "characters)."));
 
-		if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL')
+		if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 			$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
 		$rules[] = array('status', 'in', 'range' => array(0, 1, -1));

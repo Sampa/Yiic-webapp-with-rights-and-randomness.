@@ -90,7 +90,7 @@ class YumUserController extends YumController
 	}
 
 	public function actionStats() {
-		$this->redirect($this->urlCreate('/user/statistics/index'));
+			$this->redirect($this->createUrl('/user/statistics/index'));
 	}
 
 

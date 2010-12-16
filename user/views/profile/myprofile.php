@@ -17,7 +17,7 @@ $this->renderPartial('/messages/new_messages');?>
 </div>
 
 <table class="dataGrid">
-<?php if(Yii::app()->getModule('user')->loginType != 'LOGIN_BY_EMAIL') {?>
+<?php if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) {?>
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('username')); ?>
 </th>
