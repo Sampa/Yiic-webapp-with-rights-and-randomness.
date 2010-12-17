@@ -122,7 +122,6 @@ if(Yii::app()->user->isAdmin()) {
 	} else {
 		printf('<p>%s</p>', Yum::t('None'));
 	}
-
 }
 
 if(Yum::module()->enableFriendship) {

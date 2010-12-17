@@ -10,6 +10,7 @@ class UserModule extends CWebModule
 {
 	public $version = '0.8';
 	public $debug = false;
+	// database related control vars
 	public $usersTable = 'users';
 	public $privacySettingTable = 'privacysetting';
 	public $settingsTable = 'yumsettings';
@@ -31,14 +32,23 @@ class UserModule extends CWebModule
 	public $roleRoleTable = 'role_has_role';
 	public $activityTable = 'activities';
 	public $installDemoData = true;
-	public $preserveProfiles = true;
+	//layout related control vars
 	public $baseLayout = 'application.views.layouts.main';
 	public $layout = 'yum';
 	public $loginLayout = 'yum';
-	public $loginView = '/user/login';
 	public $adminLayout = 'yum';
 	public $profileLayout = 'yumprofile';
+	//views related control vars
+	public $loginView = '/user/login';
 	public $profileView = '/profile/view';
+	public $menuView = '/user/menu';
+	public $registrationView='/user/registration';
+	public $activateView='/user/resend_activation';
+	public $messageView='/user/message';
+	public $recoveryView='/user/recovery';
+	public $recoveryChangePasswordView='/user/changepassword';
+	//configuration related control vars
+	public $preserveProfiles = true;
 	public $useYiiCheckAccess = false;
 	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
 	public $allowRecovery = true;
@@ -57,7 +67,6 @@ class UserModule extends CWebModule
 	public $recoveryFromWeb = false;
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer or PHPMailer to use PHPMailer as emailing lib.
 	public $phpmailer = null; // PHPMailer array options.
-	public $menuView = '/user/menu';
 	public $registrationEmail='register@website.com';
 	public $recoveryEmail='restore@website.com';
 	public $facebookConfig = false;

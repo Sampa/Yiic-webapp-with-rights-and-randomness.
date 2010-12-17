@@ -129,7 +129,7 @@ class YumRegistrationController extends YumController
 		if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 			$form->username = $form->email;
 
-		$this->render('/user/registration', array(
+		$this->render(Yum::module()->registrationView, array(
 					'form' => $form,
 					'profile' => $profile,
 					'registrationtype'=>$registrationType,
@@ -154,7 +154,7 @@ class YumRegistrationController extends YumController
 			$form = new YumRegistrationForm;
 		}
 
-		$this->render('/user/resend_activation', array(
+		$this->render(Yum::module()->activateView, array(
 					'form' => $form,
 					'user'=>$user,
 					'activateFromWeb'=>Yum::module()->activateFromWeb,
@@ -187,7 +187,7 @@ class YumRegistrationController extends YumController
 				$user= new YumUser;
 		}
 		$form = new YumRegistrationForm;
-		$this->render('/user/resend_activation', array(
+		$this->render(Yum::module()->activateView, array(
 					'form' => $form,
 					'user'=>$user,
 					)
@@ -203,106 +203,34 @@ class YumRegistrationController extends YumController
 			throw new CException(Yum::t('Email is not set when trying to send Registration Email'));	
 		}
 			$registrationType = Yum::module()->registrationType;
-			$headers = "From: " . Yum::module()->registrationEmail ."\r\nReply-To: ".Yii::app()->params['adminEmail'];
 
-			$activation_url = 'http://' .  $_SERVER['HTTP_HOST'] .  $this->createUrl('registration/activation',array(
+			$activation_url =  $this->createAbsoluteUrl('registration/activation',array(
 				'activationKey' => $user->activationKey,
 				'email' => $user->profile[0]->email)
 					);
 
-			//Send mail, Make it DRY!!!
 			$content = YumTextSettings::model()->find('language = :lang', array(
 						'lang' => Yii::app()->language));
 			$sent=null;
 
-			if(is_object($content)) {
-				$msgheader = $content->subject_email_registration;
+			if(is_object($content))
+			{
 				if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
-				{
-					$msgbody = strtr($content->text_email_registration . "\n\nYour Activation Key is $user->activationKey ,\n\n Your temporary password is $password,", array('{activation_url}' => $activation_url));
-				}
+					$body = strtr($content->text_email_registration . "\n\nYour Activation Key is $user->activationKey ,\n\n Your temporary password is $password,", array('{activation_url}' => $activation_url));
 				else
-				{
-					$msgbody = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
-				}
-				if(Yum::module()->mailer == 'swift')
-				{
-					$sm = Yii::app()->swiftMailer;
-					$mailer = $sm->mailer($sm->mailTransport());
-					$message = $sm->newMessage($msgheader)   
-						->setFrom(Yum::module()->registrationEmail)
-						->setTo($user->profile[0]->email)
-						->setBody($msgbody);                                                    
-					$sent=$mailer->send($message);
-				}
-				elseif(Yum::module()->mailer == 'PHPMailer')
-				{
-					Yii::import('application.extensions.phpmailer.JPhpMailer');
-					$mail = new JPhpMailer(true);
-					if (Yum::module()->phpmailer['transport'])
-						switch (Yum::module()->phpmailer['transport'])
-						{
-							case 'smtp':
-								$mail->IsSMTP();
-								break;
-							case 'sendmail':
-								$mail->IsSendmail();
-								break;
-							case 'qmail':
-								$mail->IsQmail();
-								break;
-							case 'mail':
-							default:
-								$mail->IsMail();
-						}
-					else
-						$mail->IsMail();
+					$body = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
 
-					if (Yum::module()->phpmailer['html'])
-						$mail->IsHTML(Yum::module()->phpmailer['html']);
-					else
-						$mail->IsHTML(false);
-
-					try
-					{
-						$mailconf=Yum::module()->phpmailer['properties'];
-						if(is_array($mailconf))
-						{
-							foreach($mailconf as $key=>$value)
-							{
-								if(isset(JPhpMailer::${$key}))
-								{
-									JPhpMailer::${$key} = $value;
-								}
-								else
-								{
-									$mail->$key=$value;
-								}
-							}
-						}
-						$mail->AddAddress($user->profile[0]->email, Yum::module()->phpmailer['msgOptions']['toName']); //FIXME
-						$mail->SetFrom(Yii::app()->params['adminEmail'], Yum::module()->phpmailer['msgOptions']['fromName']); //FIXME
-						$mail->Subject = $content->subject_email_registration;
-						$mail->Body = $msgbody;
-						$mail->Send();
-					}
-					catch (phpmailerException $e)
-					{
-						throw new CException($e->errorMessage());
-					}
-					catch (Exception $e)
-					{
-						throw new CException($e->getMessage());
-					}
-				}
-				else
-				{
-					$sent=mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
-				}
+				$mail = array(
+						'from'=>Yum::module()->registrationEmail,
+						'to'=>$user->profile[0]->email,
+						'subject'=> $content->subject_email_registration,
+						'body'=> $body,
+				);
+				$sent = YumMailer::send($mail);
 			}
 			else
 			{
-				throw new CException(Yum::t('no object'));
+				throw new CException(Yum::t('The messages for your application language are not defined.'));
 			}
 
 			return $sent;
@@ -366,7 +294,7 @@ class YumRegistrationController extends YumController
 									),
 								),
 							);
-						$this->render('/user/message', array(
+						$this->render(Yum::module()->messageView, array(
 							'title'=>Yum::t("User activation"),
 							'content'=>Yum::t("Cannot set password. Try again."),
 							'partial'=>$partial,
@@ -396,7 +324,7 @@ class YumRegistrationController extends YumController
 									),
 							),
 						);
-			$this->render('/user/message', array(
+			$this->render(Yum::module()->messageView, array(
 						'title'=>Yum::t("User activation"),
 						'content'=>Yum::t("Your account has been activated."),
 						'partial'=>$partial,
@@ -422,10 +350,6 @@ class YumRegistrationController extends YumController
 	public function actionRecovery () {
 		$form = new YumUserRecoveryForm;
 		
-		$headers = sprintf("From: %s\r\nReply-To: %s",
-							Yum::module()->recoveryEmail,
-							Yum::module()->recoveryEmail);
-							
 		if (isset($_GET['email']) && isset($_GET['activationKey']))
 		{
 			$email=$_GET['email'];
@@ -475,7 +399,7 @@ class YumRegistrationController extends YumController
 								),
 						),
 					);
-					$this->render('/user/message', array(
+					$this->render(Yum::module()->messageView, array(
 								'title'=>Yum::t("Password recovery"),
 								'content'=>Yum::t("Your request succeeded. Please enter below your new password:"),
 								'partial'=>$partial,
@@ -487,11 +411,14 @@ class YumRegistrationController extends YumController
 			    $user->password = YumUser::encrypt($password);
 			    $user->save();
 				
-				mail($user->profile[0]->email,
-				Yum::t('Password recovery'), 
-				sprintf('You have requested to reset your Password. Your new password, is %s',
-				$password),$headers);
-								
+				$mail = array(
+						'from'=>Yii::app()->params['adminEmail'],
+						'to'=>$user->profile[0]->email,
+						'subject'=> Yum::t('Password recovery'),
+						'body'=> sprintf('You have requested to reset your Password. Your new password, is %s', $password),
+				);
+				$sent = YumMailer::send($mail);
+
 				Yii::app()->user->setFlash('loginMessage',
 				Yum::t('Instructions have been sent to you. Please check your email.'));
 			}
@@ -512,12 +439,12 @@ class YumRegistrationController extends YumController
 				if($registrationType == YumRegistration::REG_NO_PASSWORD  || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION){
 					$this->redirect(array('/user/user/login'));
 				}else{
-				$this->render('/user/changepassword',array('form'=>$passwordform));
+				$this->render(Yum::module()->recoveryChangePasswordView,array('form'=>$passwordform));
 			}
 			} else {
 				Yii::app()->user->setFlash('recoveryMessage',
 						Yum::t("Incorrect recovery link."));
-				$this->redirect('http://' . $_SERVER['HTTP_HOST'] . $this->createUrl('registration/recovery'));
+				$this->redirect($this->createAbsoluteUrl('registration/recovery'));
 			}
 		} else {
 			if(isset($_POST['YumUserRecoveryForm'])) {
@@ -528,106 +455,31 @@ class YumRegistrationController extends YumController
 
 			
 
-					$activation_url = sprintf('http://%s%s',
-							$_SERVER['HTTP_HOST'],
-							$this->createUrl('registration/recovery',array(
+					$activation_url = $this->createAbsoluteUrl('registration/recovery',array(
 									'activationKey' => $user->activationKey,
-									'email' => $user->profile[0]->email)));
+									'email' => $user->profile[0]->email));
 					if(Yum::module()->enableLogging == true)
 					YumActivityController::logActivity($user, 'recovery');
 					Yii::app()->user->setFlash('loginMessage',
 							Yum::t('Instructions have been sent to you. Please check your email.'));
 
-					//Send mail, Make it DRY!!!
 					$content = YumTextSettings::model()->find('language = :lang', array('lang' => Yii::app()->language));
 					$sent=null;
 
 					if(is_object($content))
 					{
-						$msgheader = $content->subject_email_registration;
-						$msgbody = strtr($content->text_email_recovery, array('{activation_url}' => $activation_url));
-
-						if(Yum::module()->mailer == 'swift')
-						{
-							$sm = Yii::app()->swiftMailer;
-							$mailer = $sm->mailer($sm->mailTransport());
-							$message = $sm->newMessage($msgheader)
-								->setFrom(Yii::app()->params['adminEmail'])
-								->setTo($user->profile[0]->email)
-								->setBody($msgbody);
-							$sent=$mailer->send($message);
-						}
-						elseif(Yum::module()->mailer == 'PHPMailer')
-						{
-							Yii::import('application.extensions.phpmailer.JPhpMailer');
-							$mail = new JPhpMailer(true);
-							if (Yum::module()->phpmailer['transport'])
-								switch (Yum::module()->phpmailer['transport'])
-								{
-									case 'smtp':
-										$mail->IsSMTP();
-										break;
-									case 'sendmail':
-										$mail->IsSendmail();
-										break;
-									case 'qmail':
-										$mail->IsQmail();
-										break;
-									case 'mail':
-									default:
-										$mail->IsMail();
-								}
-							else
-								$mail->IsMail();
-
-							if (Yum::module()->phpmailer['html'])
-								$mail->IsHTML(Yum::module()->phpmailer['html']);
-							else
-								$mail->IsHTML(false);
-
-							try
-							{
-								$mailconf=Yum::module()->phpmailer['properties'];
-								if(is_array($mailconf))
-								{
-									foreach($mailconf as $key=>$value)
-									{
-										if(isset(JPhpMailer::${$key}))
-										{
-											JPhpMailer::${$key} = $value;
-										}
-										else
-										{
-											$mail->$key=$value;
-										}
-									}
-								}
-								$mail->AddAddress($user->profile[0]->email, Yum::module()->phpmailer['msgOptions']['toName']); //FIXME
-								$mail->SetFrom(Yii::app()->params['adminEmail'], Yum::module()->phpmailer['msgOptions']['fromName']); //FIXME
-								$mail->Subject = $content->subject_email_registration;
-								$mail->Body = $msgbody;
-								$mail->Send();
-							}
-							catch (phpmailerException $e)
-							{
-								$e_message=$e->errorMessage();
-							}
-							catch (Exception $e)
-							{
-								$e_message=$e->getMessage();
-							}
-						}
-						else
-						{
-							$sent=mail($user->profile[0]->email, $msgheader, $msgbody, $headers);
-						}
+						$mail = array(
+								'from'=>Yii::app()->params['adminEmail'],
+								'to'=>$user->profile[0]->email,
+								'subject'=> $content->subject_email_registration,
+								'body'=> strtr($content->text_email_recovery, array('{activation_url}' => $activation_url)),
+						);
+						$sent = YumMailer::send($mail);
 					}
 					else
 					{
-						throw new CException(Yum::t('no object'));
+						throw new CException(Yum::t('The messages for your application language are not defined.'));
 					}
-
-					#$this->redirect(array('/user/user/login'));
 				}
 			}
 			$this->render('/user/recovery',array('form'=>$form));

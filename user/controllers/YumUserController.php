@@ -59,8 +59,6 @@ class YumUserController extends YumController
 						$profile->user_id = $user->id;
 						$profile->timestamp = time();
 						$profile->privacy = 'protected';
-						//$profile->firstname = $user->username; //FIXME
-						//$profile->lastname = $user->username;  //FIXME
 						$profile->email = 'e@mail.de';
 						$profile->save();
 						if(Yum::module()->enableLogging == true)
