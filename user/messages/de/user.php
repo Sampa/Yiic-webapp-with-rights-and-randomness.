@@ -2,6 +2,8 @@
 
 
 return array(
+		'Separate usernames with comma to ignore specified users' => 'Benutzernamen mit kommata trennen, um sie zu ignorieren',
+		'Ignored users' => 'Ignorierliste',
 		'One of the recipients ({username}) has ignored you. Message will not be sent!' => 'Einer der gewählten Benutzer ({username}) hat Sie auf seiner Ignorier-Liste. Die Nachricht wird nicht gesendet!',
 		'Browse user groups' => 'Benutzergruppen durchsuchen',
 		'Group title' => 'Titel der Gruppe',

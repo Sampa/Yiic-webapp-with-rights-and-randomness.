@@ -34,7 +34,7 @@ class YumPrivacysetting extends YumActiveRecord{
 	}
 
 	public function beforeValidate() {
-		$this->ignore_users = strtr($this->ignore_users, array(' ' => ''));
+		$this->ignore_users = trim(strtr($this->ignore_users, array(', ' => ',')));
 		if(!isset($this->message_new_friendship) || is_null($this->message_new_friendship))
 			$this->message_new_friendship = true;
 		if(!isset($this->message_new_message) || is_null($this->message_new_message))
@@ -48,6 +48,7 @@ class YumPrivacysetting extends YumActiveRecord{
 	public function attributeLabels()
 	{
 		return array(
+			'ignore_users' => Yum::t('Ignored users'),
 			'user_id' => Yum::t( 'User'),
 			'message_new_friendship' => Yum::t( 'Receive a Email for new Friendship request'),
 			'message_new_message' => Yum::t( 'Receive a Email when new Message arrives'),
