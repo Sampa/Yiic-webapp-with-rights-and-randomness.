@@ -30,7 +30,7 @@ class YumFriendshipController extends YumController {
 					} elseif(isset($_POST['YumFriendship']['ignore_request'])) {
 						$friendship->status = 0;
 						$friendship->save();
-					}elseif(isset($_POST['YumFriendship']['cancel_request']) 
+					} elseif(isset($_POST['YumFriendship']['cancel_request']) 
 							|| isset($_POST['YumFriendship']['remove_friend'])) {
 						$friendship->delete();
 					}
@@ -71,15 +71,6 @@ class YumFriendshipController extends YumController {
 						$_POST['message'])) {
 				$this->render('success', array('friendship' => $friendship));
 
-				// If the user has activated email receiving, send a email
-				if($user = YumUser::model()->findByPk($friendship->friend_id)) 
-					if($user->privacy && $user->privacy->message_new_friendship)
-						YumMessageController::mailMessage($user->profile[0]->email,
-								Yum::t('New friendship request'),
-								YumTextSettings::getText('text_friendship_new', array(
-										'{user}' => $friendship->inviter->username,
-										'{message}' => $friendship->message,
-										'{link}' => $this->createUrl('//user/friendship/admin'))));
 
 				Yii::app()->end();
 			}

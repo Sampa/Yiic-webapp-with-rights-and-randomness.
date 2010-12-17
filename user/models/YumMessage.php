@@ -21,18 +21,77 @@ class YumMessage extends YumActiveRecord
 	const MSG_NONE = 'None';
 	const MSG_PLAIN = 'Plain';
 	const MSG_DIALOG = 'Dialog';
+
+	// set $omit_mail to true to avoid e-mail notification of the 
+  // received message. It is mainly user for the privacy settings
+  // (receive profile comment email/friendship request email/...)
+	public $omit_mail = false;
+
 	/**
 	 * @param string $className
 	 * @return YumMessage
 	 */
-	public static function model($className=__CLASS__)
-	{
+	public static function model($className=__CLASS__) {
 		return parent::model($className);
+	}
+
+	public function beforeValidate() {
+		$users = $this->to_user_id;
+		if(!is_array($users)) 
+			$users = array($this->to_user_id);
+
+		foreach($users as $to_user_id) {
+			$to_user = YumUser::model()->findByPk($to_user_id);
+			if($to_user && isset($to_user->privacy)) {
+				if(in_array($this->from_user->username, $to_user->privacy->getIgnoredUsers()))
+					$this->addError('to_user_id', Yum::t('One of the recipients ({username}) has ignored you. Message will not be sent!', array('{username}' => $to_user->username)));
+			}
+		}
+		return parent::beforeValidate();
 	}
 
 	public function beforeSave() {
 		$this->timestamp = time();
-		return true;
+		return parent::beforeSave();
+	}
+
+	public function afterSave() {
+		// If the user has activated email receiving, send a email
+			if($this->to_user->privacy && $this->to_user->privacy->message_new_message)
+				YumMailer::send($this->to_user->profile[0]->email,
+						$this->title,
+						YumTextSettings::getText('text_message_new', array(
+								'{user}' => $this->from_user->username,
+								'{message}' => $this->message)));
+		return parent::afterSave();
+	}
+
+	public static function write($to, $from, $subject, $body, $mail = true) {
+		$message = new YumMessage();
+
+		if(!$mail)
+			$message->omit_mail = true;
+
+		if(is_object($from))
+			$message->from_user_id = (int) $from->id;
+		else if(is_numeric($from))
+			$message->from_user_id = $from;
+		else 
+			return false;
+
+
+		if(is_object($to))
+			$message->to_user_id = (int) $to->id;
+		else if(is_numeric($to))
+			$message->to_user_id = $to;
+		else 
+			return false;
+
+		$message->title = $subject;
+		$message->message = $body;
+		if($message->save())
+			return true;
+		return false;
 	}
 
 	/**

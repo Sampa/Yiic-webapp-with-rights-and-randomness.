@@ -38,16 +38,7 @@ class UserModule extends CWebModule
 	public $loginLayout = 'yum';
 	public $adminLayout = 'yum';
 	public $profileLayout = 'yumprofile';
-	//views related control vars
-	public $loginView = '/user/login';
-	public $profileView = '/profile/view';
-	public $menuView = '/user/menu';
-	public $registrationView='/user/registration';
-	public $activateView='/user/resend_activation';
-	public $messageView='/user/message';
-	public $recoveryView='/user/recovery';
-	public $recoveryChangePasswordView='/user/changepassword';
-	//configuration related control vars
+		//configuration related control vars
 	public $preserveProfiles = true;
 	public $useYiiCheckAccess = false;
 	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
@@ -77,6 +68,9 @@ class UserModule extends CWebModule
 	// 'User' means to use the user-specific option in the user table
 	public $notifyType = 'user';
 
+	// Send a message to the user if the email changing has been succeeded
+	public $notifyEmailChange = true;
+
 	// if you want the users to be able to edit their profile TEXTAREAs with an
 	// rich text Editor like CKEditor, set that here
   public $rtepath = false; // Don't use an Rich text Editor                     
@@ -105,8 +99,17 @@ class UserModule extends CWebModule
 		// Page to go after admin logs in
 		'returnAdmin'=>array('//user/statistics/index'),
 		// Page to go to after logout
-		'returnLogout'=>array('//user/user/login'),
-	);
+		'returnLogout'=>array('//user/user/login'));
+
+	private $_views = array(
+			'login' => '/user/login',
+			'profile' => '/profile/view',
+			'menu' => '/user/menu',
+			'registration' => '/user/registration',
+			'activate' => '/user/resend_activation',
+			'message' => '/user/message',
+			'recovery' => '/user/recovery',
+			'recoveryChangePassword' =>'/user/changepassword');
 
 	// Activate profile History (profiles are kept always, and when the 
   // user changes his profile, it gets added to the database rather than
@@ -180,30 +183,36 @@ class UserModule extends CWebModule
 		);
 
 	/**
-	 * Additionally implements support for getting URLs
+	 * Implements support for getting URLs and Views
 	 * @param string $name
 	 */
-	public function __get($name)
-	{
-		if(substr($name,-3) === 'Url')
+	public function __get($name) {
+		if(substr($name, -3) === 'Url')
 			if(isset($this->_urls[substr($name, 0, -3)]))
 				return Yum::route($this->_urls[substr($name, 0, -3)]);
-				
+	
+		if(substr($name, -4) === 'View')
+			if(isset($this->_views[substr($name, 0, -4)]))
+				return $this->_views[substr($name, 0, -4)];
+
 		return parent::__get($name);
 	}
 
 	/**
-	 * Additionally implements support for setting URLs
+	 * Implements support for setting URLs and Views
 	 * @param string $name
 	 * @param mixed $value
 	 */
-	public function __set($name,$value)
-	{
-		if(substr($name,-3)==='Url')
-		{
+	public function __set($name,$value) {
+		if(substr($name,-3)==='Url') {
 			if(isset($this->_urls[substr($name,0,-3)]))
 				$this->_urls[substr($name,0,-3)]=$value;		
 		}
+		if(substr($name,-4)==='View') {
+			if(isset($this->_views[substr($name,0,-4)]))
+				$this->_views[substr($name,0,-4)]=$value;		
+		}
+
 		//parent::__set($name,$value);
 	}
 

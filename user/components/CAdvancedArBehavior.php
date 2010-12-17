@@ -4,7 +4,7 @@
  *
  * @author Herbert Maschke <thyseus@gmail.com>
  * @link http://www.yiiframework.com/
- * @version 0.3
+ * @version yum
  */
 
 /* The CAdvancedArBehavior extension adds up some functionality to the default

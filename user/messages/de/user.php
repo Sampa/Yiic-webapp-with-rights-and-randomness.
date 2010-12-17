@@ -2,6 +2,11 @@
 
 
 return array(
+		'One of the recipients ({username}) has ignored you. Message will not be sent!' => 'Einer der gewählten Benutzer ({username}) hat Sie auf seiner Ignorier-Liste. Die Nachricht wird nicht gesendet!',
+		'Browse user groups' => 'Benutzergruppen durchsuchen',
+		'Group title' => 'Titel der Gruppe',
+		'New friendship request' => 'neue Freundschaftsanfrage',
+		'New profile comment' => 'Neuer Profilkommentar',
 		'Are you sure to remove this comment from your profile?' => 'Sind Sie sicher, dass sie diesen Kommentar entfernen wollen?',
 		'Remove comment' => 'Kommentar entfernen',
 		'Description' => 'Beschreibung',
@@ -26,7 +31,7 @@ return array(
 		'' => 'Text Email Konto-Aktivierung',
 		'friends only' => 'Nur Freunde',
 		'Show friends' => 'Freunde öffentlich anzeigen',
-		'Allow comments' => 'Kommentare erlauben',
+		'Allow profile comments' => 'Profilkommentare erlauben',
 		'Cancel' => 'Abbrechen',
 		'Write comment' => 'Kommentar schreiben',
 		'Comment' => 'Kommentar',

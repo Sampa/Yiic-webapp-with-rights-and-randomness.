@@ -37,12 +37,65 @@ echo $form->errorSummary($model);
 </div>
 
 <div class="row">
+<?php echo $form->labelEx($model,'ignore_users'); ?>
+<?php echo $form->textField($model, 'ignore_users',  array('size' => 100)); ?>
+<?php echo $form->error($model,'ignore_users'); ?>
+<div class="hint">
+<p> <?php echo Yum::t('Separate usernames with comma to ignore specified users'); ?> </p>
+</div>
+</div>
+
+
+<div class="row">
 <?php echo $form->labelEx($model,'message_new_profilecomment'); ?>
 <?php echo $form->dropDownList($model, 'message_new_profilecomment', array(
 			0 => Yum::t('No'),
 			1 => Yum::t('Yes'))); ?>
 <?php echo $form->error($model,'message_new_profilecomment'); ?>
 </div>
+
+<?php if(isset($profile) && $profile !== null) {?>
+<div class="row">
+	<?php 
+	echo CHtml::activeLabelEx($profile, 'privacy'); 
+	echo CHtml::activeDropDownList($profile, 'privacy',
+			array(
+				'protected' => Yum::t( 'protected'),
+				'private' => Yum::t( 'private'),
+				'public' => Yum::t( 'public'),
+				)
+			); 
+	echo CHtml::error($profile,'privacy'); 
+	?>
+
+	</div>
+	<div class="row">
+	<?php 
+	echo CHtml::activeLabelEx($profile, 'allow_comments'); 
+	echo CHtml::activeDropDownList($profile, 'allow_comments',
+			array(
+				'0' => Yum::t( 'No'),
+				'1' => Yum::t( 'Yes'),
+				)
+			);
+	?>
+	</div>
+<?php } ?>
+
+<?php if(Yum::module()->enableFriendship) { ?>
+	<div class="row">
+	<?php 
+	echo CHtml::activeLabelEx($profile, 'show_friends'); 
+	echo CHtml::activeDropDownList($profile, 'show_friends',
+			array(
+				'0' => Yum::t( 'owner'),
+				'1' => Yum::t( 'friends only'),
+				'2' => Yum::t( 'public'),
+				)
+			);
+	?>
+	</div>
+<?php } ?>
 
 <?php
 echo CHtml::Button(Yum::t( 'Cancel'), array(

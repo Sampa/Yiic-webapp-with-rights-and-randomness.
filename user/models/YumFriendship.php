@@ -75,14 +75,14 @@ class YumFriendship extends YumActiveRecord {
 		$this->status = 3;
 		return($this->save());
 	} 
-	
+
 	public function ignoreFriendship() {
 		$this->acknowledgetime = time();
 		$this->status = 0;
 		return($this->save());
 	} 
 
-		public function tableName()
+	public function tableName()
 	{
 		if(isset(Yum::module()->friendshipTable))
 			$this->_tableName = Yum::module()->friendshipTable;
@@ -91,43 +91,60 @@ class YumFriendship extends YumActiveRecord {
 		else
 			$this->_tableName = '{{friendship}}'; // fallback if nothing is set
 
-			return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
+		return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
 	}
 
 	public function rules()
 	{
 		return array(
-			array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'required'),
-			array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'numerical', 'integerOnly'=>true),
-			array('message', 'length', 'max'=>255),
-			array('inviter_id, friend_id, status, message, requesttime, acknowledgetime, updatetime', 'safe', 'on'=>'search'),
-		);
+				array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'required'),
+				array('inviter_id, friend_id, status, requesttime, acknowledgetime, updatetime', 'numerical', 'integerOnly'=>true),
+				array('message', 'length', 'max'=>255),
+				array('inviter_id, friend_id, status, message, requesttime, acknowledgetime, updatetime', 'safe', 'on'=>'search'),
+				);
 	}
 
 	public function relations()
 	{
 		return array(
-			'inviter' => array(self::BELONGS_TO, 'YumUser', 'inviter_id'),
-			'invited' => array(self::BELONGS_TO, 'YumUser', 'friend_id'),
-		);
+				'inviter' => array(self::BELONGS_TO, 'YumUser', 'inviter_id'),
+				'invited' => array(self::BELONGS_TO, 'YumUser', 'friend_id'),
+				);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
-			'inviter_id' => Yum::t('Inviter'),
-			'friend_id' => Yum::t('Friend'),
-			'status' => Yum::t('Status'),
-			'message' => Yum::t('Message'),
-			'requesttime' => Yum::t('Requesttime'),
-			'acknowledgetime' => Yum::t('Acknowledgetime'),
-			'updatetime' => Yum::t('Updatetime'),
-		);
+				'inviter_id' => Yum::t('Inviter'),
+				'friend_id' => Yum::t('Friend'),
+				'status' => Yum::t('Status'),
+				'message' => Yum::t('Message'),
+				'requesttime' => Yum::t('Requesttime'),
+				'acknowledgetime' => Yum::t('Acknowledgetime'),
+				'updatetime' => Yum::t('Updatetime'),
+				);
 	}
 
-public function beforeSave() {
+	public function beforeSave() {
 		$this->updatetime = time();
 		return true;
+	}
+
+	public function afterSave() {
+		// If the user has activated email receiving, send a email
+		if($user = YumUser::model()->findByPk($this->friend_id))  {
+			if($user->privacy && $user->privacy->message_new_friendship) {
+
+				YumMessage::write($user, $this->inviter,
+						Yum::t('New friendship request'),
+						YumTextSettings::getText('text_friendship_new', array(
+								'{user}' => $this->inviter->username,
+								'{message}' => $this->message,
+								'{link}' =>
+								Yii::app()->controller->createUrl('//user/friendship/admin'))));
+			}
+		}
+		return parent::afterSave();
 	}
 
 	public function search()
@@ -143,7 +160,7 @@ public function beforeSave() {
 		$criteria->compare('updatetime', $this->updatetime);
 
 		return new CActiveDataProvider(get_class($this), array(
-			'criteria'=>$criteria,
-		));
+					'criteria'=>$criteria,
+					));
 	}
 }

@@ -189,11 +189,11 @@ class YumProfile extends YumActiveRecord
 	public function attributeLabels()
 	{
 		$labels = array(
-			'user_id' => Yum::t( 'User ID'),
-			'profile_id' => Yum::t( 'Profile ID'),
-			'privacy' => Yum::t( 'Privacy'),
-			'show_friends' => Yum::t( 'Show friends'),
-			'allow_comments' => Yum::t( 'Allow comments'),
+			'user_id' => Yum::t('User ID'),
+			'profile_id' => Yum::t('Profile ID'),
+			'privacy' => Yum::t('Privacy'),
+			'show_friends' => Yum::t('Show friends'),
+			'allow_comments' => Yum::t('Allow profile comments'),
 		);
 
 		foreach (self::$fields as $field)

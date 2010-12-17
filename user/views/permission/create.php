@@ -13,8 +13,10 @@
 	<label> Do you want to grant this permission to a user or a role </label>
 	<?php echo $form->radioButtonList($model, 'type', array(
 				'user' => Yum::t('User'),
-				'role' => Yum::t('Role'))); ?>
-	<?php echo $form->error($model,'type'); ?>
+				'role' => Yum::t('Role')),
+			array('template' => '<div class="checkbox">{input}</div>{label}'
+				)); ?>
+			<?php echo $form->error($model,'type'); ?>
 	</div>
 
 	<div id="assignment_user">
@@ -77,11 +79,12 @@
 		<?php echo $form->error($model,'comment'); ?>
 	</div>
 
-	<p> <?php 
-echo Yum::t('Should this permission be granted to new created users?'); ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'template'); ?>
-		<?php echo $form->checkBox($model,'template'); ?>
+		<?php echo $form->dropDownList($model,'template', array(
+					'0' => Yum::t('No'),
+					'1' => Yum::t('Yes'),
+					)); ?>
 		<?php echo $form->error($model,'template'); ?>
 	</div>
 

@@ -87,6 +87,7 @@ class YumInstallController extends YumController
 						`message_new_friendship` tinyint(1) NOT NULL,
 						`message_new_message` tinyint(1) NOT NULL,
 						`message_new_profilecomment` tinyint(1) NOT NULL,
+						`ignore_users` varchar(255),
 						PRIMARY KEY (`user_id`)
 							) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 					";
@@ -169,7 +170,7 @@ class YumInstallController extends YumController
 							`type` enum('user','role') NOT NULL,
 							`action` int(11) NOT NULL,
 							`template` tinyint(1) NOT NULL,
-							`comment` text NOT NULL,
+							`comment` text,
 							PRIMARY KEY (`principal_id`,`subordinate_id`,`type`,`action`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8; ";
 
@@ -262,8 +263,8 @@ class YumInstallController extends YumController
 										'You have requested a new Password. To set your new Password,
 										please go to {activation_url}',
 										'Your account has been activated. Thank you for your registration.',
-										'New friendship Request from {user_from}: {message} Go to your contacts: {link_contacts}',
- 'You have a new profile comment from {user}: {message} visit your profile: {link_profile}',
+										'New friendship Request from {user_from}: {message} Go to your contacts: {link}',
+ 'You have a new profile comment from {user}: {message} visit your profile: {link}',
 'You have received a new message from {user}: {message}'),
 							('2',
 							 'de',
@@ -279,13 +280,13 @@ class YumInstallController extends YumController
 
 							 Nachricht: {message}
 
-							 <a href=\"{link_contacts}\">Hier</a> geht es direkt zu Ihren Kontakten!',
+							 <a href=\"{link}\">Hier</a> geht es direkt zu Ihren Kontakten!',
 							 '
 							 Benutzer {username} hat Ihnen eine Nachricht auf Ihrer Pinnwand hinterlassen: 
 
 							 {message}
 
-							 <a href=\"{link_profile}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
+							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
                             'Sie haben eine neue Nachricht von {user} bekommen: {message}'),
 								 ('3',
 									'es',
@@ -297,8 +298,8 @@ class YumInstallController extends YumController
 									'Te has registrado en esta aplicación.',
 									'Has solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor ve a {activation_url}',
 									'Tu cuenta ha sido activada. Gracias por registrarte.',
-									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link_contacts}',
-                                    'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link_profile}',
+									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link}',
+                                    'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link}',
                                     'Has recibido un mensaje de {user}: {message}');
 						";
 

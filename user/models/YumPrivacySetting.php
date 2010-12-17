@@ -17,18 +17,24 @@ class YumPrivacysetting extends YumActiveRecord{
 			array('user_id, message_new_friendship, message_new_message, message_new_profilecomment', 'required'),
 			array('message_new_friendship, message_new_message, message_new_profilecomment', 'numerical', 'integerOnly'=>true),
 			array('user_id', 'length', 'max'=>10),
+			array('ignore_users', 'length', 'max'=>255),
+			array('ignore_users', 'match', 'pattern' => '/^(\w)+(,\w+)*$/'),
 			array('user_id, message_new_friendship, message_new_message, message_new_profilecomment', 'safe', 'on'=>'search'),
 		);
 	}
 
-	public function relations()
-	{
+	public function getIgnoredUsers() {
+		return explode(',', $this->ignore_users);
+	}
+
+	public function relations() {
 		return array(
 			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id')
 		);
 	}
 
 	public function beforeValidate() {
+		$this->ignore_users = strtr($this->ignore_users, array(' ' => ''));
 		if(!isset($this->message_new_friendship) || is_null($this->message_new_friendship))
 			$this->message_new_friendship = true;
 		if(!isset($this->message_new_message) || is_null($this->message_new_message))

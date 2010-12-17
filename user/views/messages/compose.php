@@ -49,7 +49,9 @@ if(isset($to_user_id) && $to_user_id !== false) {
 </div>
 
 <div class="row buttons">
-<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t("UserModule.user", 'Send') : Yii::t('UserModule.user', 'Save')); ?>
+<?php echo CHtml::submitButton($model->isNewRecord 
+		? Yum::t('Send') 
+		: Yum::t('Save')); ?>
 </div>
 
 <?php $this->endWidget(); ?>

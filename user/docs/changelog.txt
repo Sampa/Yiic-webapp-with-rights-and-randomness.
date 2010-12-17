@@ -1,6 +1,12 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- Added Documentation about the new, experimental Permission system
+- Added ignore users to privacy settings
+- Introduced YumMailer (bigchirv)
+- reworked messaging System (thyseus)
+- Added User privacy settings (thyseus)
+- Added Usergroup submodule (thyseus)
 - New User activity logging subsystem (see YumActivityController) - logging of login, logout, wrong password attempt, recovery and registration into database and Yii log file
 - Added avatar upload possibility for users
 - Added 'visitors' to profiles (who visited whom when, and display it)
@@ -15,9 +21,7 @@ New in 0.8:
 - Prepared ROLE_has_ROLE to determine what users of which role can administrate user that have which Role (thyseus)
 - Added User Statistics (thyseus)
 - Removed adminpanel (thyseus)
-- prepared mail_send_method (thyseus)
 - added password expiration date (experimental) (thyseus)
-- reworked messaging System (thyseus)
 - added new Relation widget that fixed MANY_MANY DropDownList problems (thyseus)
 - Wrapped Yum::t() around Yii::t() to allow easier translations (thyseus)
 - Renamed YumHelper to Yum (thyseus)

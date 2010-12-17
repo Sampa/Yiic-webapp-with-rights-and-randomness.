@@ -128,7 +128,6 @@ if(!Yii::app()->user->isGuest) {
 	$this->renderPartial('/friendship/new_friends');
 	$this->beginWidget('zii.widgets.CPortlet', array(
 				'title'=> $title));
-	$this->renderPartial('/messages/new_messages');
 	$this->widget('CTreeView', array(
 				'data' => $menu, 
 				));

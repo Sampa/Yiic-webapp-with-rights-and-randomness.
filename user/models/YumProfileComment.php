@@ -35,6 +35,22 @@ class YumProfileComment extends YumActiveRecord{
 		return true;
 	}
 
+	public function afterSave() {
+		// If the user has activated email receiving, send a email
+		if($user = $this->profile->user) {
+			if($user->privacy && $user->privacy->message_new_friendship) {
+				YumMessage::write($user, $this->user_id,
+						Yum::t('New profile comment'),
+						YumTextSettings::getText('text_profilecomment_new', array(
+								'{username}' => $this->user->username,
+								'{message}' => $this->comment,
+								'{link}' =>
+								Yii::app()->controller->createUrl('//user/profile/view'))));
+			}
+		}
+		return parent::afterSave();
+	}
+
 	public function attributeLabels()
 	{
 		return array(

@@ -52,25 +52,18 @@ class YumProfileController extends YumController
 			}
 			$model->validate();
 			$profile->validate();
-			$settings=Yumsettings::model()->findByPK(1);
-			$notifyemailchange=$settings->notifyemailchange;
+
 			if(!$model->hasErrors() && !$profile->hasErrors()) {
-				
-				if($model->profile[0]->email != $profile->email && isset($notifyemailchange))
-				{
-					//send confirmation email
-					switch ($notifyemailchange)
-					{
-						case 'oldemail':
-						$this->sendAlertEmail($model->profile[0]->email,Yum::t('Email Change Requested'),'A request to change your email address to '.$profile->email.' was made from '.CHttpRequest::getUserHostAddress(). ' on ' . date('m/j/y g:ia'));
-						break;
-						case'newemail':
-						$this->sendAlertEmail($profile->email,Yum::t('Email Change Requested'),'A request to change your email address from '.$model->profile[0]->email.' was made from '.CHttpRequest::getUserHostAddress(). ' on ' . date('m/j/y g:ia'));
-						break;
-					}
-				
-				$profile->is_active=0;
+				if($model->profile[0]->email != $profile->email && Yum::module()->notifyEmailChange) {
+					YumMailer::send($profile->email, Yum::t('Email address changed'),
+							Yum::t('A email address has been changed from {oldemail} to {newemail} at {server} on {date}.', array(
+
+									'{oldemail}' => $model->profile[0]->email,
+									'{newemail}' => $profile->email,
+									'{server}' => CHttpRequest::getUserHostAddress(),
+									'{date}' => date(Yum::module()->dateTimeFormat))));
 				}
+
 				$model->save();
 				$profile->save();
 				Yii::app()->user->setFlash('profileMessage',
@@ -215,26 +208,6 @@ class YumProfileController extends YumController
 		$this->render('admin',array(
 			'dataProvider'=>$dataProvider,'model'=>$model,
 		));
-	}
-	
-	/**
-	 * this sends an email alerting the user that some profile setting has changed
-	 * @return:null
-	 */
-	public function sendAlertEmail($email,$subject=null,$message=null)
-	{
-		$headers = "From: " . Yum::module()->recoveryEmail ."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-		$msgheader = $subject;
-		$msgbody = $message;
-		$mail = array(
-				'from'=>Yum::module()->recoveryEmail,
-				'to'=>$email,
-				'subject'=> $subject,
-				'body'=> $message,
-		);
-		$sent = YumMailer::send($mail);
-
-		return sent;
 	}
 	
 	/**

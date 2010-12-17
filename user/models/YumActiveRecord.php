@@ -6,18 +6,16 @@
  * @package Yum.core
  *
  */
-abstract class YumActiveRecord extends CActiveRecord
-{
-	
+abstract class YumActiveRecord extends CActiveRecord {
 	protected $_tableName;
-	
+
 	/**
 	 * @return array
 	 */
 	public function behaviors() {
 		return array( 'CAdvancedArBehavior' );
 	}	
-	
+
 	/**
 	 * @return CActiveRecordMetaData the meta for this AR class.
 	 */	
@@ -26,12 +24,11 @@ abstract class YumActiveRecord extends CActiveRecord
 		$md = parent::getMetaData( );
 		if($this->getScenario()==='search')
 		{
-			#don't set default attributed
-	 		$md->attributeDefaults  = array ();
+			$md->attributeDefaults  = array ();
 		}
 
-	 	return $md;
+		return $md;
 	}
-	
+
 }
 ?>

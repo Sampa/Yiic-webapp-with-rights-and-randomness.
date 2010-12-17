@@ -38,13 +38,6 @@ class YumProfileCommentController extends YumController
 
 			if($model->save()) {
 				$this->renderPartial('/profileComment/success');
-
-				// If the user has activated email receiving, send a email
-				if($user = YumUser::model()->findByPk($model->user_id)) 
-					if($user->privacy && $user->privacy->message_new_profilecomment)
-						YumMessageController::mailMessage($model->user->profile[0]->email,
-								Yum::t('New profile Comment'),
-								Yum::t('New profile Comment'));
 				Yii::app()->end();
 			}
 		}

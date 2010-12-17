@@ -46,20 +46,19 @@ class YumUser extends YumActiveRecord
 	}
 
 	public static function generatePassword() { 
-		$chars = "abcdefghijkmnopqrstuvwxyz023456789"; 
-		srand((double)microtime()*1000000); 
-		$i = 0; 
-		$pass = '' ; 
+		$consonants = array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z"); 
+		$vocals = array("a","e","i","o","u"); 
 
-		while ($i <= 10) { 
-			$num = rand() % 33; 
-			$tmp = substr($chars, $num, 1); 
-			$pass = $pass . $tmp; 
-			$i++; 
+		$password = ''; 
+
+		srand ((double)microtime()*1000000); 
+		for($i = 1; $i <= 4; $i++) { 
+			$password .= $consonants[rand(0,19)]; 
+			$password .= $vocals[rand(0,4)]; 
 		} 
+		$password .= rand(0, 9);
 
-		return $pass; 
-
+		return $password;
 	} 	
 
 	public function search()
@@ -101,7 +100,7 @@ class YumUser extends YumActiveRecord
 		if($this->password_changed)
 			$this->password = YumUser::encrypt($this->password);
 
-		return true;
+		return parent::beforeSave();
 	}
 
 	public function setPassword($password) {
@@ -122,7 +121,7 @@ class YumUser extends YumActiveRecord
 			YumActivityController::logActivity($this,
 					$this->isNewRecord ? 'user_created' : 'user_updated');
 
-		return true;
+		return parent::afterSave();
 	}
 
 	public function getAdministerableUsers() {
@@ -168,8 +167,7 @@ class YumUser extends YumActiveRecord
 
 		$rules[] = array('username', 'length', 'max' => $usernameRequirements['maxLen'], 'min' => $usernameRequirements['minLen'],'message' => Yum::t("Incorrect username (length between" . $usernameRequirements['minLen']." and " . $usernameRequirements['maxLen'] . "characters)."));
 
-		if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
-			$rules[] = array('username', 'unique', 'message' => Yii::t("UserModule.user", "This user's name already exists."));
+		$rules[] = array('username', 'unique', 'message' => Yum::t("This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
 		$rules[] = array('status', 'in', 'range' => array(0, 1, -1));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
@@ -191,8 +189,7 @@ class YumUser extends YumActiveRecord
 		return $rules;
 	}
 
-	public function hasRole($role_title)
-	{
+	public function hasRole($role_title) {
 		foreach($this->roles as $role)
 			if($role->id == $role_title || $role->title == $role_title)
 				return true;
@@ -200,8 +197,7 @@ class YumUser extends YumActiveRecord
 		return false;
 	}
 
-	public function getRoles()
-	{
+	public function getRoles() {
 		$roles = '';
 		foreach($this->roles as $role)
 			$roles .= ' ' . $role->title;
@@ -209,8 +205,15 @@ class YumUser extends YumActiveRecord
 		return $roles;
 	}
 
-	public function relations()
-	{
+	public function can($action) {
+		foreach($this->permissions as $permission)
+			if($permission->action->title == $action)
+				return true;
+
+		return false;
+	}
+
+	public function relations() {
 		if(isset(Yum::module()->userRoleTable))
 			$this->_userRoleTable = Yum::module()->userRoleTable;
 		elseif(isset(Yii::app()->modules['user']['userRoleTable']))

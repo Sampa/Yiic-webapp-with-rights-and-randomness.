@@ -23,8 +23,7 @@ class YumMessagesController extends YumController
 		);
 	}	
 
-	public function actionView()
-	{
+	public function actionView() {
 		$model = $this->loadModel();
 
 		if($model->to_user_id != Yii::app()->user->id
@@ -41,8 +40,7 @@ class YumMessagesController extends YumController
 		}
 	}
 
-	public function actionCompose()
-	{
+	public function actionCompose() {
 		$model = new YumMessage;
 
 		$this->performAjaxValidation($model);
@@ -55,19 +53,10 @@ class YumMessagesController extends YumController
 			if($model->validate()) {
 				foreach($_POST['YumMessage']['to_user_id'] as $user_id) {
 					$model = new YumMessage;
-					$model->attributes=$_POST['YumMessage'];
+					$model->attributes = $_POST['YumMessage'];
 					$model->from_user_id = Yii::app()->user->id;
 					$model->to_user_id = $user_id;
 					$model->save();
-
-					// If the user has activated email receiving, send a email
-					if($user = YumUser::model()->findByPk($user_id)) 
-						if($user->privacy && $user->privacy->message_new_message)
-							YumMessagesController::mailMessage($model->to_user->profile[0]->email,
-									$model->title,
-									YumTextSettings::getText('text_message_new', array(
-											'{user}' => $model->from->username,
-											'{message}' => $model->message)));
 				}
 				$this->redirect(array('success'));
 			}
@@ -77,13 +66,6 @@ class YumMessagesController extends YumController
 			'model'=>$model,
 			'to_user_id' => isset($_GET['to_user_id']) ? $_GET['to_user_id'] : false,
 		));
-	}
-
-	public static function mailMessage($to, $title, $message) {
-		$headers = sprintf("From: %s\r\nReply-To: %s",
-				Yii::app()->params['adminEmail'],
-				Yii::app()->params['adminEmail']);
-		return mail($to, $title, $message, $headers);
 	}
 
 	public function actionSuccess() {
@@ -155,10 +137,8 @@ class YumMessagesController extends YumController
 		return $this->_model;
 	}
 
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='yum-messages-form')
-		{
+	protected function performAjaxValidation($model) {
+		if(isset($_POST['ajax']) && $_POST['ajax']==='yum-messages-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

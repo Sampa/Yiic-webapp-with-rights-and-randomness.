@@ -234,6 +234,7 @@ class YumUserController extends YumController
 			$model->attributes = $_POST['YumUser'];
 
 			// Assign the roles and belonging Users to the model
+			$model->roles = array();
 			if(isset($_POST['YumUser']['YumRole']))
 				$model->roles = $_POST['YumUser']['YumRole'];
 

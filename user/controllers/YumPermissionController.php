@@ -13,8 +13,8 @@ class YumPermissionController extends YumController
 					'users'=>array('admin')
 					),
 				array('deny',  // deny all other users
-						'users'=>array('*'),
-						),
+					'users'=>array('*'),
+					),
 				);
 	}
 
@@ -32,22 +32,21 @@ class YumPermissionController extends YumController
 			$model->attributes=$_GET['YumPermission'];
 
 		$this->render('admin',array(
-			'model'=>$model,
-		));
+					'model'=>$model,
+					));
 	}
 
 
 
 	public function actionCreate() {
-		$model=new YumPermission;
+		$model = new YumPermission;
 
 		if(isset($_POST['ajax']) && $_POST['ajax']==='permission-create-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 
-		if(isset($_POST['YumPermission']))
-		{
+		if(isset($_POST['YumPermission'])) {
 			$model->attributes=$_POST['YumPermission'];
 			if($model->validate()) {
 				if($_POST['YumPermission']['type'] == 'user')  {
@@ -62,6 +61,7 @@ class YumPermissionController extends YumController
 				return;
 			}
 		}
+		$model->type = 'user'; // preselect 'user'
 		$this->render('create',array('model'=>$model));
 
 	}

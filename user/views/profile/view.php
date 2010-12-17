@@ -2,7 +2,11 @@
 $this->pageTitle = Yii::app()->name . ' - ' . Yum::t('Profile');
 $this->breadcrumbs=array(Yum::t('Profile'), $model->username);
 $this->title = Yum::t('Profile');
-echo $model->getAvatar(); ?>
+echo $model->getAvatar(); 
+
+if($model->id == Yii::app()->user->id)
+	$this->renderPartial('/messages/new_messages');
+?>
 
 <table class="dataGrid">
 <?php if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) {?>
@@ -59,5 +63,6 @@ if ($profileFields) {
 
 <?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> <br /> 
 <?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> <br /> 
-<?php $this->renderPartial('/profileComment/index', array('model' => $model->profile[0])); ?> 
+<?php if(isset($model->profile[0]))
+	$this->renderPartial('/profileComment/index', array('model' => $model->profile[0])); ?> 
 

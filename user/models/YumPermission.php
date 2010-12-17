@@ -11,10 +11,10 @@ class YumPermission extends YumActiveRecord {
 
 	public function rules() {
 		return array(
-			array('principal_id, subordinate_id, type, action, template, comment', 'required'),
+			array('principal_id, subordinate_id, type, action, template', 'required'),
 			array('principal_id, subordinate_id, action, template', 'numerical', 'integerOnly'=>true),
 			array('type', 'length', 'max'=>4),
-			array('principal_id, subordinate_id, type, action, template, comment', 'safe', 'on'=>'search'),
+			array('principal_id, subordinate_id, type, action, template, comment', 'safe'),
 		);
 	}
 
@@ -35,7 +35,7 @@ class YumPermission extends YumActiveRecord {
 			'subordinate_id' => Yum::t('Subordinate'),
 			'type' => Yum::t('Type'),
 			'action' => Yum::t('Action'),
-			'template' => Yum::t('Template'),
+			'template' => Yum::t('Grant permission to new users'),
 			'comment' => Yum::t('Comment'),
 		);
 	}

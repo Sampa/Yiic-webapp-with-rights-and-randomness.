@@ -110,7 +110,7 @@ if(Yii::app()->user->isAdmin()) {
 	if($profiles && $this->module->profileHistory) {
 		$this->renderPartial('/profile/profile_history', array('model' => $model));
 	}
-	echo Yum::t('This user belongs to these roles:');  
+	echo '<h2>'.Yum::t('This user belongs to these roles:') .'</h2>'; 
 
 	if($model->roles) {
 		echo "<ul>";
@@ -122,10 +122,6 @@ if(Yii::app()->user->isAdmin()) {
 	} else {
 		printf('<p>%s</p>', Yum::t('None'));
 	}
-}
-
-if(Yum::module()->enableFriendship) {
-	$this->renderPartial('friends', array('user' => $model));
 }
 
 if(Yii::app()->user->isAdmin())

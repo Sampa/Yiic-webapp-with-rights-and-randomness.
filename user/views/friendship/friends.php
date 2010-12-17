@@ -5,12 +5,12 @@ if(isset($model->profile[0]) && $model->profile[0]->show_friends == 2) {
 			echo ucwords($model->username . '\'s friends');
 			foreach($model->friends as $friend) {
 				?>
-					<div id="friend">
-					<div id="avatar">
+					<div class="friend">
+					<div class="avatar">
 					<?php
-					$model->renderAvatar($friend, true);
+					echo $model->getAvatar($friend, true);
 				?>
-					<div id='username'>
+					<div class="username">
 					<?php 
 					echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile/view',array('id'=>$friend->id)));
 				?>
