@@ -1,6 +1,6 @@
 div.form .tooltip { display: none; background-color:#EFFDFF; border:1px solid #79B4DC; padding: 10px; width: 300px; }
 .yum-menu {float:right; width:25%; margin: 0px 5px 0px 5px;}
-.avatar {float:left;}
+.avatar {float:left; margin-right: 5px;}
 #yumcontent {padding: 20px; width:70%; margin: 5px;}
 label { display: inline }
 .checkbox { float: left; margin-right: 5px; }

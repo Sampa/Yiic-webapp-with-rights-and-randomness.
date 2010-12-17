@@ -28,3 +28,5 @@ echo CHtml::ajaxSubmitButton(Yum::t('Write comment'), array(
 					'update' => "#profileComment"));
 
 $this->endWidget(); ?>
+
+</div>

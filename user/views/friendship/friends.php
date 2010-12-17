@@ -22,7 +22,7 @@ if(isset($model->profile[0]) && $model->profile[0]->show_friends == 2) {
 		} else {
 			echo Yum::t('{username} has no friends yet', array('{username}' => $model->username)); 
 		}
-echo '</div>';
+echo '</div><!-- friends -->';
 }
 echo YumFriendshipController::invitationLink(Yii::app()->user->id, $model->id);
 ?>

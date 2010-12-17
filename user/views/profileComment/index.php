@@ -21,8 +21,8 @@ $this->widget('zii.widgets.CListView', array(
 			)); 
 
 }
-echo ' <div style="display: none;">';
 
+echo ' <div style="display: none;">';
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 			'id'=>'profileComment',
 			'options'=>array(
@@ -38,8 +38,6 @@ $this->renderPartial('/profileComment/create', array(
 			'profile' => $model));
 
 $this->endWidget('zii.widgets.jui.CJuiDialog');
-
-
 echo '</div>';
 ?>
 
