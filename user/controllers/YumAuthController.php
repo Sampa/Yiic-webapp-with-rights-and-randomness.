@@ -178,14 +178,12 @@ class YumAuthController extends YumController {
 		{
 			$this->loginForm->attributes = $_POST['YumUserLogin'];
 			// validate user input for the rest of login methods
-			if($this->loginForm->validate())
-			{
+			if($this->loginForm->validate()) {
 				if(Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME)
 					$success = $this->loginByUsername();
 				if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL && !$success)
 					$success = $this->loginByEmail();
-				if(Yum::module()->loginType & UserModule::LOGIN_BY_OPENID && !$success)
-				{
+				if(Yum::module()->loginType & UserModule::LOGIN_BY_OPENID && !$success) {
 					$this->loginForm->setScenario('openid');
 					$success = $this->loginByOpenid();
 				}
@@ -195,10 +193,11 @@ class YumAuthController extends YumController {
 			$success = $this->loginByFacebook();
 		if(Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success)
 			$sucess = $this->loginByTwitter();
-		if($success instanceof YumUser)
-		{
+
+		if($success instanceof YumUser) {
 			$success->lastvisit = time();
 			$success->save();
+			YumActivityController::logActivity(Yii::app()->user->id, 'login');
 			$this->redirectUser($success);
 		}
 

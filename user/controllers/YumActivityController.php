@@ -1,8 +1,39 @@
 <?php
 class YumActivityController extends YumController {
+	public static $possibleActions = array(
+			'login',
+			'logout',
+			'fb_login',
+			'fb_logout',
+			'register',
+			'recovery',
+			'failed_login_attempt',
+			'fb_failed_login_attempt',
+			'profile_set_active',
+			'settings_profile_created',
+			'settings_updated',
+			'settings_profile_removed',
+			'field_group_created',
+			'field_group_updated',
+			'field_group_removed',
+			'profile_field_created',
+			'profile_field_updated',
+			'profile_field_removed',
+			'role_created',
+			'role_updated',
+			'role_removed',
+			'text_settings_created',
+			'text_settings_updated',
+			'text_settings_removed',
+			'user_generated',
+			'user_created',
+			'user_updated',
+			'user_removed');
 
-	public function actionIndex()
-	{
+	public static function possibleActions() {
+		return self::$possibleActions;
+	}
+	public function actionIndex() {
 		$dataProvider=new CActiveDataProvider('YumActivity');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -13,35 +44,7 @@ class YumActivityController extends YumController {
 		if($user === NULL)
 			return true;
 
-		$possible_actions = array('login',
-				'logout',
-				'fb_login',
-				'fb_logout',
-				'register',
-				'recovery',
-				'failed_login_attempt',
-				'fb_failed_login_attempt',
-				'profile_set_active',
-				'settings_profile_created',
-				'settings_updated',
-				'settings_profile_removed',
-				'field_group_created',
-				'field_group_updated',
-				'field_group_removed',
-				'profile_field_created',
-				'profile_field_updated',
-				'profile_field_removed',
-				'role_created',
-				'role_updated',
-				'role_removed',
-				'text_settings_created',
-				'text_settings_updated',
-				'text_settings_removed',
-				'user_generated',
-				'user_created',
-				'user_updated',
-				'user_removed');
-		if(!in_array($action, $possible_actions) || !Yum::module()->enableLogging)
+		if(!in_array($action, self::possibleActions()) || !Yum::module()->enableLogging)
 			return false;
 
 		$activity = new YumActivity;
@@ -53,6 +56,7 @@ class YumActivityController extends YumController {
 		$activity->timestamp = time();
 		$activity->action = $action; 
 		$activity->remote_addr = $_SERVER['REMOTE_ADDR'];
+		$activity->http_user_agent = $_SERVER['HTTP_USER_AGENT'];
 
 		$activity->save();
 		

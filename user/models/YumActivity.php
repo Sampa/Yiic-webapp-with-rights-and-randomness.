@@ -36,6 +36,8 @@ class YumActivity extends YumActiveRecord{
 			'timestamp' => Yum::t('timestamp'),
 			'user_id' => Yum::t('User'),
 			'action' => Yum::t('Action'),
+			'remote_addr' => Yum::t('Connected from IP'),
+			'http_user_agent' => Yum::t('Used browser(HTTP_USER_AGENT)'),
 		);
 	}
 

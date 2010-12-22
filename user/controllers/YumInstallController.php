@@ -115,43 +115,20 @@ class YumInstallController extends YumController
 					}
 
 					if(isset($_POST['installActivityLog'])) {  
+						$actions = '';
+						foreach(YumActivityController::possibleActions() as $action)
+							$actions .= "'{$action}',";
+						$actions = substr($actions, 0, strlen($actions) - 1);
 						$sql = "CREATE TABLE IF NOT EXISTS `".$activityTable."` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`timestamp` int NOT NULL,
 							`user_id` int(11),
 							`remote_addr` varchar(16),
-							`action` enum('Login',
-									'Logout',
-									'fb_login',
-									'fb_logout',
-									'Recovery',
-									'Registration',
-									'failed_login_attempt',
-									'fb_failed_login_attempt',
-									'profile_set_active',
-									'settings_profile_created',
-									'settings_updated',
-									'settings_profile_removed',
-									'field_group_created',
-									'field_group_updated',
-									'field_group_removed',
-									'profile_field_created',
-									'profile_field_updated',
-									'profile_field_removed',
-									'role_created',
-									'role_updated',
-									'role_removed',
-									'text_settings_created',
-									'text_settings_updated',
-									'text_settings_removed',
-									'user_generated',
-									'user_created',
-									'user_updated',
-									'user_removed'),
+							`http_user_agent` varchar(255),
+							`action` enum(".$actions."),
 									PRIMARY KEY (`id`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 						";
-
 						$db->createCommand($sql)->execute();
 
 					}
