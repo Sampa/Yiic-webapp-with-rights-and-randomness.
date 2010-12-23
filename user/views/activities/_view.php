@@ -11,9 +11,14 @@
 
 	<br />
 
-<b><?php echo CHtml::encode($data->getAttributeLabel('http_user_agent')); ?>:</b>
-	<?php echo CHtml::encode($data->http_user_agent); ?>
-	<br />
+
+<?php 
+if($data->http_user_agent != '') {
+echo CHtml::encode($data->getAttributeLabel('http_user_agent')); 
+echo CHtml::encode($data->http_user_agent); 
+echo '<br />';
+}
+?>
 
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('action')); ?>:</b>

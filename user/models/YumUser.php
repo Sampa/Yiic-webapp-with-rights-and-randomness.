@@ -117,7 +117,8 @@ class YumUser extends YumActiveRecord
 			$setting = new YumPrivacySetting();
 			$setting->save();	
 		}
-		if(Yum::module()->enableLogging == true)
+
+		if(Yum::module()->enableLogging)
 			YumActivityController::logActivity($this,
 					$this->isNewRecord ? 'user_created' : 'user_updated');
 
