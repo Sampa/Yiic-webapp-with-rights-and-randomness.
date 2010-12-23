@@ -106,7 +106,7 @@ class YumUserController extends YumController
 	}
 
 	public function beforeAction($event) {
-		$this->layout = Yum::module()->adminLayout;
+		$this->layout = Yum::module()->layout;
 		return parent::beforeAction($event);
 	}
 
@@ -288,7 +288,6 @@ class YumUserController extends YumController
 				}
 			}
 		} else {
-			$this->layout = Yum::module()->layout;
 			$model = $this->loadUser(Yii::app()->user->id);
 
 			$preserveProfiles = Yum::module()->preserveProfiles;
@@ -343,7 +342,6 @@ class YumUserController extends YumController
 
 	public function actionList()
 	{
-		$this->layout = Yum::module()->adminLayout;
 
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'criteria' => array('condition' => 'status = 1'),

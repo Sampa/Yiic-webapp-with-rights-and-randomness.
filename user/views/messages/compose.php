@@ -49,9 +49,10 @@ if(isset($to_user_id) && $to_user_id !== false) {
 </div>
 
 <div class="row buttons">
-<?php echo CHtml::submitButton($model->isNewRecord 
+<?php echo CHtml::ajaxSubmitButton($model->isNewRecord 
 		? Yum::t('Send') 
-		: Yum::t('Save')); ?>
+		: Yum::t('Save'), array( '//user/messages/compose'), array(
+'update' => '#message' )); ?>
 </div>
 
 <?php $this->endWidget(); ?>

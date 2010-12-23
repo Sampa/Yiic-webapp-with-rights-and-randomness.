@@ -88,6 +88,10 @@ class YumProfileController extends YumController
 
 	}
 
+	public function beforeAction($action) {
+		$this->layout = Yum::module()->profileLayout;
+		return parent::beforeAction($action);
+	}
 	public function actionView() {
 		if(!isset($_GET['id']))
 			$_GET['id'] = Yii::app()->user->id;

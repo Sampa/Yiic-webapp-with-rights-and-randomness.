@@ -69,7 +69,7 @@ class YumMessagesController extends YumController
 	}
 
 	public function actionSuccess() {
-		$this->render('success');
+		$this->renderPartial('success');
 	}
 
 	public function actionDelete() {
