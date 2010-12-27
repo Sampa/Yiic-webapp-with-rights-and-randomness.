@@ -10,7 +10,8 @@ class YumMessagesController extends YumController
 	{
 		return array(
 			array('allow',
-				'actions' => array('view', 'compose', 'index', 'delete', 'sent', 'success'),
+				'actions' => array('view', 'compose', 'index',
+					'delete', 'sent', 'success', 'users'),
 				'users'=>array('@'),
 				),
 			array('allow',
@@ -22,6 +23,11 @@ class YumMessagesController extends YumController
 			)
 		);
 	}	
+
+	public function actionUsers() {
+		if(Yii::app()->request->isAjaxRequest)
+			echo json_encode(CHtml::listData(YumUser::model()->findAll(), 'id', 'username'));
+	}
 
 	public function actionView() {
 		$model = $this->loadModel();

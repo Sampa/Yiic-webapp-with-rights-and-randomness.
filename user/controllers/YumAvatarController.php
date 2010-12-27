@@ -8,6 +8,13 @@ class YumAvatarController extends YumController {
 		$model->save();
 		$this->redirect(array('user/profile'));	
 	}
+
+	public function beforeAction($action) {
+		if(Yii::app()->user->isGuest)
+			$this->redirect(Yum::module()->loginUrl);
+		return parent::beforeAction($action);
+	}
+
 	public function actionEditAvatar() {
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
 		$model->setScenario('avatarUpload');

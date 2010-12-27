@@ -1,10 +1,14 @@
 <?php 
+if(!isset($to_user_id) || $to_user_id === false) 
+	throw new CException(Yum::t('No recipient given'));
+
 $this->title = Yum::t('Composing new message');
 $this->breadcrumbs = array(
 		Yum::t('Messages') => array('index'),
 		Yum::t('Compose new message'),
 		);
 ?>
+
 
 <div class="form">
 
@@ -17,24 +21,9 @@ $this->breadcrumbs = array(
 
 echo $form->errorSummary($model); 
 
-if(isset($to_user_id) && $to_user_id !== false) {
 	echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
 	echo Yum::t('This message will be sent to {username}', array(
 				'{username}' => YumUser::model()->findByPk($to_user_id)->username));
-} else {
-	echo '<div class="row">';
-	printf('<p>%s</p>',
-			Yum::t('Select multiple recipients by holding the CTRL key')); 
-
-	echo CHtml::ListBox('YumMessage[to_user_id]',
-			isset($_GET['to_user_id']) ? $_GET['to_user_id'] :'', CHtml::listData( 
-				YumUser::model()->active()->findAll(), 'id', 'username'),
-			array('multiple' => 'multiple', 'style' => 'width:300px; height:200px;'));
-
-	echo $form->error($model,'to_user_id'); 
-	echo '</div>';
-}
-
 ?>
 <div class="row">
 <?php echo $form->labelEx($model,'title'); ?>
@@ -49,10 +38,20 @@ if(isset($to_user_id) && $to_user_id !== false) {
 </div>
 
 <div class="row buttons">
-<?php echo CHtml::ajaxSubmitButton($model->isNewRecord 
-		? Yum::t('Send') 
-		: Yum::t('Save'), array( '//user/messages/compose'), array(
-'update' => '#message' )); ?>
+
+<?php 
+if(Yii::app()->request->isAjaxRequest) {
+	echo CHtml::ajaxSubmitButton($model->isNewRecord 
+			? Yum::t('Send') 
+			: Yum::t('Save'), array('//user/messages/compose'), array(
+		'update' => '#message' )); 
+} else {
+	echo CHtml::submitButton($model->isNewRecord 
+			? Yum::t('Send') 
+			: Yum::t('Save'));
+}
+?>
+
 </div>
 
 <?php $this->endWidget(); ?>

@@ -6,4 +6,3 @@ $this->breadcrumbs=array(
 ?>
 
 <p> <?php echo CHtml::link(Yum::t('Back to inbox'), array('index')); ?> </p> 
-<p> <?php echo CHtml::link(Yum::t('Write another message'), array('compose')); ?> </p>
