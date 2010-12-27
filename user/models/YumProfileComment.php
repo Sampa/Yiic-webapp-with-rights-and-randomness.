@@ -14,7 +14,7 @@ class YumProfileComment extends YumActiveRecord{
 			$this->_tableName = Yii::app()->modules['user']['profileCommentTable'];
 		else
 			$this->_tableName = '{{profile_comment}}'; // fallback if nothing is set
-		return $this->_tableName;
+		return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
 	}
 
 	public function rules()
