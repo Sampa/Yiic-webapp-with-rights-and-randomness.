@@ -8,7 +8,13 @@ class YumActivity extends YumActiveRecord{
 
 	public function tableName()
 	{
-		return 'activities';
+		if(isset(Yum::module()->activitiesTable))
+			$this->_tableName = Yum::module()->activitiesTable;
+		elseif(isset(Yii::app()->modules['user']['activitiesTable']))
+			$this->_tableName = Yii::app()->modules['user']['activitiesTable'];
+		else
+			$this->_tableName = '{{activities}}'; // fallback if nothing is set
+		return $this->_tableName;
 	}
 
 	public function rules()

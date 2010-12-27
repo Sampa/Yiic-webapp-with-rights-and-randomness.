@@ -8,7 +8,13 @@ class YumGroupParticipation extends YumActiveRecord{
 
 	public function tableName()
 	{
-		return 'user_has_usergroup';
+		if(isset(Yum::module()->userUsergroupTable))
+			$this->_tableName = Yum::module()->userUsergroupTable;
+		elseif(isset(Yii::app()->modules['user']['userUsergroupTable']))
+			$this->_tableName = Yii::app()->modules['user']['userUsergroupTable'];
+		else
+			$this->_tableName = '{{user_has_usergroup}}'; // fallback if nothing is set
+		return $this->_tableName;
 	}
 
 	public function rules()
