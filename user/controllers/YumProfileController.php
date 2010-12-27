@@ -99,8 +99,10 @@ class YumProfileController extends YumController
 		$this->layout = Yum::module()->profileLayout;
 		$view = Yum::module()->profileView;
 
+		$friends = array();
 		$model = YumUser::model()->findByPk($_GET['id']);
-		$friends = $model->getFriends();
+		if($model)
+			$friends = $model->getFriends();
 
 		$this->render($view, array(
 					'model' => $model,
