@@ -19,15 +19,22 @@ class Yum {
 	}
 
 	/** Associate the right translation file depending on the
-			controller */
+		controller */
 	public static function t($string, $params = array()) {
 		$file = 'yum_'. Yii::app()->controller->id;
-		return Yii::t('UserModule.'.$file, $string, $params);
+		$lang = Yii::app()->language;
+		$path = Yii::getPathOfAlias("application.modules.user.messages.{$lang}.{$file}");
+
+		if(is_file($path) 
+				&& $messages = include($path) 
+				&& in_array($string, $messages))
+			return Yii::t('UserModule.'.$file, $string, $params);
+		return Yii::t('UserModule.yum_user', $string, $params);
 	}
 
 	/**
 	 * Resolved table name into table name with prefix if needed
-		 * @param string $tablename, e.g {{tablename}}
+	 * @param string $tablename, e.g {{tablename}}
 	 * @param CDbConnection $connection
 	 * @since 0.6
 	 * @return string resolved table name
@@ -69,7 +76,7 @@ class Yum {
 		throw new CException(Yum::t('Yum Module cannot be found'));		
 	}
 
-	
+
 	/**
 	 * Parses url for predefined symbols and returns real routes
 	 * Following symbols are allowed:
@@ -100,9 +107,9 @@ class Yum {
 		}
 		else
 			return strtr($url,$tr);
-		
+
 	}
-	
+
 	/**
 	 * Produces note: "Field with * are required"
 	 * @since 0.6
@@ -111,8 +118,8 @@ class Yum {
 	public static function requiredFieldNote()
 	{
 		return CHtml::tag('p',array('class'=>'note'),Yii::t(
-			'UserModule.user','Fields with <span class="required">*</span> are required.'
-		),true);		
+					'UserModule.user','Fields with <span class="required">*</span> are required.'
+					),true);		
 	}
 
 }

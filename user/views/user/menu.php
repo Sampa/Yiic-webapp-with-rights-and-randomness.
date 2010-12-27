@@ -82,10 +82,6 @@ if(!Yii::app()->user->isGuest) {
 
 		$menu[] = array('children' => $othermenu, 'text' => Yum::t('Other')); 
 	} else if(!Yii::app()->user->isguest) {
-
-		if(Yii::app()->user->hasUsers() || Yii::app()->user->hasRoles())
-			$menu[] = e('Manage my users', 'user/admin');
-		
 		$messagesmenu[] = e('My Inbox', 'messages/index');
 		$messagesmenu[] = e('Sent messages', 'messages/sent');
 		$messagesmenu[] = e('Write a message', 'messages/compose');
