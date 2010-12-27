@@ -1,6 +1,5 @@
 <?php
-return array(
-  'hello' => 'hola',
+return array (
   '{attribute} must include at least {num} lower case letters.' => '{attribute} debe incluir al menos {num} letras minúsculas.',
   '{attribute} must include at least {num} upper case letters.' => '{attribute} debe incluir al menos {num} letras mayúsculas.',
   '{attribute} must include at least {num} digits.' => '{attribute} debe incluir al menos {num} dígitos.',
@@ -10,5 +9,3 @@ return array(
   '{attribute} must not contain whitespace.' => '{attribute} no debe contener espacios en blanco.',
   '{attribute} must not contain more than {num} sequentially repeated characters.' => '{attribute} no debe contener más de {num} caracteres seguidos repetidos.',
 );
-
-?>
