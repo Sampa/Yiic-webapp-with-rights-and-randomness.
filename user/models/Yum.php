@@ -18,8 +18,11 @@ class Yum {
 			Yii::app()->clientScript->registerCssFile($path);
 	}
 
+	/** Associate the right translation file depending on the
+			controller */
 	public static function t($string, $params = array()) {
-		return Yii::t('UserModule.user', $string, $params);
+		$file = 'yum_'. Yii::app()->controller->id;
+		return Yii::t('UserModule.'.$file, $string, $params);
 	}
 
 	/**

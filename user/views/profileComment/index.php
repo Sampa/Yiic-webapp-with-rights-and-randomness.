@@ -1,4 +1,4 @@
-<?php if($model->allow_comments) { ?>
+<?php /* if($model->allow_comments) { ?>
 <h1> <?php echo Yum::t('Profile Comments'); ?> </h1>
 
 <?php 
@@ -12,13 +12,13 @@ $dataProvider = new CActiveDataProvider('YumProfileComment', array(
 
 echo CHtml::link(Yum::t('Write a comment'), '#', array(
 			'onclick'=>'$("#profileComment").dialog("open"); return false;',
-			));
+			)); 
 
 
 $this->widget('zii.widgets.CListView', array(
 			'dataProvider'=>$dataProvider,
-			'itemView'=>'/profileComment/_view',
-			)); 
+			'itemView'=>Yum::module()->profileCommentView,
+			));  
 
 }
 
@@ -39,6 +39,7 @@ $this->renderPartial('/profileComment/create', array(
 
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 echo '</div>';
+*/
 ?>
 
 

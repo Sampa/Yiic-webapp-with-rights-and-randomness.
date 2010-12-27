@@ -109,7 +109,9 @@ class UserModule extends CWebModule
 			'activate' => '/user/resend_activation',
 			'message' => '/user/message',
 			'recovery' => '/user/recovery',
-			'recoveryChangePassword' =>'/user/changepassword');
+			'recoveryChangePassword' =>'/user/changepassword',
+			'profileComment' =>'//user/profileComment/_view',
+);
 
 	// Activate profile History (profiles are kept always, and when the 
   // user changes his profile, it gets added to the database rather than
