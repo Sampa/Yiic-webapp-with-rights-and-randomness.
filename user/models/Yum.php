@@ -6,9 +6,11 @@
  * @package Yum.core
  *
  */
-class Yum { 
+class Yum
+{ 
 	/** Register an asset file of Yum */
-	public static function register($file) {
+	public static function register($file)
+	{
 		$url = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('YumAssets'));
 
 		$path = $url . '/' . $file;
@@ -20,15 +22,15 @@ class Yum {
 
 	/** Associate the right translation file depending on the
 		controller */
-	public static function t($string, $params = array()) {
+	public static function t($string, $params = array())
+	{
 		$file = 'yum_'. Yii::app()->controller->id;
 		$lang = Yii::app()->language;
-		$path = Yii::getPathOfAlias("application.modules.user.messages.{$lang}.{$file}");
+		$path = Yii::getPathOfAlias("application.modules.user.messages.{$lang}.{$file}"). '.php';
 
-		if(is_file($path) 
-				&& $messages = include($path) 
-				&& in_array($string, $messages))
-			return Yii::t('UserModule.'.$file, $string, $params);
+		if(is_file($path) && $messages = include($path))
+			if (array_key_exists($string, $messages) == true)
+				return Yii::t('UserModule.'.$file, $string, $params);
 		return Yii::t('UserModule.yum_user', $string, $params);
 	}
 
