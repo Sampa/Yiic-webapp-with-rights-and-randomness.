@@ -65,9 +65,9 @@ class YumSettingsController extends YumController
 	public function setLoginType($type) {
 		$logintype = 0;
 
-    if (is_array($type))
-      foreach($type as $key => $value)
-        $logintype += $key;
+		if (is_array($type))
+			foreach($type as $key => $value)
+				$logintype += $key;
 
 		return $logintype;
 	}
