@@ -25,7 +25,7 @@ class YumSettings extends YumActiveRecord {
             array('title, loginType, messageSystem, notifyType, enableAvatar,notifyemailchange', 'required'),
             array('password_expiration_time, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 255),
-            array('loginType', 'length', 'max' => 26),
+            array('loginType', 'required', 'requiredValue'=>true),
             array('id, title, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, loginType, enableCaptcha', 'safe', 'on' => 'search'),
         );
     }
