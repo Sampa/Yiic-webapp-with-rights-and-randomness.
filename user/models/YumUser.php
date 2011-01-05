@@ -59,6 +59,16 @@ class YumUser extends YumActiveRecord {
 		return $password;
 	}
 
+	public function getActiveMemberships() {
+		$roles = array();
+		foreach($this->memberships as $membership) {
+			if($membership->end_date > time())
+				$roles[] = $membership->role;
+		}
+
+		return $roles;
+	}
+
 	public function search() {
 		$criteria = new CDbCriteria;
 
@@ -240,6 +250,7 @@ class YumUser extends YumActiveRecord {
 			'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 			'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
 			'roles' => array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
+			'memberships' => array(self::HAS_MANY, 'YumMembership', 'user_id'),
 			'privacy' => array(self::HAS_ONE, 'YumPrivacySetting', 'user_id'),
 		);
 	}

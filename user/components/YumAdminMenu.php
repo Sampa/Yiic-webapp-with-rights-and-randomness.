@@ -40,7 +40,7 @@ class YumAdminMenu extends CPortlet {
 						)
 					),
 				array('label'=>'Membership', 'visible' => Yum::module()->enableMembership, 'items' => array(
-						array('label' => 'Ordered Memberships', 'url' => array('//user/membership/admin')),
+						array('label' => 'Ordered memberships', 'url' => array('//user/membership/admin')),
 						array('label' => 'Payment types', 'url' => array('//user/payment/admin')),
 						array('label' => 'Create new payment type', 'url' => array('//user/payment/create')),
 						)

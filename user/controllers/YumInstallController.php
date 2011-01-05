@@ -467,11 +467,11 @@ class YumInstallController extends YumController
 
 							if(isset($_POST['installRole']))
 							{
-								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`) VALUES
-									('UserCreator', 'This users can create new Users', 0),
-									('UserRemover', 'This users can remove other Users', 0),
-									('Business', 'Example Business account', 9.99),
-									('Premium', 'Example Premium account', 19.99) ";
+								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`) VALUES
+									('UserCreator', 'This users can create new Users', 0, 0),
+									('UserRemover', 'This users can remove other Users', 0, 0),
+									('Business', 'Example Business account', 9.99, 7),
+									('Premium', 'Example Premium account', 19.99, 28) ";
 								$db->createCommand($sql)->execute();
 
 							}

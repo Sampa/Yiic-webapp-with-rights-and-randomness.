@@ -95,7 +95,7 @@ class YumWebUser extends CWebUser
 			foreach($user->users as $userobj) 
 			{
 				if(in_array($userobj->username, $username) ||
-				  in_array($userobj->id, $username))
+						in_array($userobj->id, $username))
 					return true;
 			}
 		return false;
@@ -133,27 +133,33 @@ class YumWebUser extends CWebUser
 
 
 	/**
-	* Checks if the user has the given Role
-	* @mixed Role string or array of strings that should be checked
-	* @int (optional) id of the user that should be checked 
-	* @return bool Return value tells if the User has access or hasn't access.
-	*/
-	public static function hasRole($role, $uid = 0)
-	{
+	 * Checks if the user has the given Role
+	 * @mixed Role string or array of strings that should be checked
+	 * @int (optional) id of the user that should be checked 
+	 * @return bool Return value tells if the User has access or hasn't access.
+	 */
+	public static function hasRole($role, $uid = 0) {
 		if($uid == 0)
 			$uid = Yii::app()->user->getId();
 
 		if(!is_array($role))
 			$role = array ($role);
 
-		$user = YumUser::model()->findByPk($uid);
-		if(isset($user->roles)) 
-			foreach($user->roles as $roleobj) 
-			{
-				if(in_array($roleobj->title, $role) ||
-				  in_array($roleobj->id, $role))
-					return true;
-			}
+		if($user = YumUser::model()->findByPk($uid)) {
+
+			// Check if a user has a active membership and, if so, add this
+			// to the roles
+			$roles = array_merge($user->roles, $user->getActiveMemberships());
+
+			if(isset($roles)) 
+				foreach($roles as $roleobj) {
+					if(in_array($roleobj->title, $role) ||
+							in_array($roleobj->id, $role))
+						return true;
+				}
+
+		}
+
 		return false;
 	}
 

@@ -33,7 +33,7 @@ class YumMembershipController extends YumController {
 
 			$model->attributes = $_POST['YumMembership'];
 			$model->payment_date = time();
-			$model->end_time = $model->payment_date + $model->role->duration;
+			$model->end_date = $model->payment_date + ($model->role->duration * 86400);
 
 			if($model->save()) {
 				$this->redirect(array('admin'));

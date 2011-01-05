@@ -17,11 +17,10 @@ class YumMembership extends YumActiveRecord{
 	}
 
 	public function beforeValidate() {
-		$this->user_id = Yii::app()->user->id;		
-
-		$this->payment = 1;
-		if($this->isNewRecord)
+		if($this->isNewRecord) {
+			$this->user_id = Yii::app()->user->id;		
 			$this->order_date = time();
+		}
 
 		return parent::beforeValidate();
 	}

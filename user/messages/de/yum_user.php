@@ -2,6 +2,9 @@
 
 
 return array(
+	'Membership' => 'Mitgliedschaft',
+	'Payment types' => 'Zahlungsarten',
+
 		'Separate usernames with comma to ignore specified users' => 'Benutzernamen mit kommata trennen, um sie zu ignorieren',
 		'Ignored users' => 'Ignorierliste',
 		'Browse user groups' => 'Benutzergruppen durchsuchen',
