@@ -27,7 +27,7 @@ New in 0.8:
 - added new Relation widget that fixed MANY_MANY DropDownList problems (thyseus)
 - Wrapped Yum::t() around Yii::t() to allow easier translations (thyseus)
 - Renamed YumHelper to Yum (thyseus)
-- changed menu Navigation to one big, hierarchical menu displayed as a treeview (thyseus)
+- introduced components/YumMenu for menu rendering (thyseus)
 - added yumSettings and yumTextSettings (thyseus) 
 - added differences between profile versions in admin View (thyseus)
 - repaired Messages Validation (thyseus)

@@ -4,12 +4,15 @@ Yii::app()->clientScript->registerCssFile(
 			Yii::getPathOfAlias('YumAssets').'/css/yum.css'));
 
 $module = Yum::module();
-$this->beginContent($module->baseLayout);
-$this->renderPartial($module->menuView); 
+$this->beginContent($module->baseLayout); ?>
 
-echo '<div id="yumcontent">';
-printf('<h2> %s </h2>', $this->title); 
-echo $content; 
-echo '</div>';
+<div id="usermenu">
+<?php $this->renderMenu(); ?>
+</div>
 
-$this->endContent(); ?>
+<div id="usercontent">
+<?php printf('<h2> %s </h2>', $this->title);  ?>
+<?php echo $content;  ?>
+</div>
+
+<?php $this->endContent(); ?>

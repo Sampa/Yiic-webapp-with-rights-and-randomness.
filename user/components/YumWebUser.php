@@ -13,6 +13,10 @@ class YumWebUser extends CWebUser
 		$this->loginUrl=$this->loginUrl;
 	}
 
+	public function data() {
+		return YumUser::model()->findByPk($this->id);
+	}
+
 	/**
 	 * Performs access check for this user.
 	 * @param string the name of the role that need access check.
@@ -29,7 +33,7 @@ class YumWebUser extends CWebUser
 	 */
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
-		if(Yii::app()->getModule('user')->useYiiCheckAccess) 
+		if(Yum::module()->useYiiCheckAccess) 
 			return parent::checkAccess();
 
 		return $this->hasRole($operation);	

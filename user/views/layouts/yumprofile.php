@@ -1,8 +1,17 @@
 <?php 
+Yii::app()->clientScript->registerCssFile(
+		Yii::app()->getAssetManager()->publish(
+			Yii::getPathOfAlias('YumAssets').'/css/yum.css'));
+
 $module = Yii::app()->getModule('user');
-$this->beginContent($module->baseLayout);
+$this->beginContent($module->baseLayout); ?>
 
-$this->renderPartial($module->menuView); 
-echo $content; 
+<div id="usermenu">
+<?php $this->renderMenu(); ?>
+</div>
 
-$this->endContent(); ?>
+<div id="usercontent">
+<?php echo $content;  ?>
+</div>
+
+<?php $this->endContent(); ?>

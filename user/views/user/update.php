@@ -5,9 +5,9 @@ if(empty($tabularIdx))
 	$this->title=Yii::t("UserModule.user", 'Update user')." ".$model->id;
 
 	$this->breadcrumbs = array(
-			Yii::t("UserModule.user", 'Users')=>array('index'),
+			Yum::t('Users')=>array('index'),
 			$model->username=>array('view','id'=>$model->id),
-			Yii::t("UserModule.user", 'Update'));
+			Yum::t('Update'));
 }
 
 echo $this->renderPartial('/user/_form', array(
