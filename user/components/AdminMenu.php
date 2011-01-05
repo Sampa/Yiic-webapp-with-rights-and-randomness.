@@ -2,7 +2,7 @@
 
 Yii::import('zii.widgets.CPortlet');
 
-class YumAdminMenu extends CPortlet {
+class AdminMenu extends CPortlet {
 	public function init() {
 		$this->title = sprintf('%s <br /> %s: %s',
 				Yum::t('Usermenu'),
@@ -37,12 +37,6 @@ class YumAdminMenu extends CPortlet {
 						array('label' => 'Grant permission', 'url' => array('//user/permission/create')),
 						array('label' => 'Actions', 'url' => array('//user/action/admin')),
 						array('label' => 'Create new action', 'url' => array('//user/action/create')),
-						)
-					),
-				array('label'=>'Membership', 'visible' => Yum::module()->enableMembership, 'items' => array(
-						array('label' => 'Ordered memberships', 'url' => array('//user/membership/admin')),
-						array('label' => 'Payment types', 'url' => array('//user/payment/admin')),
-						array('label' => 'Create new payment type', 'url' => array('//user/payment/create')),
 						)
 					),
 				array('label'=>'Profiles', 'visible' => Yum::module()->enableProfiles, 'items' => array(

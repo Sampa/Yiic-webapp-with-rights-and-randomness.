@@ -25,39 +25,53 @@ class YumMembership extends YumActiveRecord{
 		return parent::beforeValidate();
 	}
 
+	public function afterSave() {
+		if($this->isNewRecord)
+			YumMessage::write($this->user, 1,
+					Yum::t('Order confirmed'),
+					YumTextSettings::getText('text_membership_ordered', array(
+							'{membership}' => $this->role->title,
+							'{payment}' => $this->payment->title,
+							'{order_date}' => date(Yum::module()->dateTimeFormat, $this->order_date),
+							'{id}' => $this->id,
+							)));
+
+		return parent::afterSave();
+	}
+
 	public function primaryKey() {
-		return array('membership_id', 'user_id');
+		return 'id';
 	}
 
 	public function rules()
 	{
 		return array(
-			array('membership_id, user_id, payment_id, order_date', 'required'),
-			array('end_date', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('membership_id, user_id, payment_id, order_date, end_date, payment_date', 'numerical', 'integerOnly'=>true),
-			array('membership_id, user_id, payment_id, order_date, end_date, payment_date', 'safe', 'on'=>'search'),
-		);
+				array('membership_id, user_id, payment_id, order_date', 'required'),
+				array('end_date', 'default', 'setOnEmpty' => true, 'value' => null),
+				array('membership_id, user_id, payment_id, order_date, end_date, payment_date', 'numerical', 'integerOnly'=>true),
+				array('membership_id, user_id, payment_id, order_date, end_date, payment_date', 'safe', 'on'=>'search'),
+				);
 	}
 
 	public function relations()
 	{
 		return array(
-			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
-			'role' => array(self::BELONGS_TO, 'YumRole', 'membership_id'),
-			'payment' => array(self::BELONGS_TO, 'YumPayment', 'payment_id'),
-		);
+				'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
+				'role' => array(self::BELONGS_TO, 'YumRole', 'membership_id'),
+				'payment' => array(self::BELONGS_TO, 'YumPayment', 'payment_id'),
+				);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
-			'membership_id' => Yii::t('app', 'Membership'),
-			'user_id' => Yii::t('app', 'User'),
-			'payment_id' => Yii::t('app', 'Payment'),
-			'order_date' => Yii::t('app', 'Order Date'),
-			'end_date' => Yii::t('app', 'End Date'),
-			'payment_date' => Yii::t('app', 'Payment Date'),
-		);
+				'membership_id' => Yii::t('app', 'Membership'),
+				'user_id' => Yii::t('app', 'User'),
+				'payment_id' => Yii::t('app', 'Payment'),
+				'order_date' => Yii::t('app', 'Order Date'),
+				'end_date' => Yii::t('app', 'End Date'),
+				'payment_date' => Yii::t('app', 'Payment Date'),
+				);
 	}
 
 
@@ -73,7 +87,7 @@ class YumMembership extends YumActiveRecord{
 		$criteria->compare('payment_date', $this->payment_date);
 
 		return new CActiveDataProvider(get_class($this), array(
-			'criteria'=>$criteria,
-		));
+					'criteria'=>$criteria,
+					));
 	}
 }

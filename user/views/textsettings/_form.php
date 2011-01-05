@@ -9,11 +9,11 @@
 		<div class="row">
 <?php echo $form->labelEx($model,'language'); ?>
 <?php echo CHtml::activeDropDownList($model, 'language', array(
-			'en' => Yii::t('app', 'en') ,
-			'de' => Yii::t('app', 'de') ,
-			'fr' => Yii::t('app', 'fr') ,
-			'pl' => Yii::t('app', 'pl') ,
-			'ru' => Yii::t('app', 'ru') ,
+			'en' => Yum::t('en') ,
+			'de' => Yum::t('de') ,
+			'fr' => Yum::t('fr') ,
+			'pl' => Yum::t('pl') ,
+			'ru' => Yum::t('ru') ,
 )); ?>
 <?php echo $form->error($model,'language'); ?>
 </div>
@@ -83,5 +83,16 @@
 <?php echo $form->textArea($model,'text_message_new',array('rows'=>6, 'cols'=>50)); ?>
 <?php echo $form->error($model,'text_message_new'); ?>
 </div>
+	<div class="row">
+<?php echo $form->labelEx($model,'text_membership_ordered'); ?>
+<?php echo $form->textArea($model,'text_membership_ordered',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'text_membership_ordered'); ?>
+</div>
+	<div class="row">
+<?php echo $form->labelEx($model,'text_payment_arrived'); ?>
+<?php echo $form->textArea($model,'text_payment_arrived',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'text_payment_arrived'); ?>
+</div>
+
 
 

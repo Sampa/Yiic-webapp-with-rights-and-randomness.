@@ -25,25 +25,27 @@ class YumMembershipController extends YumController {
 	}
 
 	public function actionUpdate() {
+		if(isset($_GET['id']))
+			$model = YumMembership::model()->findByPk($_GET['id']);
+
 
 		if(isset($_POST['YumMembership'])) {
-		$model = YumMembership::model()->find(
-				'membership_id = '.$_POST['YumMembership']['membership_id'] 
-				.' and user_id = '.$_POST['YumMembership']['user_id']);
-
+			$model = YumMembership::model()->findByPk($_POST['YumMembership']['id']); 
 			$model->attributes = $_POST['YumMembership'];
 			$model->payment_date = time();
 			$model->end_date = $model->payment_date + ($model->role->duration * 86400);
 
 			if($model->save()) {
+				YumMessage::write($model->user, 1,
+						Yum::t('Payment arrived'),
+						YumTextSettings::getText('text_payment_arrived', array(
+								'{payment_date}' => date(Yum::module()->dateTimeFormat, $model->payment_date),
+								'{id}' => $model->id,
+								)));
+
 				$this->redirect(array('admin'));
 			}
 		}
-
-		if(!isset($model))
-		$model = YumMembership::model()->find(
-				'membership_id = '.$_GET['id']['membership_id'] 
-				.' and user_id = '.$_GET['id']['user_id']);
 
 		$this->render('update',array(
 					'model'=>$model,

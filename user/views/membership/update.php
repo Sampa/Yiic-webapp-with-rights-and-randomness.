@@ -23,8 +23,7 @@ echo 'Ends at: '. date("Y. m. d G:i:s", $model->end_date) . '<br />';
 echo 'Payment Date: '. date("Y. m. d G:i:s", $model->payment_date) . '<br />';
 
 echo CHtml::beginForm(array('//user/membership/update'));
-echo CHtml::hiddenField('YumMembership[user_id]', $model->user_id);
-echo CHtml::hiddenField('YumMembership[membership_id]', $model->membership_id);
+echo CHtml::hiddenField('YumMembership[id]', $model->id);
 echo CHtml::submitButton(Yum::t('Set payment date to today'));
 echo CHtml::endForm();
 ?>

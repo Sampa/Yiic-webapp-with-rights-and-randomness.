@@ -10,6 +10,9 @@
  */
 class YumMailer {
 	static public function send($to, $subject = null, $body = null) {
+		if($to instanceof YumUser)
+			$to = $to->profile[0]->email;
+
 		if(!is_array($to)) 
 			$to = array(
 					'to' => $to,

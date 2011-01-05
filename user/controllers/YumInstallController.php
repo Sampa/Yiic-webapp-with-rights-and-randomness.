@@ -118,26 +118,25 @@ class YumInstallController extends YumController
 
 					if(isset($_POST['installMembership'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `{$membershipTable}` (
+							`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 							`membership_id` int(11) NOT NULL,
 							`user_id` int(11) NOT NULL,
 							`payment_id` int(11) NOT NULL,
 							`order_date` int(11) NOT NULL,
 							`end_date` int(11) DEFAULT NULL,
-							`payment_date` int(11) NOT NULL,
-							PRIMARY KEY (`membership_id`,`user_id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+							`payment_date` int(11) NULL
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000;";
 
 						$db->createCommand($sql)->execute();
 
 						$sql = " CREATE TABLE IF NOT EXISTS `{$paymentTable}` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`title` varchar(255) NOT NULL,
-							`text` text, 
+							`text` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 						$db->createCommand($sql)->execute();
 					}
-
 					if(isset($_POST['installActivityLog'])) {  
 						$actions = '';
 						foreach(YumActivityController::possibleActions() as $action)
@@ -236,6 +235,8 @@ class YumInstallController extends YumController
 							`text_friendship_new` text,
 							`text_profilecomment_new` text,
 							`text_message_new` text,
+							`text_membership_ordered` text,
+							`text_payment_arrived` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
@@ -253,7 +254,9 @@ class YumInstallController extends YumController
 									`text_email_activation`,
 									`text_friendship_new`,
 									`text_profilecomment_new`,
-									`text_message_new`
+									`text_message_new`,
+									`text_membership_ordered`,
+									`text_payment_arrived` 
 									) VALUES ('1',
 										'en_us',
 										'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.',
@@ -266,7 +269,9 @@ class YumInstallController extends YumController
 										'Your account has been activated. Thank you for your registration.',
 										'New friendship Request from {user_from}: {message} Go to your contacts: {link}',
 										'You have a new profile comment from {user}: {message} visit your profile: {link}',
-										'You have received a new message from {user}: {message}'),
+										'You have received a new message from {user}: {message}',
+'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
+'Your payment has been received on {payment_date} and your Membership {id} is now active'),
 							('2',
 							 'de',
 							 'Willkommen zum System.',
@@ -288,7 +293,10 @@ class YumInstallController extends YumController
 							 {message}
 
 							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
-								 'Sie haben eine neue Nachricht von {user} bekommen: {message}'),
+								 'Sie haben eine neue Nachricht von {user} bekommen: {message}',
+'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
+'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'
+),
 								 ('3',
 									'es',
 									'Bienvenido al sistema de registro',
@@ -301,8 +309,9 @@ class YumInstallController extends YumController
 									'Tu cuenta ha sido activada. Gracias por registrarte.',
 									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link}',
 									'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link}',
-									'Has recibido un mensaje de {user}: {message}');
-						";
+									'Has recibido un mensaje de {user}: {message}',
+'{id}',
+ '{payment_date}{id}'); ";
 
 						$db->createCommand($sql)->execute();
 					}

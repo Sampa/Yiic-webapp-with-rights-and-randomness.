@@ -7,29 +7,29 @@ class YumTextSettingsController extends YumController
 	public function accessRules()
 	{
 		return array(
-			array('allow',  
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', 
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', 
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny', 
-				'users'=>array('*'),
-			),
-		);
+				array('allow',  
+					'actions'=>array('index','view'),
+					'users'=>array('*'),
+					),
+				array('allow', 
+					'actions'=>array('create','update'),
+					'users'=>array('@'),
+					),
+				array('allow', 
+					'actions'=>array('admin','delete'),
+					'users'=>array('admin'),
+					),
+				array('deny', 
+					'users'=>array('*'),
+					),
+				);
 	}
 
 	public function actionView()
 	{
 		$this->render('/textsettings/view',array(
-			'model'=>$this->loadModel(),
-		));
+					'model'=>$this->loadModel(),
+					));
 	}
 
 	public function actionCreate()
@@ -52,23 +52,19 @@ class YumTextSettingsController extends YumController
 			$model->attributes = $YumTextSettingsData;
 
 
-	if($model->save()) {
-		if(Yum::module()->enableLogging == true)
-								{
-								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-								YumActivityController::logActivity($user, 'text_settings_created');
-								}
-		unset($_SESSION['YumTextSettings']);
-		if(isset($_POST['returnUrl']))
-			$this->redirect($_POST['returnUrl']); 
-		else
-			$this->redirect(array('view','id'=>$model->id));
-	}
+			if($model->save()) {
+				if(Yum::module()->enableLogging) {
+					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+					YumActivityController::logActivity($user, 'text_settings_created');
+				}
+
+					$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('/textsettings/create',array(
-			'model'=>$model,
-		));
+					'model'=>$model,
+					));
 	}
 
 	public function actionUpdate()
@@ -86,16 +82,16 @@ class YumTextSettingsController extends YumController
 			if($model->save())
 			{
 				if(Yum::module()->enableLogging == true)
-								{
-								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-								YumActivityController::logActivity($user, 'text_settings_updated');
-								}
+				{
+					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+					YumActivityController::logActivity($user, 'text_settings_updated');
+				}
 				$this->redirect(array('view','id'=>$model->id));
-		}}
+			}}
 
-		$this->render('/textsettings/update',array(
-			'model'=>$model,
-		));
+			$this->render('/textsettings/update',array(
+						'model'=>$model,
+						));
 	}
 
 	public function actionDelete()
@@ -103,10 +99,10 @@ class YumTextSettingsController extends YumController
 		if(Yii::app()->request->isPostRequest)
 		{
 			if(Yum::module()->enableLogging == true)
-								{
-								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-								YumActivityController::logActivity($user, 'text_settings_removed');
-								}
+			{
+				$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+				YumActivityController::logActivity($user, 'text_settings_removed');
+			}
 			$this->loadModel()->delete();
 
 			if(Yii::app()->request->getQuery('ajax') === null)
@@ -124,8 +120,8 @@ class YumTextSettingsController extends YumController
 	{
 		$dataProvider=new CActiveDataProvider('YumTextSettings');
 		$this->render('/textsettings/index',array(
-			'dataProvider'=>$dataProvider,
-		));
+					'dataProvider'=>$dataProvider,
+					));
 	}
 
 	public function actionAdmin()
@@ -137,8 +133,8 @@ class YumTextSettingsController extends YumController
 			$model->attributes = $YumTextSettingsData;
 
 		$this->render('/textsettings/admin',array(
-			'model'=>$model,
-		));
+					'model'=>$model,
+					));
 	}
 
 	public function loadModel()
