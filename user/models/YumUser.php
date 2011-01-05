@@ -2,7 +2,7 @@
 
 /**
  * This is the model class for a User in Yum
- * 
+ *
  * The followings are the available columns in table '{{users}}':
  * @property integer $id
  * @property string $username
@@ -12,21 +12,20 @@
  * @property integer $lastvisit
  * @property integer $superuser
  * @property integer $status
- * 
+ *
  * Relations
  * @property YumProfile $profile
  * @property array $roles array of YumRole
  * @property array $users array of YumUser
- * 
+ *
  * Scopes:
  * @property YumUser $active
  * @property YumUser $notactive
  * @property YumUser $banned
  * @property YumUser $superuser
- * 
+ *
  */
-class YumUser extends YumActiveRecord
-{
+class YumUser extends YumActiveRecord {
 	const STATUS_NOTACTIVE = 0;
 	const STATUS_ACTIVE = 1;
 	const STATUS_BANNED = -1;
@@ -40,8 +39,7 @@ class YumUser extends YumActiveRecord
 	private $_userUserTable;
 	private $_friendshipTable;
 
-	public static function model($className=__CLASS__)
-	{
+	public static function model($className=__CLASS__) {
 		return parent::model($className);
 	}
 
@@ -49,20 +47,19 @@ class YumUser extends YumActiveRecord
 		$consonants = array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z"); 
 		$vocals = array("a","e","i","o","u"); 
 
-		$password = ''; 
+		$password = '';
 
-		srand ((double)microtime()*1000000); 
-		for($i = 1; $i <= 4; $i++) { 
-			$password .= $consonants[rand(0,19)]; 
-			$password .= $vocals[rand(0,4)]; 
-		} 
+		srand((double) microtime() * 1000000);
+		for ($i = 1; $i <= 4; $i++) {
+			$password .= $consonants[rand(0, 19)];
+			$password .= $vocals[rand(0, 4)];
+		}
 		$password .= rand(0, 9);
 
 		return $password;
-	} 	
+	}
 
-	public function search()
-	{
+	public function search() {
 		$criteria = new CDbCriteria;
 
 		$criteria->compare('t.id', $this->id, true);
@@ -78,33 +75,32 @@ class YumUser extends YumActiveRecord
 		));
 	}
 
-	public function beforeValidate()
-	{
+	public function beforeValidate() {
 
-		if($this->isNewRecord)
-			$this->createtime=time();
+		if ($this->isNewRecord)
+			$this->createtime = time();
 
 		$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
-		if($file instanceof CUploadedFile)
+		if ($file instanceof CUploadedFile)
 			$this->avatar = $file;
-		else if($this->scenario == 'avatarUpload')
+		else if ($this->scenario == 'avatarUpload')
 			$this->avatar = NULL;
 
 		return true;
 	}
 
 	public function beforeSave() {
-		if(Yum::module()->enableAvatar)
+		if (Yum::module()->enableAvatar)
 			$this->updateAvatar();
 
-		if($this->password_changed)
+		if ($this->password_changed)
 			$this->password = YumUser::encrypt($this->password);
 
 		return parent::beforeSave();
 	}
 
 	public function setPassword($password) {
-		if($password != '') {
+		if ($password != '') {
 			$this->password = $password;
 			$this->lastpasswordchange = time();
 			$this->password_changed = true;
@@ -113,9 +109,9 @@ class YumUser extends YumActiveRecord
 
 	public function afterSave() {
 		$setting = YumPrivacySetting::model()->findByPk($this->id);
-		if(!$setting) {
+		if (!$setting) {
 			$setting = new YumPrivacySetting();
-			$setting->save();	
+			$setting->save();
 		}
 
 		if(Yum::module()->enableLogging)
@@ -128,9 +124,9 @@ class YumUser extends YumActiveRecord
 	public function getAdministerableUsers() {
 		$users = array();
 		$users = $this->users;
-		foreach($this->roles as $role) {
-			if($role->roles)
-				foreach($role->roles as $role)
+		foreach ($this->roles as $role) {
+			if ($role->roles)
+				foreach ($role->roles as $role)
 					$users = array_merge($this->users, $role->users);
 		}
 
@@ -145,28 +141,26 @@ class YumUser extends YumActiveRecord
 	 *  - if not found user default {{users}} table name
 	 * @return string
 	 */
-	public function tableName()
-	{
-		if(isset(Yum::module()->usersTable))
+	public function tableName() {
+		if (isset(Yum::module()->usersTable))
 			$this->_tableName = Yum::module()->usersTable;
-		elseif(isset(Yii::app()->modules['user']['usersTable']))
+		elseif (isset(Yii::app()->modules['user']['usersTable']))
 			$this->_tableName = Yii::app()->modules['user']['usersTable'];
 		else
 			$this->_tableName = '{{users}}'; // fallback if nothing is set
 
-			return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
+		return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
 	}
 
 	public function rules() {
 		$passwordRequirements = Yum::module()->passwordRequirements;
 		$usernameRequirements = Yum::module()->usernameRequirements;
 
-		$passwordrule = array_merge(array('password', 'YumPasswordValidator'),
-				$passwordRequirements);
+		$passwordrule = array_merge(array('password', 'YumPasswordValidator'), $passwordRequirements);
 
 		$rules[] = $passwordrule;
 
-		$rules[] = array('username', 'length', 'max' => $usernameRequirements['maxLen'], 'min' => $usernameRequirements['minLen'],'message' => Yum::t("Incorrect username (length between" . $usernameRequirements['minLen']." and " . $usernameRequirements['maxLen'] . "characters)."));
+		$rules[] = array('username', 'length', 'max' => $usernameRequirements['maxLen'], 'min' => $usernameRequirements['minLen'], 'message' => Yum::t("Incorrect username (length between" . $usernameRequirements['minLen'] . " and " . $usernameRequirements['maxLen'] . "characters)."));
 
 		$rules[] = array('username', 'unique', 'message' => Yum::t("This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yii::t("UserModule.user", "Incorrect symbol's. (A-z0-9)"));
@@ -177,7 +171,7 @@ class YumUser extends YumActiveRecord
 		$rules[] = array('password', 'required', 'on' => array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly' => true);
 
-		if(Yii::app()->getModule('user')->enableAvatar) {
+		if (Yii::app()->getModule('user')->enableAvatar) {
 			$rules[] = array('avatar', 'required', 'on' => 'avatarUpload');
 			$rules[] = array('avatar', 'EPhotoValidator',
 				'allowEmpty' => true,
@@ -191,8 +185,8 @@ class YumUser extends YumActiveRecord
 	}
 
 	public function hasRole($role_title) {
-		foreach($this->roles as $role)
-			if($role->id == $role_title || $role->title == $role_title)
+		foreach ($this->roles as $role)
+			if ($role->id == $role_title || $role->title == $role_title)
 				return true;
 
 		return false;
@@ -200,31 +194,31 @@ class YumUser extends YumActiveRecord
 
 	public function getRoles() {
 		$roles = '';
-		foreach($this->roles as $role)
+		foreach ($this->roles as $role)
 			$roles .= ' ' . $role->title;
 
 		return $roles;
 	}
 
 	public function can($action) {
-		foreach($this->permissions as $permission)
-			if($permission->action->title == $action)
+		foreach ($this->permissions as $permission)
+			if ($permission->action->title == $action)
 				return true;
 
 		return false;
 	}
 
 	public function relations() {
-		if(isset(Yum::module()->userRoleTable))
+		if (isset(Yum::module()->userRoleTable))
 			$this->_userRoleTable = Yum::module()->userRoleTable;
-		elseif(isset(Yii::app()->modules['user']['userRoleTable']))
+		elseif (isset(Yii::app()->modules['user']['userRoleTable']))
 			$this->_tableName = Yii::app()->modules['user']['userRoleTable'];
 		else
 			$this->_userRoleTable = '{{user_has_role}}';
 
-		if(isset(Yum::module()->friendshipTable))
+		if (isset(Yum::module()->friendshipTable))
 			$this->_friendshipTable = Yum::module()->friendshipTable;
-		elseif(isset(Yii::app()->modules['user']['friendshipTable']))
+		elseif (isset(Yii::app()->modules['user']['friendshipTable']))
 			$this->_tableName = Yii::app()->modules['user']['friendshipTable'];
 		else
 			$this->_friendshipTable = '{{friendship}}';
@@ -251,8 +245,8 @@ class YumUser extends YumActiveRecord
 	}
 
 	public function isFriendOf($invited_id) {
-		foreach($this->getFriendships() as $friendship) {
-			if($friendship->inviter_id == $this->id && $friendship->friend_id == $invited_id)
+		foreach ($this->getFriendships() as $friendship) {
+			if ($friendship->inviter_id == $this->id && $friendship->friend_id == $invited_id)
 				return $friendship->status;
 		}
 
@@ -262,14 +256,14 @@ class YumUser extends YumActiveRecord
 	public function getFriendships() {
 		$condition = 'inviter_id = :uid or friend_id = :uid';
 		return YumFriendship::model()->findAll($condition, array(
-					':uid' => $this->id));
+			':uid' => $this->id));
 	}
 
 	// Friends can not be retrieve via the relations() method because a friend
 	// can either be in the invited_id or in the friend_id column.
 	// set $everything to true to also return pending and rejected friendships
 	public function getFriends($everything = false) {
-		if($everything)
+		if ($everything)
 			$condition = 'inviter_id = :uid';
 		else
 			$condition = 'inviter_id = :uid and status = 2';
@@ -277,14 +271,14 @@ class YumUser extends YumActiveRecord
 		$friends = array();
 		$friendships = YumFriendship::model()->findAll($condition, array(
 					':uid' => $this->id));
-		if($friendships != NULL && !is_array($friendships))
+		if ($friendships != NULL && !is_array($friendships))
 			$friendships = array($friendships);
 
-		if($friendships)
-			foreach($friendships as $friendship)
+		if ($friendships)
+			foreach ($friendships as $friendship)
 				$friends[] = YumUser::model()->findByPk($friendship->friend_id);
 
-		if($everything)
+		if ($everything)
 			$condition = 'friend_id = :uid';
 		else
 			$condition = 'friend_id = :uid and status = 2';
@@ -292,27 +286,26 @@ class YumUser extends YumActiveRecord
 		$friendships = YumFriendship::model()->findAll($condition, array(
 					':uid' => $this->id));
 
-		if($friendships != NULL && !is_array($friendships))
+		if ($friendships != NULL && !is_array($friendships))
 			$friendships = array($friendships);
 
 
-		if($friendships)
-			foreach($friendships as $friendship)
+		if ($friendships)
+			foreach ($friendships as $friendship)
 				$friends[] = YumUser::model()->findByPk($friendship->inviter_id);
 
 		return $friends;
 	}
 
-	public function register($username=null, $password=null, $email=null)
-	{
-		if($username !== null && $password !== null) {
+	public function register($username=null, $password=null, $email=null) {
+		if ($username !== null && $password !== null) {
 			// Password equality is checked in Registration Form
 			$this->username = $username;
 			$this->password = $this->encrypt($password);
 		}
 
-		foreach(YumProfile::model()->findAll() as $profile) {
-			if($email == $profile->email)
+		foreach (YumProfile::model()->findAll() as $profile) {
+			if ($email == $profile->email)
 				return false;
 		}
 
@@ -320,7 +313,7 @@ class YumUser extends YumActiveRecord
 		$this->createtime = time();
 		$this->superuser = 0;
 
-		switch(Yum::module()->registrationType) {
+		switch (Yum::module()->registrationType) {
 			case YumRegistration::REG_SIMPLE:
 				$this->status = YumUser::STATUS_ACTIVE;
 				break;
@@ -339,8 +332,7 @@ class YumUser extends YumActiveRecord
 		return $this->save();
 	}
 
-	public function isPasswordExpired()
-	{
+	public function isPasswordExpired() {
 		$distance = Yii::app()->getModule('user')->password_expiration_time * 60 * 60;
 		return $this->lastpasswordchange - $distance > time();
 	}
@@ -348,43 +340,39 @@ class YumUser extends YumActiveRecord
 	/**
 	 * Activation of an user account
 	 */
-	public function activate($email=null, $activationKey=null)
-	{
-		if (isset($email) && isset($activationKey))
-		{
-		$find = YumProfile::model()->findByAttributes(array('email' => $email))->user;
-		if($find->status == 1) {
-			$return = true;
-		} else if($find->activationKey == $activationKey) {
-			$find->activationKey = $find->generateActivationKey(true);
-			$find->status = 1;
-			$find->save();
-			$return=true;
-		} else{
-			$return=false;
+	public function activate($email=null, $activationKey=null) {
+		if (isset($email) && isset($activationKey)) {
+			$find = YumProfile::model()->findByAttributes(array('email' => $email))->user;
+			if ($find->status == 1) {
+				$return = true;
+			} else if ($find->activationKey == $activationKey) {
+				$find->activationKey = $find->generateActivationKey(true);
+				$find->status = 1;
+				$find->save();
+				$return = true;
+			} else {
+				$return = false;
+			}
+		} else {
+			$return = false;
 		}
-		}else{
-			$return=false;
-		}
-	return $return;
+		return $return;
 	}
 
 	/**
 	 * @params boolean $activate Whether to generate activation key when user is registering first time (false)
 	 * or when it is activating (true)
-	 * @params string $password password entered by user	
+	 * @params string $password password entered by user
 	 * @param array $params, optional, to allow passing values outside class in inherited classes
 	 * By default it uses password and microtime combination to generated activation key
 	 * When user is activating, activation key becomes micortime()
 	 * @return string
 	 */
-	public function generateActivationKey($activate=false, $password='', array $params=array())
-	{
+	public function generateActivationKey($activate=false, $password='', array $params=array()) {
 		return $activate ? YumUser::encrypt(microtime()) : YumUser::encrypt(microtime() . $this->password);
 	}
 
-	public function attributeLabels()
-	{
+	public function attributeLabels() {
 		return array(
 			'id' => Yum::t('#'),
 			'username' => Yum::t("Username"),
@@ -404,20 +392,18 @@ class YumUser extends YumActiveRecord
 	 * This function is used for password encryption.
 	 * @return hash string.
 	 */
-	public static function encrypt($string = "")
-	{
+	public static function encrypt($string = "") {
 		$salt = Yum::module()->salt;
 		$hashFunc = Yum::module()->hashFunc;
 		$string = sprintf("%s%s%s", $salt, $string, $salt);
 
-		if(!function_exists($hashFunc))
+		if (!function_exists($hashFunc))
 			throw new CException('Function `' . $hashFunc . '` is not a valid callback for hashing algorithm.');
 
 		return $hashFunc($string);
 	}
 
-	public function scopes()
-	{
+	public function scopes() {
 		return array(
 			'active' => array('condition' => 'status=' . self::STATUS_ACTIVE,),
 			'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
@@ -426,8 +412,7 @@ class YumUser extends YumActiveRecord
 		);
 	}
 
-	public static function itemAlias($type, $code=NULL)
-	{
+	public static function itemAlias($type, $code=NULL) {
 		$_items = array(
 			'NotifyType' => array(
 				'None' => Yum::t('None'),
@@ -444,7 +429,7 @@ class YumUser extends YumActiveRecord
 				'1' => Yum::t('Yes'),
 			),
 		);
-		if(isset($code))
+		if (isset($code))
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
@@ -455,8 +440,7 @@ class YumUser extends YumActiveRecord
 	 * @param string $roleTitle title of role to be searched
 	 * @return array users with specified role. Null if none are found.
 	 */
-	public static function getUsersByRole($roleTitle)
-	{
+	public static function getUsersByRole($roleTitle) {
 		$role = YumRole::model()->findByAttributes(array('title' => $roleTitle));
 		return $role ? $role->users : null;
 	}
@@ -465,22 +449,20 @@ class YumUser extends YumActiveRecord
 	 * Return admins.
 	 * @return array syperusers names
 	 */
-	public static function getAdmins()
-	{
+	public static function getAdmins() {
 		$admins = YumUser::model()->active()->superuser()->findAll();
 		$returnarray = array();
-		foreach($admins as $admin)
+		foreach ($admins as $admin)
 			array_push($returnarray, $admin->username);
 		return $returnarray;
 	}
 
-	public function updateAvatar()
-	{
-		if($this->avatar !== NULL && isset($_FILES['YumUser'])) {
-			// prepend user id to avoid conflicts when two users upload an avatar 
+	public function updateAvatar() {
+		if ($this->avatar !== NULL && isset($_FILES['YumUser'])) {
+			// prepend user id to avoid conflicts when two users upload an avatar
 			// with the same file name
 			$filename = $this->id . '_' . $_FILES['YumUser']['name']['avatar'];
-			if(is_object($this->avatar)) {
+			if (is_object($this->avatar)) {
 				$this->avatar->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
 				$this->avatar = $filename;
 			}
@@ -488,19 +470,19 @@ class YumUser extends YumActiveRecord
 	}
 
 	public function getAvatar($friend = null, $thumb = false) {
-		if(Yum::module()->enableAvatar) {
+		if (Yum::module()->enableAvatar) {
 			$return = '<div class="avatar">';
-			if(!is_object($friend))
+			if (!is_object($friend))
 				$friend = $this;
 
 			$options = array();
-			if($thumb)
+			if ($thumb)
 				$options = array('style' => 'width: 50px; height:50px;');
 
-			if(isset($friend->avatar) && $friend->avatar)
-				$return .= CHtml::image(Yii::app()->baseUrl . '/' 
-						. Yum::module()->avatarPath . '/' 
-						. $friend->avatar, 'Avatar', $options);
+			if (isset($friend->avatar) && $friend->avatar)
+				$return .= CHtml::image(Yii::app()->baseUrl . '/'
+								. Yum::module()->avatarPath . '/'
+								. $friend->avatar, 'Avatar', $options);
 			else
 				$return .= CHtml::image(Yii::app()->getAssetManager()->publish(
 							Yii::getPathOfAlias('YumAssets.images') . ($thumb ? '/no_avatar_available_thumb.jpg' : '/no_avatar_available.jpg'),

@@ -73,7 +73,7 @@ class UserModule extends CWebModule
 
 	// if you want the users to be able to edit their profile TEXTAREAs with an
 	// rich text Editor like CKEditor, set that here
-  public $rtepath = false; // Don't use an Rich text Editor                     
+  public $rtepath = false; // Don't use an Rich text Editor
   public $rteadapter = false; // Don't use an Adapter
 
 	// determines whether configuration by Database Table is enabled or disabled
@@ -84,7 +84,7 @@ class UserModule extends CWebModule
 
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
-	public $hashFunc = 'md5';	
+	public $hashFunc = 'md5';
 
 	public $yumBaseRoute = '/user';
 
@@ -104,31 +104,31 @@ class UserModule extends CWebModule
 	private $_views = array(
 			'login' => '/user/login',
 			'profile' => '/profile/view',
+			'profileEdit' => '/profile/profile-edit',
 			'menu' => '/user/menu',
 			'registration' => '/user/registration',
 			'activate' => '/user/resend_activation',
 			'message' => '/user/message',
 			'recovery' => '/user/recovery',
-			'recoveryChangePassword' =>'/user/changepassword',
-			'profileComment' =>'//user/profileComment/_view',
-);
+			'passwordForm' => '/user/_activation_passwordform',
+			'recoveryChangePassword' =>'/user/changepassword');
 
-	// Activate profile History (profiles are kept always, and when the 
+	// Activate profile History (profiles are kept always, and when the
   // user changes his profile, it gets added to the database rather than
   // updated).
-	public $profileHistory = true;
-	
+	public $enableProfileHistory = true;
+
 	// When readOnlyProfiles is set, only administrators can update Profile
   // Information
 	public $readOnlyProfiles = false;
 
-	// When forceProtectedProfiles is set, only administrators and the user 
-  // himself can view the profile 
+	// When forceProtectedProfiles is set, only administrators and the user
+  // himself can view the profile
 	public $forceProtectedProfiles = false;
 
 	// LoginType :
 	const LOGIN_BY_USERNAME   = 1;
-	const LOGIN_BY_EMAIL      = 2; 
+	const LOGIN_BY_EMAIL      = 2;
 	const LOGIN_BY_OPENID        = 4;
 	const LOGIN_BY_FACEBOOK      = 8;
 	const LOGIN_BY_TWITTER       = 16;
@@ -140,7 +140,7 @@ class UserModule extends CWebModule
 	 * @var boolean
 	 */
 	public $enableCaptcha = true;
-	
+
 	/**
 	 * Defines all Controllers of the User Management Module and maps them to
 	 * shorter terms for using in the url
@@ -157,17 +157,17 @@ class UserModule extends CWebModule
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
-		'user'=>array('class'=>'YumModule.controllers.YumUserController'),	
-		'privacy'=>array('class'=>'YumModule.controllers.YumPrivacysettingController'),	
-		'groups'=>array('class'=>'YumModule.controllers.YumUsergroupController'),	
-		// workaround to allow the url application/user/login: 
-		'login'=>array('class'=>'YumModule.controllers.YumUserController'),	
-		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),	
-		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),	
-		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),	
-		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),	
-		'friendship'=>array('class'=>'YumModule.controllers.YumFriendshipController'),	
-		'fieldsgroup'=>array('class'=>'YumModule.controllers.YumFieldsGroupController'),	
+		'user'=>array('class'=>'YumModule.controllers.YumUserController'),
+		'privacy'=>array('class'=>'YumModule.controllers.YumPrivacysettingController'),
+		'groups'=>array('class'=>'YumModule.controllers.YumUsergroupController'),
+		// workaround to allow the url application/user/login:
+		'login'=>array('class'=>'YumModule.controllers.YumUserController'),
+		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),
+		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),
+		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),
+		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),
+		'friendship'=>array('class'=>'YumModule.controllers.YumFriendshipController'),
+		'fieldsgroup'=>array('class'=>'YumModule.controllers.YumFieldsGroupController'),
 	);
 
 	public $passwordRequirements = array(
@@ -178,7 +178,7 @@ class UserModule extends CWebModule
 			'minDigits' => 1,
 			'maxRepetition' => 3,
 			);
-			
+
 	public $usernameRequirements=array(
 		'minLen'=>3,
 		'maxLen'=>20,
@@ -192,7 +192,7 @@ class UserModule extends CWebModule
 		if(substr($name, -3) === 'Url')
 			if(isset($this->_urls[substr($name, 0, -3)]))
 				return Yum::route($this->_urls[substr($name, 0, -3)]);
-	
+
 		if(substr($name, -4) === 'View')
 			if(isset($this->_views[substr($name, 0, -4)]))
 				return $this->_views[substr($name, 0, -4)];
@@ -208,11 +208,11 @@ class UserModule extends CWebModule
 	public function __set($name,$value) {
 		if(substr($name,-3)==='Url') {
 			if(isset($this->_urls[substr($name,0,-3)]))
-				$this->_urls[substr($name,0,-3)]=$value;		
+				$this->_urls[substr($name,0,-3)]=$value;
 		}
 		if(substr($name,-4)==='View') {
 			if(isset($this->_views[substr($name,0,-4)]))
-				$this->_views[substr($name,0,-4)]=$value;		
+				$this->_views[substr($name,0,-4)]=$value;
 		}
 
 		//parent::__set($name,$value);
@@ -239,9 +239,10 @@ class UserModule extends CWebModule
 				$settings = YumSettings::model()->find('is_active');
 
 				$options = array('preserveProfiles', 'registrationType', 'enableRecovery',
-						'readOnlyProfiles', 'messageSystem', 'loginType', 'enableAvatar', 'notifyType',
+						'readOnlyProfiles', 'enableProfileHistory' ,'messageSystem',
+						'loginType', 'enableAvatar', 'notifyType',
 						'password_expiration_time', 'enableCaptcha');
-				foreach($options as $option) 
+				foreach($options as $option)
 					$this->$option = $settings->$option;
 			} catch (CDbException $e) {
 				$this->tableSettingsDisabled = true;
@@ -260,7 +261,7 @@ class UserModule extends CWebModule
 			foreach($config as $key=>$value) {
 				if(isset(UserModule::${$key})) {
 					UserModule::${$key} = $value;
-				} else 
+				} else
 					$this->$key=$value;
 			}
 		}

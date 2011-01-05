@@ -10,11 +10,11 @@ class YumProfileController extends YumController
 	public function accessRules()
 	{
 		return array(
-			array('allow', 
+			array('allow',
 				'actions'=>array('index', 'create', 'admin','delete', 'visits'),
 				'expression' => 'Yii::app()->user->isAdmin()'
 				),
-			array('allow', 
+			array('allow',
 				'actions'=>array('view', 'update', 'edit'),
 				'users' => array('@'),
 				),
@@ -35,14 +35,14 @@ class YumProfileController extends YumController
 		}
 
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
-		if(isset($model->profile[0])) 
+		if(isset($model->profile[0]))
 			$profile = $model->profile[0];
 		else
 			$profile = new YumProfile();
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
-			if(Yum::module()->profileHistory == true)
+			if(Yum::module()->enableProfileHistory == true)
 				$profile = new YumProfile();
 
 			if(isset($_POST['YumProfile'])) {
@@ -72,7 +72,7 @@ class YumProfileController extends YumController
 			}
 		}
 
-		$this->render('/profile/profile-edit',array(
+		$this->render(Yum::module()->profileEditView,array(
 					'model'=>$model,
 					'profile'=>$profile,
 					));
@@ -119,7 +119,7 @@ class YumProfileController extends YumController
 					':visitor_id' => $visitor_id,
 					':visited_id' => $visited_id));
 		if($visit) {
-			$visit->save();	
+			$visit->save();
 		} else {
 			$visit = new YumProfileVisit();
 			$visit->visitor_id = $visitor_id;
@@ -136,7 +136,7 @@ class YumProfileController extends YumController
 		if(isset($_POST['YumProfile'])) {
 			$model->attributes=$_POST['YumProfile'];
 
-			if($model->validate()) 
+			if($model->validate())
 			{
 				$model->save();
 				$this->redirect(array('admin'));
@@ -147,7 +147,7 @@ class YumProfileController extends YumController
 	}
 
 	public function actionUpdate() {
-		if(Yii::app()->user->isAdmin()) 
+		if(Yii::app()->user->isAdmin())
 			$this->layout = Yum::module()->adminLayout;
 		else
 			$this->layout = Yum::module()->layout;
@@ -161,7 +161,7 @@ class YumProfileController extends YumController
 		if(isset($_POST['YumProfile']))
 		{
 			$model->attributes=$_POST['YumProfile'];
-			
+
 			if($model->save())
 				$this->redirect(array('admin'));
 		}
@@ -215,7 +215,7 @@ class YumProfileController extends YumController
 			'dataProvider'=>$dataProvider,'model'=>$model,
 		));
 	}
-	
+
 	/**
 	 * @return YumProfileField
 	 */

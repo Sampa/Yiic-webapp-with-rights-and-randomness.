@@ -11,11 +11,11 @@ $this->title = Yum::t('View user "{username}"',array(
 $this->breadcrumbs = array(Yum::t('Users') => array('index'), $model->username);
 
 if(Yii::app()->user->hasFlash('password')): ?>
- 
+
 <div class="hint">
     <?php echo Yii::app()->user->getFlash('password'); ?>
 </div>
- 
+
 <?php endif; ?>
 
 <?php
@@ -27,7 +27,7 @@ if(Yii::app()->user->isAdmin()) {
 
 	if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 		$attributes[] = 'username';
-	
+
 	if($profiles) {
 		$profileFields = YumProfileField::model()->forOwner()->sort()->findAll();
 		if ($profileFields && $model->profile) {
@@ -35,8 +35,8 @@ if(Yii::app()->user->isAdmin()) {
 				array_push($attributes, array(
 							'label' => Yii::t('UserModule.user', $field->title),
 							'type' => 'raw',
-							'value' => is_array($model->profile) 
-							? $model->profile[0]->getAttribute($field->varname) 
+							'value' => is_array($model->profile)
+							? $model->profile[0]->getAttribute($field->varname)
 							: $model->profile->getAttribute($field->varname) ,
 							));
 			}
@@ -107,10 +107,10 @@ if(Yii::app()->user->isAdmin()) {
 
 
 if(Yii::app()->user->isAdmin()) {
-	if($profiles && $this->module->profileHistory) {
+	if($profiles && Yum::module()->enableProfileHistory) {
 		$this->renderPartial('/profile/profile_history', array('model' => $model));
 	}
-	echo '<h2>'.Yum::t('This user belongs to these roles:') .'</h2>'; 
+	echo '<h2>'.Yum::t('This user belongs to these roles:') .'</h2>';
 
 	if($model->roles) {
 		echo "<ul>";

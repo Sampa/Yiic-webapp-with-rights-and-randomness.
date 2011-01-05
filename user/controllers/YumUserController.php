@@ -70,7 +70,7 @@ class YumUserController extends YumController
 				}
 			}
 		}
-		$this->render('generate_data');	
+		$this->render('generate_data');
 	}
 
 	public function actionIndex() {
@@ -148,7 +148,7 @@ class YumUserController extends YumController
 				}
 			}
 			$this->render('changepassword', array('form'=>$form, 'expired' => $expired));
-		} 
+		}
 	}
 
 	public function actionProfile() {
@@ -176,7 +176,7 @@ class YumUserController extends YumController
 		$profile = new YumProfile;
 		$passwordform = new YumUserChangePassword;
 
-		// When opening a empty user creation mask, we most probably want to 
+		// When opening a empty user creation mask, we most probably want to
 		// insert an _active_ user
 		$model->status = 1;
 
@@ -186,7 +186,7 @@ class YumUserController extends YumController
 			if(isset($_POST['YumUser']['YumRole']))
 				$model->roles = $_POST['YumUser']['YumRole'];
 
-			if(isset($_POST['YumProfile']) ) 
+			if(isset($_POST['YumProfile']) )
 				$profile->attributes = $_POST['YumProfile'];
 
 			if(isset($_POST['YumUserChangePassword'])) {
@@ -206,7 +206,7 @@ class YumUserController extends YumController
 
 			$model->validate();
 			$profile->validate();
-			if(!$model->hasErrors() 
+			if(!$model->hasErrors()
 					&& !$profile->hasErrors()
 					&& !$passwordform->hasErrors()) {
 				$model->save();
@@ -227,7 +227,7 @@ class YumUserController extends YumController
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
-		if(Yum::module()->enableProfiles) 
+		if(Yum::module()->enableProfiles)
 			$profile = $model->profile[0];
 
 		if(isset($_POST['YumUser'])) {
@@ -238,10 +238,10 @@ class YumUserController extends YumController
 			if(isset($_POST['YumUser']['YumRole']))
 				$model->roles = $_POST['YumUser']['YumRole'];
 
-			if(isset($_POST['YumProfile']) ) 
+			if(isset($_POST['YumProfile']) )
 				$profile->attributes = $_POST['YumProfile'];
-	
-			if(isset($_POST['YumUserChangePassword']) 
+
+			if(isset($_POST['YumUserChangePassword'])
 					&& $_POST['YumUserChangePassword']['password'] != '') {
 				$passwordform->attributes = $_POST['YumUserChangePassword'];
 				if($passwordform->validate())
@@ -284,7 +284,7 @@ class YumUserController extends YumController
 						$user=$this->loadUser(Yii::app()->user->id);
 						YumActivityController::logActivity($user, 'user_created');
 					}
-					$model->delete();	
+					$model->delete();
 				}
 			}
 		} else {
@@ -293,7 +293,7 @@ class YumUserController extends YumController
 			$preserveProfiles = Yum::module()->preserveProfiles;
 			if(isset($_POST['confirmPassword'])) {
 				if($model->encrypt($_POST['confirmPassword']) == $model->password) {
-					if(Yum::module()->profileHistory == false) {
+					if(Yum::module()->enableProfileHistory == false) {
 						if(is_array($model->profile) && !$preserveProfiles) {
 							foreach($model->profile as $profile) {
 								if(Yum::module()->enableLogging == true)
@@ -302,7 +302,7 @@ class YumUserController extends YumController
 								}
 								$profile->delete();
 							}
-						} else if (is_object($model->profile) && !$preserveProfiles) 
+						} else if (is_object($model->profile) && !$preserveProfiles)
 						{
 							if(Yum::module()->enableLogging == true)
 							{
@@ -319,7 +319,7 @@ class YumUserController extends YumController
 					$this->actionLogout();
 				} else {
 					Yii::app()->user->setFlash('profileMessage',
-							sprintf('%s. (%s)', 
+							sprintf('%s. (%s)',
 								Yii::t('UserModule.user',
 									'Wrong password confirmation! Account was not deleted'),
 								CHtml::link(Yii::t('UserModule.user', 'Try again'), array(
@@ -342,7 +342,6 @@ class YumUserController extends YumController
 
 	public function actionList()
 	{
-
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'criteria' => array('condition' => 'status = 1'),
 					'pagination'=>array(
@@ -362,7 +361,7 @@ class YumUserController extends YumController
 			$model = new YumUser('search');
 
 			if(isset($_GET['YumUser']))
-				$model->attributes = $_GET['YumUser'];                                    
+				$model->attributes = $_GET['YumUser'];
 
 
 
