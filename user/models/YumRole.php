@@ -10,8 +10,7 @@
  * Relations
  * @property array $users array of YumUser
  */
-class YumRole extends YumActiveRecord
-{
+class YumRole extends YumActiveRecord {
 	private $_userRoleTable;
 	private $_roleRoleTable;
 
@@ -60,6 +59,7 @@ class YumRole extends YumActiveRecord
 		return array(
 				'users'=>array(self::MANY_MANY, 'YumUser', Yii::app()->getModule('user')->userRoleTable . '(role_id, user_id)'),
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
+				'memberships' => array(self::HAS_MANY, 'YumMembership', 'membership_id'),
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
 
 				);
@@ -72,6 +72,8 @@ class YumRole extends YumActiveRecord
 			'title'=>Yum::t("Title"),
 			'description'=>Yum::t("Description"),
 			'selectable'=>Yum::t("Selectable on registration"),
+			'price'=>Yum::t("Price"),
+			'duration'=>Yum::t("Duration in days"),
 		);
 	}
 }

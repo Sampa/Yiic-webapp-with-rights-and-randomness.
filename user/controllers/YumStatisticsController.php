@@ -1,9 +1,7 @@
 <?php
 
-class YumStatisticsController extends YumController
-{
+class YumStatisticsController extends YumController {
 	const PAGE_SIZE=10;
-	private $_model;
 
 	public function accessRules()
 	{

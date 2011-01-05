@@ -3,8 +3,6 @@
 Yii::import('application.modules.user.controllers.YumController');
 
 class YumRegistrationController extends YumController {
-
-	private $_model;
 	public $defaultAction = 'registration';
 
 	public function accessRules() {

@@ -1,10 +1,10 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
-- Added membership system
-- Messages with CJuiDialog popup
-- Added Documentation about the new, experimental Permission system
-- Added ignore users to privacy settings
+- Added new membership system (thyseus)
+- Messages with CJuiDialog popup (thyseus)
+- Added Documentation about the new, experimental Permission system (thyseus)
+- Added ignore users to privacy settings (thyseus)
 - Introduced YumMailer (bigchirv)
 - reworked messaging System (thyseus)
 - Added User privacy settings (thyseus)

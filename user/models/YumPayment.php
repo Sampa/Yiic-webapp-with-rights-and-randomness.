@@ -35,9 +35,9 @@ class YumPayment extends YumActiveRecord{
 	public function attributeLabels()
 	{
 		return array(
-			'id' => Yii::t('app', 'ID'),
-			'title' => Yii::t('app', 'Title'),
-			'text' => Yii::t('app', 'Text'),
+			'id' => Yum::t('ID'),
+			'title' => Yum::t('Title'),
+			'text' => Yum::t('Text'),
 		);
 	}
 

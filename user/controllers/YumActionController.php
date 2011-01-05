@@ -1,8 +1,6 @@
 <?php
 
-class YumActionController extends YumController
-{
-	private $_model;
+class YumActionController extends YumController {
 
 	public function filters() {
 		return array(
@@ -41,7 +39,7 @@ class YumActionController extends YumController
 	{
 		$model=new YumAction;
 
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'action-form');
 
 		if(isset($_POST['YumAction']))
 		{
@@ -59,7 +57,7 @@ class YumActionController extends YumController
 	{
 		$model=$this->loadModel();
 
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'action-form');
 
 		if(isset($_POST['YumAction']))
 		{
@@ -106,24 +104,4 @@ class YumActionController extends YumController
 		));
 	}
 
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=YumAction::model()->findByPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
-	}
-
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='action-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
 }

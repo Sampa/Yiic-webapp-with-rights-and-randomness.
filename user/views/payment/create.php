@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-	'Payments'=>array(Yii::t('app', 'index')),
-	Yii::t('app', 'Create'),
+	Yum::t('Payments')=>array(Yii::t('app', 'index')),
+	Yum::t('Create'),
 );
 
 ?>

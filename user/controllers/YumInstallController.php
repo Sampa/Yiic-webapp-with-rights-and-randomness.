@@ -1,7 +1,6 @@
 <?php
 
-class YumInstallController extends YumController
-{
+class YumInstallController extends YumController {
 	public $layout = 'install';
 	public $defaultAction='install';
 

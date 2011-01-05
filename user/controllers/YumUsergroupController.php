@@ -1,16 +1,7 @@
 <?php
 
 class YumUsergroupController extends YumController {
-	public $_model;
-
-	public function filters() {
-		return array(
-				'accessControl', 
-				);
-	}
-
-	public function accessRules()
-	{
+	public function accessRules() {
 		return array(
 				array('allow',  
 					'actions'=>array('index','view'),

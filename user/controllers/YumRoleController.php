@@ -1,11 +1,7 @@
 <?php
 
-class YumRoleController extends YumController
-{
-	private $_model;
-
-	public function actionView()
-	{
+class YumRoleController extends YumController {
+	public function actionView() {
 		$this->layout = Yum::module()->adminLayout;
 		$model = $this->loadModel();
 		$this->render('view',array('model'=>$model));
@@ -15,7 +11,7 @@ class YumRoleController extends YumController
 	{
 		$this->layout = Yum::module()->adminLayout;
 		$model = new YumRole();
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-role-form');
 		if(isset($_POST['YumRole'])) {
 			$model->attributes = $_POST['YumRole'];
 
@@ -43,7 +39,7 @@ class YumRoleController extends YumController
 		$this->layout = Yum::module()->adminLayout;
 		$model = $this->loadModel();
 
-	 $this->performAjaxValidation($model);
+	 $this->performAjaxValidation($model, 'yum-role-form');
 
 		if(isset($_POST['YumRole'])) {
 			$model->attributes = $_POST['YumRole'];
@@ -109,27 +105,4 @@ class YumRoleController extends YumController
 	}
 
 
-	/**
-	 * @return YumRole
-	 */
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=YumRole::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,Yii::t('App', 'The requested page does not exist.'));
-		}
-		return $this->_model;
-	}
-
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='yum-role-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
 }

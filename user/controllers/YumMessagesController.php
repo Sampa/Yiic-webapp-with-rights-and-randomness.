@@ -2,12 +2,8 @@
 
 Yii::import('application.modules.user.controllers.YumController');
 
-class YumMessagesController extends YumController
-{
-	private $_model;
-	
-	public function accessRules()
-	{
+class YumMessagesController extends YumController {
+	public function accessRules() {
 		return array(
 			array('allow',
 				'actions' => array('view', 'compose', 'index',
@@ -49,7 +45,7 @@ class YumMessagesController extends YumController
 	public function actionCompose() {
 		$model = new YumMessage;
 
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-messages-form');
 
 		if(isset($_POST['YumMessage'])) {			
 			$model = new YumMessage;
@@ -124,29 +120,5 @@ class YumMessagesController extends YumController
 			}
 		}
 		$this->render('send_digest', array('message' => $message));
-	}
-
-
-
-	/**
-	 * @return YumMessage
-	 */
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=YumMessage::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,Yii::t('App', 'The requested page does not exist.'));
-		}
-		return $this->_model;
-	}
-
-	protected function performAjaxValidation($model) {
-		if(isset($_POST['ajax']) && $_POST['ajax']==='yum-messages-form') {
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
 	}
 }

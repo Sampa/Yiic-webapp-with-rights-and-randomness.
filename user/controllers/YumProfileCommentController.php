@@ -2,13 +2,6 @@
 
 class YumProfileCommentController extends YumController
 {
-	public function filters()
-	{
-		return array(
-				'accessControl', 
-				);
-	}
-
 	public function accessRules()
 	{
 		return array(

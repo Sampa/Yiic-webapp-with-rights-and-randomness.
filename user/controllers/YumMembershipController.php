@@ -1,9 +1,7 @@
 <?php
 
 class YumMembershipController extends YumController {
-
-	public function accessRules()
-	{
+	public function accessRules() {
 		return array(
 				array('allow', 
 					'actions'=>array('index', 'order'),

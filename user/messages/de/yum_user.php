@@ -2,9 +2,15 @@
 
 
 return array(
+	'Privacy settings' => 'Privatsphäre',
+	'Browse memberships' => 'Mitgliedschaften kaufen',
 	'Membership' => 'Mitgliedschaft',
+	'My memberships' => 'Meine Mitgliedschaften',
+	'Browse user activities' => 'Tätigkeitenhistorie',
 	'Payment types' => 'Zahlungsarten',
-
+	'Access control' => 'Zugangskontrolle',
+	'Ordered memberships' => 'Bestellungen',
+	'Create new payment type' => 'Neue Zahlungsart hinzufügen',	
 		'Separate usernames with comma to ignore specified users' => 'Benutzernamen mit kommata trennen, um sie zu ignorieren',
 		'Ignored users' => 'Ignorierliste',
 		'Browse user groups' => 'Benutzergruppen durchsuchen',

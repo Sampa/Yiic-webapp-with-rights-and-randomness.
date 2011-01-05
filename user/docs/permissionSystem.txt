@@ -19,3 +19,6 @@ if(YumUser::model()->find('username = bob')->can('removeUsers')) { ...
 
 A Permission can also have a Subordinate. With this feature, you can 
 further restrict, what a action can affect. 
+
+A Membership system is also available. A membership acts as a temporary
+role assignment to a user that expires after some time.

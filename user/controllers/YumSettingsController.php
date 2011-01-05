@@ -1,9 +1,6 @@
 <?php
 
-class YumSettingsController extends YumController
-{
-	private $_model;
-
+class YumSettingsController extends YumController {
 	public function accessRules()
 	{
 		return array(
@@ -41,7 +38,7 @@ class YumSettingsController extends YumController
 		$this->layout = Yum::module()->adminLayout;
 		$model=new YumSettings;
 
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-settings-form');
 
 		if(isset($_POST['YumSettings'])) {
 			$model->attributes = $_POST['YumSettings'];
@@ -81,7 +78,7 @@ class YumSettingsController extends YumController
 			$_GET['id'] = YumSettings::model()->getActive();
 		$model=$this->loadModel();
 
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-settings-form');
 
 		$YumSettingsData = Yii::app()->request->getPost('YumSettings');
 		if($YumSettingsData !== null)
@@ -153,13 +150,4 @@ class YumSettingsController extends YumController
 		return $this->_model;
 	}
 
-	protected function performAjaxValidation($model)
-	{
-		$ajax = Yii::app()->request->getPost('ajax'); 
-		if($ajax == 'yum-settings-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
 }

@@ -1,9 +1,9 @@
 <?php
-$this->title = Yii::t("UserModule.user", "Update role");
+$this->title = Yum::t('Update role');
 
 $this->breadcrumbs=array(
-	Yii::t("UserModule.user", 'Roles')=>array('index'),
-	Yii::t("UserModule.user", 'Update'));
+	Yum::t('Roles')=>array('index'),
+	Yum::t('Update'));
 
 ?>
 

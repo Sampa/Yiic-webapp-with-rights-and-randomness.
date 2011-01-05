@@ -1,11 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'Memberships'=>array(Yii::t('app', 'index')),
+	Yum::t('Memberships')=>array(Yii::t('app', 'index')),
 	Yum::t('Manage'),
 );
 		?>
 
-<h1> Pakettypen </h1>
+<h1> <?php echo Yum::t('Memberships'); ?></h1>
 
 <?php
 $locale = CLocale::getInstance(Yii::app()->language);

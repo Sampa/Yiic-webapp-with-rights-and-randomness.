@@ -3,7 +3,6 @@
 class YumAuthController extends YumController {
 	public $defaultAction = 'login';
 	public $loginForm = null;
-	private $_model;
 
 	public function accessRules() {
 		return array(

@@ -1,7 +1,6 @@
 <?php
 
-class YumTextSettingsController extends YumController
-{
+class YumTextSettingsController extends YumController {
 	private $_model;
 
 	public function accessRules()
@@ -44,7 +43,7 @@ class YumTextSettingsController extends YumController
 		if(isset($_SESSION['YumTextSettings'])) 
 			$model->attributes = $_SESSION['YumTextSettings'];
 
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-text-settings-form');
 
 		$YumTextSettingsData = Yii::app()->request->getPost('YumTextSettings');
 		if($YumTextSettingsData !== null)
@@ -71,7 +70,7 @@ class YumTextSettingsController extends YumController
 	{
 		$model=$this->loadModel();
 
-		$this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-text-settings-form');
 
 		$YumTextSettingsData = Yii::app()->request->getPost('YumTextSettings');
 		if($YumTextSettingsData !== null)
@@ -137,27 +136,4 @@ class YumTextSettingsController extends YumController
 					));
 	}
 
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			$id = Yii::app()->request->getQuery('id');
-			if(!empty($id))
-				$this->_model = YumTextSettings::model()->findbyPk($id);
-
-			if($this->_model===null)
-				throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-		}
-		return $this->_model;
-	}
-
-	protected function performAjaxValidation($model)
-	{
-		$ajax = Yii::app()->request->getPost('ajax'); 
-		if($ajax == 'yum-text-settings-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
 }

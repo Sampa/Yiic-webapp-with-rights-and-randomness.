@@ -23,7 +23,7 @@ class YumUserMenu extends CPortlet {
 	public function getMenuItems() {
 		return array( 
 				array('label' => 'Profile', 'items' => array(
-						array('label' => 'My Profile', 'url' => array('/user/profile/view')),
+						array('label' => 'My profile', 'url' => array('/user/profile/view')),
 						array('label' => 'Edit personal data', 'url' => array('/user/profile/edit')),
 						array('label' => 'Upload avatar image', 'url' => array('/user/avatar/editAvatar')),
 						array('label' => 'Privacy settings', 'url' => array('/user/privacy/update')),
@@ -47,6 +47,7 @@ class YumUserMenu extends CPortlet {
 							array('label' => 'My friends', 'url' => array('/user/friendship/index')),
 							array('label' => 'Browse users', 'url' => array('/user/user/index')),
 							array('label' => 'My groups', 'url' => array('/user/groups/index')),
+							array('label' => 'Create new usergroup', 'url' => array('/user/groups/create')),
 							array('label' => 'Browse usergroups', 'url' => array('/user/groups/browse')),
 							)
 						),

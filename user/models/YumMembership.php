@@ -13,7 +13,7 @@ class YumMembership extends YumActiveRecord{
 
 	public function daysLeft() {
 		$difference = $this->end_date - time();
-		return $difference / 86400 + 1;
+		return sprintf('%d', (int) $difference / 86400 + 1);
 	}
 
 	public function beforeValidate() {
@@ -65,12 +65,12 @@ class YumMembership extends YumActiveRecord{
 	public function attributeLabels()
 	{
 		return array(
-				'membership_id' => Yii::t('app', 'Membership'),
-				'user_id' => Yii::t('app', 'User'),
-				'payment_id' => Yii::t('app', 'Payment'),
-				'order_date' => Yii::t('app', 'Order Date'),
-				'end_date' => Yii::t('app', 'End Date'),
-				'payment_date' => Yii::t('app', 'Payment Date'),
+				'membership_id' => Yum::t('Membership'),
+				'user_id' => Yum::t('User'),
+				'payment_id' => Yum::t('Payment'),
+				'order_date' => Yum::t('Order date'),
+				'end_date' => Yum::t('End date'),
+				'payment_date' => Yum::t('Payment date'),
 				);
 	}
 

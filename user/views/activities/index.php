@@ -5,12 +5,12 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<h1>Activities</h1>
+<h1> <?php echo Yum::t('Activities'); ?></h1>
 
 <?php 
 echo CHtml::beginForm();
 
-echo CHtml::label(Yum::t('Show activities: '), 'activities');
+echo CHtml::label(Yum::t('Show activities'). ':' , 'activities');
 $filter = 'all';
 if(isset($_POST['activities']))
 $filter = $_POST['activities'];
@@ -20,7 +20,7 @@ echo CHtml::dropDownList('activities',
 			'empty' => array('all' => Yum::t('All')),
 			'submit' => array('index')));
 
-echo CHtml::label(Yum::t('of user: '), 'user');
+echo CHtml::label(Yum::t('of user') .': ', 'user');
 $users = 'all';
 if(isset($_POST['users']))
 $users = $_POST['users'];

@@ -1,11 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'Payments'=>array(Yii::t('app', 'index')),
-	Yii::t('app', 'Manage'),
+	Yum::t('Payments')=>array(Yii::t('app', 'index')),
+	Yum::t('Manage'),
 );
 		?>
 
-<h1> <?php echo Yii::t('app', 'Manage'); ?> Payments</h1>
+<h1> <?php echo Yum::t('Manage payments'); ?> </h1>
 
 <?php
 $locale = CLocale::getInstance(Yii::app()->language);

@@ -3,7 +3,6 @@
 class YumPermissionController extends YumController
 {
 	public $defaultAction = 'admin';
-	private $_model;
 
 	public function accessRules()
 	{
@@ -41,10 +40,7 @@ class YumPermissionController extends YumController
 	public function actionCreate() {
 		$model = new YumPermission;
 
-		if(isset($_POST['ajax']) && $_POST['ajax']==='permission-create-form') {
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
+		$this->performAjaxValidation($model, 'permission-create-form');
 
 		if(isset($_POST['YumPermission'])) {
 			$model->attributes=$_POST['YumPermission'];

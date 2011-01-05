@@ -1,10 +1,8 @@
 <?php
 
-class YumUserController extends YumController
-{
+class YumUserController extends YumController {
 	const PAGE_SIZE=10;
 	public $defaultAction = 'login';
-	private $_model;
 
 	public function accessRules() {
 		return array(

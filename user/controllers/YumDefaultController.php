@@ -1,14 +1,12 @@
 <?php
 
-class YumDefaultController extends YumController 
-{
+class YumDefaultController extends YumController {
 	
 	public $defaultAction = 'index';
 	/**
 	 * @return array of arrays
 	 */
-	public function accessRules()
-	{
+	public function accessRules() {
 		return array(
 			array('allow',
 				'actions'=>array('index'),
@@ -21,8 +19,7 @@ class YumDefaultController extends YumController
 		);
 	}
 	
-	public function actionIndex() 
-	{
+	public function actionIndex() {
 		$this->redirect($this->module->returnLogoutUrl);
 	}
 }

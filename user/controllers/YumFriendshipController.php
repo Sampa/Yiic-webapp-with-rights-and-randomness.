@@ -1,6 +1,5 @@
 <?php
 class YumFriendshipController extends YumController {
-	private $_model;
 
 	// make sure that friendship is enabled in the configuration
 	public function beforeAction($action) {
@@ -139,18 +138,6 @@ class YumFriendshipController extends YumController {
 		$this->render('update',array(
 					'model'=>$model,
 					));
-	}
-
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=YumFriendship::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,Yii::t('App','The requested page does not exist.'));
-		}
-		return $this->_model;
 	}
 
 	public static function invitationLink($inviter, $invited) {

@@ -18,11 +18,24 @@ echo $model->description; ?>
 <?php 
 if($model->users) {
 	foreach($model->users as $user) {
-		printf("<li>%s</li>", CHtml::link($user->username, array(Yum::route('user/view'), 'id' => $user->id)));
+		printf("<li>%s</li>", CHtml::link($user->username, array(
+						Yum::route('user/view'), 'id' => $user->id)));
 
 	}
 } else 
-printf('<p> %s </p>', Yum::t('None'));
+printf('<p> %s </p>', Yum::t('None')); ?>
+
+<br />
+<p> <?php echo Yum::t('This users have a ordered memberships of this role'); ?> </p>
+<?php 
+if($model->memberships) {
+	foreach($model->memberships as $membership) {
+		printf("<li>%s</li>", CHtml::link($membership->user->username, array(
+						Yum::route('user/view'), 'id' => $membership->user_id)));
+
+	}
+} else 
+printf('<p> %s </p>', Yum::t('None')); 
 
 if(Yii::app()->user->isAdmin())
 	echo CHtml::Button(Yum::t('Update role'), array('submit' => array('role/update', 'id' => $model->id)));

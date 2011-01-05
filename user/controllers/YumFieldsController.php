@@ -3,7 +3,6 @@
 class YumFieldsController extends YumController
 {
 	const PAGE_SIZE=10;
-	private $_model;
 
 	public function accessRules()
 	{
@@ -154,18 +153,4 @@ class YumFieldsController extends YumController
 		));
 	}
 
-	/**
-	 * @return YumProfileField
-	 */
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=YumProfileField::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
-	}
 }

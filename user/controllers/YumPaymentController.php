@@ -50,8 +50,6 @@ class YumPaymentController extends YumController {
 	{
 		$model = $this->loadModel();
 
-		$this->pickleForm($model, $_POST);
-
 		$this->performAjaxValidation($model, 'payment-form');
 
 		if(isset($_POST['YumPayment']))

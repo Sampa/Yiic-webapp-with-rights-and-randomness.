@@ -1,13 +1,6 @@
 <?php
 
-class YumFieldsGroupController extends YumController
-{
-
-	/**
-	 * @var YumProfileFieldGroup the currently loaded data model instance.
-	 */
-	private $_model;
-
+class YumFieldsGroupController extends YumController {
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -30,8 +23,7 @@ class YumFieldsGroupController extends YumController
 	/**
 	 * Displays a particular model.
 	 */
-	public function actionView()
-	{
+	public function actionView() {
 		$this->layout = Yum::module()->adminLayout;
 		$this->render('view',array(
 			'model'=>$this->loadModel(),
@@ -42,13 +34,11 @@ class YumFieldsGroupController extends YumController
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
-	{
+	public function actionCreate() {
 		$this->layout = Yum::module()->adminLayout;
 		$model=new YumProfileFieldsGroup;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-profile-fields-form');
 
 		if(isset($_POST['YumProfileFieldsGroup']))
 		{
@@ -78,7 +68,7 @@ class YumFieldsGroupController extends YumController
 		$model=$this->loadModel();
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model, 'yum-profile-fields-form');
 
 		if(isset($_POST['YumProfileFieldsGroup']))
 		{
@@ -137,32 +127,4 @@ class YumFieldsGroupController extends YumController
 		$this->render('admin', array( 'model'=>$model ));
 	}
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 */
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=YumProfileFieldsGroup::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
-	}
-
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='yum-profile-fields-group-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
 }
