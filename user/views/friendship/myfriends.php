@@ -39,8 +39,8 @@ if($friends) {
 				$friend->getStatus(), 
 				$options);
 
-		echo '</table>';	
 	}
+		echo '</table>';	
 } else {
 	echo Yum::t('You do not have any friends yet');
 }

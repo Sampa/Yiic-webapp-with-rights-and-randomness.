@@ -35,17 +35,12 @@ class YumProfileCommentController extends YumController
 
 		if(isset($_POST['YumProfileComment'])) {
 			$model->attributes = $_POST['YumProfileComment'];
-
-			if($model->save()) {
-				$this->renderPartial('/profileComment/success');
-				Yii::app()->end();
+			$model->save();
 			}
-		}
 
-		$this->renderPartial('/profileComment/create',array(
-					'model'=>$model,
-					'profile' => YumProfile::model()->findByPk($_POST['YumProfileComment']['profile_id'])
-					));
+		$this->renderPartial('/profile/view',array(
+					'model'=>$model->profile->user
+					), false, true);
 	}
 
 

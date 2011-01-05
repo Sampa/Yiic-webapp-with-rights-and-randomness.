@@ -14,9 +14,9 @@ abstract class YumController extends CController
 
 	public function renderMenu() {
 		if(Yii::app()->user->isAdmin())
-			$this->widget('AdminMenu');
+			$this->widget('YumAdminMenu');
 		else if(!Yii::app()->user->isGuest)
-			$this->widget('UserMenu');
+			$this->widget('YumUserMenu');
 	}
 
 

@@ -67,7 +67,26 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('userRoleTable', $userRoleTable); ?> </td>
 			</tr>
 				</table>
-				</div>
+	</div>
+
+	<label for="installMembership"> Install Membership Management submodule </label>
+	<?php echo CHtml::checkBox('installMembership', true); ?>
+
+	<div id="membership">
+		<table>
+			<tr>
+				<td> Table for the Membership assignment </td>
+				<td> <?php echo CHtml::textField('membershipTable', $membershipTable); ?> </td> 
+			</tr>
+			<tr>
+				<td> Table for the Payment types </td>
+				<td> <?php echo CHtml::textField('paymentTable', $paymentTable); ?> </td> 
+			</tr>
+
+				</table>
+	</div>
+
+
 
 	<div style="clear:both;"> </div>
 
@@ -85,7 +104,7 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('actionTable', $actionTable); ?> </td>
 			</tr>
 				</table>
-				</div>
+	</div>
 
 	<div style="clear:both;"> </div>
 
@@ -209,6 +228,9 @@ your Yii Web Application </p>
 	});
 	$('#installFriendship').click(function() {
 	$('#friendship').toggle();
+	});
+	$('#installMembership').click(function() {
+	$('#membership').toggle();
 	});
 	$('#installRole').click(function() {
 	$('#roles').toggle();

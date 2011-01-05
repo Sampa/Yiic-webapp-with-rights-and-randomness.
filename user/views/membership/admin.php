@@ -1,0 +1,34 @@
+<?php
+$this->breadcrumbs=array(
+	'Memberships'=>array(Yii::t('app', 'index')),
+	Yum::t('Manage'),
+);
+		?>
+
+<h1> Pakettypen </h1>
+
+<?php
+$locale = CLocale::getInstance(Yii::app()->language);
+
+ $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'membership-grid',
+	'dataProvider'=>$model->search(),
+	'filter'=>$model,
+	'columns'=>array(
+		'user.username',
+	array(
+				'name'=>'order_date',
+				'value' =>'date("Y. m. d G:i:s", $data->order_date)'),
+		array(
+				'name'=>'end_date',
+				'value' =>'date("Y. m. d G:i:s", $data->end_date)'),
+		array(
+				'name'=>'payment_date',
+				'value' =>'date("Y. m. d G:i:s", $data->payment_date)'),
+		'role.price',
+		'payment.title',
+		array(
+			'class'=>'CButtonColumn',
+		),
+	),
+)); ?>

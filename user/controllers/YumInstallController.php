@@ -40,6 +40,8 @@ class YumInstallController extends YumController
 							'profileTable',
 							'profileCommentTable',
 							'profileVisitTable',
+							'membershipTable',
+							'paymentTable',
 							'messagesTable',
 							'rolesTable',
 							'userRoleTable',
@@ -89,7 +91,7 @@ class YumInstallController extends YumController
 						`message_new_profilecomment` tinyint(1) NOT NULL,
 						`ignore_users` varchar(255),
 						PRIMARY KEY (`user_id`)
-							) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+							) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 					";
 					$db->createCommand($sql)->execute();
 
@@ -100,7 +102,7 @@ class YumInstallController extends YumController
 							`title` varchar(255) NOT NULL,
 							`description` text NOT NULL,
 							PRIMARY KEY (`id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 						$db->createCommand($sql)->execute();
 
@@ -111,6 +113,28 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`user_id`,`group_id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
+						$db->createCommand($sql)->execute();
+					}
+
+					if(isset($_POST['installMembership'])) {  
+						$sql = "CREATE TABLE IF NOT EXISTS `{$membershipTable}` (
+							`membership_id` int(11) NOT NULL,
+							`user_id` int(11) NOT NULL,
+							`payment_id` int(11) NOT NULL,
+							`order_date` int(11) NOT NULL,
+							`end_date` int(11) DEFAULT NULL,
+							`payment_date` int(11) NOT NULL,
+							PRIMARY KEY (`membership_id`,`user_id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+						$db->createCommand($sql)->execute();
+
+						$sql = " CREATE TABLE IF NOT EXISTS `{$paymentTable}` (
+							`id` int(11) NOT NULL AUTO_INCREMENT,
+							`title` varchar(255) NOT NULL,
+							`text` text, 
+							PRIMARY KEY (`id`)
+								) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 						$db->createCommand($sql)->execute();
 					}
 
@@ -126,8 +150,8 @@ class YumInstallController extends YumController
 							`remote_addr` varchar(16),
 							`http_user_agent` varchar(255),
 							`action` enum(".$actions."),
-									PRIMARY KEY (`id`)
-										) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+							PRIMARY KEY (`id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 						";
 						$db->createCommand($sql)->execute();
 
@@ -241,8 +265,8 @@ class YumInstallController extends YumController
 										please go to {activation_url}',
 										'Your account has been activated. Thank you for your registration.',
 										'New friendship Request from {user_from}: {message} Go to your contacts: {link}',
- 'You have a new profile comment from {user}: {message} visit your profile: {link}',
-'You have received a new message from {user}: {message}'),
+										'You have a new profile comment from {user}: {message} visit your profile: {link}',
+										'You have received a new message from {user}: {message}'),
 							('2',
 							 'de',
 							 'Willkommen zum System.',
@@ -264,7 +288,7 @@ class YumInstallController extends YumController
 							 {message}
 
 							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
-                            'Sie haben eine neue Nachricht von {user} bekommen: {message}'),
+								 'Sie haben eine neue Nachricht von {user} bekommen: {message}'),
 								 ('3',
 									'es',
 									'Bienvenido al sistema de registro',
@@ -276,8 +300,8 @@ class YumInstallController extends YumController
 									'Has solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor ve a {activation_url}',
 									'Tu cuenta ha sido activada. Gracias por registrarte.',
 									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link}',
-                                    'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link}',
-                                    'Has recibido un mensaje de {user}: {message}');
+									'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link}',
+									'Has recibido un mensaje de {user}: {message}');
 						";
 
 						$db->createCommand($sql)->execute();
@@ -365,7 +389,7 @@ class YumInstallController extends YumController
 							`comment` text NOT NULL,
 							`createtime` int(11) NOT NULL,
 							PRIMARY KEY (`id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
 
@@ -389,6 +413,8 @@ class YumInstallController extends YumController
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL,
 							`selectable` tinyint(1) NOT NULL COMMENT 'Selectable on Registration?',
+							`price` double COMMENT 'Price (when using membership module)',
+							`duration` int COMMENT 'How long a membership is valid',
 							PRIMARY KEY (`id`)) 
 								ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
@@ -433,11 +459,19 @@ class YumInstallController extends YumController
 								(2, 'demo', '".YumUser::encrypt('demo')."', '', ".time().", 0, 0, 1)";
 							$db->createCommand($sql)->execute();
 
+							if(isset($_POST['installMembership'])) {
+								$sql = "insert into `{$paymentTable}` (`title`) values ('Prepayment'), ('Paypal')";
+
+								$db->createCommand($sql)->execute();
+							}
+
 							if(isset($_POST['installRole']))
 							{
-								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`) VALUES
-									('UserCreator', 'This users can create new Users'),
-									('UserRemover', 'This users can remove other Users')";
+								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`) VALUES
+									('UserCreator', 'This users can create new Users', 0),
+									('UserRemover', 'This users can remove other Users', 0),
+									('Business', 'Example Business account', 9.99),
+									('Premium', 'Example Premium account', 19.99) ";
 								$db->createCommand($sql)->execute();
 
 							}
@@ -474,6 +508,8 @@ class YumInstallController extends YumController
 							'settingsTable' => Yum::resolveTableName($this->module->settingsTable, Yii::app()->db),
 							'textSettingsTable' => Yum::resolveTableName($this->module->textSettingsTable,Yii::app()->db),
 							'rolesTable' => Yum::resolveTableName($this->module->rolesTable,Yii::app()->db),
+							'membershipTable' => Yum::resolveTableName($this->module->membershipTable,Yii::app()->db),
+							'paymentTable' => Yum::resolveTableName($this->module->paymentTable,Yii::app()->db),
 							'messagesTable' => Yum::resolveTableName($this->module->messagesTable,Yii::app()->db),
 							'profileTable' => Yum::resolveTableName($this->module->profileTable,Yii::app()->db),
 							'profileCommentTable' => Yum::resolveTableName($this->module->profileCommentTable,Yii::app()->db),

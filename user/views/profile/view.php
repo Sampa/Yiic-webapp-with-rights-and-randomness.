@@ -1,6 +1,7 @@
+<div id="profile">
 <?php
 $this->pageTitle = Yii::app()->name . ' - ' . Yum::t('Profile');
-$this->breadcrumbs=array(Yum::t('Profile'), $model->username);
+$this->breadcrumbs = array(Yum::t('Profile'), $model->username);
 $this->title = Yum::t('Profile');
 echo $model->getAvatar(); 
 
@@ -61,8 +62,11 @@ if ($profileFields) {
 </tr>
 </table>
 
-<?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> <br /> 
-<?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> <br /> 
-<?php if(isset($model->profile[0]))
+<?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> 
+<br /> 
+<?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> 
+<br /> 
+<?php
+ if(isset($model->profile[0]))
 	$this->renderPartial('/profileComment/index', array('model' => $model->profile[0])); ?> 
-
+</div>

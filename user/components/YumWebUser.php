@@ -14,7 +14,10 @@ class YumWebUser extends CWebUser
 	}
 
 	public function data() {
-		return YumUser::model()->findByPk($this->id);
+		if($model = YumUser::model()->findByPk($this->id))
+			return $model;
+		else
+			return new YumUser();
 	}
 
 	/**

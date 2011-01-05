@@ -39,6 +39,28 @@ $this->widget('YumModule.components.Relation',
 <?php echo CHtml::activeCheckBox($model, 'selectable'); ?>
 </div>
 
+<div class="row">
+<?php echo CHtml::activeLabelEx($model,'price'); ?>
+<?php echo CHtml::activeTextField($model, 'price'); ?>
+<?php echo CHtml::Error($model, 'price'); ?>
+</div>
+<div class="hint"> 
+<?php echo Yum::t('How expensive is a membership? Set to 0 to disable membership for this role'); ?>
+</div>
+
+
+
+<div class="row">
+<?php echo CHtml::activeLabelEx($model,'duration'); ?>
+<?php echo CHtml::activeTextField($model, 'duration'); ?>
+<?php echo CHtml::Error($model, 'duration'); ?>
+</div>
+<div class="hint"> 
+<?php echo Yum::t('How many days will the membership be valid after payment?'); ?>
+</div>
+
+
+
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord 
 		? Yii::t('UserModule.user', 'Create') 

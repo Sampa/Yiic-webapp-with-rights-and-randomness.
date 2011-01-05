@@ -2,7 +2,7 @@
 
 Yii::import('zii.widgets.CPortlet');
 
-class AdminMenu extends CPortlet {
+class YumAdminMenu extends CPortlet {
 	public function init() {
 		$this->title = sprintf('%s <br /> %s: %s',
 				Yum::t('Usermenu'),
@@ -30,7 +30,7 @@ class AdminMenu extends CPortlet {
 						array('label' => 'Generate Demo Data', 'url' => array('//user/user/generateData'), 'visible' => Yum::module()->debug),
 						)
 					),
-				array('label'=>'Access control', 'items' => array(
+				array('label'=>'Access control', 'visible' => Yum::module()->enableRoles, 'items' => array(
 						array('label' => 'Roles', 'url' => array('//user/role/admin')),
 						array('label' => 'Create new role', 'url' => array('//user/role/create')),
 						array('label' => 'Permissions', 'url' => array('//user/permission/admin')),
@@ -39,7 +39,13 @@ class AdminMenu extends CPortlet {
 						array('label' => 'Create new action', 'url' => array('//user/action/create')),
 						)
 					),
-				array('label'=>'Profiles', 'items' => array(
+				array('label'=>'Membership', 'visible' => Yum::module()->enableMembership, 'items' => array(
+						array('label' => 'Ordered Memberships', 'url' => array('//user/membership/admin')),
+						array('label' => 'Payment types', 'url' => array('//user/payment/admin')),
+						array('label' => 'Create new payment type', 'url' => array('//user/payment/create')),
+						)
+					),
+				array('label'=>'Profiles', 'visible' => Yum::module()->enableProfiles, 'items' => array(
 						array('label' => 'Manage profiles', 'url' => array('//user/profile/admin')),
 						array('label' => 'Show profile visits', 'url' => array('//user/profile/visits')),
 						array('label' => 'Manage profile fields', 'url' => array('//user/fields/admin')),
@@ -48,7 +54,7 @@ class AdminMenu extends CPortlet {
 						array('label' => 'Create new field group', 'url' => array('//user/fieldsgroup/create')),
 						)
 					),
-				array('label' => 'Messages', 'items' => array ( 
+				array('label' => 'Messages', 'visible' => Yum::module()->messageSystem != 'None', 'items' => array ( 
 							array('label' => 'Admin inbox', 'url' => array('/user/messages/index')),
 							array('label' => 'Sent messages', 'url' => array('/user/messages/sent')),
 							array('label' => 'Write a message', 'url' => array('/user/messages/compose')),

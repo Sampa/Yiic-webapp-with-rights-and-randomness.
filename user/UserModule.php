@@ -6,8 +6,7 @@ Yii::setPathOfAlias('YumAssets' , dirname(__FILE__) . '/assets/');
 Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
-class UserModule extends CWebModule
-{
+class UserModule extends CWebModule {
 	public $version = '0.8';
 	public $debug = false;
 	// database related control vars
@@ -24,6 +23,8 @@ class UserModule extends CWebModule
 	public $profileCommentTable = 'profile_comment';
 	public $profileVisitTable = 'profile_visit';
 	public $rolesTable = 'roles';
+	public $membershipTable = 'membership';
+	public $paymentTable = 'payment';
 	public $friendshipTable = 'friendship';
 	public $permissionTable = 'permission';
 	public $actionTable = 'action';
@@ -44,6 +45,7 @@ class UserModule extends CWebModule
 	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
 	public $allowRecovery = true;
 	public $enableRoles = true;
+	public $enableMembership = true;
 	public $enableProfiles = true;
 	public $enableProfileComments = true;
 	public $enableFriendship = true;
@@ -104,6 +106,7 @@ class UserModule extends CWebModule
 	private $_views = array(
 			'login' => '/user/login',
 			'profile' => '/profile/view',
+			'profileComment' => '/profileComment/_view',
 			'profileEdit' => '/profile/profile-edit',
 			'menu' => '/user/menu',
 			'registration' => '/user/registration',
@@ -163,6 +166,8 @@ class UserModule extends CWebModule
 		// workaround to allow the url application/user/login:
 		'login'=>array('class'=>'YumModule.controllers.YumUserController'),
 		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),
+		'membership'=>array('class'=>'YumModule.controllers.YumMembershipController'),
+		'payment'=>array('class'=>'YumModule.controllers.YumPaymentController'),
 		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),
 		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),
 		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),

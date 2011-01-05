@@ -1,7 +1,5 @@
 <div class="form">
-<p class="note">
-<?php echo Yum::t('Fields with');?> <span class="required">*</span> <?php echo Yum::t('are required');?>.
-</p>
+<p class="note"> <?php echo Yum::requiredFieldNote(); ?> </p>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 			'id'=>'profile-comment-form',
@@ -19,13 +17,24 @@ echo $form->errorSummary($model);
 </div>
 
 <?php
-echo CHtml::Button(Yum::t('Cancel'),  array(
-   'onclick'=>'$("#profileComment").dialog("close"); return false;',
-));
+echo CHtml::Button(Yum::t('Write comment'), array(
+	'id' => 'write_comment',
+	));
 
-echo CHtml::ajaxSubmitButton(Yum::t('Write comment'), array(
-			'//user/comments/create'), array(
-					'update' => "#profileComment"));
+if(!Yii::app()->clientScript->isScriptRegistered("write_comment"))
+Yii::app()->clientScript->registerScript("write_comment", " 
+$('#write_comment').unbind('click');
+$('#write_comment').click(function(){
+jQuery.ajax({'type':'POST',
+'url':'".$this->createUrl('//user/comments/create')."',
+'cache':false,
+'data':jQuery(this).parents('form').serialize(),
+'success':function(html){
+$('#profile').html(html);
+}});
+return false;});
+");
+
 
 $this->endWidget(); ?>
 

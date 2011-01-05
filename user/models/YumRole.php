@@ -44,6 +44,8 @@ class YumRole extends YumActiveRecord
 		return array(
 			array('title', 'required'),
 			array('selectable', 'numerical'),
+			array('price', 'numerical'),
+			array('duration', 'numerical'),
 			array('title, description', 'length', 'max' => '255'),
 		);
 	}

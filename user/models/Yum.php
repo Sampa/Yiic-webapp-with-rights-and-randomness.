@@ -119,8 +119,8 @@ class Yum
 	 */
 	public static function requiredFieldNote()
 	{
-		return CHtml::tag('p',array('class'=>'note'),Yii::t(
-					'UserModule.user','Fields with <span class="required">*</span> are required.'
+		return CHtml::tag('p',array('class'=>'note'),Yum::t(
+					'Fields with <span class="required">*</span> are required.'
 					),true);		
 	}
 

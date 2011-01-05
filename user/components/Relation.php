@@ -540,24 +540,23 @@ class Relation extends CWidget
 								$uniqueid,
 								$i)));
 				echo CHtml::closeTag('div');
-				$jsadd = '
-					$(\'#add_'.$uniqueid.'\').click(function() {
-							$(\'#div_'.$uniqueid.'_\' + i'.$this->num.').show();
-							if(i'.$this->num.' <= maxi'.$this->num.') i'.$this->num.'++;
+				$jsadd = " 
+					$('#add_{$uniqueid}').click(function() {
+							$('#div_{$uniqueid}_' + i{$this->num}).show();
+							if(i{$this->num} <= maxi{$this->num}) i{$this->num}++;
 							});
-				';
-
-				$jssub = '
-					$(\'#sub_'.$uniqueid.'_'.$i.'\').click(function() {
-							$(\'#div_'.$uniqueid.'_'.$i.'\').hide();
-							$("select[name=\''.$this->getListBoxName().'['.$i.']\']").val(\'\');
-							if(i'.$this->num.' >= 1) i--;
+				";
+				$jssub = " 
+					$('#sub_{$uniqueid}_{$i}').click(function() {
+							$('#div_{$uniqueid}_{$i}').hide();
+							$(\"select[name='{$this->getListBoxName()}[{$i}]]\").val('');
+							if(i{$this->num} >= 1) i--;
 							});
-				';
+				";
 
-				Yii::app()->clientScript->registerScript('addbutton_'.$uniqueid, $jsadd); 
-				Yii::app()->clientScript->registerScript('subbutton_'.$uniqueid, $jssub); 
+				Yii::app()->clientScript->registerScript('subbutton_'.$uniqueid.'_'.$i, $jssub); 
 			}
+				Yii::app()->clientScript->registerScript('addbutton_'.$uniqueid, $jsadd); 
 			echo '&nbsp;';
 			echo CHtml::button('+', array('id' => sprintf('add_%s', $uniqueid)));
 

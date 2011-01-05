@@ -92,6 +92,7 @@ class YumProfileController extends YumController
 		$this->layout = Yum::module()->profileLayout;
 		return parent::beforeAction($action);
 	}
+
 	public function actionView() {
 		if(!isset($_GET['id']))
 			$_GET['id'] = Yii::app()->user->id;
@@ -99,14 +100,11 @@ class YumProfileController extends YumController
 		$this->layout = Yum::module()->profileLayout;
 		$view = Yum::module()->profileView;
 
-		$friends = array();
 		$model = YumUser::model()->findByPk($_GET['id']);
-		if($model)
-			$friends = $model->getFriends();
 
 		$this->render($view, array(
-					'model' => $model,
-					'friends'=>$friends));
+					'model' => $model));
+
 		$this->updateVisitor(Yii::app()->user->id, $model->id);
 	}
 

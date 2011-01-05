@@ -4,8 +4,7 @@ $this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
 $this->title = Yii::t("UserModule.user", 'Your profile');
 ?>
 
-<?php
-$this->renderPartial('/messages/new_messages');?>
+<?php $this->renderPartial('/messages/new_messages');?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
 <div class="errorSummary">
