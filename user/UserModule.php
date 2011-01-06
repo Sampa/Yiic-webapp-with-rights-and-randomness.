@@ -63,6 +63,7 @@ class UserModule extends CWebModule {
 	public $registrationEmail='register@website.com';
 	public $recoveryEmail='restore@website.com';
 	public $facebookConfig = false;
+	public $pageSize = 10;
 
 	// System-wide configuration option on how users should be notified about
   // new internal messages by email. Available options:

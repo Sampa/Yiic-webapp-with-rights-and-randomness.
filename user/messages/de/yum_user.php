@@ -1,7 +1,8 @@
 <?php
 
-
 return array(
+	'Jump to profile' => 'Zum Profil',
+	'Search for username' => 'Suche nach Benutzer',
 	'Privacy settings' => 'Privatsphäre',
 	'Browse memberships' => 'Mitgliedschaften kaufen',
 	'Membership' => 'Mitgliedschaft',

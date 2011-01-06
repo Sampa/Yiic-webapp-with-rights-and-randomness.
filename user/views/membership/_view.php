@@ -1,4 +1,4 @@
-<div class="view" style="float: left;">
+<div class="view" style="float: left;margin: 5px;"  >
 
 <h2> <?php echo $data->role->title; ?> </h2>
 

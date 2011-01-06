@@ -1,6 +1,6 @@
 <?php
-$this->title = Yii::t('UserModule.user', 'Users');
-$this->breadcrumbs=array(Yii::t("UserModule.user", "Users"));
+$this->title = Yum::t('Users');
+$this->breadcrumbs=array(Yum::t("Users"));
 ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(

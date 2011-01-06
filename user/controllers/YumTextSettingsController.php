@@ -1,7 +1,6 @@
 <?php
 
 class YumTextSettingsController extends YumController {
-	private $_model;
 
 	public function accessRules()
 	{

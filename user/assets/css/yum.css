@@ -17,3 +17,4 @@ label { display: inline }
 .checkbox { float: left; margin-right: 5px; }
 .listbox { display: inline; } 
 .roles {float: right; }
+.membership { float: left;margin: 5px; }

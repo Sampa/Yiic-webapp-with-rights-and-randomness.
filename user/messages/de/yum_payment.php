@@ -4,6 +4,7 @@ return array(
 	'Payments' => 'Zahlungsarten',
 	'Create payment type' => 'Zahlungsart anlegen',
 	'Update payment' => 'Zahlungsart bearbeiten',
+	'Save payment type' => 'Zahlungsart speichern',
 );
 ?>
 

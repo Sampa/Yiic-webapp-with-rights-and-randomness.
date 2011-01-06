@@ -25,6 +25,9 @@
 <?php
 echo CHtml::Button(Yum::t('Cancel'), array(
 			'submit' => array('payment/admin'))); 
-echo CHtml::submitButton(Yum::t('Create payment type')); 
+echo CHtml::submitButton($model->isNewRecord
+		?Yum::t('Create payment type')
+		:Yum::t('Save payment type')
+		); 
 $this->endWidget(); ?>
 </div> <!-- form -->

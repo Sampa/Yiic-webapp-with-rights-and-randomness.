@@ -136,18 +136,4 @@ class YumSettingsController extends YumController {
 		));
 	}
 
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			$id = Yii::app()->request->getQuery('id');
-			if(!empty($id))
-				$this->_model = YumSettings::model()->findbyPk($id);
-
-			if($this->_model===null)
-				throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
-		}
-		return $this->_model;
-	}
-
 }

@@ -1,7 +1,6 @@
 <?php
 
 class YumUserController extends YumController {
-	const PAGE_SIZE=10;
 	public $defaultAction = 'login';
 
 	public function accessRules() {
@@ -11,7 +10,7 @@ class YumUserController extends YumController {
 					'users'=>array('*'),
 					),
 				array('allow',
-					'actions'=>array('profile', 'logout', 'changepassword', 'passwordexpired', 'delete'),
+					'actions'=>array('profile', 'logout', 'changepassword', 'passwordexpired', 'delete', 'browse'),
 					'users'=>array('@'),
 					),
 				array('allow',
@@ -77,10 +76,6 @@ class YumUserController extends YumController {
 
 		if(Yii::app()->user->isGuest)
 			$this->actionLogin();
-		else if(Yii::app()->user->isAdmin())
-			$this->actionStats();
-		else if(isset($_GET['id']) || isset ($_GET['user_id']))
-			$this->actionProfile();
 		else
 			$this->actionList();
 	}
@@ -191,7 +186,8 @@ class YumUserController extends YumController {
 				if($_POST['YumUserChangePassword']['password'] == '') {
 					$password = YumUser::generatePassword();
 						$model->setPassword($password);
-					Yii::app()->user->setFlash('password', Yum::t('The generated Password is {password}', array('{password}' => $password)));
+						Yii::app()->user->setFlash('password',
+								Yum::t('The generated Password is {password}', array('{password}' => $password)));
 				} else {
 					$passwordform->attributes = $_POST['YumUserChangePassword'];
 
@@ -277,8 +273,7 @@ class YumUserController extends YumController {
 					if(!Yii::app()->request->isAjaxRequest)
 						$this->redirect(array('//user/user/admin'));
 				} else{
-					if(Yum::module()->enableLogging == true)
-					{
+					if(Yum::module()->enableLogging) {
 						$user=$this->loadUser(Yii::app()->user->id);
 						YumActivityController::logActivity($user, 'user_created');
 					}
@@ -294,23 +289,19 @@ class YumUserController extends YumController {
 					if(Yum::module()->enableProfileHistory == false) {
 						if(is_array($model->profile) && !$preserveProfiles) {
 							foreach($model->profile as $profile) {
-								if(Yum::module()->enableLogging == true)
-								{
+								if(Yum::module()->enableLogging) {
 									YumActivityController::logActivity($model, 'user_removed');
 								}
 								$profile->delete();
 							}
-						} else if (is_object($model->profile) && !$preserveProfiles)
-						{
-							if(Yum::module()->enableLogging == true)
-							{
+						} else if (is_object($model->profile) && !$preserveProfiles) {
+							if(Yum::module()->enableLogging) {
 								YumActivityController::logActivity($model, 'user_removed');
 							}
 							$model->profile->delete();
 						}
 					}
-					if(Yum::module()->enableLogging == true)
-					{
+					if(Yum::module()->enableLogging) {
 						YumActivityController::logActivity($model, 'user_removed');
 					}
 					$model->delete();
@@ -318,10 +309,8 @@ class YumUserController extends YumController {
 				} else {
 					Yii::app()->user->setFlash('profileMessage',
 							sprintf('%s. (%s)',
-								Yii::t('UserModule.user',
-									'Wrong password confirmation! Account was not deleted'),
-								CHtml::link(Yii::t('UserModule.user', 'Try again'), array(
-										'delete'))
+								Yum::t('Wrong password confirmation! Account was not deleted'),
+								CHtml::link(Yum::t('Try again'), array( 'delete'))
 								)
 							);
 					$this->redirect('profile');
@@ -338,12 +327,36 @@ class YumUserController extends YumController {
 
 
 
+	public function actionBrowse() {
+		$search = '';
+		if(isset($_POST['search_username']))
+			$search = $_POST['search_username'];
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('status = 1');
+		if($search) 
+			$criteria->addCondition("username = '{$search}'");
+		
+
+		$dataProvider=new CActiveDataProvider('YumUser', array(
+					'criteria' => $criteria, 
+					'pagination'=>array(
+						'pageSize'=>Yum::module()->pageSize,
+						)));
+
+		$this->render('browse',array(
+					'dataProvider'=>$dataProvider,
+					'search_username' => $search ? $search : '',
+					));
+
+	}
+
 	public function actionList()
 	{
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'criteria' => array('condition' => 'status = 1'),
 					'pagination'=>array(
-						'pageSize'=>self::PAGE_SIZE,
+						'pageSize'=>Yum::module()->pageSize,
 						)));
 
 		$this->render('index',array(

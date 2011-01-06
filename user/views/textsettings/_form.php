@@ -93,6 +93,17 @@
 <?php echo $form->textArea($model,'text_payment_arrived',array('rows'=>6, 'cols'=>50)); ?>
 <?php echo $form->error($model,'text_payment_arrived'); ?>
 </div>
+	<div class="row">
+<?php echo $form->labelEx($model,'text_membership_header'); ?>
+<?php echo $form->textArea($model,'text_membership_header',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'text_membership_header'); ?>
+</div>
+	<div class="row">
+<?php echo $form->labelEx($model,'text_membership_footer'); ?>
+<?php echo $form->textArea($model,'text_membership_footer',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($model,'text_membership_footer'); ?>
+</div>
+
 
 
 

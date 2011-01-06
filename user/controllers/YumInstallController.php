@@ -236,6 +236,8 @@ class YumInstallController extends YumController {
 							`text_message_new` text,
 							`text_membership_ordered` text,
 							`text_payment_arrived` text,
+							`text_membership_header` text,
+							`text_membership_footer` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
@@ -255,7 +257,9 @@ class YumInstallController extends YumController {
 									`text_profilecomment_new`,
 									`text_message_new`,
 									`text_membership_ordered`,
-									`text_payment_arrived` 
+									`text_payment_arrived`,
+									`text_membership_header`, 
+									`text_membership_footer` 
 									) VALUES ('1',
 										'en_us',
 										'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.',
@@ -270,7 +274,10 @@ class YumInstallController extends YumController {
 										'You have a new profile comment from {user}: {message} visit your profile: {link}',
 										'You have received a new message from {user}: {message}',
 'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
-'Your payment has been received on {payment_date} and your Membership {id} is now active'),
+'Your payment has been received on {payment_date} and your Membership {id} is now active',
+'Please select a Membership of your choice',
+'Your advantages: <br /> Premium: Everything is better <br /> Business: Everything is much better '
+),
 							('2',
 							 'de',
 							 'Willkommen zum System.',
@@ -294,7 +301,9 @@ class YumInstallController extends YumController {
 							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
 								 'Sie haben eine neue Nachricht von {user} bekommen: {message}',
 'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
-'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'
+'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.',
+'Bitte wählen Sie ein Paket ihrer Wahl:',
+'Ihre Vorteile: '
 ),
 								 ('3',
 									'es',
@@ -310,7 +319,7 @@ class YumInstallController extends YumController {
 									'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link}',
 									'Has recibido un mensaje de {user}: {message}',
 '{id}',
- '{payment_date}{id}'); ";
+ '{payment_date}{id}', '', ''); ";
 
 						$db->createCommand($sql)->execute();
 					}

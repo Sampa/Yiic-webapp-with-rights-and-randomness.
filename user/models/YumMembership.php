@@ -1,13 +1,11 @@
 <?php
 
 class YumMembership extends YumActiveRecord{
-	public static function model($className=__CLASS__)
-	{
+	public static function model($className=__CLASS__) {
 		return parent::model($className);
 	}
 
-	public function tableName()
-	{
+	public function tableName() {
 		return 'membership';
 	}
 
@@ -65,6 +63,7 @@ class YumMembership extends YumActiveRecord{
 	public function attributeLabels()
 	{
 		return array(
+				'id' => Yum::t('Order number'),
 				'membership_id' => Yum::t('Membership'),
 				'user_id' => Yum::t('User'),
 				'payment_id' => Yum::t('Payment'),

@@ -26,7 +26,7 @@ class YumMessagesController extends YumController {
 	}
 
 	public function actionView() {
-		$model = $this->loadModel();
+		$model = $this->loadModel('YumMessage');
 
 		if($model->to_user_id != Yii::app()->user->id
 				&& $model->from_user_id != Yii::app()->user->id) {
@@ -75,7 +75,7 @@ class YumMessagesController extends YumController {
 	}
 
 	public function actionDelete() {
-			$this->loadModel()->delete();
+			$this->loadModel('YumMessage')->delete();
 			if(!isset($_POST['ajax']))
 				$this->redirect(array('index'));
 	}

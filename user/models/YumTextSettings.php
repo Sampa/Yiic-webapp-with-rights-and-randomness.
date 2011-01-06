@@ -30,7 +30,9 @@ class YumTextSettings extends YumActiveRecord
 					text_email_recovery,
 					text_email_activation,
 					text_membership_ordered,
-					text_payment_arrived', 'safe'),
+					text_payment_arrived,
+					text_membership_header,
+					text_membership_footer', 'safe'),
 				array('language', 'length', 'max'=>5),
 				);
 	}

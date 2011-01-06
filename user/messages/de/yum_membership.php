@@ -1,5 +1,8 @@
 <?php
 return array(
+	'Price' => 'Preis',
+	'Order number' => 'Bestellnummer',
+	'Order membership' => 'Mitgliedschaft bestellen',
 	'Membership has not been payed yet' => 'Zahlungseingang noch nicht erfolgt',
 	'Membership payed at: {date}' => 'Zahlungseingang erfolgt am: {date}',
 	'Membership ends at: {date}' => 'Mitgliedschaft endet am: {date}',

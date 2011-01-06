@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	Yum::t('Memberships')=>array(Yii::t('app', 'index')),
+	Yum::t('Memberships')=>array('index'),
 	Yum::t('Manage'),
 );
 		?>
@@ -15,6 +15,7 @@ $locale = CLocale::getInstance(Yii::app()->language);
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
+		'id',
 		'user.username',
 	array(
 				'name'=>'order_date',

@@ -108,8 +108,7 @@ class YumMembershipController extends YumController {
 					));
 	}
 
-	public function actionAdmin()
-	{
+	public function actionAdmin() {
 		$model=new YumMembership('search');
 		$model->unsetAttributes();
 
