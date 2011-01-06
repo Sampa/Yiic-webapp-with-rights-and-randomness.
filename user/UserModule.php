@@ -131,11 +131,12 @@ class UserModule extends CWebModule {
 	public $forceProtectedProfiles = false;
 
 	// LoginType :
-	const LOGIN_BY_USERNAME   = 1;
-	const LOGIN_BY_EMAIL      = 2;
-	const LOGIN_BY_OPENID        = 4;
-	const LOGIN_BY_FACEBOOK      = 8;
-	const LOGIN_BY_TWITTER       = 16;
+	const LOGIN_BY_USERNAME		= 1;
+	const LOGIN_BY_EMAIL			= 2;
+	const LOGIN_BY_OPENID			= 4;
+	const LOGIN_BY_FACEBOOK		= 8;
+	const LOGIN_BY_TWITTER		= 16;
+	const LOGIN_BY_LDAP				= 32;
 	// Allow username and email login by default
 	public $loginType = 3;
 

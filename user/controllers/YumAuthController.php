@@ -20,6 +20,44 @@ class YumAuthController extends YumController {
 				);
 	}
 
+	/**
+	* Handles user login via OpenLDAP
+	*/
+
+	public function loginByLdap()
+	{
+		if (!Yum::module()->loginType & UserModule::LOGIN_BY_LDAP)
+			throw new Exception('login by ldap was called, but is not activated in application configuration');
+
+		Yii::app()->user->logout();
+
+		$identity = new YumUserIdentity($this->loginForm->username, $this->loginForm->password);
+		$identity->authenticateLdap();
+
+		switch ($identity->errorCode)
+		{
+			case YumUserIdentity::ERROR_NONE:
+				$duration = 3600 * 24 * 30; //30 days
+
+				Yii::app()->user->login($identity, $duration);
+
+				return $identity->user;
+				break;
+			case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
+				$this->loginForm->addError('status', Yum::t('Your account is not activated.'));
+				break;
+			case YumUserIdentity::ERROR_STATUS_BANNED:
+				$this->loginForm->addError('status', Yum::t('Your account is blocked.'));
+				break;
+			case YumUserIdentity::ERROR_PASSWORD_INVALID:
+				if (!$this->loginForm->hasErrors())
+					$this->loginForm->addError("password", Yum::t('Username or Password is incorrect'));
+				break;
+		}
+
+		return false;
+	}
+
 	public function loginByFacebook() {
 		if (!Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK)
 			throw new Exception('actionFacebook was called, but is not activated in application configuration');
@@ -111,7 +149,6 @@ class YumAuthController extends YumController {
 	}
 
 	public function authenticate($user) {
-
 		$identity = new YumUserIdentity($user->username, $this->loginForm->password);
 		$identity->authenticate();
 			switch($identity->errorCode) {
@@ -134,7 +171,7 @@ class YumAuthController extends YumController {
 						$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
 					break;
 				return false;
-		}
+			}
 	}
 
 	public function loginByEmail() {
@@ -179,6 +216,8 @@ class YumAuthController extends YumController {
 		 * knowing about this.
 		 */
 		$success = false;
+		$action = 'login';
+
 		if (isset($_POST['YumUserLogin'])) {
 			$this->loginForm->attributes = $_POST['YumUserLogin'];
 			// validate user input for the rest of login methods
@@ -191,16 +230,21 @@ class YumAuthController extends YumController {
 					$this->loginForm->setScenario('openid');
 					$success = $this->loginByOpenid();
 				}
+				if(Yum::module()->loginType & UserModule::LOGIN_BY_LDAP && !$success)
+				{
+					$success = $this->loginByLdap();
+					$action = 'ldap_login';
+				}
 			}
 		}
 		if (Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success)
 			$success = $this->loginByFacebook();
 		if (Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success)
-			$sucess = $this->loginByTwitter();
+			$success = $this->loginByTwitter();
 		if ($success instanceof YumUser) {
 			$success->lastvisit = time();
-			$success->save();
-			YumActivityController::logActivity(Yii::app()->user->id, 'login');
+			$success->save(true, array('lastvisit'));
+			YumActivityController::logActivity($success, $action);
 			$this->redirectUser($success);
 		}
 

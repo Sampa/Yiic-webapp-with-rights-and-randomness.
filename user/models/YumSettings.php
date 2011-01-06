@@ -22,9 +22,9 @@ class YumSettings extends YumActiveRecord {
 
     public function rules() {
         return array(
-            array('title, loginType, messageSystem, notifyType, enableAvatar,notifyemailchange', 'required'),
-            array('password_expiration_time, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, enableCaptcha', 'numerical', 'integerOnly' => true),
-            array('title', 'length', 'max' => 255),
+            array('title, loginType, messageSystem, notifyType, enableAvatar, notifyemailchange', 'required'),
+            array('password_expiration_time, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, enableCaptcha, ldap_port, ldap_protocol, ldap_tls, ldap_autocreate, ldap_transfer_attr, ldap_transfer_pw', 'numerical', 'integerOnly' => true),
+            array('title, ldap_basedn, ldap_host', 'length', 'max' => 255),
             array('loginType', 'required', 'requiredValue' => true),
             array('id, title, preserveProfiles, registrationType, enableRecovery, enableProfileHistory, readOnlyProfiles, loginType, enableCaptcha', 'safe', 'on' => 'search'),
         );
@@ -49,7 +49,15 @@ class YumSettings extends YumActiveRecord {
             'readOnlyProfiles' => Yum::t('Read only Profiles'),
             'loginType' => Yum::t('Login Type'),
             'enableCaptcha' => Yum::t('Enable Captcha'),
-            'notifyemailchange'  => Yum::t('Notify user on email change,')
+            'notifyemailchange'  => Yum::t('Notify user on email change'),
+						'ldap_host' => Yum::t('Hostname/URL'),
+						'ldap_port' => Yum::t('Port'),
+						'ldap_protocol' => Yum::t('Protocol version'),
+						'ldap_basedn' => Yum::t('BaseDN'),
+						'ldap_autocreate' => Yum::t('Automatically create database user'),
+						'ldap_tls' => Yum::t('Start TLS'),
+						'ldap_transfer_attr' => Yum::t('Transfer ldap attributes to user profile'),
+						'ldap_transfer_pw' => Yum::t('Transfer ldap user password to database'),
         );
     }
 

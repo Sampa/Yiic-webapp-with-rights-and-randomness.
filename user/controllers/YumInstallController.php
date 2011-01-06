@@ -137,20 +137,16 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 					}
 					if(isset($_POST['installActivityLog'])) {  
-						$actions = '';
-						foreach(YumActivityController::possibleActions() as $action)
-							$actions .= "'{$action}',";
-						$actions = substr($actions, 0, strlen($actions) - 1);
 						$sql = "CREATE TABLE IF NOT EXISTS `".$activityTable."` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`timestamp` int NOT NULL,
 							`user_id` int(11),
 							`remote_addr` varchar(16),
 							`http_user_agent` varchar(255),
-							`action` enum(".$actions."),
+							`action` varchar(255),
 							PRIMARY KEY (`id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-						";
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+
 						$db->createCommand($sql)->execute();
 
 					}
@@ -193,7 +189,15 @@ class YumInstallController extends YumController {
 							`loginType` int(11) not null,
 							`notifyemailchange` enum('oldemail','newemail'),
 							`enableCaptcha` tinyint(1) NOT NULL DEFAULT '1',
-							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+							`ldap_host` varchar(255) NULL,
+							`ldap_port` int(5) NULL,
+							`ldap_basedn` varchar(255) NULL,
+							`ldap_protocol` enum('2', '3') NOT NULL Default '3',
+							`ldap_autocreate` tinyint(1) NOT NULL DEFAULT '1',
+							`ldap_tls` tinyint(1) NOT NULL DEFAULT '0',
+							`ldap_transfer_attr` tinyint(1) NOT NULL DEFAULT '1',
+							`ldap_transfer_pw` tinyint(1) NOT NULL DEFAULT '0',
+							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
 						$db->createCommand($sql)->execute();
 
 						$sql = "INSERT INTO `".$settingsTable."` (`id`,

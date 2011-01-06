@@ -2,6 +2,8 @@
 
 <?php echo $form->errorSummary($model); ?>
 
+<?php $this->beginWidget('system.web.widgets.CClipWidget', array('id' => Yum::t('General'))); ?>
+
 <div class="row">
 <?php echo $form->labelEx($model,'title'); ?>
 <?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
@@ -100,16 +102,17 @@
 <?php echo $form->error($model,'password_expiration_time'); ?>
 </div>
 
-		<div class="row">
+<div class="row">
 <?php echo $form->labelEx($model,'loginType'); ?>
 
 <?php 
 foreach(array(
 			'1' => 'by Username',
-			'2' => 'by email',
-			'4' => 'by Open ID',
+			'2' => 'by E-Mail',
+			'4' => 'by OpenID',
 			'8' => 'by Facebook',
 			'16' => 'by Twitter',
+			'32' => 'by OpenLDAP',
 			) as $key => $value)  {
 	echo CHtml::checkBox('loginType['.$key.']', $model->loginType & $key);
 	echo CHtml::label(Yum::t($value), 'loginType_'.$key, array(
@@ -153,9 +156,75 @@ foreach(array(
 			)); ?>
 <?php echo $form->error($model,'notifyemailchange'); ?>
 </div>
+
+<?php $this->endWidget(); ?>
+<?php $this->beginWidget('system.web.widgets.CClipWidget', array('id' => Yum::t('OpenLDAP'))); ?>
+
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_host'); ?>
+<?php echo $form->textField($model,'ldap_host',array('size'=>45,'maxlength'=>255)); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('OpenLDAP Hostname or URL')); ?>
+<?php echo $form->error($model,'ldap_host'); ?>
 </div>
 
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_port'); ?>
+<?php echo $form->textField($model,'ldap_port',array('size'=>3,'maxlength'=>255)); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('OpenLDAP Port')); ?>
+<?php echo $form->error($model,'ldap_port'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_tls'); ?>
+<?php echo $form->checkBox($model,'ldap_tls'); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Start TLS?')); ?>
+<?php echo $form->error($model,'ldap_tls'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_protocol'); ?>
+<?php echo $form->dropDownList($model,'ldap_protocol', array(
+			2 => '2',
+			3 => '3',
+			)); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('OpenLDAP protocol version')); ?>
+<?php echo $form->error($model,'ldap_protocol'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_basedn'); ?>
+<?php echo $form->textField($model,'ldap_basedn',array('size'=>45,'maxlength'=>255)); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('OpenLDAP BaseDN')); ?>
+<?php echo $form->error($model,'ldap_basedn'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_autocreate'); ?>
+<?php echo $form->checkBox($model,'ldap_autocreate'); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('creates database user')); ?>
+<?php echo $form->error($model,'ldap_autocreate'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_transfer_attr'); ?>
+<?php echo $form->checkBox($model,'ldap_transfer_attr'); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Transfer ldap attributes to user profile')); ?>
+<?php echo $form->error($model,'ldap_transfer_attr'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->labelEx($model,'ldap_transfer_pw'); ?>
+<?php echo $form->checkBox($model,'ldap_transfer_pw'); ?>
+<?php printf('<p class="tooltip">%s</p>', Yum::t('Transfer ldap password to database')); ?>
+<?php echo $form->error($model,'ldap_transfer_pw'); ?>
+</div>
+
+<?php $this->endWidget(); ?>
+
+<?php $this->widget('system.web.widgets.CTabView', array('tabs' => $this->getTabParameters(), 'htmlOptions'=>array('style'=>'width: 650px'))); ?>
+
 <?php
-Yum::register('js/tools.tooltip-1.1.3.min.js');
-Yum::register('js/tooltip.js');
-Yum::register('css/yum.css');?>
+#Yum::register('js/tools.tooltip-1.1.3.min.js');
+#Yum::register('js/tooltip.js');
+Yum::register('css/yum.css');
+?>

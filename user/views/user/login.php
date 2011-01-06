@@ -37,7 +37,7 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 	
 	<div class="row">
 		<?php 
-		if($module->loginType & UserModule::LOGIN_BY_USERNAME)
+		if($module->loginType & UserModule::LOGIN_BY_USERNAME || $module->loginType & UserModule::LOGIN_BY_LDAP)
 			echo CHtml::activeLabelEx($model,'username'); 
 		if($module->loginType & UserModule::LOGIN_BY_EMAIL)
 			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('E-Mail address')); 
@@ -56,7 +56,7 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 		
 	</div>
 	
-	<div class="row">
+<div class="row">
 	<p class="hint">
 	<?php 
 if($module->registrationType != YumRegistration::REG_DISABLED)

@@ -59,7 +59,8 @@ class YumSettingsController extends YumController {
 		));
 	}
 
-	public function setLoginType($type) {
+	public function setLoginType($type)
+	{
 		$logintype = 0;
 
 		if (is_array($type))
@@ -68,6 +69,20 @@ class YumSettingsController extends YumController {
 
 		return $logintype;
 	}
+
+	/*
+	 * used to display CTabView
+	 */
+	public function getTabParameters()
+	{
+		$tabParameters = array();
+
+		foreach ($this->clips as $key => $clip)
+			$tabParameters['tab' . (count($tabParameters) + 1)] = array('title' => $key, 'content' => $clip);
+
+		return $tabParameters;
+	}
+
 
 	public function actionUpdate()
 	{

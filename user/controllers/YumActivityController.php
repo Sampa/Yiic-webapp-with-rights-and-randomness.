@@ -5,6 +5,7 @@ class YumActivityController extends YumController {
 			'logout',
 			'fb_login',
 			'fb_logout',
+			'ldap_login',
 			'register',
 			'recovery',
 			'failed_login_attempt',
@@ -59,7 +60,7 @@ class YumActivityController extends YumController {
 
 	public static function logActivity($user, $action) {
 		if($user === NULL || $action === NULL)
-			return true;
+			return false;
 
 		if(!in_array($action, self::possibleActions()) 
 				|| !Yum::module()->enableLogging)
@@ -72,11 +73,11 @@ class YumActivityController extends YumController {
 
 		$activity->user_id = $user->id;
 		$activity->timestamp = time();
-		$activity->action = $action; 
+		$activity->action = $action;
 		$activity->remote_addr = $_SERVER['REMOTE_ADDR'];
 
 		// Only log the user agent on login, to safe disk space
-		if($action == 'login')
+		if($action == 'login' || $action == 'ldap_login')
 			$activity->http_user_agent = $_SERVER['HTTP_USER_AGENT'];
 
 		$activity->save();
@@ -91,6 +92,12 @@ class YumActivityController extends YumController {
 				break;
 			case 'logout':
 				Yii::log(Yum::t('User {username} successfully logged off', array(
+								'{username}' => $user->username)),
+						'info',
+						'modules.user.controllers.YumUserController');
+				break;
+			case 'ldap_login':
+				Yii::log(Yum::t('User {username} successfully logged in via OpenLDAP', array(
 								'{username}' => $user->username)),
 						'info',
 						'modules.user.controllers.YumUserController');
