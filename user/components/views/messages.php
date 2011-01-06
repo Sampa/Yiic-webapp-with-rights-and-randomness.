@@ -12,13 +12,14 @@ if($messages) {
 				$message->from_user->username,
 				CHtml::link($message->title, array('//user/messages/view', 'id' => $message->id)),
 				$message->from_user_id != Yii::app()->user->id 
-				? CHtml::link('Reply', array('//user/messages/compose', 'to_user_id' => $message->from_user_id))
+				? CHtml::link(Yum::t('Reply'), array('//user/messages/compose', 'to_user_id' => $message->from_user_id))
 				: '',
 				!$message->message_read
-				? CHtml::link('Mark as Read', array('//user/messages/mark_as_read', 'id' => $message->id))
+				? CHtml::link(Yum::t('Mark as read'), array('//user/messages/mark_as_read', 'id' => $message->id))
 				: '',
 				$message->from_user_id != Yii::app()->user->id 
-				? CHtml::link('Remove', array('//user/messages/delete', 'id' => $message->id), array('confirm' => Yum::t('Are you sure?')))
+				? CHtml::link(Yum::t('Remove'), array(
+						'//user/messages/delete', 'id' => $message->id), array('confirm' => Yum::t('Are you sure?')))
 				: '');
 	}
 	echo '</table>';

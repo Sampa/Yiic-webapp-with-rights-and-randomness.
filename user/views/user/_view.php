@@ -1,4 +1,4 @@
-<div class="view">
+<div class="view" style="float:left; margin:5px;">
 <?php echo $data->getAvatar(null, true); ?>
 <?php printf('<h3>%s</h3>', $data->username); ?>
 

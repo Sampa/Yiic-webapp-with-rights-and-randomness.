@@ -39,7 +39,6 @@ class YumUserMenu extends CPortlet {
 				array('label' => 'Messages', 'items' => array ( 
 						array('label' => 'My inbox', 'url' => array('/user/messages/index')),
 						array('label' => 'Sent messages', 'url' => array('/user/messages/sent')),
-						array('label' => 'Write a message', 'url' => array('/user/messages/compose')),
 						),
 					),
 

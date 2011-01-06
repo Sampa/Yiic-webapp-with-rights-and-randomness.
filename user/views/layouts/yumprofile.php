@@ -7,6 +7,7 @@ $module = Yii::app()->getModule('user');
 $this->beginContent($module->baseLayout); ?>
 
 <div id="usermenu">
+<?php $this->widget('ProfileVisitWidget'); ?>
 <?php $this->renderMenu(); ?>
 </div>
 

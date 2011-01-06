@@ -33,7 +33,7 @@ if($friends) {
 						'id'=>'remove_friend','name'=>'YumFriendship[remove_friend]'));
 		}
 		printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-				$friend->inviter->getAvatar($friend->inviter, true),
+				$friend->inviter->getAvatar($friend->invited, true),
 				CHtml::link($friend->invited->username, array(
 						'//user/profile/view', 'id'=>$friend->invited->id)),
 				$friend->getStatus(), 

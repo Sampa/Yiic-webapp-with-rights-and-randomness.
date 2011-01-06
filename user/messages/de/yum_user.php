@@ -1,6 +1,15 @@
 <?php
 
 return array(
+'Please enter your user name or email address.' => 'Bitte geben Sie ihren Benutzernamen oder E-mail Adresse ein',
+	'Restore' => 'Wiederherstellen',
+	'Subject' => 'Betreff',
+	'Reply' => 'Antworten',
+	'Remove' => 'Entfernen',
+	'Mark as read' => 'Als gelesen markieren',
+	'This users have visited your profile recently' => 'Diese Benutzer haben kürzlich mein Profil besucht',
+	'Profile visits' => 'Profilbesuche',
+	'Nobody has visited your profile yet' => 'Bisher hat noch niemand ihr Profil besucht',
 	'Jump to profile' => 'Zum Profil',
 	'Search for username' => 'Suche nach Benutzer',
 	'Privacy settings' => 'Privatsphäre',

@@ -1,11 +1,11 @@
 <?php 
-$this->pageTitle=Yii::app()->name . ' - '.Yii::t("UserModule.user", "Restore");
+$this->pageTitle=Yii::app()->name . ' - '.Yum::t("Restore");
 
 $this->breadcrumbs=array(
-	Yii::t("UserModule.user", "Login") => array(Yum::route('{user}/login')),
-	Yii::t("UserModule.user", "Restore"));
+	Yum::t("Login") => array(Yum::route('{user}/login')),
+	Yum::t("Restore"));
 
-$this->title = Yii::t("UserModule.user", "Restore"); 
+$this->title = Yum::t("Restore"); 
 ?>
 
 <?php if(Yii::app()->user->hasFlash('recoveryMessage')): ?>
@@ -22,7 +22,7 @@ $this->title = Yii::t("UserModule.user", "Restore");
 	<div class="row">
 		<?php echo CHtml::activeLabel($form,'login_or_email'); ?>
 		<?php echo CHtml::activeTextField($form,'login_or_email') ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user", "Please enter your login or email address."); ?></p>
+		<p class="hint"><?php echo Yum::t("Please enter your user name or email address."); ?></p>
 	</div>
 	
 	<div class="row submit">
