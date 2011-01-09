@@ -6,11 +6,7 @@ $this->title = Yii::t("UserModule.user", 'Your profile');
 
 <?php $this->renderPartial('/messages/new_messages');?>
 
-<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="errorSummary">
-<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
-</div>
-<?php endif; ?>
+<?php Yum::getFlash(); ?>
 <div class="avatar">
 <?php echo $model->renderAvatar(); ?>
 </div>

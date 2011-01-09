@@ -13,7 +13,7 @@ class YumUserChangePassword extends YumFormModel
 
 	public function rules() 
 	{
-		$passwordRequirements = Yii::app()->getModule('user')->passwordRequirements;
+		$passwordRequirements = Yum::module()->passwordRequirements;
 
 		$passwordrule = array_merge(array('password', 'YumPasswordValidator'), 
 				$passwordRequirements);
@@ -21,7 +21,7 @@ class YumUserChangePassword extends YumFormModel
 		$rules[] = $passwordrule;
 		$rules[] = array('password, verifyPassword', 'required');
 		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword',
-				'message' => Yii::t("UserModule.user", "Retype password is incorrect."));
+				'message' => Yum::t('Retyped password is incorrect'));
 				
 
 		return $rules; 

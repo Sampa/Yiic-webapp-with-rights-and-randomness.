@@ -20,6 +20,22 @@ class Yum
 			Yii::app()->clientScript->registerCssFile($path);
 	}
 
+	/* set a flash message to display after the request is done */
+	public static function setFlash($message) 
+	{
+		return Yii::app()->user->setFlash('yum_flash', Yum::t($message));
+	}
+
+	/* retrieve the flash message again */
+	public static function getFlash()
+	{
+		if(Yii::app()->user->hasFlash('yum_flash')) {
+			echo '<div class="info">';
+			echo Yii::app()->user->getFlash('yum_flash'); 
+			echo '</div>';
+		}
+	}
+
 	/** Associate the right translation file depending on the
 		controller */
 	public static function t($string, $params = array())

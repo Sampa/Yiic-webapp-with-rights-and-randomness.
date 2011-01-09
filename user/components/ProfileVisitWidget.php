@@ -1,6 +1,6 @@
 <?php
-Yii::import('zii.widgets.CPortlet');
 Yii::import('application.modules.user.UserModule');
+Yii::import('zii.widgets.CPortlet');
 
 class ProfileVisitWidget extends CPortlet
 {
@@ -13,8 +13,8 @@ class ProfileVisitWidget extends CPortlet
 	protected function renderContent()
 	{
 		if(!Yii::app()->user->isGuest)
-		$this->render('profile_visits', array(
-					'visits' => Yii::app()->user->data()->visits));
+			$this->render('profile_visits', array(
+						'visits' => Yii::app()->user->data()->visits));
 	}
 } 
 ?>

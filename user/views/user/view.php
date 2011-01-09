@@ -51,6 +51,10 @@ if(Yii::app()->user->isAdmin()) {
 			'value' => date(UserModule::$dateFormat,$model->lastvisit),
 			),
 		array(
+			'name' => 'lastpasswordchange',
+			'value' => date(UserModule::$dateFormat,$model->lastpasswordchange),
+			),
+		array(
 			'name' => 'superuser',
 			'value' => YumUser::itemAlias("AdminStatus",$model->superuser),
 			),

@@ -108,40 +108,33 @@ class YumUserController extends YumController {
 	/**
 	 * Change password
 	 */
-	public function actionChangepassword($expired = false) {
+	public function actionChangePassword($expired = false) {
+		$uid = Yii::app()->user->id;
 		if(isset($_GET['id']))
 			$uid = $_GET['id'];
-		else
-			$uid =Yii::app()->user->id;
 
 		$form = new YumUserChangePassword;
-		if (isset(Yii::app()->user->id)) {
+
 			if(isset($_POST['YumUserChangePassword'])) {
 				$form->attributes = $_POST['YumUserChangePassword'];
+
 				if($form->validate()) {
 					$new_password = YumUser::model()->findByPk($uid);
-					$new_password->password = YumUser::encrypt($form->password);
-					$new_password->lastpasswordchange = time();
-					$new_password->activationKey = YumUser::encrypt(microtime().$form->password);
 
-					if($new_password->save()) {
+					if($new_password->setPassword($form->password)) {
 						Yii::log(Yum::t('User {username} changed his password', array(
 										'{username}' => $new_password->username)),
 								'info',
 								'modules.user.controllers.YumUserController');
-
-						Yii::app()->user->setFlash('profileMessage',
-								Yii::t("UserModule.user", "The new password has been saved."));
+						Yum::setFlash('The new password has been saved.');
 						$this->redirect(array("user/profile"));
 					} else {
-						Yii::app()->user->setFlash('profileMessage',
-								Yii::t("UserModule.user", "There was an error saving the password."));
+						Yum::setFlash('There was an error saving the password');
 						$this->redirect(array('/user/profile'));
 					}
 				}
 			}
 			$this->render('changepassword', array('form'=>$form, 'expired' => $expired));
-		}
 	}
 
 	public function actionProfile() {
