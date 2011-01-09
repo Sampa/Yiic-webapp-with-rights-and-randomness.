@@ -1,6 +1,11 @@
 <?php
 
 return array(
+		'Message "{message}" was marked as read' => 'Nachricht "{message}" wurde als gelesen markiert.',
+		'Message "{message}" has been sent to {to}' => 'Nachricht "{message}" wurde an {to} gesendet',
+		'Write a message to {username}' => 'Nachricht an {username} schreiben',
+		'No new messages' => 'Keine neuen Nachrichten',
+		'New messages' => 'Neue Nachrichten',
 		'Your actual password' => 'Ihr jetziges Passwort',
 		'Your actual password is not correct' => 'Ihr jetziges Passwort ist nicht korrekt',
 		'New password' => 'Neues Passwort',

@@ -2,11 +2,11 @@
 if(!isset($to_user_id) || $to_user_id === false) 
 	throw new CException(Yum::t('No recipient given'));
 
-$this->title = Yum::t('Composing new message');
-$this->breadcrumbs = array(
-		Yum::t('Messages') => array('index'),
-		Yum::t('Compose new message'),
-		);
+	$this->title = Yum::t('Composing new message');
+	$this->breadcrumbs = array(
+			Yum::t('Messages') => array('index'),
+			Yum::t('Compose new message'),
+			);
 ?>
 
 
@@ -14,6 +14,7 @@ $this->breadcrumbs = array(
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 			'id'=>'yum-messages-form',
+			'action' => array('//user/messages/compose'),
 			'enableAjaxValidation'=>true,
 			)); ?>
 
@@ -21,9 +22,9 @@ $this->breadcrumbs = array(
 
 echo $form->errorSummary($model); 
 
-	echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
-	echo Yum::t('This message will be sent to {username}', array(
-				'{username}' => YumUser::model()->findByPk($to_user_id)->username));
+echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
+echo Yum::t('This message will be sent to {username}', array(
+			'{username}' => YumUser::model()->findByPk($to_user_id)->username));
 ?>
 <div class="row">
 <?php echo $form->labelEx($model,'title'); ?>

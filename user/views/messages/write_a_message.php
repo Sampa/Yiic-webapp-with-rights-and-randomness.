@@ -4,8 +4,10 @@ if(Yum::module()->messageSystem != YumMessage::MSG_NONE && $model->id != Yii::ap
 	$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 				'id'=>'message',
 				'options'=>array(
+					'width' => '600px',
 					'model' => true,
-					'title'=>$model->username,
+					'title'=> Yum::t('Write a message to {username}', array(
+							'{username}' => $model->username)),
 					'autoOpen'=>false,
 					),
 				));

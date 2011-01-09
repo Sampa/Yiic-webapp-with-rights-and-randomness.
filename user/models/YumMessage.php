@@ -23,8 +23,8 @@ class YumMessage extends YumActiveRecord
 	const MSG_DIALOG = 'Dialog';
 
 	// set $omit_mail to true to avoid e-mail notification of the 
-  // received message. It is mainly user for the privacy settings
-  // (receive profile comment email/friendship request email/...)
+	// received message. It is mainly user for the privacy settings
+	// (receive profile comment email/friendship request email/...)
 	public $omit_mail = false;
 
 	/**
@@ -57,12 +57,12 @@ class YumMessage extends YumActiveRecord
 
 	public function afterSave() {
 		// If the user has activated email receiving, send a email
-			if($this->to_user->privacy && $this->to_user->privacy->message_new_message)
-				YumMailer::send($this->to_user->profile[0]->email,
-						$this->title,
-						YumTextSettings::getText('text_message_new', array(
-								'{user}' => $this->from_user->username,
-								'{message}' => $this->message)));
+		if($this->to_user->privacy && $this->to_user->privacy->message_new_message)
+			YumMailer::send($this->to_user->profile[0]->email,
+					$this->title,
+					YumTextSettings::getText('text_message_new', array(
+							'{user}' => $this->from_user->username,
+							'{message}' => $this->message)));
 		return parent::afterSave();
 	}
 
@@ -143,19 +143,29 @@ class YumMessage extends YumActiveRecord
 			return Yum::t('new');
 	}
 
+
+	public function unread($id = false) 
+	{
+		if(!$id)
+			$id = Yii::app()->user->id;
+
+		$this->getDbCriteria()->mergeWith(array(
+					'condition' => "to_user_id = {$id} and message_read = 0"
+				));
+		return $this;
+	}
+
 	public function scopes() {
+		$id = Yii::app()->user->id;
 		return array(
 				'all' => array(
-					'condition' => 'to_user_id = '.Yii::app()->user->id .
-					               ' or from_user_id = ' . Yii::app()->user->id), 
+					'condition' => "to_user_id = {$id} or from_user_id = {$id}"), 
 				'read' => array(
-					'condition' => 'to_user_id = '.Yii::app()->user->id . '& message_read'),
+					'condition' => "to_user_id = {$id} and message_read = 1"),
 				'sent' => array(
-					'condition' => 'from_user_id = '.Yii::app()->user->id),
-				'unread' => array(
-					'condition' => 'to_user_id = '.Yii::app()->user->id . '& !message_read'),
+					'condition' => "from_user_id = {$id}"),
 				'answered' => array(
-					'condition' => 'to_user_id = '.Yii::app()->user->id . '& answered'),
+					'condition' => "to_user_id = {$id} and answered = 1"),
 				);
 	}
 
@@ -168,19 +178,19 @@ class YumMessage extends YumActiveRecord
 	public function relations()
 	{
 		return array(
-			'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
-			'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
-			);
+				'from_user' => array(self::BELONGS_TO, 'YumUser', 'from_user_id'),
+				'to_user' => array(self::BELONGS_TO, 'YumUser', 'to_user_id'),
+				);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
-				'id' => Yii::t('UserModule.user', '#'),
-				'from_user_id' => Yii::t('UserModule.user', 'From'),
-				'to_user_id' => Yii::t('UserModule.user', 'To'),
-				'title' => Yii::t('UserModule.user', 'Title'),
-				'message' => Yii::t('UserModule.user', 'Message'),
+				'id' => Yum::t('#'),
+				'from_user_id' => Yum::t('From'),
+				'to_user_id' => Yum::t('To'),
+				'title' => Yum::t('Title'),
+				'message' => Yum::t('Message'),
 				);
 	}
 

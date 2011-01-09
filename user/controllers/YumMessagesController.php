@@ -7,7 +7,7 @@ class YumMessagesController extends YumController {
 		return array(
 			array('allow',
 				'actions' => array('view', 'compose', 'index',
-					'delete', 'sent', 'success', 'users'),
+					'delete', 'sent', 'success', 'users', 'markRead'),
 				'users'=>array('@'),
 				),
 			array('allow',
@@ -25,6 +25,16 @@ class YumMessagesController extends YumController {
 			echo json_encode(CHtml::listData(YumUser::model()->findAll(), 'id', 'username'));
 	}
 
+	public function actionMarkRead() {
+		$model = $this->loadModel('YumMessage');
+		$model->message_read = true;
+		$model->save();
+		Yum::setFlash(Yum::t('Message "{message}" was marked as read', array(
+					'{message}' => $model->title
+					)));
+		$this->redirect(array('//user/profile/view', 'id' => $model->from_user_id));
+	}
+
 	public function actionView() {
 		$model = $this->loadModel('YumMessage');
 
@@ -32,7 +42,6 @@ class YumMessagesController extends YumController {
 				&& $model->from_user_id != Yii::app()->user->id) {
 			$this->render('message_view_forbidden');
 		} else {
-
 			if(!$model->message_read) {
 				$model->message_read = true;
 				$model->save();
@@ -59,8 +68,13 @@ class YumMessagesController extends YumController {
 					$model->from_user_id = Yii::app()->user->id;
 					$model->to_user_id = $user_id;
 					$model->save();
+					Yum::setFlash(Yum::t('Message "{message}" has been sent to {to}', array(
+									'{message}' => $model->title,
+									'{to}' => $model->to_user->username,
+									)));
 				}
-				$this->redirect(array('success'));
+				$this->redirect(array(
+							'//user/profile/view', 'id' => $model->to_user_id));
 			}
 		}
 
