@@ -1,6 +1,10 @@
 <?php
 
 return array(
+		'Your actual password' => 'Ihr jetziges Passwort',
+		'Your actual password is not correct' => 'Ihr jetziges Passwort ist nicht korrekt',
+		'New password' => 'Neues Passwort',
+		'Retype your new password' => 'Wiederholen sie ihr neues Passwort',
 		'Logged in as' => 'Angemeldet als',
 		'Please enter your user name or email address.' => 'Bitte geben Sie ihren Benutzernamen oder E-mail Adresse ein',
 		'Restore' => 'Wiederherstellen',
@@ -11,6 +15,7 @@ return array(
 		'This users have visited your profile recently' => 'Diese Benutzer haben kürzlich mein Profil besucht',
 		'Profile visits' => 'Profilbesuche',
 		'Nobody has visited your profile yet' => 'Bisher hat noch niemand ihr Profil besucht',
+		'You have no messages yet' => 'Sie haben bisher noch keine Nachrichten',
 		'Jump to profile' => 'Zum Profil',
 		'Search for username' => 'Suche nach Benutzer',
 		'Privacy settings' => 'Privatsphäre',

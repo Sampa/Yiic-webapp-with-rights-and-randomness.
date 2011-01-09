@@ -3,12 +3,12 @@
 $this->pageTitle = Yii::app()->name . ' - ' . Yum::t('Profile');
 $this->breadcrumbs = array(Yum::t('Profile'), $model->username);
 $this->title = Yum::t('Profile');
+Yum::renderFlash(); 
 echo $model->getAvatar(); 
 
 if($model->id == Yii::app()->user->id)
 	$this->renderPartial('/messages/new_messages');
 
-Yum::getFlash(); 
 ?>
 
 <table class="dataGrid">

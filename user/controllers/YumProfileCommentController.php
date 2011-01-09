@@ -26,14 +26,17 @@ class YumProfileCommentController extends YumController
 	public function actionCreate() {
 		$model = new YumProfileComment;
 
+		$this->performAjaxValidation($model, 'profile-comment-form');
+
 		if(isset($_POST['YumProfileComment'])) {
 			$model->attributes = $_POST['YumProfileComment'];
 			$model->save();
 			}
 
-		$this->renderPartial('/profile/view',array(
-					'model'=>$model->profile->user
-					), false, true);
+		if(isset($model->profile->user) && $user = $model->profile->user)
+			$this->renderPartial('/profile/view',array(
+						'model'=>$user
+						), false, true);
 	}
 
 

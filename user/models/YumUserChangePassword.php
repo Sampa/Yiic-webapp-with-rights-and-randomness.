@@ -8,8 +8,14 @@
 
 class YumUserChangePassword extends YumFormModel 
 {
+//	private $_errors;
 	public $password;
 	public $verifyPassword;
+	public $actualPassword;
+
+	public function addError($attribute, $error) {
+		parent::addError($attribute, Yum::t($error));
+	}
 
 	public function rules() 
 	{
@@ -19,10 +25,9 @@ class YumUserChangePassword extends YumFormModel
 				$passwordRequirements);
 
 		$rules[] = $passwordrule;
-		$rules[] = array('password, verifyPassword', 'required');
+		$rules[] = array('password, verifyPassword, actualPassword', 'required');
 		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword',
-				'message' => Yum::t('Retyped password is incorrect'));
-				
+				'message' => 'Retyped password is incorrect');
 
 		return $rules; 
 	}
@@ -33,14 +38,14 @@ class YumUserChangePassword extends YumFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'password'=>Yii::t("UserModule.user", "password"),
-			'verifyPassword'=>Yii::t("UserModule.user", "Retype password"),
+			'password'=>Yum::t('New password'),
+			'verifyPassword'=>Yum::t('Retype your new password'),
+			'actualPassword'=>Yum::t('Your actual password'),
 		);
 	}
 	
 	
 	public function createRandomPassword($lowercase=0,$uppercase=0,$minnumbers=0,$max=0) {
-	
     $chars = "abcdefghijkmnopqrstuvwxyz";
     $numbers = "1023456789";
     srand((double)microtime()*1000000);

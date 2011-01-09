@@ -81,7 +81,7 @@ class YumUserController extends YumController {
 	}
 
 	public function actionStats() {
-			$this->redirect($this->createUrl('/user/statistics/index'));
+		$this->redirect($this->createUrl('/user/statistics/index'));
 	}
 
 
@@ -115,26 +115,23 @@ class YumUserController extends YumController {
 
 		$form = new YumUserChangePassword;
 
-			if(isset($_POST['YumUserChangePassword'])) {
-				$form->attributes = $_POST['YumUserChangePassword'];
+		if(isset($_POST['YumUserChangePassword'])) {
+			$form->attributes = $_POST['YumUserChangePassword'];
+			$form->validate();
 
-				if($form->validate()) {
-					$new_password = YumUser::model()->findByPk($uid);
+			if(YumUser::encrypt($form->actualPassword) != YumUser::model()->findByPk($uid)->password)
+				$form->addError('actualPassword', 'Your actual password is not correct');
 
-					if($new_password->setPassword($form->password)) {
-						Yii::log(Yum::t('User {username} changed his password', array(
-										'{username}' => $new_password->username)),
-								'info',
-								'modules.user.controllers.YumUserController');
-						Yum::setFlash('The new password has been saved.');
-						$this->redirect(array("user/profile"));
-					} else {
-						Yum::setFlash('There was an error saving the password');
-						$this->redirect(array('/user/profile'));
-					}
-				}
+			if(!$form->hasErrors()) {
+				if(YumUser::model()->findByPk($uid)->setPassword($form->password)) 
+					Yum::setFlash('The new password has been saved.');
+				else 
+					Yum::setFlash('There was an error saving the password');
+
+				$this->redirect(array('//user/user/profile'));
 			}
-			$this->render('changepassword', array('form'=>$form, 'expired' => $expired));
+		}
+		$this->render('changepassword', array('form'=>$form, 'expired' => $expired));
 	}
 
 	public function actionProfile() {
@@ -178,9 +175,9 @@ class YumUserController extends YumController {
 			if(isset($_POST['YumUserChangePassword'])) {
 				if($_POST['YumUserChangePassword']['password'] == '') {
 					$password = YumUser::generatePassword();
-						$model->setPassword($password);
-						Yii::app()->user->setFlash('password',
-								Yum::t('The generated Password is {password}', array('{password}' => $password)));
+					$model->setPassword($password);
+					Yii::app()->user->setFlash('password',
+							Yum::t('The generated Password is {password}', array('{password}' => $password)));
 				} else {
 					$passwordform->attributes = $_POST['YumUserChangePassword'];
 
@@ -199,9 +196,9 @@ class YumUserController extends YumController {
 				$model->save();
 				$profile->user_id = $model->id;
 				$profile->save();
-					$this->redirect(array('view', 'id'=>$model->id));
-				}
+				$this->redirect(array('view', 'id'=>$model->id));
 			}
+		}
 
 		$this->render('create',array(
 					'model' => $model,
@@ -329,7 +326,7 @@ class YumUserController extends YumController {
 		$criteria->addCondition('status = 1');
 		if($search) 
 			$criteria->addCondition("username = '{$search}'");
-		
+
 
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'criteria' => $criteria, 

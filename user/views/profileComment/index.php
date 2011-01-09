@@ -11,7 +11,7 @@ $dataProvider = new CActiveDataProvider('YumProfileComment', array(
 		);
 
 $this->renderPartial('/profileComment/create', array(
-			'model' => new YumProfileComment,
+			'comment' => new YumProfileComment,
 			'profile' => $model));
 
 $this->widget('zii.widgets.CListView', array(

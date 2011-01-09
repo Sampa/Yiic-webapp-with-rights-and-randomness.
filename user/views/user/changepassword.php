@@ -6,7 +6,7 @@ $this->breadcrumbs = array(
 	Yum::t("Profile") => array('profile'),
 	Yum::t("Change password"));
 
-if(isset($expired))
+if(isset($expired) && $expired)
 	$this->renderPartial('password_expired');
 ?>
 
@@ -14,6 +14,12 @@ if(isset($expired))
 <?php echo CHtml::beginForm(); ?>
 	<?php echo Yum::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
+
+	<div class="row">
+	<?php echo CHtml::activeLabelEx($form,'actualPassword'); ?>
+	<?php echo CHtml::activePasswordField($form,'actualPassword'); ?>
+	</div>
+
 	<?php $this->renderPartial('/user/passwordfields', array('form'=>$form)); ?>
 	
 	<div class="row submit">

@@ -80,9 +80,9 @@ class YumUser extends YumActiveRecord {
 		$criteria->compare('t.lastvisit', $this->lastvisit, true);
 
 		return new CActiveDataProvider(get_class($this), array(
-			'criteria' => $criteria,
-			'pagination' => array('pageSize' => 20),
-		));
+					'criteria' => $criteria,
+					'pagination' => array('pageSize' => 20),
+					));
 	}
 
 	public function beforeValidate() {
@@ -171,7 +171,13 @@ class YumUser extends YumActiveRecord {
 
 		$rules[] = $passwordrule;
 
-		$rules[] = array('username', 'length', 'max' => $usernameRequirements['maxLen'], 'min' => $usernameRequirements['minLen'], 'message' => Yum::t("Incorrect username (length between" . $usernameRequirements['minLen'] . " and " . $usernameRequirements['maxLen'] . "characters)."));
+		$rules[] = array('username', 'length',
+				'max' => $usernameRequirements['maxLen'],
+				'min' => $usernameRequirements['minLen'],
+				'message' => Yum::t(
+					'Username length needs to be between {minLen} and {maxlen} characters', array(
+						'{minLen}' => $usernameRequirements['minLen'],
+						'{maxLen}' => $usernameRequirements['maxLen'])));
 
 		$rules[] = array('username', 'unique', 'message' => Yum::t("This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yum::t('Incorrect symbol\'s. (A-z0-9)'));
@@ -182,15 +188,15 @@ class YumUser extends YumActiveRecord {
 		$rules[] = array('password', 'required', 'on' => array('insert'));
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly' => true);
 
-		if (Yii::app()->getModule('user')->enableAvatar) {
+		if (Yum::module()->enableAvatar) {
 			$rules[] = array('avatar', 'required', 'on' => 'avatarUpload');
 			$rules[] = array('avatar', 'EPhotoValidator',
-				'allowEmpty' => true,
-				'mimeType' => array('image/jpeg', 'image/png', 'image/gif'),
-				'maxWidth' => 200,
-				'maxHeight' => 200,
-				'minWidth' => 50,
-				'minHeight' => 50);
+					'allowEmpty' => true,
+					'mimeType' => array('image/jpeg', 'image/png', 'image/gif'),
+					'maxWidth' => 200,
+					'maxHeight' => 200,
+					'minWidth' => 50,
+					'minHeight' => 50);
 		}
 		return $rules;
 	}
@@ -239,21 +245,21 @@ class YumUser extends YumActiveRecord {
 		$relationFRSPTableName = Yum::resolveTableName($this->_friendshipTable, $this->getDbConnection());
 
 		return array(
-			'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
-			'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
-			'messages' => array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.id DESC'),
-			'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id'),
-// An example on how the default_profile relation should be
-//			'default_profile' => array(self::HAS_ONE, 'YumProfile', 'user_id', 'condition' => "profile_id = $this->default_profile"),
-// And then we rename this one below to 'profiles'
-			'profile' => array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
-			'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
-			'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
-			'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
-			'roles' => array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
-			'memberships' => array(self::HAS_MANY, 'YumMembership', 'user_id'),
-			'privacy' => array(self::HAS_ONE, 'YumPrivacySetting', 'user_id'),
-		);
+				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
+				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
+				'messages' => array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.id DESC'),
+				'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id'),
+				// An example on how the default_profile relation should be
+				//			'default_profile' => array(self::HAS_ONE, 'YumProfile', 'user_id', 'condition' => "profile_id = $this->default_profile"),
+				// And then we rename this one below to 'profiles'
+				'profile' => array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
+				'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
+				'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
+				'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
+				'roles' => array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
+				'memberships' => array(self::HAS_MANY, 'YumMembership', 'user_id'),
+				'privacy' => array(self::HAS_ONE, 'YumPrivacySetting', 'user_id'),
+				);
 	}
 
 	public function isFriendOf($invited_id) {
@@ -268,7 +274,7 @@ class YumUser extends YumActiveRecord {
 	public function getFriendships() {
 		$condition = 'inviter_id = :uid or friend_id = :uid';
 		return YumFriendship::model()->findAll($condition, array(
-			':uid' => $this->id));
+					':uid' => $this->id));
 	}
 
 	// Friends can not be retrieve via the relations() method because a friend
@@ -386,18 +392,18 @@ class YumUser extends YumActiveRecord {
 
 	public function attributeLabels() {
 		return array(
-			'id' => Yum::t('#'),
-			'username' => Yum::t("Username"),
-			'password' => Yum::t("Password"),
-			'verifyPassword' => Yum::t("Retype password"),
-			'verifyCode' => Yum::t("Verification code"),
-			'activationKey' => Yum::t("Activation key"),
-			'createtime' => Yum::t("Registration date"),
-			'lastvisit' => Yum::t("Last visit"),
-			'superuser' => Yum::t("Superuser"),
-			'status' => Yum::t("Status"),
-			'avatar' => Yum::t("Avatar image"),
-		);
+				'id' => Yum::t('#'),
+				'username' => Yum::t("Username"),
+				'password' => Yum::t("Password"),
+				'verifyPassword' => Yum::t("Retype password"),
+				'verifyCode' => Yum::t("Verification code"),
+				'activationKey' => Yum::t("Activation key"),
+				'createtime' => Yum::t("Registration date"),
+				'lastvisit' => Yum::t("Last visit"),
+				'superuser' => Yum::t("Superuser"),
+				'status' => Yum::t("Status"),
+				'avatar' => Yum::t("Avatar image"),
+				);
 	}
 
 	/**
@@ -417,30 +423,30 @@ class YumUser extends YumActiveRecord {
 
 	public function scopes() {
 		return array(
-			'active' => array('condition' => 'status=' . self::STATUS_ACTIVE,),
-			'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
-			'banned' => array('condition' => 'status=' . self::STATUS_BANNED,),
-			'superuser' => array('condition' => 'superuser=1',),
-		);
+				'active' => array('condition' => 'status=' . self::STATUS_ACTIVE,),
+				'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
+				'banned' => array('condition' => 'status=' . self::STATUS_BANNED,),
+				'superuser' => array('condition' => 'superuser=1',),
+				);
 	}
 
 	public static function itemAlias($type, $code=NULL) {
 		$_items = array(
-			'NotifyType' => array(
-				'None' => Yum::t('None'),
-				'Digest' => Yum::t('Digest'),
-				'Instant' => Yum::t('Instant'),
-			),
-			'UserStatus' => array(
-				'0' => Yum::t('Not active'),
-				'1' => Yum::t('Active'),
-				'-1' => Yum::t('Banned'),
-			),
-			'AdminStatus' => array(
-				'0' => Yum::t('No'),
-				'1' => Yum::t('Yes'),
-			),
-		);
+				'NotifyType' => array(
+					'None' => Yum::t('None'),
+					'Digest' => Yum::t('Digest'),
+					'Instant' => Yum::t('Instant'),
+					),
+				'UserStatus' => array(
+					'0' => Yum::t('Not active'),
+					'1' => Yum::t('Active'),
+					'-1' => Yum::t('Banned'),
+					),
+				'AdminStatus' => array(
+					'0' => Yum::t('No'),
+					'1' => Yum::t('Yes'),
+					),
+				);
 		if (isset($code))
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
 		else
@@ -493,8 +499,8 @@ class YumUser extends YumActiveRecord {
 
 			if (isset($friend->avatar) && $friend->avatar)
 				$return .= CHtml::image(Yii::app()->baseUrl . '/'
-								. Yum::module()->avatarPath . '/'
-								. $friend->avatar, 'Avatar', $options);
+						. Yum::module()->avatarPath . '/'
+						. $friend->avatar, 'Avatar', $options);
 			else
 				$return .= CHtml::image(Yii::app()->getAssetManager()->publish(
 							Yii::getPathOfAlias('YumAssets.images') . ($thumb ? '/no_avatar_available_thumb.jpg' : '/no_avatar_available.jpg'),

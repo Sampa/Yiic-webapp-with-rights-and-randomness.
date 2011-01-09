@@ -23,15 +23,23 @@ class Yum
 	/* set a flash message to display after the request is done */
 	public static function setFlash($message) 
 	{
-		return Yii::app()->user->setFlash('yum_flash', Yum::t($message));
+		$_SESSION['yumflash'] = Yum::t($message);
 	}
 
 	/* retrieve the flash message again */
-	public static function getFlash()
+	public static function getFlash() {
+		if(isset($_SESSION['yumflash'])) {
+			$message = $_SESSION['yumflash'];
+			unset($_SESSION['yumflash']);
+			return $message;
+		}
+	}
+
+	public static function renderFlash()
 	{
-		if(Yii::app()->user->hasFlash('yum_flash')) {
+		if(isset($_SESSION['yumflash'])) {
 			echo '<div class="info">';
-			echo Yii::app()->user->getFlash('yum_flash'); 
+			echo Yum::getFlash();
 			echo '</div>';
 		}
 	}

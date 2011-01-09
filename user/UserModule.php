@@ -9,6 +9,7 @@ Yii::import('YumModule.controllers.YumController');
 class UserModule extends CWebModule {
 	public $version = '0.8';
 	public $debug = false;
+
 	// database related control vars
 	public $usersTable = 'users';
 	public $privacySettingTable = 'privacysetting';
@@ -29,17 +30,17 @@ class UserModule extends CWebModule {
 	public $permissionTable = 'permission';
 	public $actionTable = 'action';
 	public $userRoleTable = 'user_has_role';
-	public $userUserTable = 'user_has_user';
-	public $roleRoleTable = 'role_has_role';
 	public $activityTable = 'activities';
 	public $installDemoData = true;
+
 	//layout related control vars
 	public $baseLayout = 'application.views.layouts.main';
 	public $layout = 'yum';
 	public $loginLayout = 'yum';
 	public $adminLayout = 'yum';
 	public $profileLayout = 'yumprofile';
-		//configuration related control vars
+
+	//configuration related control vars
 	public $preserveProfiles = true;
 	public $useYiiCheckAccess = false;
 	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
@@ -58,8 +59,12 @@ class UserModule extends CWebModule {
 	public $autoLogin = false;
 	public $activateFromWeb = true;
 	public $recoveryFromWeb = false;
-	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer or PHPMailer to use PHPMailer as emailing lib.
-	public $phpmailer = null; // PHPMailer array options.
+
+	// set $mailer to swift to active emailing by swiftMailer or PHPMailer to 
+	// use PHPMailer as emailing lib.
+	public $mailer = 'yum';
+ 	public $phpmailer = null; // PHPMailer array options.
+
 	public $registrationEmail='register@website.com';
 	public $recoveryEmail='restore@website.com';
 	public $facebookConfig = false;
@@ -241,7 +246,8 @@ class UserModule extends CWebModule {
 			$controller->layout = Yii::app()->getModule('user')->adminLayout;
 
 		// Assign options from settings table, if available
-		if(Yii::app()->controller->id != 'install' && !Yum::module()->tableSettingsDisabled)
+		if(Yii::app()->controller->id != 'install' 
+				&& !Yum::module()->tableSettingsDisabled)
 			try {
 				$settings = YumSettings::model()->find('is_active');
 

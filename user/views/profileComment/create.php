@@ -5,35 +5,33 @@
 			'id'=>'profile-comment-form',
 			'enableAjaxValidation'=>true,
 			)); 
-echo $form->errorSummary($model);
-?>
+echo $form->errorSummary($comment);
 
-<?php echo CHtml::hiddenField('YumProfileComment[profile_id]', $profile->profile_id); ?>
+echo CHtml::hiddenField('YumProfileComment[profile_id]', $profile->profile_id); ?>
 
 <div class="row">
-<?php echo $form->labelEx($model,'comment'); ?>
-<?php echo $form->textArea($model,'comment',array('rows'=>6, 'cols'=>50)); ?>
-<?php echo $form->error($model,'comment'); ?>
+<?php echo $form->labelEx($comment,'comment'); ?>
+<?php echo $form->textArea($comment,'comment',array('rows'=>6, 'cols'=>50)); ?>
+<?php echo $form->error($comment,'comment'); ?>
 </div>
 
 <?php
 echo CHtml::Button(Yum::t('Write comment'), array(
-	'id' => 'write_comment',
-	));
+			'id' => 'write_comment',
+			));
 
-if(!Yii::app()->clientScript->isScriptRegistered("write_comment"))
 Yii::app()->clientScript->registerScript("write_comment", " 
-$('#write_comment').unbind('click');
-$('#write_comment').click(function(){
-jQuery.ajax({'type':'POST',
-'url':'".$this->createUrl('//user/comments/create')."',
-'cache':false,
-'data':jQuery(this).parents('form').serialize(),
-'success':function(html){
-$('#profile').html(html);
-}});
-return false;});
-");
+		$('#write_comment').unbind('click');
+		$('#write_comment').click(function(){
+			jQuery.ajax({'type':'POST',
+				'url':'".$this->createUrl('//user/comments/create')."',
+				'cache':false,
+				'data':jQuery(this).parents('form').serialize(),
+				'success':function(html){
+				$('#profile').html(html);
+				}});
+			return false;});
+		");
 
 
 $this->endWidget(); ?>
