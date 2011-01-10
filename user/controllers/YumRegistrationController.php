@@ -245,7 +245,7 @@ class YumRegistrationController extends YumController {
 						'key' => $key,
 					));
 
-					Yii:app()->end();
+					Yii::app()->end();
 				}
 			}
 		}

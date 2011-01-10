@@ -40,6 +40,14 @@ $this->widget('YumModule.components.Relation',
 </div>
 
 <div class="row">
+<?php echo CHtml::activeLabelEx($model,'searchable'); ?>
+<?php echo CHtml::activeCheckBox($model, 'searchable'); ?>
+<div class="hint">
+<?php echo Yum::t('When selecting searchable, users of this role can be searched in the "user Browse" function'); ?>
+</div>
+</div>
+
+<div class="row">
 <?php echo CHtml::activeLabelEx($model,'price'); ?>
 <?php echo CHtml::activeTextField($model, 'price'); ?>
 <?php echo CHtml::Error($model, 'price'); ?>

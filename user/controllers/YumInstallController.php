@@ -434,6 +434,7 @@ class YumInstallController extends YumController {
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL,
 							`selectable` tinyint(1) NOT NULL COMMENT 'Selectable on Registration?',
+							`searchable` tinyint(1) NOT NULL COMMENT 'Can be searched',
 							`price` double COMMENT 'Price (when using membership module)',
 							`duration` int COMMENT 'How long a membership is valid',
 							PRIMARY KEY (`id`)) 
@@ -488,12 +489,18 @@ class YumInstallController extends YumController {
 
 							if(isset($_POST['installRole']))
 							{
-								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`) VALUES
-									('UserCreator', 'This users can create new Users', 0, 0),
-									('UserRemover', 'This users can remove other Users', 0, 0),
-									('Business', 'Example Business account', 9.99, 7),
-									('Premium', 'Example Premium account', 19.99, 28) ";
+								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`, `searchable`) VALUES
+									('UserCreator', 'This users can create new Users', 0, 0, 0),
+									('UserRemover', 'This users can remove other Users', 0, 0, 0),
+									('Demo', 'Users having the demo role', 0, 0, 1),
+									('Business', 'Example Business account', 9.99, 7, 0),
+									('Premium', 'Example Premium account', 19.99, 28, 0) ";
 								$db->createCommand($sql)->execute();
+
+								$sql = "INSERT INTO `".$userRoleTable."` (`user_id`, `role_id`) VALUES
+									(2, 3)";
+								$db->createCommand($sql)->execute();
+
 
 							}
 							if(isset($_POST['installProfiles']))

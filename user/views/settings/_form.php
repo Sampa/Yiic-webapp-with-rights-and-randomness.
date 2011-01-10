@@ -224,7 +224,7 @@ foreach(array(
 <?php $this->widget('system.web.widgets.CTabView', array('tabs' => $this->getTabParameters(), 'htmlOptions'=>array('style'=>'width: 650px'))); ?>
 
 <?php
-#Yum::register('js/tools.tooltip-1.1.3.min.js');
-#Yum::register('js/tooltip.js');
 Yum::register('css/yum.css');
+Yum::register('js/tools.tooltip.min.js');
+Yum::register('js/tooltip_settings.js');
 ?>

@@ -1,5 +1,9 @@
 <?php
 return array(
+'Searchable' => 'Suchbar',
+'When selecting searchable, users of this role can be searched in the "user Browse" function' => 'Wenn "suchbar" ausgewählt wird, kann man Nutzer dieser Rolle in der "Benutzer durchsuchen"-Funktion suchen',
+'Create role' => 'Neue Rolle anlegen',
+'Manage roles' => 'Rollen verwalten',
 'This users have a ordered memberships of this role' => 'Diese Benutzer haben eine Mitgliedschaft in dieser Rolle',
 	'Price' => 'Preis',
 	'Duration in days' => 'Gültigkeitsdauer in Tagen',

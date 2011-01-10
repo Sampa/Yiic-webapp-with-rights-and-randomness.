@@ -322,11 +322,19 @@ class YumUserController extends YumController {
 		if(isset($_POST['search_username']))
 			$search = $_POST['search_username'];
 
+		if(isset($_POST['search_role']))
+			$role = $_POST['search_role'];
+
+
 		$criteria = new CDbCriteria;
 		$criteria->addCondition('status = 1');
 		if($search) 
 			$criteria->addCondition("username = '{$search}'");
 
+		if(isset($role) && $role != 0) {
+			$criteria->addCondition("role_id = {$role}");
+			$criteria->join = 'LEFT JOIN user_has_role on t.id = user_has_role.user_id';
+		}
 
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'criteria' => $criteria, 
@@ -337,8 +345,8 @@ class YumUserController extends YumController {
 		$this->render('browse',array(
 					'dataProvider'=>$dataProvider,
 					'search_username' => $search ? $search : '',
+					'role' => isset($role) ? (int) $role : 0,
 					));
-
 	}
 
 	public function actionList()

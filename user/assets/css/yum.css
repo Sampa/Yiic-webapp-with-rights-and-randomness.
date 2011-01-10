@@ -20,3 +20,5 @@ label { display: inline }
 .membership { float: left;margin: 5px; }
 .info {background-color: lightgray; padding: 10px; margin:10px; border: 1px dotted black;}
 .new_messages td { border-bottom: 1px solid;} 
+.tooltip { display: none; padding: 5px; margin: 5px; background-color: #ffa;border: 1px solid #cc9; border-radius: 5px;}
+.view_user {float:left; margin:5px;}

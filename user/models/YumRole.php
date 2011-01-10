@@ -42,7 +42,7 @@ class YumRole extends YumActiveRecord {
 	{
 		return array(
 			array('title', 'required'),
-			array('selectable', 'numerical'),
+			array('selectable, searchable', 'numerical'),
 			array('price', 'numerical'),
 			array('duration', 'numerical'),
 			array('title, description', 'length', 'max' => '255'),
@@ -51,7 +51,10 @@ class YumRole extends YumActiveRecord {
 
 
 	public function scopes() {
-		return array('selectable' => array('condition' => 'selectable = 1'));
+		return array(
+				'selectable' => array('condition' => 'selectable = 1'),
+				'searchable' => array('condition' => 'searchable = 1'),
+				);
 	}
 
 	public function relations()
@@ -72,6 +75,7 @@ class YumRole extends YumActiveRecord {
 			'title'=>Yum::t("Title"),
 			'description'=>Yum::t("Description"),
 			'selectable'=>Yum::t("Selectable on registration"),
+			'searchable'=>Yum::t("Searchable"),
 			'price'=>Yum::t("Price"),
 			'duration'=>Yum::t("Duration in days"),
 		);
