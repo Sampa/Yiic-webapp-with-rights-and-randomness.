@@ -176,8 +176,7 @@ class YumUserController extends YumController {
 				if($_POST['YumUserChangePassword']['password'] == '') {
 					$password = YumUser::generatePassword();
 					$model->setPassword($password);
-					Yii::app()->user->setFlash('password',
-							Yum::t('The generated Password is {password}', array('{password}' => $password)));
+					Yum::setFlash(Yum::t('The generated Password is {password}', array('{password}' => $password)));
 				} else {
 					$passwordform->attributes = $_POST['YumUserChangePassword'];
 
@@ -319,21 +318,28 @@ class YumUserController extends YumController {
 
 	public function actionBrowse() {
 		$search = '';
+		$role = 0;
 		if(isset($_POST['search_username']))
 			$search = $_POST['search_username'];
 
 		if(isset($_POST['search_role']))
 			$role = $_POST['search_role'];
 
+		if(isset($_GET['search_role']))
+			$role = $_GET['search_role'];
 
 		$criteria = new CDbCriteria;
+
+		$criteria->join = 'LEFT JOIN privacysetting on t.id = privacysetting.user_id';
+		$criteria->addCondition('appear_in_search = 1');
+
 		$criteria->addCondition('status = 1');
 		if($search) 
 			$criteria->addCondition("username = '{$search}'");
 
 		if(isset($role) && $role != 0) {
 			$criteria->addCondition("role_id = {$role}");
-			$criteria->join = 'LEFT JOIN user_has_role on t.id = user_has_role.user_id';
+			$criteria->join .= ' LEFT JOIN user_has_role on t.id = user_has_role.user_id';
 		}
 
 		$dataProvider=new CActiveDataProvider('YumUser', array(

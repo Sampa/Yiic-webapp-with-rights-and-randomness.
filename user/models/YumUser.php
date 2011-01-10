@@ -125,6 +125,13 @@ class YumUser extends YumActiveRecord {
 			$setting->save();
 		}
 
+		if(Yum::module()->enableProfiles && !isset($this->profile[0])) {
+			$profile = new YumProfile();
+			$profile->user_id = $this->id;
+			$profile->save(false);
+		}
+			
+
 		if(Yum::module()->enableLogging)
 			YumActivityController::logActivity($this,
 					$this->isNewRecord ? 'user_created' : 'user_updated');
@@ -331,6 +338,7 @@ class YumUser extends YumActiveRecord {
 		$this->createtime = time();
 		$this->superuser = 0;
 
+
 		switch (Yum::module()->registrationType) {
 			case YumRegistration::REG_SIMPLE:
 				$this->status = YumUser::STATUS_ACTIVE;
@@ -347,7 +355,11 @@ class YumUser extends YumActiveRecord {
 				break;
 		}
 
+		if(Yum::module()->enableRoles) 
+			$this->roles = YumRole::getAutoassignRoles(); 
+
 		return $this->save();
+
 	}
 
 	public function isPasswordExpired() {
@@ -427,6 +439,9 @@ class YumUser extends YumActiveRecord {
 				'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
 				'banned' => array('condition' => 'status=' . self::STATUS_BANNED,),
 				'superuser' => array('condition' => 'superuser=1',),
+				'public' => array(
+					'join' => 'LEFT JOIN privacysetting on t.id = privacysetting.user_id',
+					'condition' => 'appear_in_search = 1',),
 				);
 	}
 

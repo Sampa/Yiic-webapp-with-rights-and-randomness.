@@ -48,7 +48,9 @@ class YumRegistrationController extends YumController {
 		if (isset($_POST['YumRegistrationForm'])) {
 			$form->attributes = $_POST['YumRegistrationForm'];
 			$form->email = $_POST['YumProfile']['email'];
-			if (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) {
+			if (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL
+					&& !Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME
+				 ) {
 				$form->email = $form->username;
 				$form->username = YumRegistrationForm::genRandomString($usernameRequirements['maxLen']);
 			}

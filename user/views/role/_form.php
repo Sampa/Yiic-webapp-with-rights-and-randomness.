@@ -18,14 +18,14 @@
 <?php echo CHtml::error($model,'description'); ?>
 </div>	
 
-<div class="row">
-<p> <?php echo Yum::t('This users have been assigned to this role'); ?> </p>
+<div class="row" style="float:right;">
+<?php echo CHtml::label(Yum::t('This users have been assigned to this role'), ''); ?> 
 
 <?php 
 $this->widget('YumModule.components.Relation',
 		array('model' => $model,
 			'relation' => 'users',
-			'style' => 'checkbox',
+			'style' => 'dropdownlist',
 			'fields' => 'username',
 			'htmlOptions' => array(
 				'checkAll' => Yum::t('Choose All'),
@@ -33,6 +33,7 @@ $this->widget('YumModule.components.Relation',
 			'showAddButton' => false
 			));  
 ?>
+</div>
 
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'selectable'); ?>
@@ -46,6 +47,15 @@ $this->widget('YumModule.components.Relation',
 <?php echo Yum::t('When selecting searchable, users of this role can be searched in the "user Browse" function'); ?>
 </div>
 </div>
+
+<div class="row">
+<?php echo CHtml::activeLabelEx($model,'autoassign'); ?>
+<?php echo CHtml::activeCheckBox($model, 'autoassign'); ?>
+<div class="hint">
+<?php echo Yum::t('When selecting autoassign, this role will be assigned to new users automatically'); ?>
+</div>
+</div>
+
 
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'price'); ?>

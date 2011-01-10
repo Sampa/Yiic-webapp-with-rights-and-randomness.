@@ -6,15 +6,8 @@ $this->title = Yum::t('View user "{username}"',array(
 
 $this->breadcrumbs = array(Yum::t('Users') => array('index'), $model->username);
 
-if(Yii::app()->user->hasFlash('password')): ?>
+echo Yum::renderFlash();
 
-<div class="hint">
-    <?php echo Yii::app()->user->getFlash('password'); ?>
-</div>
-
-<?php endif; ?>
-
-<?php
 if(Yii::app()->user->isAdmin()) {
 	$attributes = array(
 			'id',

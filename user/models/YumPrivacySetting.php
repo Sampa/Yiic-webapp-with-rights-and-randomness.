@@ -21,7 +21,7 @@ class YumPrivacysetting extends YumActiveRecord{
 	{
 		return array(
 			array('user_id, message_new_friendship, message_new_message, message_new_profilecomment', 'required'),
-			array('message_new_friendship, message_new_message, message_new_profilecomment', 'numerical', 'integerOnly'=>true),
+			array('appear_in_search, message_new_friendship, message_new_message, message_new_profilecomment', 'numerical', 'integerOnly'=>true),
 			array('user_id', 'length', 'max'=>10),
 			array('ignore_users', 'length', 'max'=>255),
 			array('ignore_users', 'match', 'pattern' => '/^(\w)+(,\w+)*$/'),
@@ -56,9 +56,10 @@ class YumPrivacysetting extends YumActiveRecord{
 		return array(
 			'ignore_users' => Yum::t('Ignored users'),
 			'user_id' => Yum::t( 'User'),
-			'message_new_friendship' => Yum::t( 'Receive a Email for new Friendship request'),
-			'message_new_message' => Yum::t( 'Receive a Email when new Message arrives'),
-			'message_new_profilecomment' => Yum::t( 'Receive a Email when a new profile comment was made'),
+			'appear_in_search' => Yum::t( 'Let me appear in the search'),
+			'message_new_friendship' => Yum::t('Receive a Email for new Friendship request'),
+			'message_new_message' => Yum::t('Receive a Email when new Message arrives'),
+			'message_new_profilecomment' => Yum::t('Receive a Email when a new profile comment was made'),
 		);
 	}
 

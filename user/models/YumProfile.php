@@ -21,7 +21,6 @@ Yii::import('application.modules.user.components.Compare');
 class YumProfile extends YumActiveRecord
 {
 	const PRIVACY_PRIVATE = 'private';
-	const PRIVACY_PROTECTEd = 'protected';
 	const PRIVACY_PUBLIC = 'public';
 
 	/**

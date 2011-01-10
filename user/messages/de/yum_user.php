@@ -1,6 +1,7 @@
 <?php
 
 return array(
+		'Having' => 'Anzeigen',
 		'Message "{message}" was marked as read' => 'Nachricht "{message}" wurde als gelesen markiert.',
 		'Message "{message}" has been sent to {to}' => 'Nachricht "{message}" wurde an {to} gesendet',
 		'Write a message to {username}' => 'Nachricht an {username} schreiben',

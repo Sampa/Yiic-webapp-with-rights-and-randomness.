@@ -88,6 +88,7 @@ class YumInstallController extends YumController {
 						`message_new_friendship` tinyint(1) NOT NULL,
 						`message_new_message` tinyint(1) NOT NULL,
 						`message_new_profilecomment` tinyint(1) NOT NULL,
+						`appear_in_search` tinyint(1) NOT NULL DEFAULT 1,
 						`ignore_users` varchar(255),
 						PRIMARY KEY (`user_id`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -435,6 +436,7 @@ class YumInstallController extends YumController {
 							`description` VARCHAR(255) NULL,
 							`selectable` tinyint(1) NOT NULL COMMENT 'Selectable on Registration?',
 							`searchable` tinyint(1) NOT NULL COMMENT 'Can be searched',
+							`autoassign` tinyint(1) NOT NULL COMMENT 'Autoassign on new users',
 							`price` double COMMENT 'Price (when using membership module)',
 							`duration` int COMMENT 'How long a membership is valid',
 							PRIMARY KEY (`id`)) 
@@ -476,6 +478,10 @@ class YumInstallController extends YumController {
 						}
 						if(isset($_POST['installDemoData'])) 
 						{
+
+							$sql = "INSERT INTO `".$privacySettingTable."` (`user_id`) values (2)";
+								$db->createCommand($sql)->execute();
+
 							$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
 								(1, 'admin', '".YumUser::encrypt('admin')."', '', ".time().", 0, 1, 1),
 								(2, 'demo', '".YumUser::encrypt('demo')."', '', ".time().", 0, 0, 1)";
