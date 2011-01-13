@@ -20,6 +20,11 @@ class Yum
 			Yii::app()->clientScript->registerCssFile($path);
 	}
 
+	public static function hint($message) 
+	{
+		return '<div class="hint">' . Yum::t($message) . '</div>'; 
+	}
+
 	/* set a flash message to display after the request is done */
 	public static function setFlash($message) 
 	{
@@ -42,6 +47,10 @@ class Yum
 			echo Yum::getFlash();
 			echo '</div>';
 		}
+	}
+
+	public static function p($string, $params = array()) {
+		return '<p>' . Yum::t($string, $params) . '</p>';
 	}
 
 	/** Associate the right translation file depending on the

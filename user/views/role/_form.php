@@ -38,25 +38,28 @@ $this->widget('YumModule.components.Relation',
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'selectable'); ?>
 <?php echo CHtml::activeCheckBox($model, 'selectable'); ?>
+<?php echo Yum::hint('When setting "selectable", the role can be choosen at the registration page'); ?>
 </div>
 
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'searchable'); ?>
 <?php echo CHtml::activeCheckBox($model, 'searchable'); ?>
-<div class="hint">
-<?php echo Yum::t('When selecting searchable, users of this role can be searched in the "user Browse" function'); ?>
-</div>
+<?php echo Yum::hint('When selecting searchable, users of this role can be searched in the "user Browse" function'); ?>
 </div>
 
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'autoassign'); ?>
 <?php echo CHtml::activeCheckBox($model, 'autoassign'); ?>
-<div class="hint">
-<?php echo Yum::t('When selecting autoassign, this role will be assigned to new users automatically'); ?>
-</div>
+<?php echo Yum::hint('When selecting autoassign, this role will be assigned to new users automatically'); ?>
 </div>
 
 
+<div class="row">
+<?php echo CHtml::activeLabelEx($model,'is_membership_possible'); ?>
+<?php echo CHtml::activeCheckBox($model, 'is_membership_possible'); ?>
+
+</div>
+<div class="membership">
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'price'); ?>
 <?php echo CHtml::activeTextField($model, 'price'); ?>
@@ -66,8 +69,6 @@ $this->widget('YumModule.components.Relation',
 <?php echo Yum::t('How expensive is a membership? Set to 0 to disable membership for this role'); ?>
 </div>
 
-
-
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'duration'); ?>
 <?php echo CHtml::activeTextField($model, 'duration'); ?>
@@ -76,13 +77,12 @@ $this->widget('YumModule.components.Relation',
 <div class="hint"> 
 <?php echo Yum::t('How many days will the membership be valid after payment?'); ?>
 </div>
-
-
+</div>
 
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord 
-		? Yii::t('UserModule.user', 'Create') 
-		: Yii::t('UserModule.user', 'Save')); ?>
+		? Yum::t('Create role') 
+		: Yum::t('Save role')); ?>
 </div>
 
 <?php echo CHtml::endForm(); ?>

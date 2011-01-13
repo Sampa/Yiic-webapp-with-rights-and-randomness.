@@ -13,29 +13,39 @@ echo '<br />';
 echo $model->description; ?>
 
 <br />
-<p> <?php echo Yum::t('This users have been assigned to this role'); ?> </p>
+<?php echo Yum::p('This users have been assigned to this role'); ?> 
 
 <?php 
-if($model->users) {
-	foreach($model->users as $user) {
-		printf("<li>%s</li>", CHtml::link($user->username, array(
-						Yum::route('user/view'), 'id' => $user->id)));
-
-	}
-} else 
-printf('<p> %s </p>', Yum::t('None')); ?>
-
+$this->widget('zii.widgets.grid.CGridView', array(
+    'dataProvider'=>$assignedUsers,
+    'columns'=>array(
+        'username',          
+        'status',          
+    ),
+));
+?>
 <br />
-<p> <?php echo Yum::t('This users have a ordered memberships of this role'); ?> </p>
-<?php 
-if($model->memberships) {
-	foreach($model->memberships as $membership) {
-		printf("<li>%s</li>", CHtml::link($membership->user->username, array(
-						Yum::route('user/view'), 'id' => $membership->user_id)));
+<?php echo Yum::p('This users have a ordered memberships of this role'); ?> 
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+    'dataProvider'=>$activeMemberships,
+		'columns'=>array(
+			'id',
+			'user.username',
+			array(
+				'name'=>'order_date',
+				'value' =>'date("Y. m. d G:i:s", $data->order_date)'),
+			array(
+				'name'=>'end_date',
+				'value' =>'date("Y. m. d G:i:s", $data->end_date)'),
+			array(
+				'name'=>'payment_date',
+				'value' =>'date("Y. m. d G:i:s", $data->payment_date)'),
+			'role.price',
+			'payment.title',
 
-	}
-} else 
-printf('<p> %s </p>', Yum::t('None')); 
+			),
+		));
 
 if(Yii::app()->user->isAdmin())
 	echo CHtml::Button(Yum::t('Update role'), array('submit' => array('role/update', 'id' => $model->id)));

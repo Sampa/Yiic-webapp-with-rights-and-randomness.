@@ -162,7 +162,7 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 						$sql = "CREATE TABLE IF NOT EXISTS `".$permissionTable."` (
 							`principal_id` int(11) NOT NULL,
-							`subordinate_id` int(11) NOT NULL,
+							`subordinate_id` int(11) NULL,
 							`type` enum('user','role') NOT NULL,
 							`action` int(11) NOT NULL,
 							`template` tinyint(1) NOT NULL,
@@ -437,6 +437,7 @@ class YumInstallController extends YumController {
 							`selectable` tinyint(1) NOT NULL COMMENT 'Selectable on Registration?',
 							`searchable` tinyint(1) NOT NULL COMMENT 'Can be searched',
 							`autoassign` tinyint(1) NOT NULL COMMENT 'Autoassign on new users',
+							`is_membership_possible` tinyint(1) NOT NULL,
 							`price` double COMMENT 'Price (when using membership module)',
 							`duration` int COMMENT 'How long a membership is valid',
 							PRIMARY KEY (`id`)) 
@@ -495,6 +496,19 @@ class YumInstallController extends YumController {
 
 							if(isset($_POST['installRole']))
 							{
+								$sql = "INSERT INTO `".$actionTable ."` (`title`) VALUES ('message_write'), ('message_receive'), ('view_profile_visits')";
+
+								$db->createCommand($sql)->execute();
+
+								$sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `template`, `comment`) VALUES
+									(3, 0, 'role', 1, 0, 'Users can write messagse'),
+									(3, 0, 'role', 2, 0, 'Users can receive messagse'),
+									(3, 0, 'role', 3, 0, 'Users are able to view visits of his profile');";
+
+								$db->createCommand($sql)->execute();
+
+
+
 								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`, `searchable`) VALUES
 									('UserCreator', 'This users can create new Users', 0, 0, 0),
 									('UserRemover', 'This users can remove other Users', 0, 0, 0),

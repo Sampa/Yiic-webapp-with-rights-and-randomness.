@@ -12,17 +12,15 @@ $this->breadcrumbs=array(
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(
 		array(
-			'name' => 'id',
-			'type' => 'raw',
-			'value'=> 'CHtml::link(CHtml::encode($data->id),
-				array(Yum::route("role/update"),"id"=>$data->id))',
-		),
-		array(
 			'name' => 'title',
 			'type' => 'raw',
 			'value'=> 'CHtml::link(CHtml::encode($data->title),
 				array(Yum::route("role/view"),"id"=>$data->id))',
 		),
+		'selectable',
+		'searchable',
+		'autoassign',
+		'is_membership_possible',
 		array(
 			'class'=>'CButtonColumn',
 		),

@@ -1,5 +1,8 @@
+	<div style="float: left;margin: 5px;">
 	<?php echo $data->user->getAvatar(null, true); ?>
+	</div>
 
+	<div style="float: right;margin: 5px;">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('user_id')); ?>:</b>
 	<?php echo CHtml::link(CHtml::encode($data->user->username), array('//user/user/view', 'id' => $data->user_id)); ?>
 	<br />
@@ -7,6 +10,7 @@
 <?php $locale = CLocale::getInstance(Yii::app()->language);
 	echo $locale->getDateFormatter()->formatDateTime($data->createtime, 'medium', 'medium'); ?>
 	<br />
+	</div>
 
 	<?php echo CHtml::encode($data->comment); ?>
 

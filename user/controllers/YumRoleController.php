@@ -3,8 +3,22 @@
 class YumRoleController extends YumController {
 	public function actionView() {
 		$this->layout = Yum::module()->adminLayout;
+
 		$model = $this->loadModel();
-		$this->render('view',array('model'=>$model));
+
+		$assignedUsers = new CActiveDataProvider('YumUser', array(
+					'criteria' => array(
+						'condition' => "role_id = {$model->id}",
+						'join' => 'left join user_has_role on t.id = user_has_role.user_id')));
+
+		$activeMemberships= new CActiveDataProvider('YumMembership', array(
+					'criteria' => array(
+						'condition' => "membership_id = {$model->id}")));
+
+		$this->render('view',array(
+					'assignedUsers' => $assignedUsers,
+					'activeMemberships' => $activeMemberships,
+					'model'=>$model));
 	}
 
 	public function actionCreate() 

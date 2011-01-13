@@ -10,7 +10,7 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-	<label> Do you want to grant this permission to a user or a role </label>
+	<label> <?php echo Yum::t('Do you want to grant this permission to a user or a role'); ?> </label>
 	<?php echo $form->radioButtonList($model, 'type', array(
 				'user' => Yum::t('User'),
 				'role' => Yum::t('Role')),
@@ -32,12 +32,22 @@
 		<?php echo $form->labelEx($model,'subordinate_id'); ?>
 		<?php $this->widget('Relation', array(
 					'model' => $model,
+					'allowEmpty' => true,
 					'relation' => 'subordinate',
 					'fields' => 'username',
 					));?>
 
 		<?php echo $form->error($model,'subordinate_id'); ?>
 		</div>
+	<div class="row">
+		<?php echo $form->labelEx($model,'template'); ?>
+		<?php echo $form->dropDownList($model,'template', array(
+					'0' => Yum::t('No'),
+					'1' => Yum::t('Yes'),
+					)); ?>
+		<?php echo $form->error($model,'template'); ?>
+	</div>
+
 		</div>
 
 	<div id="assignment_role" style="display: none;">
@@ -53,6 +63,7 @@
 		<?php echo $form->labelEx($model,'subordinate_id'); ?>
 		<?php $this->widget('Relation', array(
 					'model' => $model,
+					'allowEmpty' => true,
 					'relation' => 'subordinate_role',
 					'fields' => 'title',
 					));?>
@@ -67,7 +78,7 @@
 		<?php echo $form->labelEx($model,'action'); ?>
 		<?php $this->widget('Relation', array(
 					'model' => $model,
-					'relation' => 'action',
+					'relation' => 'Action',
 					'fields' => 'title',
 					));?>
 		<?php echo $form->error($model,'action'); ?>
@@ -79,14 +90,6 @@
 		<?php echo $form->error($model,'comment'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'template'); ?>
-		<?php echo $form->dropDownList($model,'template', array(
-					'0' => Yum::t('No'),
-					'1' => Yum::t('Yes'),
-					)); ?>
-		<?php echo $form->error($model,'template'); ?>
-	</div>
 
 
 	<div class="row buttons">

@@ -305,7 +305,7 @@ return array(
 		'email' => 'E-Mail',
 		'username or email' => 'Benutzername oder E-Mail Adresse',
 		'password' => 'Passwort',
-		'Remember me next time' => 'Das nächste Mal an mich erinnern',
+		'Remember me next time' => 'Angemeldet bleiben',
 		'Username' => 'Benutzername',
 		'Password' => 'Passwort',
 		'Username is incorrect.' => 'Benutzername ist falsch.',

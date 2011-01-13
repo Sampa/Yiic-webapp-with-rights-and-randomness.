@@ -64,6 +64,7 @@ class YumMembership extends YumActiveRecord{
 	{
 		return array(
 				'id' => Yum::t('Order number'),
+				'is_membership_possible' => Yum::t('Membership is possible'),
 				'membership_id' => Yum::t('Membership'),
 				'user_id' => Yum::t('User'),
 				'payment_id' => Yum::t('Payment'),

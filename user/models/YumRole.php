@@ -51,7 +51,7 @@ class YumRole extends YumActiveRecord {
 	{
 		return array(
 				array('title', 'required'),
-				array('selectable, searchable, autoassign', 'numerical'),
+				array('selectable, searchable, autoassign, is_membership_possible', 'numerical'),
 				array('price', 'numerical'),
 				array('duration', 'numerical'),
 				array('title, description', 'length', 'max' => '255'),
@@ -64,6 +64,7 @@ class YumRole extends YumActiveRecord {
 				'selectable' => array('condition' => 'selectable = 1'),
 				'searchable' => array('condition' => 'searchable = 1'),
 				'autoassign' => array('condition' => 'autoassign = 1'),
+				'possible_memberships' => array('condition' => 'is_membership_possible = 1'),
 				);
 	}
 
