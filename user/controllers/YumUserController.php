@@ -217,6 +217,7 @@ class YumUserController extends YumController {
 			{
 			$profile = new YumProfile(); //add new profile
 			$profile->attributes =$model->profile[0]->attributes;
+			$profile->user_id=Yii::app()->user->id;
 			}
 
 		if(isset($_POST['YumUser'])) {
