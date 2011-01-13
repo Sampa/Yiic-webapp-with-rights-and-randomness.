@@ -210,8 +210,14 @@ class YumUserController extends YumController {
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
-		if(Yum::module()->enableProfiles)
+		if(Yum::module()->enableProfiles && !Yum::module()->profileHistory) 
 			$profile = $model->profile[0];
+			
+		if(Yum::module()->enableProfiles && Yum::module()->profileHistory) 
+			{
+			$profile = new YumProfile(); //add new profile
+			$profile->attributes =$model->profile[0]->attributes;
+			}
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes = $_POST['YumUser'];
