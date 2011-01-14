@@ -136,12 +136,12 @@ class YumFriendship extends YumActiveRecord {
 			if($user->privacy && $user->privacy->message_new_friendship) {
 
 				YumMessage::write($user, $this->inviter,
-						Yum::t('New friendship request'),
+						Yum::t('New friendship request from {username}'),
 						YumTextSettings::getText('text_friendship_new', array(
 								'{user}' => $this->inviter->username,
-								'{message}' => $this->message,
-								'{link}' =>
-								Yii::app()->controller->createUrl('//user/friendship/admin'))));
+								'{link_friends}' => Yii::app()->controller->createUrl('//user/friendship/index'),
+								'{link_profile}' => Yii::app()->controller->createUrl('//user/profile/view'),
+								'{message}' => $this->message)));
 			}
 		}
 		return parent::afterSave();

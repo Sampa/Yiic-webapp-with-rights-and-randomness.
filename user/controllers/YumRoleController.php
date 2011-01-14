@@ -1,6 +1,18 @@
 <?php
 
 class YumRoleController extends YumController {
+	public function accessRules() {
+		return array(
+				array('allow',
+					'actions'=>array('index', 'admin','delete','create','update', 'view'),
+					'expression' => 'Yii::app()->user->isAdmin()'
+					),
+				array('deny',  // deny all other users
+						'users'=>array('*'),
+						),
+				);
+	}
+
 	public function actionView() {
 		$this->layout = Yum::module()->adminLayout;
 
@@ -22,7 +34,7 @@ class YumRoleController extends YumController {
 	}
 
 	public function actionCreate() 
-	{
+	{	
 		$this->layout = Yum::module()->adminLayout;
 		$model = new YumRole();
 		$this->performAjaxValidation($model, 'yum-role-form');

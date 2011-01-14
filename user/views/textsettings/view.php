@@ -1,7 +1,7 @@
 <?php
 $this->title = Yum::t('Yum Text Settings');
 $this->breadcrumbs=array(
-	Yum::t('Yum Text Settings')=>array('index'),
+	Yum::t('Yum Text Settings')=>array('admin'),
 	$model->language,
 );
 
@@ -23,6 +23,9 @@ $this->widget('zii.widgets.CDetailView', array(
 		'text_membership_header',
 		'text_membership_footer',
 	),
-)); ?>
+)); 
+
+echo CHtml::link(Yum::t('Edit text'), array('//user/yumTextSettings/update', 'id' => $model->id));
+?>
 
 

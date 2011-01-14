@@ -32,6 +32,7 @@ if($friends) {
 			$options = CHtml::submitButton(Yum::t('Remove friend'),array(
 						'id'=>'remove_friend','name'=>'YumFriendship[remove_friend]'));
 		}
+		if($friend->status != YumFriendship::FRIENDSHIP_REJECTED)
 		printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
 				$friend->inviter->getAvatar($friend->invited, true),
 				CHtml::link($friend->invited->username, array(

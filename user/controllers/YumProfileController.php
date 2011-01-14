@@ -135,7 +135,7 @@ class YumProfileController extends YumController {
 			if($model->validate())
 			{
 				$model->save();
-				$this->redirect(array('admin'));
+				$this->redirect(array('view', 'id' => $model->id));
 			}
 		}
 
@@ -153,16 +153,16 @@ class YumProfileController extends YumController {
 			$_GET['id'] = $profile->profile_id;
 		}
 
-		$model=$this->loadModel();
+		$model = $this->loadModel();
 		if(isset($_POST['YumProfile']))
 		{
 			$model->attributes=$_POST['YumProfile'];
 
 			if($model->save())
-				$this->redirect(array('admin'));
+				$this->redirect(array('admin', 'id' => $model->id));
 		}
 
-		$this->render('/user/update',array(
+		$this->render('/profile/update',array(
 					'model'=>$model->user,
 					'profile' => $model,
 					'passwordform' => new YumUserChangePassword(),

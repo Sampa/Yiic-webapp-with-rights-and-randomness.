@@ -99,6 +99,7 @@ class YumMessagesController extends YumController {
 		$this->render('index',array(
 					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
 							'criteria' => array(
+								'order' => 'timestamp DESC',
 								'condition' => 'to_user_id = '. Yii::app()->user->id)))));
 	}
 

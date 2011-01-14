@@ -14,7 +14,6 @@ class YumRegistrationController extends YumController {
 			array('allow',
 				'actions' => array('captcha'),
 				'users' => array('*'),
-				'expression' => 'Yii::app()->getModule(\'user\')->enableCaptcha',
 			),
 			array('deny', // deny all other users
 				'users' => array('*'),
@@ -104,7 +103,7 @@ class YumRegistrationController extends YumController {
 						$this->actionActivate($user, $form);
 						Yii::app()->end();
 					} else if ($registrationType == YumRegistration::REG_SIMPLE) {
-						Yii::app()->user->setFlash('success', Yum::t("Your account has been activated. Thank you for your registration."));
+						Yii::app()->user->setFlash('success', Yum::t('Your account has been activated. Thank you for your registration'));
 						$this->refresh();
 					}
 				} else {

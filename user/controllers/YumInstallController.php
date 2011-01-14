@@ -275,7 +275,7 @@ class YumInstallController extends YumController {
 										'You have requested a new Password. To set your new Password,
 										please go to {activation_url}',
 										'Your account has been activated. Thank you for your registration.',
-										'New friendship Request from {user_from}: {message} Go to your contacts: {link}',
+										'New friendship Request from {user_from}: {message}. To accept or ignore this request, go to your friendship page: {link_friends} or go to your profile: {link_profile}',
 										'You have a new profile comment from {user}: {message} visit your profile: {link}',
 										'You have received a new message from {user}: {message}',
 'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
@@ -297,7 +297,7 @@ class YumInstallController extends YumController {
 
 							 Nachricht: {message}
 
-							 <a href=\"{link}\">Hier</a> geht es direkt zu Ihren Kontakten!',
+							 Klicken sie <a href=\"{link_friends}\">hier</a>, um diese Anfrage zu bestätigen oder zu ignorieren. Alternativ können sie <a href=\"{link_profile}\">hier</a> auf ihre Profilseite zugreifen.',
 							 '
 							 Benutzer {username} hat Ihnen eine Nachricht auf Ihrer Pinnwand hinterlassen: 
 

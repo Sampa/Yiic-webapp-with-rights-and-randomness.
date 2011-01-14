@@ -524,7 +524,7 @@ class Relation extends CWidget
 
 				echo CHtml::openTag('div', array(
 							'id' => sprintf('div_%s_%d', $uniqueid, $i),
-							'style' => $isAssigned ? '' : 'display:none;',
+							'style' => $i != 1 && !$isAssigned ? 'display:none;' : '',
 							));
 				echo CHtml::dropDownList(sprintf('%s[%d]',
 							$this->getListBoxName(),
@@ -559,7 +559,6 @@ class Relation extends CWidget
 				Yii::app()->clientScript->registerScript('addbutton_'.$uniqueid, $jsadd); 
 			echo '&nbsp;';
 			echo CHtml::button('+', array('id' => sprintf('add_%s', $uniqueid)));
-
 
 		}
 

@@ -5,11 +5,11 @@ Yii::import('zii.widgets.CPortlet');
 class ProfileVisitWidget extends CPortlet
 {
 	public function init() {
-		parent::init();
+		$this->title=Yum::t('Profile visits');
 		if(Yii::app()->user->isGuest)
 			return false;
 
-		$this->title=Yum::t('Profile visits');
+		parent::init();
 	}
 
 	protected function renderContent()

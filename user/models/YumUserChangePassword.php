@@ -11,7 +11,7 @@ class YumUserChangePassword extends YumFormModel
 //	private $_errors;
 	public $password;
 	public $verifyPassword;
-	public $actualPassword;
+	public $currentPassword;
 
 	public function addError($attribute, $error) {
 		parent::addError($attribute, Yum::t($error));
@@ -25,7 +25,8 @@ class YumUserChangePassword extends YumFormModel
 				$passwordRequirements);
 
 		$rules[] = $passwordrule;
-		$rules[] = array('password, verifyPassword, actualPassword', 'required');
+		$rules[] = array('currentPassword', 'safe');
+		$rules[] = array('password, verifyPassword', 'required');
 		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword',
 				'message' => 'Retyped password is incorrect');
 
@@ -40,7 +41,7 @@ class YumUserChangePassword extends YumFormModel
 		return array(
 			'password'=>Yum::t('New password'),
 			'verifyPassword'=>Yum::t('Retype your new password'),
-			'actualPassword'=>Yum::t('Your actual password'),
+			'currentPassword'=>Yum::t('Your actual password'),
 		);
 	}
 	

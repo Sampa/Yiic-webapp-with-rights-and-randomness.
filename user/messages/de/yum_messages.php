@@ -1,5 +1,6 @@
 <?php
 return array(
+		'Message from' => 'Nachricht von',
 		'Message' => 'Nachricht',
 		'Content' => 'Inhalt',
 		'Title' => 'Titel',

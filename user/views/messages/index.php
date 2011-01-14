@@ -19,13 +19,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 		array(
 			'type' => 'raw',
-			'name' => Yum::t('Time sent'),
-			'value' => '$data->getDate()',
+			'name' => Yum::t('title'),
+			'value' => 'CHtml::link($data->getTitle(), array("view", "id" => $data->id))',
 		),
 		array(
 			'type' => 'raw',
-			'name' => Yii::t('UserModule.user', 'title'),
-			'value' => '$data->getTitle()',
+			'name' => Yum::t('Time sent'),
+			'value' => '$data->getDate()',
 		),
 		array(
 			'class'=>'CButtonColumn',

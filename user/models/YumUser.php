@@ -125,11 +125,11 @@ class YumUser extends YumActiveRecord {
 			$setting->save();
 		}
 
-		if(Yum::module()->enableProfiles && !isset($this->profile[0])) {
+/*		if(Yum::module()->enableProfiles && !isset($this->profile[0])) {
 			$profile = new YumProfile();
 			$profile->user_id = $this->id;
 			$profile->save(false);
-		}
+		} */
 			
 
 		if(Yum::module()->enableLogging)

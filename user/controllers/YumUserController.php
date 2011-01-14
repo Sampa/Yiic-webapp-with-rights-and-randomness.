@@ -119,12 +119,12 @@ class YumUserController extends YumController {
 			$form->attributes = $_POST['YumUserChangePassword'];
 			$form->validate();
 
-			if(YumUser::encrypt($form->actualPassword) != YumUser::model()->findByPk($uid)->password)
-				$form->addError('actualPassword', 'Your actual password is not correct');
+			if(YumUser::encrypt($form->currentPassword) != YumUser::model()->findByPk($uid)->password)
+				$form->addError('currentPassword', 'Your actual password is not correct');
 
 			if(!$form->hasErrors()) {
 				if(YumUser::model()->findByPk($uid)->setPassword($form->password)) 
-					Yum::setFlash('The new password has been saved.');
+					Yum::setFlash('The new password has been saved');
 				else 
 					Yum::setFlash('There was an error saving the password');
 

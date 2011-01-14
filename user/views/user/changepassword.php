@@ -15,10 +15,12 @@ if(isset($expired) && $expired)
 	<?php echo Yum::requiredFieldNote(); ?>
 	<?php echo CHtml::errorSummary($form); ?>
 
-	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'actualPassword'); ?>
-	<?php echo CHtml::activePasswordField($form,'actualPassword'); ?>
-	</div>
+	<?php if(!Yii::app()->user->isGuest) {
+		echo '<div class="row">';
+		echo CHtml::activeLabelEx($form,'currentPassword'); 
+		echo CHtml::activePasswordField($form,'currentPassword'); 
+		echo '</div>';
+	} ?>
 
 	<?php $this->renderPartial('/user/passwordfields', array('form'=>$form)); ?>
 	
