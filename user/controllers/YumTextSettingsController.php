@@ -5,16 +5,8 @@ class YumTextSettingsController extends YumController {
 	public function accessRules()
 	{
 		return array(
-				array('allow',  
-					'actions'=>array('index','view'),
-					'users'=>array('*'),
-					),
 				array('allow', 
-					'actions'=>array('create','update'),
-					'users'=>array('@'),
-					),
-				array('allow', 
-					'actions'=>array('admin','delete'),
+					'actions'=>array('admin','delete', 'create', 'update', 'view'),
 					'users'=>array('admin'),
 					),
 				array('deny', 
@@ -116,10 +108,7 @@ class YumTextSettingsController extends YumController {
 
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('YumTextSettings');
-		$this->render('/textsettings/index',array(
-					'dataProvider'=>$dataProvider,
-					));
+		$this->actionAdmin();
 	}
 
 	public function actionAdmin()

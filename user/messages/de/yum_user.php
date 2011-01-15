@@ -37,7 +37,7 @@ return array(
 		'Ignored users' => 'Ignorierliste',
 		'Browse user groups' => 'Benutzergruppen durchsuchen',
 		'Group title' => 'Titel der Gruppe',
-		'New profile comment' => 'Neuer Profilkommentar',
+		'New profile comment from {username}' => 'Neuer Profilkommentar von {username}',
 		'Are you sure to remove this comment from your profile?' => 'Sind Sie sicher, dass sie diesen Kommentar entfernen wollen?',
 		'Remove comment' => 'Kommentar entfernen',
 		'Description' => 'Beschreibung',
