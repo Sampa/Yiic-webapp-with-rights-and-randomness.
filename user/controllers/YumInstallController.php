@@ -90,6 +90,7 @@ class YumInstallController extends YumController {
 						`message_new_message` tinyint(1) NOT NULL,
 						`message_new_profilecomment` tinyint(1) NOT NULL,
 						`appear_in_search` tinyint(1) NOT NULL DEFAULT 1,
+						`show_online_status` tinyint(1) NOT NULL DEFAULT 1,
 						`ignore_users` varchar(255),
 						`public_profile_fields` bigint(15) unsigned,
 						PRIMARY KEY (`user_id`)

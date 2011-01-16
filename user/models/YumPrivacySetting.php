@@ -21,7 +21,7 @@ class YumPrivacysetting extends YumActiveRecord{
 	{
 		return array(
 			array('user_id, message_new_friendship, message_new_message, message_new_profilecomment', 'required'),
-			array('appear_in_search, message_new_friendship, message_new_message, message_new_profilecomment, public_profile_fields', 'numerical', 'integerOnly'=>true),
+			array('appear_in_search, message_new_friendship, message_new_message, message_new_profilecomment, public_profile_fields, show_online_status', 'numerical', 'integerOnly'=>true),
 			array('user_id', 'length', 'max'=>10),
 			array('ignore_users', 'length', 'max'=>255),
 			array('ignore_users', 'match', 'pattern' => '/^(\w)+(,\w+)*$/'),

@@ -25,13 +25,13 @@ $this->title = Yum::t('Edit profile');
 	$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>
 
 	<div class="row buttons">
-	<?php echo CHtml::button(Yum::t('Upload avatar Image'), array(
-'submit' => array('/user/avatar/editAvatar'))); ?>
-	<?php echo CHtml::submitButton($model->isNewRecord 
+		<?php echo CHtml::submitButton($model->isNewRecord 
 			? Yum::t('Create my profile') 
 			: Yum::t('Save profile changes')); ?>
 	</div>
 
 	<?php echo CHtml::endForm(); ?>
+<?php echo CHtml::button(Yum::t('Upload avatar Image'), array(
+'submit' => array('/user/avatar/editAvatar'))); ?>
 
 	</div><!-- form -->

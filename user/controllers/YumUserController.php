@@ -95,7 +95,6 @@ class YumUserController extends YumController {
 	}
 
 	public function actionLogout() {
-			Yii::app()->user->data()->logout();
 		$this->redirect(array('//user/auth/logout'));
 	}
 

@@ -2,18 +2,19 @@
 
 $template = '<p> %s: %s </p>';
 
-if($data->isOnline())
+if($data->privacy->show_online_status)
+	if($data->isOnline())
 	echo Yum::t('User is Online!');
 else
 	echo Yum::t('User is Offline!');
 
-printf($template, Yum::t('Username'), $data->username);
+	printf($template, Yum::t('Username'), $data->username);
 
 
-if(Yum::module()->enableProfiles && isset($data->profile[0])) {
-	printf($template, Yum::t('Firstname'), $data->profile[0]->firstname);
-	printf($template, Yum::t('Lastname'), $data->profile[0]->lastname);
-} 
+	if(Yum::module()->enableProfiles && isset($data->profile[0])) {
+		printf($template, Yum::t('Firstname'), $data->profile[0]->firstname);
+		printf($template, Yum::t('Lastname'), $data->profile[0]->lastname);
+	} 
 
 printf($template, Yum::t('First visit'), date(UserModule::$dateFormat, $data->createtime)); 
 printf($template, Yum::t('Last visit'), date(UserModule::$dateFormat, $data->lastvisit)); 

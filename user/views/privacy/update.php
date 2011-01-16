@@ -122,6 +122,19 @@ foreach(YumProfileField::model()->findAll() as $field) {
 	</div>
 <?php } ?>
 
+<?php if(Yum::module()->enableOnlineStatus) { ?>
+	<div class="row">
+	<?php 
+	echo CHtml::activeLabelEx($model, 'show_online_status'); 
+	echo CHtml::activeDropDownList($model, 'show_online_status',
+			array(
+				'0' => Yum::t( 'Do not show my online status'),
+				'1' => Yum::t( 'Show my online status to everyone'),
+				)
+			);
+	?>
+	</div>
+<?php } ?>
 <?php if(Yum::module()->enableRoles) { ?>
 	<div class="row">
 	<?php 

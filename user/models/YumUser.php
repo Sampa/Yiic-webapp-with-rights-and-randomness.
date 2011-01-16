@@ -55,8 +55,7 @@ class YumUser extends YumActiveRecord {
 	public function logout() {
 		if(Yum::module()->enableOnlineStatus && !Yii::app()->user->isGuest) {
 			$this->lastaction = 0;
-			return $this->save();
-
+			$this->save('lastaction');
 		}
 	}
 	public static function generatePassword() { 
@@ -140,6 +139,7 @@ class YumUser extends YumActiveRecord {
 		$setting = YumPrivacySetting::model()->findByPk($this->id);
 		if (!$setting) {
 			$setting = new YumPrivacySetting();
+			$setting->user_id = $this->id;
 			$setting->save();
 		}
 

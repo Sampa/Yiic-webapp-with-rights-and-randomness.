@@ -271,6 +271,7 @@ class YumAuthController extends YumController {
 			$this->redirect(Yum::module()->returnLogoutUrl);
 
 		$user = YumUser::model()->findByPk(Yii::app()->user->id);
+		$user->logout();
 
 		if (Yii::app()->user->name == 'facebook') {
 			if (!Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK)
@@ -281,13 +282,13 @@ class YumAuthController extends YumController {
 			$facebook = new Facebook(Yum::module()->facebookConfig);
 			$session = $facebook->getSession();
 			Yii::app()->user->logout();
-			if (Yum::module()->enableLogging == true)
-				YumActivityController::logActivity(Yii::app()->user->id, 'fblogout');
+			if (Yum::module()->enableLogging)
+				Yum::logActivity(Yii::app()->user->id, 'fblogout');
 			$this->redirect($facebook->getLogoutUrl(array('next' => $this->createAbsoluteUrl(Yum::module()->returnLogoutUrl), 'session_key' => $session['session_key'])));
 		}
 		else {
 			if (Yum::module()->enableLogging == true)
-				YumActivityController::logActivity(Yii::app()->user->id, 'logout');
+				Yum::logActivity(Yii::app()->user->id, 'logout');
 
 			Yii::app()->user->logout();
 			$this->redirect(Yum::module()->returnLogoutUrl);
