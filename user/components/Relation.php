@@ -464,6 +464,16 @@ class Relation extends CWidget
 			}
 		}
 
+		public function getListBoxId() 
+		{
+				return	sprintf('%s_%s',
+						get_class($this->_model),
+						get_class($this->_relatedModel)
+						);  
+		}
+
+
+
 		public function renderBelongsToSelection() {
 			if(strcasecmp($this->style, "dropDownList") == 0) 
 				echo CHtml::ActiveDropDownList(
@@ -506,13 +516,89 @@ class Relation extends CWidget
 		 * element only once.
 		 */
 		public function renderManyManyDropDownListSelection() {
-			$uniqueid = $this->_relatedModel->tableSchema->name;
 
 			// Do we need do display all or only a subset of parent elements?
 			if($this->parentObjects != 0)
 				$relatedmodels = $this->parentObjects;
 			else
 				$relatedmodels = $this->_relatedModel->findAll();
+
+			Yii::app()->clientScript->registerScript('relation', "
+					function remove_selection(id) {
+					option = '<option value=\"'+id+'\" class=\"option_'+id+'\">'+$('#option_'+id).html()+'</option>';
+					$('#selection_'+id).remove();
+					$('#option_'+id).remove();
+					$('#removelink_'+id).remove();
+					$('#".$this->getListBoxId()."').append(option);
+					}	
+", CClientScript::POS_HEAD);
+
+			$remove_link = 	CHtml::image(
+				Yii::app()->getAssetManager()->publish(
+					Yii::getPathOfAlias('zii.widgets.assets.gridview').'/delete.png'));
+
+			Yii::app()->clientScript->registerScript('relation', "
+		$('#".$this->getListBoxId()."').change(function() {
+			id = $(this).val();
+			option = $('.option_' + id);
+
+			selection = '<li id=\"option_'+id+'\">' + option.html() + '</li>';
+			hiddeninput = '<input type=\"hidden\" id=\"selection_'+id+'\" name=\"selection_'+id+'\" />';
+			remove_link = '<a id=\"removelink_'+id+'\" style=\"float:right;\" onclick=\"remove_selection('+id+')\">".$remove_link. "</a>';
+
+			clear = '<div style=\"clear: both;\"></div>';
+
+			$('#selected').append(remove_link);
+			$('#selected').append(hiddeninput);
+			$('#selected').append(selection);
+			$('#selected').append(clear);
+			option.remove();
+
+});
+
+");
+
+			// before we render our dropdownlists, we need to gather <option> 
+			// parameters that // we pass over to CHtml::dropDownList 
+			$options = array();
+			$assigned = array();
+			foreach($relatedmodels as $key => $obj) { 
+				if($this->isAssigned($obj->id)) {
+					$assigned[$obj->id] = $obj->{$this->fields};
+						unset($relatedmodels[$key]);
+				}
+				else
+					$options[$obj->id] = array('class' => "option_{$obj->id}");
+			}
+
+echo CHtml::dropDownList($this->getListBoxName(),
+		0,
+		CHtml::listData(
+			array_merge(
+				array('0' => $this->allowEmpty), $relatedmodels),
+			$this->relatedPk,
+			$this->fields), array(
+				'options' => $options,
+				)
+		);
+echo '<div id="selected">';
+if(isset($assigned) && $assigned)
+	foreach($assigned as $key => $option) {
+		printf('<a id="removelink_%d" style="float: right;margin: 1px;" onclick="remove_selection(%d)"> %s </a>', $key, $key, $remove_link);
+		printf('<input type="hidden" id="selection_%d" name="selection_%d"', $key, $key);
+		printf('<li id="option_%d">%s</li>', $key, $option);
+		echo '<div style="clear: both;"></div>';
+}
+echo '</div>';
+
+
+			/*			$uniqueid = $this->_relatedModel->tableSchema->name;
+
+
+			$js_init = "
+				var	removed_elements = [];
+			";
+			Yii::app()->clientScript->registerScript('dropdown_init', $js_init);
 
 			$addbutton = sprintf('i'.$this->num.' = %d; maxi'.$this->num.' = %d;',
 					count($this->getAssignedObjects()) + 1,
@@ -522,9 +608,10 @@ class Relation extends CWidget
 
 			// Javascript that handles the action when a element gets selected
 			$js_dropdownlist_change = "
-			element = parseInt($(this).val());
-			alert('.option_{$uniqueid}_'+element);
-			$('.option_{$uniqueid}_'+element).remove(); ";
+//			element = parseInt($(this).val());
+//			$('.option_{$uniqueid}_'+element).remove();
+
+ ";
 
 			// before we render our dropdownlists, we need to gather <option> 
 			// parameters that // we pass over to CHtml::dropDownList 
@@ -534,7 +621,6 @@ class Relation extends CWidget
 			}
 			$i = 0;
 			foreach($relatedmodels as $obj) { 
-				$i++;
 				$isAssigned = $this->isAssigned($obj->id);
 
 				echo CHtml::openTag('div', array(
@@ -559,9 +645,13 @@ class Relation extends CWidget
 								$i)));
 				echo CHtml::closeTag('div');
 				$jsadd = " 
+
 					$('#add_{$uniqueid}').click(function() {
+							alert($(\"select[name='{$this->getListBoxName()}[\"+i{$this->num}+\"]']\").val());
+							if($(\"select[name='{$this->getListBoxName()}[\"+i{$this->num}+\"]']\").val() != '') {
 							$('#div_{$uniqueid}_' + i{$this->num}).show();
 							if(i{$this->num} <= maxi{$this->num}) i{$this->num}++;
+							}
 							});
 				";
 				$jssub = " 
@@ -573,11 +663,13 @@ class Relation extends CWidget
 				";
 
 				Yii::app()->clientScript->registerScript('subbutton_'.$uniqueid.'_'.$i, $jssub); 
+
+				$i++;
 			}
 				Yii::app()->clientScript->registerScript('addbutton_'.$uniqueid, $jsadd); 
 			echo '&nbsp;';
 			echo CHtml::button('+', array('id' => sprintf('add_%s', $uniqueid)));
-
+*/
 		}
 
 		public function isAssigned($id) 
@@ -587,16 +679,17 @@ class Relation extends CWidget
 
 		public static function retrieveValues($data) 
 		{
-			$returnArray = array();
+			$return_array= array();
 
-			$i = 0;
-			foreach($data as $value) {
-				if($value != 0)
-					$returnArray[(int)$i] = (int)$value;
-			$i++;
+			foreach($data as $key => $value) {
+				if(substr($key, 0, 10) == 'selection_') {
+					$data = explode('_', $key);
+					$data = $data[1];
+					$return_array[$data] = $data;
+				}
 			}
 
-			return $returnArray;
+			return $return_array;
 		}
 
 

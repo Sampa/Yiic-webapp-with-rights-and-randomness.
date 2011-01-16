@@ -13,6 +13,18 @@ $form = $this->beginWidget('CActiveForm', array(
  isset($profile) ? $profile : null )); ?>
 </div>
 
+<div style="float: right; margin: 10px;">
+<div class="row">
+<?php echo $form->label($model, 'superuser');
+echo $form->dropDownList($model, 'superuser',YumUser::itemAlias('AdminStatus'));
+echo $form->error($model, 'superuser'); ?>
+</div>
+
+<div class="row">
+<?php echo $form->label($model,'status');
+echo $form->dropDownList($model,'status',YumUser::itemAlias('UserStatus'));
+echo $form->error($model,'status'); ?>
+</div>
 <?php if(Yum::module()->enableRoles) { ?>
 <div class="row roles">
 <p> <?php echo Yum::t('User belongs to these roles'); ?> </p>
@@ -20,15 +32,14 @@ $form = $this->beginWidget('CActiveForm', array(
 	<?php $this->widget('YumModule.components.Relation', array(
 				'model' => $model,
 				'relation' => 'roles',
-				'style' => 'checkbox',
+				'style' => 'dropdownlist',
 				'fields' => 'title',
-				'htmlOptions' => array(
-					'checkAll' => Yum::t('Choose All'),
-					'template' => '<div class="checkbox">{input}</div>{label}'),
 				'showAddButton' => false
 				)); ?>
 </div>
 <?php } ?>
+
+</div>
 
 
 <div class="row">
@@ -46,18 +57,6 @@ echo $form->error($model, 'username'); ?>
 </div>
 <?php if(isset($profile)) 
 		$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>
-
-<div class="row">
-<?php echo $form->label($model, 'superuser');
-echo $form->dropDownList($model, 'superuser',YumUser::itemAlias('AdminStatus'));
-echo $form->error($model, 'superuser'); ?>
-</div>
-
-<div class="row">
-<?php echo $form->label($model,'status');
-echo $form->dropDownList($model,'status',YumUser::itemAlias('UserStatus'));
-echo $form->error($model,'status'); ?>
-</div>
 
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord

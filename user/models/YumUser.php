@@ -43,6 +43,22 @@ class YumUser extends YumActiveRecord {
 		return parent::model($className);
 	}
 
+	public function isOnline() {
+		return $this->lastaction > time() - 5 * 60;
+	}
+
+	public function setLastAction() {
+		$this->lastaction = time();
+		return $this->save();
+	}
+
+	public function logout() {
+		if(Yum::module()->enableOnlineStatus && !Yii::app()->user->isGuest) {
+			$this->lastaction = 0;
+			return $this->save();
+
+		}
+	}
 	public static function generatePassword() { 
 		$consonants = array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z"); 
 		$vocals = array("a","e","i","o","u"); 
@@ -195,7 +211,7 @@ class YumUser extends YumActiveRecord {
 		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
 		$rules[] = array('notifyType', 'safe');
 		$rules[] = array('password', 'required', 'on' => array('insert'));
-		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly' => true);
+		$rules[] = array('createtime, lastvisit, lastaction, superuser, status', 'numerical', 'integerOnly' => true);
 
 		if (Yum::module()->enableAvatar) {
 			// require an avatar image in the avatar upload screen

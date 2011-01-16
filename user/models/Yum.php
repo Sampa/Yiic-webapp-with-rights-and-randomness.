@@ -15,9 +15,11 @@ class Yum
 
 		$path = $url . '/' . $file;
 		if(strpos($file, 'js') !== false)
-			Yii::app()->clientScript->registerScriptFile($path);
+			return Yii::app()->clientScript->registerScriptFile($path);
 		else if(strpos($file, 'css') !== false)
-			Yii::app()->clientScript->registerCssFile($path);
+			return Yii::app()->clientScript->registerCssFile($path);
+
+		return $path;
 	}
 
 	public static function hint($message) 

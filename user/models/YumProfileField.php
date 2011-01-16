@@ -33,10 +33,10 @@
  */
 class YumProfileField extends YumActiveRecord
 {
-	const VISIBLE_ALL=3;
-	const VISIBLE_REGISTER_USER=2;
-	const VISIBLE_ONLY_OWNER=1;
 	const VISIBLE_NO=0;
+	const VISIBLE_ONLY_OWNER=1;
+	const VISIBLE_REGISTER_USER=2;
+	const VISIBLE_ALL=3;
 
 	/**
      * Returns the static model of the specified AR class.
@@ -46,6 +46,18 @@ class YumProfileField extends YumActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function isPublic($user = null) {
+		if($user == null)
+			$user = Yii::app()->user->id;
+
+		if($privacy= YumUser::model()->findByPk($user)->privacy) {
+			if($privacy->public_profile_fields & pow(2, $this->id))
+				return true;
+		}
+
+		return false;
 	}
 
 

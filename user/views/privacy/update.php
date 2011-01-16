@@ -25,6 +25,7 @@ echo $form->errorSummary($model);
 <?php if(Yum::module()->enableProfiles) { ?>
 <div class="row profile_field_selection">
 <?php
+echo '<h2>' . Yum::t('Profile field public options') . '</h2>';
 $i = 1;
 foreach(YumProfileField::model()->findAll() as $field) {
 	printf('<label for="privacy_for_field_%s">%s</label>%s',
@@ -32,8 +33,8 @@ foreach(YumProfileField::model()->findAll() as $field) {
 			Yum::t('Make {field} public available', array('{field}' => $field->title)),
 			CHtml::dropDownList("privacy_for_field_{$i}",
 				$model->public_profile_fields & $i ? 1 : 0, array(
-					0 => Yum::t('not public'),
-					1 => Yum::t('public'))
+					0 => Yum::t('no'),
+					1 => Yum::t('yes'))
 				)
 			) ;
 

@@ -7,7 +7,6 @@ Yii::app()->clientScript-> registerScriptFile(Yii::app()->getModule('user')->rte
 foreach($profile->loadProfileFields() as $field) {
 	echo CHtml::openTag('div',array('class'=>'row'));
 
-
 	if($field->hint)
 		echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
 

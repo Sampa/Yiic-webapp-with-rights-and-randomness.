@@ -95,6 +95,7 @@ class YumUserController extends YumController {
 	}
 
 	public function actionLogout() {
+			Yii::app()->user->data()->logout();
 		$this->redirect(array('//user/auth/logout'));
 	}
 
@@ -166,8 +167,7 @@ class YumUserController extends YumController {
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
 
-			if(isset($_POST['YumUser']['YumRole']))
-				$model->roles = $_POST['YumUser']['YumRole'];
+			$model->roles = Relation::retrieveValues($_POST);
 
 			if(isset($_POST['YumProfile']) )
 				$profile->attributes = $_POST['YumProfile'];
@@ -210,23 +210,14 @@ class YumUserController extends YumController {
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
-		if(Yum::module()->enableProfiles && !Yum::module()->profileHistory) 
+		if(Yum::module()->enableProfiles)
 			$profile = $model->profile[0];
 			
-		if(Yum::module()->enableProfiles && Yum::module()->profileHistory) 
-			{
-			$profile = new YumProfile(); //add new profile
-			$profile->attributes =$model->profile[0]->attributes;
-			$profile->user_id=Yii::app()->user->id;
-			}
-
 		if(isset($_POST['YumUser'])) {
 			$model->attributes = $_POST['YumUser'];
 
 			// Assign the roles and belonging Users to the model
-			$model->roles = array();
-			if(isset($_POST['YumUser']['YumRole']))
-				$model->roles = $_POST['YumUser']['YumRole'];
+			$model->roles = Relation::retrieveValues($_POST);
 
 			if(isset($_POST['YumProfile']) )
 				$profile->attributes = $_POST['YumProfile'];

@@ -71,6 +71,7 @@ class YumInstallController extends YumController {
 						`activationKey` varchar(128) NOT NULL default '',
 						`createtime` int(10) NOT NULL default '0',
 						`lastvisit` int(10) NOT NULL default '0',
+						`lastaction` int(10) NOT NULL default '0',
 						`lastpasswordchange` int(10) NOT NULL default '0',
 						`superuser` int(1) NOT NULL default '0',
 						`status` int(1) NOT NULL default '0',

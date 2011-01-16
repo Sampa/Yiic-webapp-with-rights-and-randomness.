@@ -39,20 +39,13 @@ class YumRoleController extends YumController {
 		$model = new YumRole();
 		$this->performAjaxValidation($model, 'yum-role-form');
 		if(isset($_POST['YumRole'])) {
-			$model->attributes = $_POST['YumRole'];
+			$model->users = Relation::retrieveValues($_POST);
 
-			if(isset($_POST['YumRole']['YumUser']))
-				$model->users = $_POST['YumRole']['YumUser'];
-			else
-				$model->users = array();
-
-			if($model->save())
-			{
-			if(Yum::module()->enableLogging == true)
-								{
-								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-								YumActivityController::logActivity($user, 'role_created');
-								}
+			if($model->save()) {
+				if(Yum::module()->enableLogging == true) {
+					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+					YumActivityController::logActivity($user, 'role_created');
+				}
 				$this->redirect(array('admin'));
 			}
 
@@ -68,20 +61,15 @@ class YumRoleController extends YumController {
 	 $this->performAjaxValidation($model, 'yum-role-form');
 
 		if(isset($_POST['YumRole'])) {
-			$model->attributes = $_POST['YumRole'];
+			$model->users = $_POST['YumRole'];
 
-			if(isset($_POST['YumRole']['YumUser']))
-				$model->users = $_POST['YumRole']['YumUser'];
-			else
-				$model->users = array();
+			$model->users = Relation::retrieveValues($_POST);
 
-			if($model->validate() && $model->save())
-			{
-				if(Yum::module()->enableLogging == true)
-								{
-								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-								YumActivityController::logActivity($user, 'role_updated');
-								}
+			if($model->validate() && $model->save()) {
+				if(Yum::module()->enableLogging == true) {
+					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+					YumActivityController::logActivity($user, 'role_updated');
+				}
 				$this->redirect(array('view','id'=>$model->id));
 		}
 	}

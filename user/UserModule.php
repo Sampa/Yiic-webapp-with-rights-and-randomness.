@@ -56,6 +56,7 @@ class UserModule extends CWebModule {
 	public $enableFriendship = true;
 	public $enableLogging = true;
 	public $enableUsergroups = true;
+	public $enableOnlineStatus = true; 
 
 	/* Avatar options */
 	// Enable the possibility for users to upload an avatar image. The

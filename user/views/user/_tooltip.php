@@ -2,6 +2,11 @@
 
 $template = '<p> %s: %s </p>';
 
+if($data->isOnline())
+	echo Yum::t('User is Online!');
+else
+	echo Yum::t('User is Offline!');
+
 printf($template, Yum::t('Username'), $data->username);
 
 

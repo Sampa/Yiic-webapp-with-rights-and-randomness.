@@ -6,7 +6,7 @@ $this->title = Yii::t("UserModule.user", 'Your profile');
 
 <?php $this->renderPartial('/messages/new_messages');?>
 
-<?php Yum::getFlash(); ?>
+<?php Yum::renderFlash(); ?>
 <div class="avatar">
 <?php echo $model->renderAvatar(); ?>
 </div>
