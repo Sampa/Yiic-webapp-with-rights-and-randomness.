@@ -90,6 +90,7 @@ class YumInstallController extends YumController {
 						`message_new_profilecomment` tinyint(1) NOT NULL,
 						`appear_in_search` tinyint(1) NOT NULL DEFAULT 1,
 						`ignore_users` varchar(255),
+						`public_profile_fields` bigint(15) unsigned,
 						PRIMARY KEY (`user_id`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 					";
@@ -145,6 +146,7 @@ class YumInstallController extends YumController {
 							`remote_addr` varchar(16),
 							`http_user_agent` varchar(255),
 							`action` varchar(255),
+							`message` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 

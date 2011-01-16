@@ -25,11 +25,10 @@ class YumProfileController extends YumController {
 
 	public function actionEdit() {
 		if(Yum::module()->readOnlyProfiles) {
-			Yii::app()->user->setFlash('profileMessage',
-					Yum::t('You are not allowed to edit your own profile.
-						Please contact your System Administrator.'));
+			Yum::setFlash('You are not allowed to edit your own profile.
+					Please contact the System administrator');
 
-				$this->redirect(array('/user/user/profile', 'id'=>$model->id));
+			$this->redirect(array('/user/user/profile', 'id'=>$model->id));
 		}
 
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
@@ -64,8 +63,7 @@ class YumProfileController extends YumController {
 
 				$model->save();
 				$profile->save();
-				Yii::app()->user->setFlash('profileMessage',
-						Yum::t('Your changes have been saved'));
+				Yum::setFlash('Your changes have been saved');
 				$this->redirect(array('/user/user/profile', 'id'=>$model->id));
 			}
 		}

@@ -24,7 +24,7 @@ class YumActivity extends YumActiveRecord{
 			array('user_id, action', 'default', 'setOnEmpty' => true, 'value' => null),
 			array('timestamp, user_id', 'numerical', 'integerOnly'=>true),
 			array('action', 'length', 'max'=>20),
-			array('id, timestamp, user_id, action', 'safe', 'on'=>'search'),
+			array('id, timestamp, user_id, action, message', 'safe'),
 		);
 	}
 

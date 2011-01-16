@@ -40,6 +40,10 @@ class Yum
 		}
 	}
 
+	public static function logActivity($user, $action, $message = null) {
+		return YumActivityController::logActivity($user, $action, $message);
+	}
+
 	public static function renderFlash()
 	{
 		if(isset($_SESSION['yumflash'])) {

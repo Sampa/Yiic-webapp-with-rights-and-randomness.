@@ -19,6 +19,31 @@ echo Yum::t('Privacy settings for {username}', array('{username}' => $model->use
 			)); 
 echo $form->errorSummary($model);
 ?>
+
+
+
+<?php if(Yum::module()->enableProfiles) { ?>
+<div class="row profile_field_selection">
+<?php
+$i = 1;
+foreach(YumProfileField::model()->findAll() as $field) {
+	printf('<label for="privacy_for_field_%s">%s</label>%s',
+			$i,
+			Yum::t('Make {field} public available', array('{field}' => $field->title)),
+			CHtml::dropDownList("privacy_for_field_{$i}",
+				$model->public_profile_fields & $i ? 1 : 0, array(
+					0 => Yum::t('not public'),
+					1 => Yum::t('public'))
+				)
+			) ;
+
+	$i *= 2;
+}
+?>
+</div>
+
+<?php } ?>
+
 <div class="row">
 <?php echo $form->labelEx($model,'message_new_friendship'); ?>
 <?php echo $form->dropDownList($model, 'message_new_friendship', array(
@@ -36,14 +61,6 @@ echo $form->errorSummary($model);
 <?php echo $form->error($model,'message_new_message'); ?>
 </div>
 
-<div class="row">
-<?php echo $form->labelEx($model,'ignore_users'); ?>
-<?php echo $form->textField($model, 'ignore_users',  array('size' => 100)); ?>
-<?php echo $form->error($model,'ignore_users'); ?>
-<div class="hint">
-<p> <?php echo Yum::t('Separate usernames with comma to ignore specified users'); ?> </p>
-</div>
-</div>
 
 
 <div class="row">
@@ -54,8 +71,11 @@ echo $form->errorSummary($model);
 <?php echo $form->error($model,'message_new_profilecomment'); ?>
 </div>
 
-<?php if(isset($profile) && $profile !== null) {?>
-<div class="row">
+
+	<?php if(Yum::module()->enableProfiles 
+			&& isset($profile) 
+			&& $profile !== null) {?>
+		<div class="row">
 	<?php 
 	echo CHtml::activeLabelEx($profile, 'privacy'); 
 	echo CHtml::activeDropDownList($profile, 'privacy',
@@ -69,6 +89,8 @@ echo $form->errorSummary($model);
 	?>
 
 	</div>
+
+<?php if(Yum::module()->enableProfileComments) { ?>
 	<div class="row">
 	<?php 
 	echo CHtml::activeLabelEx($profile, 'allow_comments'); 
@@ -80,6 +102,8 @@ echo $form->errorSummary($model);
 			);
 	?>
 	</div>
+<?php } ?>
+
 <?php } ?>
 
 <?php if(Yum::module()->enableFriendship) { ?>
@@ -111,6 +135,14 @@ echo $form->errorSummary($model);
 	</div>
 <?php } ?>
 
+<div class="row">
+<?php echo $form->labelEx($model,'ignore_users'); ?>
+<?php echo $form->textField($model, 'ignore_users',  array('size' => 100)); ?>
+<?php echo $form->error($model,'ignore_users'); ?>
+<div class="hint">
+<p> <?php echo Yum::t('Separate usernames with comma to ignore specified users'); ?> </p>
+</div>
+</div>
 
 
 <?php

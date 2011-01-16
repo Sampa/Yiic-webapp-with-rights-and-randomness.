@@ -90,11 +90,13 @@ class YumUser extends YumActiveRecord {
 		if ($this->isNewRecord)
 			$this->createtime = time();
 
-		$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
-		if ($file instanceof CUploadedFile)
-			$this->avatar = $file;
-		else if ($this->scenario == 'avatarUpload')
-			$this->avatar = NULL;
+		if(Yum::module()->enableAvatar) {
+			$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
+			if ($file instanceof CUploadedFile)
+				$this->avatar = $file;
+			else if ($this->scenario == 'avatarUpload')
+				$this->avatar = NULL;
+		}
 
 		return true;
 	}
@@ -196,16 +198,22 @@ class YumUser extends YumActiveRecord {
 		$rules[] = array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly' => true);
 
 		if (Yum::module()->enableAvatar) {
+			// require an avatar image in the avatar upload screen
 			$rules[] = array('avatar', 'required', 'on' => 'avatarUpload');
+			$rules[] = array('avatar', 'required', 'on' => 'avatarScale');
+
+			// if automatic scaling is deactivated, require the exact size	
 			$rules[] = array('avatar', 'EPhotoValidator',
 					'allowEmpty' => true,
 					'mimeType' => array('image/jpeg', 'image/png', 'image/gif'),
-					'maxWidth' => 200,
-					'maxHeight' => 200,
+					'maxWidth' => Yum::module()->avatarMaxWidth,
+					'maxHeight' => Yum::module()->avatarMaxWidth,
 					'minWidth' => 50,
-					'minHeight' => 50);
+					'minHeight' => 50,
+					'on' => 'avatarUpload');
 		}
-		return $rules;
+
+			return $rules;
 	}
 
 	public function hasRole($role_title) {
@@ -496,7 +504,7 @@ class YumUser extends YumActiveRecord {
 			// with the same file name
 			$filename = $this->id . '_' . $_FILES['YumUser']['name']['avatar'];
 			if (is_object($this->avatar)) {
-				$this->avatar->saveAs(Yii::app()->getModule('user')->avatarPath . '/' . $filename);
+				$this->avatar->saveAs(Yum::module()->avatarPath . '/tmp_' . $filename);
 				$this->avatar = $filename;
 			}
 		}
@@ -511,6 +519,8 @@ class YumUser extends YumActiveRecord {
 			$options = array();
 			if ($thumb)
 				$options = array('style' => 'width: 50px; height:50px;');
+			else
+				$options = array('style' => 'width: '.Yum::module()->avatarMaxWidth.'px;');
 
 			if (isset($friend->avatar) && $friend->avatar)
 				$return .= CHtml::image(Yii::app()->baseUrl . '/'

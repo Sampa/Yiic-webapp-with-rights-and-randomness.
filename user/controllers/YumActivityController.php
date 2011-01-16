@@ -29,7 +29,8 @@ class YumActivityController extends YumController {
 			'user_generated',
 			'user_created',
 			'user_updated',
-			'user_removed');
+			'user_removed',
+			'avatar_uploaded');
 
 	public static function possibleActions() {
 		return self::$possibleActions;
@@ -58,7 +59,7 @@ class YumActivityController extends YumController {
 					));
 	}
 
-	public static function logActivity($user, $action) {
+	public static function logActivity($user, $action, $message = null) {
 		if($user === NULL || $action === NULL)
 			return false;
 
@@ -75,6 +76,8 @@ class YumActivityController extends YumController {
 		$activity->timestamp = time();
 		$activity->action = $action;
 		$activity->remote_addr = $_SERVER['REMOTE_ADDR'];
+		if($message)
+			$activity->message = $message;
 
 		// Only log the user agent on login, to safe disk space
 		if($action == 'login' || $action == 'ldap_login')

@@ -20,6 +20,17 @@ class YumPrivacysettingController extends YumController
 
 		if(isset($_POST['YumPrivacysetting'])) {
 			$model->attributes = $_POST['YumPrivacysetting'];
+
+			$profile_privacy = 1;
+			foreach($_POST as $key => $value) {
+				if($value == 1 && substr($key, 0, 18) == 'privacy_for_field_') {
+					$data = explode('_', $key);
+					$data = (int) $data[3];
+					$profile_privacy += $data;
+				}
+			}
+
+			$model->public_profile_fields = $profile_privacy;
 			$model->validate();
 
 		if(isset($_POST['YumProfile'])) {

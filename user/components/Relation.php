@@ -501,11 +501,14 @@ class Relation extends CWidget
 		/* 
 		 * Renders one dropDownList per selectable related Element.
 		 * The users can add additional entries with the + and remove entries
-		 * with the - Button .
+		 * with the - Button. Once a element is selected, the same element in
+		 * the other dropdownlists gets removed, so the user can only choose each
+		 * element only once.
 		 */
 		public function renderManyManyDropDownListSelection() {
 			$uniqueid = $this->_relatedModel->tableSchema->name;
 
+			// Do we need do display all or only a subset of parent elements?
 			if($this->parentObjects != 0)
 				$relatedmodels = $this->parentObjects;
 			else
@@ -517,6 +520,18 @@ class Relation extends CWidget
 			Yii::app()->clientScript->registerScript(
 					'addbutton_'.$uniqueid.'_'.$this->num, $addbutton); 
 
+			// Javascript that handles the action when a element gets selected
+			$js_dropdownlist_change = "
+			element = parseInt($(this).val());
+			alert('.option_{$uniqueid}_'+element);
+			$('.option_{$uniqueid}_'+element).remove(); ";
+
+			// before we render our dropdownlists, we need to gather <option> 
+			// parameters that // we pass over to CHtml::dropDownList 
+			$options = array();
+			foreach($relatedmodels as $obj) { 
+				$options[$obj->id] = array('class' => "option_{$uniqueid}_{$obj->id}");
+			}
 			$i = 0;
 			foreach($relatedmodels as $obj) { 
 				$i++;
@@ -534,7 +549,10 @@ class Relation extends CWidget
 							array_merge(
 								array('0' => $this->allowEmpty), $relatedmodels),
 								$this->relatedPk,
-								$this->fields)
+								$this->fields), array(
+									'options' => $options,
+									'onchange' => $js_dropdownlist_change
+									)
 						);
 				echo CHtml::button('-', array('id' => sprintf('sub_%s_%d',
 								$uniqueid,
@@ -550,7 +568,7 @@ class Relation extends CWidget
 					$('#sub_{$uniqueid}_{$i}').click(function() {
 							$('#div_{$uniqueid}_{$i}').hide();
 							$(\"select[name='{$this->getListBoxName()}[{$i}]]\").val('');
-							if(i{$this->num} >= 1) i--;
+							if(i{$this->num} >= 1) i{$this->num}--;
 							});
 				";
 

@@ -12,6 +12,7 @@ New in 0.8:
 - Support for Facebook Connect (bigchirv)
 - New User activity logging subsystem (see YumActivityController) - logging of login, logout, wrong password attempt, recovery and registration into database and Yii log file
 - Added avatar upload possibility for users
+- Automatic image scaling of uploaded avatars using CImageModifier (thyseus)
 - Added 'visitors' to profiles (who visited whom when, and display it)
 - Added support for send emails out of SwiftMailer (docs/swiftMailer.txt)
 - Added DROPDOWNLIST field type to profile fields. see docs/dropdownlist_in_registration_form.txt for information on how to use this (thyseus)

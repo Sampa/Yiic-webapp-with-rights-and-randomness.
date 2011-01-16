@@ -1,16 +1,11 @@
 <?php 
-$this->pageTitle=Yii::app()->name . ' - '.Yum::t( "Profile");
+$this->pageTitle = Yii::app()->name . ' - '.Yum::t( "Profile");
 $this->breadcrumbs=array(
-		Yum::t( "Profile")=>array('profile'),
-		Yum::t( "Edit"));
-$this->title = Yum::t( 'Edit profile');
+		Yum::t('Profile') => array('profile'),
+		Yum::t('Edit'));
+$this->title = Yum::t('Edit profile');
 ?>
 
-<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
-</div>
-<?php endif; ?>
 <div class="form">
 
 <?php echo CHtml::beginForm(); ?>
@@ -21,7 +16,8 @@ $this->title = Yum::t( 'Edit profile');
 
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'username'); ?>
-<?php echo CHtml::activeTextField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
+<?php echo CHtml::activeTextField($model,'username',array(
+			'size'=>20,'maxlength'=>20)); ?>
 <?php echo CHtml::error($model,'username'); ?>
 </div>
 
@@ -29,9 +25,11 @@ $this->title = Yum::t( 'Edit profile');
 	$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>
 
 	<div class="row buttons">
+	<?php echo CHtml::button(Yum::t('Upload avatar Image'), array(
+'submit' => array('/user/avatar/editAvatar'))); ?>
 	<?php echo CHtml::submitButton($model->isNewRecord 
-			? Yum::t('Create') 
-			: Yum::t('Save')); ?>
+			? Yum::t('Create my profile') 
+			: Yum::t('Save profile changes')); ?>
 	</div>
 
 	<?php echo CHtml::endForm(); ?>

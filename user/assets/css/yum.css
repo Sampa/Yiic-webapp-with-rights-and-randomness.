@@ -22,3 +22,4 @@ label { display: inline }
 .new_messages td { border-bottom: 1px solid;} 
 .tooltip { display: none; padding: 5px; margin: 5px; background-color: #ffa;border: 1px solid #cc9; border-radius: 5px;}
 .view_user {float:left; margin:5px;}
+.profile_field_selection { float: right; margin: 5px;}

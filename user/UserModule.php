@@ -10,27 +10,31 @@ class UserModule extends CWebModule {
 	public $version = '0.8';
 	public $debug = false;
 
+	// Table names
+	private $_tables = array(
+			'users' => 'users',
+			'privacySetting' => 'privacysetting',
+			'settings' => 'yumsettings',
+			'textSettings' => 'yumtextsettings',
+			'messages' => 'messages',
+			'usergroup' => 'usergroup',
+			'userUsergroup' => 'user_has_usergroup',
+			'profileFields' => 'profile_fields',
+			'profileFieldsGroup' => 'profile_fields_group',
+			'profile' => 'profiles',
+			'profileComment' => 'profile_comment',
+			'profileVisit' => 'profile_visit',
+			'roles' => 'roles',
+			'membership' => 'membership',
+			'payment' => 'payment',
+			'friendship' => 'friendship',
+			'permission' => 'permission',
+			'action' => 'action',
+			'userRole' => 'user_has_role',
+			'activity' => 'activities',
+			);
+
 	// database related control vars
-	public $usersTable = 'users';
-	public $privacySettingTable = 'privacysetting';
-	public $settingsTable = 'yumsettings';
-	public $textSettingsTable = 'yumtextsettings';
-	public $messagesTable = 'messages';
-	public $usergroupTable = 'usergroup';
-	public $userUsergroupTable = 'user_has_usergroup';
-	public $profileFieldsTable = 'profile_fields';
-	public $profileFieldsGroupTable = 'profile_fields_group';
-	public $profileTable = 'profiles';
-	public $profileCommentTable = 'profile_comment';
-	public $profileVisitTable = 'profile_visit';
-	public $rolesTable = 'roles';
-	public $membershipTable = 'membership';
-	public $paymentTable = 'payment';
-	public $friendshipTable = 'friendship';
-	public $permissionTable = 'permission';
-	public $actionTable = 'action';
-	public $userRoleTable = 'user_has_role';
-	public $activityTable = 'activities';
 	public $installDemoData = true;
 
 	//layout related control vars
@@ -51,9 +55,33 @@ class UserModule extends CWebModule {
 	public $enableProfileComments = true;
 	public $enableFriendship = true;
 	public $enableLogging = true;
-	public $enableAvatar = true;
 	public $enableUsergroups = true;
+
+	/* Avatar options */
+	// Enable the possibility for users to upload an avatar image. The
+	// image then gets displayed at his profile, his messages and his
+	// profile comments.
+	public $enableAvatar = true;
+
+	// Where to save the avatar images? (Yii::app()->baseUrl . $avatarPath)	
 	public $avatarPath = 'images';
+
+	// Use CImageModifier to scale uploaded avatar images to the specified
+	// size. If this is set to false, the image will be forced to be 
+	// between 50px and $avatarMaxWidth
+	public $avatarScaleImage = true;
+
+	// Maximum width of avatar in pixels. Correct aspect ratio should be set up
+	// by CImageModifier automatically
+	public $avatarMaxWidth = 200;
+
+	// Some default options for the CImageModifier
+	public $imageModifierOptions = array(
+			'upload_max_filesize' => 9999999, // 9,99 MB
+			'file_max_size' => 9999999, // 9,99 MB
+			'file_src_size' => 9999999, // 9,99 MB
+			);
+
 	public $password_expiration_time = 30;
 	public $activationPasswordSet = false;
 	public $autoLogin = false;
@@ -84,7 +112,7 @@ class UserModule extends CWebModule {
   public $rtepath = false; // Don't use an Rich text Editor
   public $rteadapter = false; // Don't use an Adapter
 
-	// determines whether configuration by Database Table is enabled or disabled
+	// determines whether configuration by Database table is enabled or disabled
 	public $tableSettingsDisabled = false;
 
 	// Messaging System can be MSG_NONE, MSG_PLAIN or MSG_DIALOG
@@ -113,7 +141,7 @@ class UserModule extends CWebModule {
 			'login' => '/user/login',
 			'profile' => '/profile/view',
 			'profileComment' => '/profileComment/_view',
-			'profileEdit' => '/profile/profile-edit',
+			'profileEdit' => '/profile/update',
 			'menu' => '/user/menu',
 			'registration' => '/user/registration',
 			'activate' => '/user/resend_activation',
@@ -197,7 +225,7 @@ class UserModule extends CWebModule {
 		);
 
 	/**
-	 * Implements support for getting URLs and Views
+	 * Implements support for getting URLs, Tables and Views
 	 * @param string $name
 	 */
 	public function __get($name) {
@@ -208,6 +236,10 @@ class UserModule extends CWebModule {
 		if(substr($name, -4) === 'View')
 			if(isset($this->_views[substr($name, 0, -4)]))
 				return $this->_views[substr($name, 0, -4)];
+
+		if(substr($name, -5) === 'Table')
+			if(isset($this->_tables[substr($name, 0, -5)]))
+				return $this->_tables[substr($name, 0, -5)];
 
 		return parent::__get($name);
 	}
@@ -225,6 +257,10 @@ class UserModule extends CWebModule {
 		if(substr($name,-4)==='View') {
 			if(isset($this->_views[substr($name,0,-4)]))
 				$this->_views[substr($name,0,-4)]=$value;
+		}
+		if(substr($name,-5)==='Table') {
+			if(isset($this->_tables[substr($name,0,-5)]))
+				$this->_tables[substr($name,0,-5)]=$value;
 		}
 
 		//parent::__set($name,$value);
