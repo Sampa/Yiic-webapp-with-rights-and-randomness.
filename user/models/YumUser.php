@@ -36,7 +36,6 @@ class YumUser extends YumActiveRecord {
 	public $activationKey;
 	public $password_changed = false;
 	private $_userRoleTable;
-	private $_userUserTable;
 	private $_friendshipTable;
 
 	public static function model($className=__CLASS__) {
@@ -105,13 +104,6 @@ class YumUser extends YumActiveRecord {
 		if ($this->isNewRecord)
 			$this->createtime = time();
 
-		if(Yum::module()->enableAvatar) {
-			$file = CUploadedFile::getInstanceByName('YumUser[avatar]');
-			if ($file instanceof CUploadedFile)
-				$this->avatar = $file;
-			else if ($this->scenario == 'avatarUpload')
-				$this->avatar = NULL;
-		}
 
 		return true;
 	}
@@ -139,12 +131,6 @@ class YumUser extends YumActiveRecord {
 			$setting->user_id = $this->id;
 			$setting->save();
 		}
-
-/*		if(Yum::module()->enableProfiles && !isset($this->profile[0])) {
-			$profile = new YumProfile();
-			$profile->user_id = $this->id;
-			$profile->save(false);
-		} */
 
 		if(Yum::module()->enableLogging)
 			YumActivityController::logActivity($this,
@@ -205,7 +191,7 @@ class YumUser extends YumActiveRecord {
 		$rules[] = array('status', 'in', 'range' => array(0, 1, -1));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
 		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
-		$rules[] = array('notifyType', 'safe');
+		$rules[] = array('notifyType, avatar', 'safe');
 		$rules[] = array('password', 'required', 'on' => array('insert'));
 		$rules[] = array('createtime, lastvisit, lastaction, superuser, status', 'numerical', 'integerOnly' => true);
 
@@ -509,22 +495,19 @@ class YumUser extends YumActiveRecord {
 		return $returnarray;
 	}
 
-	public function getAvatar($friend = null, $thumb = false) {
+	public function getAvatar($thumb = false) {
 		if (Yum::module()->enableAvatar) {
 			$return = '<div class="avatar">';
-			if (!is_object($friend))
-				$friend = $this;
 
 			$options = array();
 			if ($thumb)
 				$options = array('style' => 'width: 50px; height:50px;');
 			else
-				$options = array('style' => 'width: '.Yum::module()->avatarMaxWidth.'px;');
+				$options = array('style' => 'width: '.Yum::module()->avatarDisplayWidth.'px;');
 
-			if (isset($friend->avatar) && $friend->avatar)
+			if (isset($this->avatar) && $this->avatar)
 				$return .= CHtml::image(Yii::app()->baseUrl . '/'
-						. Yum::module()->avatarPath . '/'
-						. $friend->avatar, 'Avatar', $options);
+						. $this->avatar, 'Avatar', $options);
 			else
 				$return .= CHtml::image(Yii::app()->getAssetManager()->publish(
 							Yii::getPathOfAlias('YumAssets.images') . ($thumb ? '/no_avatar_available_thumb.jpg' : '/no_avatar_available.jpg'),

@@ -29,6 +29,7 @@ class YumAvatarController extends YumController {
 			$model->attributes = $_POST['YumUser'];
 			$model->setScenario('avatarUpload');
 
+			$model->avatar = CUploadedFile::getInstanceByName('YumUser[avatar]');
 			if($model->validate()) {
 				if(Yum::module()->avatarScaleImage) {
 					Yii::import('YumModule.vendors.imagemodifier.*');
@@ -61,19 +62,17 @@ class YumAvatarController extends YumController {
 						Yum::setFlash('An error occured while uploading your avatar image: ' . $img->error);
 					}
 				} else {
-					$model->setScenario('avatarSizeCheck');
-				if ($model->avatar !== NULL && isset($_FILES['YumUser'])) {
-					// prepend user id to avoid conflicts when two users upload an avatar
-					// with the same file name
-					$filename = $model->id . '_' . $_FILES['YumUser']['name']['avatar'];
-					if (is_object($model->avatar)) {
-						$model->avatar->saveAs(Yum::module()->avatarPath . '/tmp_' . $filename);
+					if(Yum::module()->avatarMaxWidth != 0)
+						$model->setScenario('avatarSizeCheck');
+
+					if ($model->avatar instanceof CUploadedFile) {
+						$filename = Yum::module()->avatarPath .'/'.  $model->id . '_' . $_FILES['YumUser']['name']['avatar'];
+						$model->avatar->saveAs($filename);
 						$model->avatar = $filename;
 					}
 				}
-			}
-		if($model->save())
-				$this->redirect(array('user/profile'));	
+				if($model->save())
+					$this->redirect(array('user/profile'));	
 			}
 		}
 

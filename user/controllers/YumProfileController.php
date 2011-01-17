@@ -93,6 +93,10 @@ class YumProfileController extends YumController {
 		if(!isset($_GET['id']))
 			$_GET['id'] = Yii::app()->user->id;
 
+		if(!Yum::module()->profilesViewableByGuests)
+			if(Yii::app()->user->isGuest)
+				throw new CHttpException(403);
+
 		$this->layout = Yum::module()->profileLayout;
 		$view = Yum::module()->profileView;
 

@@ -54,6 +54,7 @@ class YumPrivacysetting extends YumActiveRecord{
 	public function attributeLabels()
 	{
 		return array(
+			'show_online_status' => Yum::t('Show online status'),
 			'ignore_users' => Yum::t('Ignored users'),
 			'user_id' => Yum::t( 'User'),
 			'appear_in_search' => Yum::t( 'Let me appear in the search'),

@@ -74,7 +74,9 @@ class UserModule extends CWebModule {
 
 	// Maximum width of avatar in pixels. Correct aspect ratio should be set up
 	// by CImageModifier automatically
+	// Set to 0 to disable image size check
 	public $avatarMaxWidth = 200;
+	public $avatarDisplayWidth = 200;
 
 	// Some default options for the CImageModifier
 	public $imageModifierOptions = array(
@@ -164,6 +166,7 @@ class UserModule extends CWebModule {
 	// When forceProtectedProfiles is set, only administrators and the user
   // himself can view the profile
 	public $forceProtectedProfiles = false;
+	public $profilesViewableByGuests = false;
 
 	// LoginType :
 	const LOGIN_BY_USERNAME		= 1;

@@ -1,5 +1,8 @@
 <?php
 return array(
+		'Show online status' => 'Online-Status anzeigen',
+		'Do not show my online status' => 'Status verstecken',
+		'Show my online status to everyone' => 'Meinen Online-Status veröffentlichen',
 		'Your privacy settings have been saved' => 'Ihre Privatsphären-einstellungen wurden gespeichert',
 		'Profile field public options' => 'Einstellungen der Profilfelder',
 		'no' => 'Nein',
