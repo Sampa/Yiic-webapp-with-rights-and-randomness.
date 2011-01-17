@@ -27,45 +27,54 @@ class YumAvatarController extends YumController {
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes = $_POST['YumUser'];
+			$model->setScenario('avatarUpload');
 
-			if(Yum::module()->avatarScaleImage) {
-				Yii::import('YumModule.vendors.imagemodifier.*');
+			if($model->validate()) {
+				if(Yum::module()->avatarScaleImage) {
+					Yii::import('YumModule.vendors.imagemodifier.*');
 
-				$model->setScenario('avatarScale');
+					$model->setScenario('avatarScale');
+					$modifier = new CImageModifier;
+					$img = $modifier->load($_FILES['YumUser']);
+					if ($img->uploaded) {
+						$img->image_resize = true;
+						$img->image_ratio_y = true;
+						$img->image_x = Yum::module()->avatarMaxWidth;
 
-				$modifier = new CImageModifier;
-				$img = $modifier->load($_FILES['YumUser']['name']['avatar']);
-				if ($img->uploaded) {
-					$img->image_resize = true;
-					$img->image_ratio_y = true;
-					$img->image_x = Yum::module()->avatarMaxWidth;
-
-					foreach(Yum::module()->imageModifierOptions as $key => $option)
-						$img->{$key} = $option;
-					$img->file_dst_name = $model->id . '_' . $_FILES['YumUser']['name']['avatar'];
-					$img->process(Yum::module()->avatarPath);
-					if ($img->processed) {
-						Yum::setFlash(
-								Yum::t('The image has been resized to {max_pixel}px width successfully', array(
-										'{max_pixel}' => Yum::module()->avatarMaxWidth)));
-						$img->clean();
-						$this->redirect(array('user/profile'));	
+						foreach(Yum::module()->imageModifierOptions as $key => $option)
+							$img->{$key} = $option;
+						$img->file_dst_name = $model->id . '_' . $_FILES['YumUser']['name']['avatar'];
+						$img->process(Yum::module()->avatarPath);
+						if ($img->processed) {
+							Yum::setFlash(
+									Yum::t('The image has been resized to {max_pixel}px width successfully', array(
+											'{max_pixel}' => Yum::module()->avatarMaxWidth)));
+							$img->clean();
+							$this->redirect(array('user/profile'));	
+						} else {
+							Yum::setFlash(
+									Yum::t('Error while processing new avatar image : {error_message}; File was uploaded without resizing', array(
+											'{error_message}' => $img->error)));
+						}
+						Yum::logActivity(Yii::app()->user->id, 'avatar_uploaded', $img->log);
 					} else {
-						Yum::setFlash(
-								Yum::t('Error while processing new avatar image : {error_message}; File was uploaded without resizing', array(
-										'{error_message}' => $img->error)));
+						Yum::setFlash('An error occured while uploading your avatar image: ' . $img->error);
 					}
-					Yum::logActivity(Yii::app()->user->id, 'avatar_uploaded', $img->log);
 				} else {
-					Yum::setFlash('An error occured while uploading your avatar image');
+					$model->setScenario('avatarSizeCheck');
+				if ($model->avatar !== NULL && isset($_FILES['YumUser'])) {
+					// prepend user id to avoid conflicts when two users upload an avatar
+					// with the same file name
+					$filename = $model->id . '_' . $_FILES['YumUser']['name']['avatar'];
+					if (is_object($model->avatar)) {
+						$model->avatar->saveAs(Yum::module()->avatarPath . '/tmp_' . $filename);
+						$model->avatar = $filename;
+					}
 				}
-			} else {
-				$model->setScenario('avatarUpload');
 			}
-			$model->validate();
-			$model->updateAvatar();
-			if($model->save())
+		if($model->save())
 				$this->redirect(array('user/profile'));	
+			}
 		}
 
 		$this->render('edit_avatar', array('model' => $model));

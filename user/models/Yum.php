@@ -33,6 +33,12 @@ class Yum
 		$_SESSION['yumflash'] = Yum::t($message);
 	}
 
+	public static function hasFlash() 
+	{
+		return(isset($_SESSION['yumflash']));
+	}
+
+
 	/* retrieve the flash message again */
 	public static function getFlash() {
 		if(isset($_SESSION['yumflash'])) {

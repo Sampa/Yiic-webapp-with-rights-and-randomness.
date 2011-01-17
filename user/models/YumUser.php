@@ -117,9 +117,6 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function beforeSave() {
-		if (Yum::module()->enableAvatar)
-			$this->updateAvatar();
-
 		if ($this->password_changed)
 			$this->password = YumUser::encrypt($this->password);
 
@@ -148,7 +145,6 @@ class YumUser extends YumActiveRecord {
 			$profile->user_id = $this->id;
 			$profile->save(false);
 		} */
-			
 
 		if(Yum::module()->enableLogging)
 			YumActivityController::logActivity($this,
@@ -216,7 +212,6 @@ class YumUser extends YumActiveRecord {
 		if (Yum::module()->enableAvatar) {
 			// require an avatar image in the avatar upload screen
 			$rules[] = array('avatar', 'required', 'on' => 'avatarUpload');
-			$rules[] = array('avatar', 'required', 'on' => 'avatarScale');
 
 			// if automatic scaling is deactivated, require the exact size	
 			$rules[] = array('avatar', 'EPhotoValidator',
@@ -225,8 +220,8 @@ class YumUser extends YumActiveRecord {
 					'maxWidth' => Yum::module()->avatarMaxWidth,
 					'maxHeight' => Yum::module()->avatarMaxWidth,
 					'minWidth' => 50,
-					'minHeight' => 50,
-					'on' => 'avatarUpload');
+					'minHeight' => 50, 
+					'on' => 'avatarSizeCheck'); 
 		}
 
 			return $rules;
@@ -512,18 +507,6 @@ class YumUser extends YumActiveRecord {
 		foreach ($admins as $admin)
 			array_push($returnarray, $admin->username);
 		return $returnarray;
-	}
-
-	public function updateAvatar() {
-		if ($this->avatar !== NULL && isset($_FILES['YumUser'])) {
-			// prepend user id to avoid conflicts when two users upload an avatar
-			// with the same file name
-			$filename = $this->id . '_' . $_FILES['YumUser']['name']['avatar'];
-			if (is_object($this->avatar)) {
-				$this->avatar->saveAs(Yum::module()->avatarPath . '/tmp_' . $filename);
-				$this->avatar = $filename;
-			}
-		}
 	}
 
 	public function getAvatar($friend = null, $thumb = false) {

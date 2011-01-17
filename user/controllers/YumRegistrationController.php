@@ -266,14 +266,15 @@ class YumRegistrationController extends YumController {
 
 		if (YumUser::activate($email, $key)) {
 			// Renders the change password form
-			$this->renderPasswordForm(array(
+		$this->renderPartial(Yum::module()->activationSuccessView);
+/*			$this->renderPasswordForm(array(
 				'title' => Yum::t("User activation"),
 				'content' => Yum::t("Your account has been activated."),
 					), array(
 				'email' => $email,
 				'key' => $key,
 					)
-			);
+			); */
 		} else {
 			$this->actionActivate();
 			/*
@@ -381,14 +382,13 @@ class YumRegistrationController extends YumController {
 				if ($form->validate()) {
 					$user = YumUser::model()->findbyPk($form->user_id);
 
-
-
 					$activation_url = $this->createAbsoluteUrl('registration/recovery', array(
 								'activationKey' => $user->activationKey,
 								'email' => $user->profile[0]->email));
 					if (Yum::module()->enableLogging == true)
 						YumActivityController::logActivity($user, 'recovery');
-					Yii::app()->user->setFlash('loginMessage', Yum::t('Instructions have been sent to you. Please check your email.'));
+
+					Yum::setFlash('Instructions have been sent to you. Please check your email.');
 
 					$content = YumTextSettings::model()->find('language = :lang', array('lang' => Yii::app()->language));
 					$sent = null;

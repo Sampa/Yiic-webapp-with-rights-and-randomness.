@@ -149,6 +149,7 @@ class UserModule extends CWebModule {
 			'message' => '/user/message',
 			'recovery' => '/user/recovery',
 			'passwordForm' => '/user/_activation_passwordform',
+			'activationSuccess' => '/user/activation_success',
 			'recoveryChangePassword' =>'/user/changepassword');
 
 	// Activate profile History (profiles are kept always, and when the

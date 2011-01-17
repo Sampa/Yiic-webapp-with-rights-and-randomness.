@@ -7,12 +7,13 @@ $this->breadcrumbs=array(
 
 $this->title = Yum::t("Restore"); 
 ?>
+<?php if(Yum::hasFlash()) {
+echo '<div class="success">';
+echo Yum::getFlash(); 
+echo '</div>';
+} else {
+?>
 
-<?php if(Yii::app()->user->hasFlash('recoveryMessage')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('recoveryMessage'); ?>
-</div>
-<?php else: ?>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
@@ -26,9 +27,9 @@ $this->title = Yum::t("Restore");
 	</div>
 	
 	<div class="row submit">
-		<?php echo CHtml::submitButton(Yii::t("UserModule.user", "Restore")); ?>
+		<?php echo CHtml::submitButton(Yum::t('Restore')); ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->
-<?php endif; ?>
+<?php } ?>
