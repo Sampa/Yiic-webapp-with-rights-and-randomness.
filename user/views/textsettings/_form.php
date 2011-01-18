@@ -14,6 +14,7 @@
 			'fr' => Yum::t('fr') ,
 			'pl' => Yum::t('pl') ,
 			'ru' => Yum::t('ru') ,
+			'es' => Yum::t('es') ,
 )); ?>
 <?php echo $form->error($model,'language'); ?>
 </div>

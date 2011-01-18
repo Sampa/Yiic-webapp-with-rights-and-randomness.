@@ -151,7 +151,7 @@ class YumPasswordValidator extends CValidator
         $message = $this->message !== null ? $this->message : Yii::t('UserModule.YumPasswordValidator',
             '{attribute} must not contain whitespace.',
             array('{num}' => $this->minSym));
-        
+
         $this->addError($object, $attribute, $message);
       }
     }

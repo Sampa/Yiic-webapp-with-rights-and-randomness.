@@ -56,7 +56,7 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 		
 	</div>
 	
-<div class="row">
+	<div class="row">
 	<p class="hint">
 	<?php 
 if($module->registrationType != YumRegistration::REG_DISABLED)

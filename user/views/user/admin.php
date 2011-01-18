@@ -5,9 +5,9 @@ $this->breadcrumbs = array(
 	Yum::t('Users') => array('index'),
 	Yum::t('Manage'));
 
-if(Yii::app()->user->hasFlash('adminMessage')) 
+if(Yii::app()->user->hasFlash('adminMessage'))
 printf('<div class="errorSummary">%s</div>',
-		Yii::app()->user->getFlash('adminMessage')); 
+		Yii::app()->user->getFlash('adminMessage'));
 
 $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$model->search(),
@@ -22,10 +22,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 			array(
 				'name'=>'username',
-				'visible' => Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL,
+				'visible' => Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME,
 				'type'=>'raw',
 				'value'=>'CHtml::link(CHtml::encode($data->username),
 				array(Yum::route("{user}/view"),"id"=>$data->id))',
+			),
+			array(
+				'name'=>'email',
+				'visible' => Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL,
+				'value'=> 'isset($data->profile[0]) ? $data->profile[0]->email : "No email set"',
 			),
 			array(
 				'name'=>'createtime',
@@ -47,7 +52,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'type' => 'raw',
 				'filter' => false,
 				'value'=>'$data->getRoles()',
-			), 
+			),
 			array(
 				'class'=>'CButtonColumn',
 			),

@@ -74,14 +74,18 @@ class YumAuthController extends YumController {
 			$user = ($profile) ? YumUser::model()->findByPk($profile->user_id) : null;
 			try {
 				$fb_user = $facebook->api('/me');
-				$profile = YumProfile::model()->findByAttributes(array('email' => $fb_user['email']));
-				if ($user === null && profile === null) {
+				if (isset($fb_user['email']))
+					$profile = YumProfile::model()->findByAttributes(array('email' => $fb_user['email']));
+				else
+					return false;
+				if ($user === null && $profile === null) {
+					// New account
 					$user = new YumUser;
 					$user->username = 'fb_'.YumRegistrationForm::genRandomString(Yum::module()->usernameRequirements['maxLen'] - 3);
-					$user->password = YumUserChangePassword::createRandomPassword(Yum::module()->passwordRequirements['minLowerCase'],Yum::module()->passwordRequirements['minUpperCase'],Yum::module()->passwordRequirements['minDigits'],Yum::module()->passwordRequirements['minLen']);
+					$user->password = YumUser::encrypt(YumUserChangePassword::createRandomPassword());
 					$user->activationKey = YumUser::encrypt(microtime().$user->password);
 					$user->createtime = time();
-					$user->status = YumUser::STATUS_ACTIVE;
+					$user->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
 					$user->superuser = 0;
 					if ($user->save()) {
 						$profile = new YumProfile;
@@ -100,7 +104,12 @@ class YumAuthController extends YumController {
 					}
 					//Current account and FB account blending
 					$profile->facebook_id = $fb_uid;
-					$profile->save();
+					$profile->save(false);
+					$user->username = 'fb_'.YumRegistrationForm::genRandomString(Yum::module()->usernameRequirements['maxLen'] - 3);
+					if ($user->status == YumUser::STATUS_NOTACTIVE)
+						$user->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
+					$user->superuser = 0;
+					$user->save();
 				}
 
 				$identity = new YumUserIdentity($fb_uid, $user->id);
@@ -184,13 +193,13 @@ class YumAuthController extends YumController {
 						$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
 					break;
 				return false;
-			}
+		}
 	}
 
 	public function loginByEmail() {
 		$profile = YumProfile::model()->find('email = :email', array(
 					':email' => $this->loginForm->username));
-		if($profile && $profile->user) 
+		if($profile && $profile->user)
 			return $this->authenticate($profile->user);
 
 		return false;
@@ -205,7 +214,7 @@ class YumAuthController extends YumController {
 		$openid = new EOpenID;
 		$openid->authenticate($this->loginForm->username);
 		return Yii::app()->user->login($openid);
-	}	 
+	}
 
 	public function loginByTwitter() {
 		return false;
@@ -230,34 +239,54 @@ class YumAuthController extends YumController {
 		 */
 		$success = false;
 		$action = 'login';
-
+		$login_type = null;
 		if (isset($_POST['YumUserLogin'])) {
 			$this->loginForm->attributes = $_POST['YumUserLogin'];
 			// validate user input for the rest of login methods
 			if ($this->loginForm->validate()) {
-				if (Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME)
+				if (Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME) {
 					$success = $this->loginByUsername();
-				if (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL && !$success)
+					if ($success)
+						$login_type = 'username';
+				}
+				if (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL && !$success) {
 					$success = $this->loginByEmail();
+					if ($success)
+						$login_type = 'email';
+				}
 				if (Yum::module()->loginType & UserModule::LOGIN_BY_OPENID && !$success) {
 					$this->loginForm->setScenario('openid');
 					$success = $this->loginByOpenid();
+					if ($success)
+						$login_type = 'openid';
 				}
-				if(Yum::module()->loginType & UserModule::LOGIN_BY_LDAP && !$success)
-				{
+				if(Yum::module()->loginType & UserModule::LOGIN_BY_LDAP && !$success) {
 					$success = $this->loginByLdap();
 					$action = 'ldap_login';
+					$login_type = 'ldap';
 				}
 			}
 		}
-		if (Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success)
+		if (Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success) {
 			$success = $this->loginByFacebook();
-		if (Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success)
-			$success = $this->loginByTwitter();
+					if ($success)
+						$login_type = 'facebook';
+		}
+		if (Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success) {
+			$sucess = $this->loginByTwitter();
+					if ($success)
+						$login_type = 'twitter';
+		}
 		if ($success instanceof YumUser) {
 			$success->lastvisit = time();
 			$success->save(true, array('lastvisit'));
-			YumActivityController::logActivity($success, $action);
+			//cookie with login type for later flow control in app
+			if ($login_type) {
+				$cookie = new CHttpCookie('login_type', serialize($login_type));
+				$cookie->expire = time() + (3600*24*30);
+				Yii::app()->request->cookies['login_type'] = $cookie;
+			}
+			YumActivityController::logActivity(Yii::app()->user->id, 'login');
 			$this->redirectUser($success);
 		}
 
@@ -283,6 +312,13 @@ class YumAuthController extends YumController {
 		if (Yii::app()->user->isGuest)
 			$this->redirect(Yum::module()->returnLogoutUrl);
 
+		//let's delete the login_type cookie
+		$cookie=Yii::app()->request->cookies['login_type'];
+		if ($cookie) {
+			$cookie->expire = time() - (3600*72);
+			Yii::app()->request->cookies['login_type'] = $cookie;
+		}
+
 		$user = YumUser::model()->findByPk(Yii::app()->user->id);
 		$user->logout();
 
@@ -293,6 +329,12 @@ class YumAuthController extends YumController {
 			Yii::import('application.modules.user.vendors.facebook.*');
 			require_once('Facebook.php');
 			$facebook = new Facebook(Yum::module()->facebookConfig);
+			$fb_cookie = 'fbs_'.Yum::module()->facebookConfig['appId'];
+			$cookie = Yii::app()->request->cookies[$fb_cookie];
+			if ($cookie) {
+				$cookie->expire = time() -1*(3600*72);
+				Yii::app()->request->cookies[$cookie->name] = $cookie;
+			}
 			$session = $facebook->getSession();
 			Yii::app()->user->logout();
 			if (Yum::module()->enableLogging)
@@ -307,5 +349,4 @@ class YumAuthController extends YumController {
 			$this->redirect(Yum::module()->returnLogoutUrl);
 		}
 	}
-
 }

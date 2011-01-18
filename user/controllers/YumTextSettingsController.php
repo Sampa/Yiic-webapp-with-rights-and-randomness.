@@ -18,8 +18,8 @@ class YumTextSettingsController extends YumController {
 	public function actionView()
 	{
 		$this->render('/textsettings/view',array(
-					'model'=>$this->loadModel(),
-					));
+			'model'=>$this->loadModel(),
+		));
 	}
 
 	public function actionCreate()
@@ -53,8 +53,8 @@ class YumTextSettingsController extends YumController {
 		}
 
 		$this->render('/textsettings/create',array(
-					'model'=>$model,
-					));
+			'model' => $model,
+		));
 	}
 
 	public function actionUpdate()
@@ -120,8 +120,8 @@ class YumTextSettingsController extends YumController {
 			$model->attributes = $YumTextSettingsData;
 
 		$this->render('/textsettings/admin',array(
-					'model'=>$model,
-					));
+			'model' => $model,
+		));
 	}
 
 }

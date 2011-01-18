@@ -21,12 +21,12 @@ class YumUserIdentity extends CUserIdentity {
 
 		$fb_uid = $facebook->getUser();
 		$profile = YumProfile::model()->findByAttributes(array('facebook_id'=>$fb_uid));
-		$user = YumUser::model()->findByPk($profile->user_id);
+		$user = ($profile) ? YumUser::model()->findByPk($profile->user_id) : null;
 			if ($user === null)
 				$this->errorCode = self::ERROR_USERNAME_INVALID;
-			elseif($user->status == YumUser::STATUS_NOTACTIVE && !Yum::module()->loginNotActive)
+			else if($user->status == YumUser::STATUS_NOTACTIVE)
 				$this->errorCode = self::ERROR_STATUS_NOTACTIVE;
-			elseif($user->status == YumUser::STATUS_BANNED)
+			else if($user->status == YumUser::STATUS_BANNED)
 				$this->errorCode = self::ERROR_STATUS_BANNED;
 			else
 			{
@@ -115,11 +115,11 @@ class YumUserIdentity extends CUserIdentity {
 
 		if(YumUser::encrypt($this->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-		else if($user->status == 0)
+		else if($user->status == YumUser::STATUS_NOTACTIVE)
 			$this->errorCode=self::ERROR_STATUS_NOTACTIVE;
-		else if($user->status == -1)
+		else if($user->status == YumUser::STATUS_BANNED)
 			$this->errorCode=self::ERROR_STATUS_BANNED;
-		else if($user->status == -2)
+		else if($user->status == YumUser::STATUS_REMOVED)
 			$this->errorCode=self::ERROR_STATUS_REMOVED;
 		else {
 			$this->id = $user->id;

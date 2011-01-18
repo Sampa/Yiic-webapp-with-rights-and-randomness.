@@ -95,7 +95,7 @@ class YumWebUser extends CWebUser
 			foreach($user->users as $userobj) 
 			{
 				if(in_array($userobj->username, $username) ||
-						in_array($userobj->id, $username))
+					in_array($userobj->id, $username))
 					return true;
 			}
 		return false;

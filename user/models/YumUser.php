@@ -27,7 +27,8 @@
  */
 class YumUser extends YumActiveRecord {
 	const STATUS_NOTACTIVE = 0;
-	const STATUS_ACTIVE = 1;
+	const STATUS_ACTIVE_FIRST_VISIT = 1;
+	const STATUS_ACTIVE = 2;
 	const STATUS_BANNED = -1;
 	const STATUS_REMOVED = -2;
 
@@ -95,9 +96,9 @@ class YumUser extends YumActiveRecord {
 		$criteria->compare('t.lastvisit', $this->lastvisit, true);
 
 		return new CActiveDataProvider(get_class($this), array(
-					'criteria' => $criteria,
-					'pagination' => array('pageSize' => 20),
-					));
+			'criteria' => $criteria,
+			'pagination' => array('pageSize' => 20),
+		));
 	}
 
 	public function beforeValidate() {
@@ -210,8 +211,7 @@ class YumUser extends YumActiveRecord {
 					'minHeight' => 50, 
 					'on' => 'avatarSizeCheck'); 
 		}
-
-			return $rules;
+		return $rules;
 	}
 
 	public function hasRole($role_title) {
@@ -288,7 +288,7 @@ class YumUser extends YumActiveRecord {
 	public function getFriendships() {
 		$condition = 'inviter_id = :uid or friend_id = :uid';
 		return YumFriendship::model()->findAll($condition, array(
-					':uid' => $this->id));
+			':uid' => $this->id));
 	}
 
 	// Friends can not be retrieve via the relations() method because a friend
@@ -345,7 +345,6 @@ class YumUser extends YumActiveRecord {
 		$this->createtime = time();
 		$this->superuser = 0;
 
-
 		switch (Yum::module()->registrationType) {
 			case YumRegistration::REG_SIMPLE:
 				$this->status = YumUser::STATUS_ACTIVE;
@@ -366,7 +365,6 @@ class YumUser extends YumActiveRecord {
 			$this->roles = YumRole::getAutoassignRoles(); 
 
 		return $this->save();
-
 	}
 
 	public function isPasswordExpired() {
@@ -380,11 +378,11 @@ class YumUser extends YumActiveRecord {
 	public function activate($email=null, $activationKey=null) {
 		if (isset($email) && isset($activationKey)) {
 			$find = YumProfile::model()->findByAttributes(array('email' => $email))->user;
-			if ($find->status == 1) {
+			if ($find->status == self::STATUS_ACTIVE || $find->status == self::STATUS_ACTIVE_FIRST_VISIT) {
 				$return = true;
 			} else if ($find->activationKey == $activationKey) {
 				$find->activationKey = $find->generateActivationKey(true);
-				$find->status = 1;
+				$find->status = self::STATUS_ACTIVE_FIRST_VISIT;
 				$find->save();
 				$return = true;
 			} else {
@@ -442,34 +440,36 @@ class YumUser extends YumActiveRecord {
 
 	public function scopes() {
 		return array(
-				'active' => array('condition' => 'status=' . self::STATUS_ACTIVE,),
-				'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
-				'banned' => array('condition' => 'status=' . self::STATUS_BANNED,),
-				'superuser' => array('condition' => 'superuser=1',),
-				'public' => array(
-					'join' => 'LEFT JOIN privacysetting on t.id = privacysetting.user_id',
+			'active' => array('condition' => 'status=' . self::STATUS_ACTIVE,),
+			'activefirstvisit' => array('condition' => 'status=' . self::STATUS_ACTIVE_FIRST_VISIT,),
+			'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
+			'banned' => array('condition' => 'status=' . self::STATUS_BANNED,),
+			'superuser' => array('condition' => 'superuser=1',),
+			'public' => array(
+			'join' => 'LEFT JOIN privacysetting on t.id = privacysetting.user_id',
 					'condition' => 'appear_in_search = 1',),
-				);
+		);
 	}
 
 	public static function itemAlias($type, $code=NULL) {
 		$_items = array(
-				'NotifyType' => array(
-					'None' => Yum::t('None'),
-					'Digest' => Yum::t('Digest'),
-					'Instant' => Yum::t('Instant'),
-					),
-				'UserStatus' => array(
-					'0' => Yum::t('Not active'),
-					'1' => Yum::t('Active'),
-					'-1' => Yum::t('Banned'),
-					'-2' => Yum::t('Deleted'),
-					),
-				'AdminStatus' => array(
-					'0' => Yum::t('No'),
-					'1' => Yum::t('Yes'),
-					),
-				);
+			'NotifyType' => array(
+				'None' => Yum::t('None'),
+				'Digest' => Yum::t('Digest'),
+				'Instant' => Yum::t('Instant'),
+			),
+			'UserStatus' => array(
+				'0' => Yum::t('Not active'),
+				'1' => Yum::t('Active - First visit'),
+				'2' => Yum::t('Active'),
+				'-1' => Yum::t('Banned'),
+				'-2' => Yum::t('Deleted'),
+			),
+			'AdminStatus' => array(
+				'0' => Yum::t('No'),
+				'1' => Yum::t('Yes'),
+			),
+		);
 		if (isset($code))
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
 		else

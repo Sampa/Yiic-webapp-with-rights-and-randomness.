@@ -62,7 +62,7 @@ class YumRegistrationController extends YumController {
 			}
 
 			if ($form->email != '' && $tmp_profile = YumProfile::model()->find('email = "' . $form->email . '"')) {
-				if ($tmp_profile->user->status == 0) {
+				if ($tmp_profile->user->status == YumUser::STATUS_NOTACTIVE) {
 					Yii::app()->user->setFlash('success', Yum::t('Please verify your E-Mail address'));
 					$this->redirect($this->createUrl('/user/registration/activation', array('email' => $form->email)));
 				}
@@ -71,14 +71,10 @@ class YumRegistrationController extends YumController {
 
 			if ($registrationType == YumRegistration::REG_NO_PASSWORD
 					|| $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION) {
-				$form->password=YumUserChangePassword::createRandomPassword(
-						Yum::module()->passwordRequirements['minLowerCase'],
-						Yum::module()->passwordRequirements['minUpperCase'],
-						Yum::module()->passwordRequirements['minDigits'],
-						Yum::module()->passwordRequirements['minLen']); 
+				$form->password=YumUserChangePassword::createRandomPassword();
 				$form->verifyPassword=$form->password;
 			}
-			
+
 			if($form->validate() && !$profile->hasErrors())
 			{
 				$user = new YumUser();
@@ -156,7 +152,7 @@ class YumRegistrationController extends YumController {
 			$user = $profile[0]->user;
 			$user->activationKey = $user->generateActivationKey();
 			if ($registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION) {
-				$password = YumUserChangePassword::createRandomPassword(Yum::module()->passwordRequirements['minLowerCase'], Yum::module()->passwordRequirements['minUpperCase'], Yum::module()->passwordRequirements['minDigits'], Yum::module()->passwordRequirements['minLen']);
+				$password = YumUserChangePassword::createRandomPassword();
 				$user->password = YumUser::model()->encrypt($password);
 				$this->sendRegistrationEmail($user);
 			}
@@ -238,7 +234,8 @@ class YumRegistrationController extends YumController {
 					// handle the login task
 					$this->doLogin($user->username, $form->password);
 				} else {
-					Yii::app()->user->setFlash('error', Yum::t("Cannot set password. Try again."));
+					$errors = $form->getErrors();
+					Yii::app()->user->setFlash('error', Yum::t($errors['password'][0]));
 
 					// Renders the change password form
 					$this->renderPasswordForm(array(
@@ -248,7 +245,6 @@ class YumRegistrationController extends YumController {
 						'email' => $email,
 						'key' => $key,
 					));
-
 					Yii::app()->end();
 				}
 			}
@@ -259,7 +255,7 @@ class YumRegistrationController extends YumController {
 			$key = $_GET['activationKey'];
 			$profile = YumProfile::model()->findByAttributes(array('email' => $email));
 			if ($profile !== null) {
-				if ($profile->user->status == 1) {
+				if ($profile->user->status == YumUser::STATUS_ACTIVE_FIRST_VISIT || $profile->user->status == YumUser::STATUS_ACTIVE) {
 					$this->redirect(Yii::app()->user->returnUrl);
 				}
 			} else {
@@ -328,7 +324,8 @@ class YumRegistrationController extends YumController {
 						}
 						else
 						{
-							Yii::app()->user->setFlash('error', Yum::t('Passwords do not match'));
+							$errors = $passwordform->getErrors();
+							Yii::app()->user->setFlash('error', Yum::t($errors['password'][0]));
 						}
 					}
 					// Renders the change password form
@@ -342,7 +339,7 @@ class YumRegistrationController extends YumController {
 					);
 					return;
 				}
-				$password = YumUserChangePassword::createRandomPassword(Yum::module()->passwordRequirements['minLowerCase'], Yum::module()->passwordRequirements['minUpperCase'], Yum::module()->passwordRequirements['minDigits'], Yum::module()->passwordRequirements['minLen']);
+				$password = YumUserChangePassword::createRandomPassword();
 				$user->password = YumUser::encrypt($password);
 				$user->save();
 

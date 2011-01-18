@@ -141,7 +141,6 @@ class YumMessage extends YumActiveRecord
 			return Yum::t('new');
 	}
 
-
 	public function unread($id = false) 
 	{
 		if(!$id)

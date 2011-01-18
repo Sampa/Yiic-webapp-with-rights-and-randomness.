@@ -12,7 +12,7 @@
  * @property string $email
  * @property string $about
  * @property string $street
- * 
+ *
  * Relations:
  * @property YumUser $user
  */
@@ -38,7 +38,7 @@ class YumProfile extends YumActiveRecord
 	public function behaviors()  {
 		return array_merge(parent::behaviors(), array(
 					'Compare' => array(
-						'class' => 'Compare'))); 
+						'class' => 'Compare')));
 	}
 
 
@@ -63,7 +63,7 @@ class YumProfile extends YumActiveRecord
   	{
     	if (isset(Yum::module()->profileTable))
       		$this->_tableName = Yum::module()->profileTable;
-    	elseif (isset(Yii::app()->modules['user']['profileTable'])) 
+    	elseif (isset(Yii::app()->modules['user']['profileTable']))
       		$this->_tableName = Yii::app()->modules['user']['profileTable'];
     	else
       		$this->_tableName = '{{profiles}}'; // fallback if nothing is set
@@ -74,7 +74,7 @@ class YumProfile extends YumActiveRecord
 	public function rules()
 	{
 		$required = array();
-		$numerical = array();           
+		$numerical = array();
 		$rules = array();
 		$safe = array();
 
@@ -85,7 +85,7 @@ class YumProfile extends YumActiveRecord
 			if ($field->required == 1)
 				array_push($required, $field->varname);
 
-			if ($field->field_type == 'int' 
+			if ($field->field_type == 'int'
 					|| $field->field_type == 'FLOAT'
 					|| $field->field_type =='INTEGER')
 				array_push($numerical,$field->varname);
@@ -94,8 +94,8 @@ class YumProfile extends YumActiveRecord
 				array_push($safe, $field->varname);
 
 
-			if ($field->field_type =='VARCHAR' 
-					||$field->field_type=='TEXT') 
+			if ($field->field_type =='VARCHAR'
+					||$field->field_type=='TEXT')
 			{
 				$field_rule = array($field->varname,
 						'length',
@@ -107,7 +107,7 @@ class YumProfile extends YumActiveRecord
 				array_push($rules,$field_rule);
 			}
 
-			if ($field->field_type=='DATE') 
+			if ($field->field_type=='DATE')
 			{
 				$field_rule = array($field->varname,
 						'type',
@@ -119,7 +119,7 @@ class YumProfile extends YumActiveRecord
 				array_push($rules,$field_rule);
 			}
 
-			if ($field->match) 
+			if ($field->match)
 			{
 				$field_rule = array($field->varname,
 						'match',
@@ -129,7 +129,7 @@ class YumProfile extends YumActiveRecord
 					$field_rule['message'] = Yum::t( $field->error_message);
 				array_push($rules,$field_rule);
 			}
-			if ($field->range) 
+			if ($field->range)
 			{
 				// allow using commas and semicolons
 				$range=explode(';',$field->range);
@@ -142,7 +142,7 @@ class YumProfile extends YumActiveRecord
 				array_push($rules,$field_rule);
 			}
 
-			if ($field->other_validator) 
+			if ($field->other_validator)
 			{
 				$field_rule = array($field->varname,
 						$field->other_validator);
@@ -173,7 +173,7 @@ class YumProfile extends YumActiveRecord
 			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
 			'comments' => array(self::BELONGS_TO, 'YumProfileComment', 'user_id'),
 		);
-		
+
 		$fields = Yii::app()->db->createCommand(
 				"select * from ".YumProfileField::model()->tableName()." where field_type = 'DROPDOWNLIST'")->queryAll();
 
@@ -218,10 +218,10 @@ class YumProfile extends YumActiveRecord
         }
         return self::$fields;
     }
-	
+
 	/**
 	 * Returns formatted name
-	 * With default fomatting it returns firstname and lastname 
+	 * With default fomatting it returns firstname and lastname
 	 * concatenated and separated with space.
 	 * As placeholders in template you can use all profile properties
 	 * @param string $template

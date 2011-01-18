@@ -682,7 +682,10 @@ class Facebook
 			// environment
 			// @codeCoverageIgnoreStart
 		} else {
-			setcookie($cookieName, $value, $expires, '/', $domain);
+			$cookie = new CHttpCookie($cookieName, $value);
+				$cookie->expire = $expires;
+				Yii::app()->request->cookies[$cookieName] = $cookie;
+			//setcookie($cookieName, $value, $expires, '/', $domain);
 		}
 		// @codeCoverageIgnoreEnd
 	}

@@ -22,9 +22,12 @@ class YumStatisticsController extends YumController {
 	public function actionIndex()
 	{
 		$this->render('statistics', array(
-					'active_users' => YumUser::model()->count('status = 1'),
-					'inactive_users' => YumUser::model()->count('status = 0'),
-					'banned_users' => YumUser::model()->count('status = -1'),
+					'total_users' => YumUser::model()->count(),
+					'active_users' => YumUser::model()->count('status = '.YumUser::STATUS_ACTIVE),
+					'active_first_visit_users' => YumUser::model()->count('status = '.YumUser::STATUS_ACTIVE_FIRST_VISIT),
+					'todays_registered_users' => YumUser::model()->count('createtime >= '.strtotime(date('Y-m-d'))),
+					'inactive_users' => YumUser::model()->count('status = '.YumUser::STATUS_NOTACTIVE),
+					'banned_users' => YumUser::model()->count('status = '.YumUser::STATUS_BANNED),
 					'admin_users' => YumUser::model()->count('superuser = 1'),
 					'roles' => YumRole::model()->count(),
 					'profiles' => YumProfile::model()->count(),

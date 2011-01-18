@@ -59,8 +59,7 @@ class YumSettingsController extends YumController {
 		));
 	}
 
-	public function setLoginType($type)
-	{
+	public function setLoginType($type) {
 		$logintype = 0;
 
 		if (is_array($type))

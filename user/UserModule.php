@@ -19,7 +19,6 @@ class UserModule extends CWebModule {
 	public $loginLayout = 'yum';
 	public $adminLayout = 'yum';
 	public $profileLayout = 'yumprofile';
-
 	//configuration related control vars
 	public $preserveProfiles = true;
 	public $useYiiCheckAccess = false;
@@ -43,7 +42,7 @@ class UserModule extends CWebModule {
 	// image then gets displayed at his profile, his messages and his
 	// profile comments.
 	public $enableAvatar = true;
-
+	public $enableUsergroups = true;
 	// Where to save the avatar images? (Yii::app()->baseUrl . $avatarPath)	
 	public $avatarPath = 'images';
 
@@ -70,11 +69,8 @@ class UserModule extends CWebModule {
 	public $autoLogin = false;
 	public $activateFromWeb = true;
 	public $recoveryFromWeb = false;
-
-	// set $mailer to swift to active emailing by swiftMailer or PHPMailer to 
-	// use PHPMailer as emailing lib.
-	public $mailer = 'yum';
- 	public $phpmailer = null; // PHPMailer array options.
+	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer or PHPMailer to use PHPMailer as emailing lib.
+	public $phpmailer = null; // PHPMailer array options.
 
 	public $registrationEmail='register@website.com';
 	public $recoveryEmail='restore@website.com';
@@ -150,11 +146,11 @@ class UserModule extends CWebModule {
 
 	// LoginType :
 	const LOGIN_BY_USERNAME		= 1;
-	const LOGIN_BY_EMAIL			= 2;
-	const LOGIN_BY_OPENID			= 4;
+	const LOGIN_BY_EMAIL		= 2;
+	const LOGIN_BY_OPENID		= 4;
 	const LOGIN_BY_FACEBOOK		= 8;
 	const LOGIN_BY_TWITTER		= 16;
-	const LOGIN_BY_LDAP				= 32;
+	const LOGIN_BY_LDAP			= 32;
 	// Allow username and email login by default
 	public $loginType = 3;
 

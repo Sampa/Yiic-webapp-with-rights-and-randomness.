@@ -1,6 +1,10 @@
 <?php
 $profiles = Yii::app()->getModule('user')->enableProfiles;
 
+if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
+$this->title = Yum::t('View user "{email}"',array(
+			'{email}'=>$model->profile[0]->email));
+else
 $this->title = Yum::t('View user "{username}"',array(
 			'{username}'=>$model->username));
 

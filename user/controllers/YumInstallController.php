@@ -327,8 +327,11 @@ class YumInstallController extends YumController {
 									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link}',
 									'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link}',
 									'Has recibido un mensaje de {user}: {message}',
-'{id}',
- '{payment_date}{id}', '', ''); ";
+									'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
+									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa',
+									'Por favor, selecciona un tipo de Membresía',
+									'Las ventajas: <br /> Premium: Todo es mejor <br /> Business: Todo es aún mucho mejor '
+); ";
 
 						$db->createCommand($sql)->execute();
 					}

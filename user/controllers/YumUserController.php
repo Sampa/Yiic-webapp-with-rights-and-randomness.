@@ -99,7 +99,10 @@ class YumUserController extends YumController {
 	}
 
 	public function beforeAction($event) {
-		$this->layout = Yum::module()->layout;
+		if (Yii::app()->user->isAdmin())
+			$this->layout = Yum::module()->adminLayout;
+		else
+			$this->layout = Yum::module()->layout;
 		return parent::beforeAction($event);
 	}
 
@@ -249,18 +252,33 @@ class YumUserController extends YumController {
 	 * Deletes a user, and if preserve History is deactivated, deletes all
 	 * profiles of that user.
 	 */
-	public function actionDelete($uid = null)
-	{
+	public function actionDelete($uid = null) {
 		if($uid == null)
 			$uid = Yii::app()->user->id;
 
 		$model = YumUser::model()->findByPk($uid);
 
-		if(Yii::app()->user->isAdmin()) 
+		if(Yii::app()->user->isAdmin()) {
+			//This is necesary for handling human stupidity.
+			if (model->id == Yii::app()->user->id) {
+				Yii::app()->user->setFlash('adminMessage', 'You can not delete your own admin account');
+			}
+
+			if(Yum::module()->enableLogging == true)
+			{
+				$user=$this->loadUser(Yii::app()->user->id);
+				YumActivityController::logActivity($user, 'user_created');
+			}
+
+			if (!Yum::module()->preserveProfiles)
+				foreach($model->profile as $profile)
+					$profile->delete();
+
 			if($model->delete()) {
 				Yum::setFlash('The User has been deleted');
 				$this->redirect('user/admin');
 			}
+		}
 
 		if(isset($_POST['confirmPassword'])) {
 			if($model->encrypt($_POST['confirmPassword']) == $model->password) {
@@ -341,9 +359,6 @@ class YumUserController extends YumController {
 
 			if(isset($_GET['YumUser']))
 				$model->attributes = $_GET['YumUser'];
-
-
-
 			$this->render('admin', array('model'=>$model));
 		} else {
 			$model = YumUser::model()->findByPk(Yii::app()->user->id);

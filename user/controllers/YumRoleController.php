@@ -15,7 +15,6 @@ class YumRoleController extends YumController {
 
 	public function actionView() {
 		$this->layout = Yum::module()->adminLayout;
-
 		$model = $this->loadModel();
 
 		$assignedUsers = new CActiveDataProvider('YumUser', array(
@@ -33,8 +32,7 @@ class YumRoleController extends YumController {
 					'model'=>$model));
 	}
 
-	public function actionCreate() 
-	{	
+	public function actionCreate() {
 		$this->layout = Yum::module()->adminLayout;
 		$model = new YumRole();
 		$this->performAjaxValidation($model, 'yum-role-form');
@@ -48,73 +46,66 @@ class YumRoleController extends YumController {
 				}
 				$this->redirect(array('admin'));
 			}
-
 		}
 		$this->render('create', array('model' => $model));
 	}
 
-	public function actionUpdate()
-	{
+	public function actionUpdate() {
 		$this->layout = Yum::module()->adminLayout;
 		$model = $this->loadModel();
 
-	 $this->performAjaxValidation($model, 'yum-role-form');
+		$this->performAjaxValidation($model, 'yum-role-form');
 
 		if(isset($_POST['YumRole'])) {
 			$model->users = $_POST['YumRole'];
 
 			$model->users = Relation::retrieveValues($_POST);
 
-			if($model->validate() && $model->save()) {
-				if(Yum::module()->enableLogging == true) {
-					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+			if ($model->validate() && $model->save()) {
+				if (Yum::module()->enableLogging == true) {
+					$user = YumUser::model()->findbyPK(Yii::app()->user->id);
 					YumActivityController::logActivity($user, 'role_updated');
 				}
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('view', 'id' => $model->id));
+			}
 		}
 	}
 
-		$this->render('update',array(
-			'model'=>$model,
+		$this->render('update', array(
+			'model' => $model,
 		));
 	}
 
-	public function actionAdmin() 
-	{
+	public function actionAdmin() {
 		$this->layout = Yum::module()->adminLayout;
-		$dataProvider=new CActiveDataProvider('YumRole', array(
-			'pagination'=>array(
-				'pageSize'=>20,
-			),
-		));
+		$dataProvider = new CActiveDataProvider('YumRole', array(
+					'pagination' => array(
+						'pageSize' => 20,
+					),
+				));
 
-		$this->render('admin',array(
-			'dataProvider'=>$dataProvider,
+		$this->render('admin', array(
+			'dataProvider' => $dataProvider,
 		));
-
 	}
 
-	public function actionDelete()
-	{
-		$this->layout = Yum::module()->adminLayout;	
-		if(Yii::app()->request->isPostRequest)
-		{
-			if(Yum::module()->enableLogging == true)
-			{
-				$user= YumUser::model()->findbyPK(Yii::app()->user->id);
+	public function actionDelete() {
+		$this->layout = Yum::module()->adminLayout;
+		if (Yii::app()->request->isPostRequest) {
+			if (Yum::module()->enableLogging == true) {
+				$user = YumUser::model()->findbyPK(Yii::app()->user->id);
 				YumActivityController::logActivity($user, 'role_removed');
 			}
 			$this->loadModel()->delete();
 
-			if(!isset($_POST['ajax']))
+			if (!isset($_POST['ajax']))
 				$this->redirect(array('index'));
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
 	}
 
-	public function actionIndex()
-	{
+	public function actionIndex() {
 		$this->actionAdmin();
 	}
 
