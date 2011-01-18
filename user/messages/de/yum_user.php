@@ -1,6 +1,18 @@
 <?php
 
 return array(
+		'Username or email' => 'Benutzername oder E-Mail',
+		'Visit profile' => 'Profil besuchen',
+		'Add as a friend' => 'Als Freund hinzufügen',
+		'User is Online!' => 'Benutzer ist Online!',
+		'Nobody has commented your profile yet' => 'Bisher hat niemand ihr Profil kommentiert',
+		'This users have commented your profile recently' => 'Diese Benutzer haben ihr Profil kürzlich kommentiert',
+		'firstname' => 'Vorname',
+		'lastname' => 'Nachname',
+		'street' => 'Straße',
+		'city' => 'Stadt',
+		'about' => 'Über mich',
+		'Your account has been deleted.' => 'Ihr Zugang wurde gelöscht',
 		'Having' => 'Anzeigen',
 		'Message "{message}" was marked as read' => 'Nachricht "{message}" wurde als gelesen markiert.',
 		'Message "{message}" has been sent to {to}' => 'Nachricht "{message}" wurde an {to} gesendet',
@@ -360,6 +372,7 @@ return array(
 		'Not active' => 'Nicht aktiv',
 		'Active' => 'Aktiv',
 		'Banned' => 'Verbannt',
+		'Deleted' => 'Gelöscht',
 		'Please fill out the following form with your login credentials:' => 'Bitte geben Sie ihre Login-Daten ein:',
 		'Fields with <span class="required">*</span> are required.' => 'Felder mit <span class="required"> * </span> sind erforderlich.',
 		'List user' => 'Benutzer auflisten',

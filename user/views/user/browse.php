@@ -41,6 +41,8 @@ $this->widget('zii.widgets.CListView', array(
 
 ?>
 
+</div>
+
 <div style="clear: both;"> </div>
 
 

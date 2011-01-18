@@ -32,16 +32,20 @@ if($friends) {
 			$options = CHtml::submitButton(Yum::t('Remove friend'),array(
 						'id'=>'remove_friend','name'=>'YumFriendship[remove_friend]'));
 		}
-		if($friend->status != YumFriendship::FRIENDSHIP_REJECTED)
-		printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-				$friend->inviter->getAvatar($friend->invited, true),
-				CHtml::link($friend->invited->username, array(
-						'//user/profile/view', 'id'=>$friend->invited->id)),
-				$friend->getStatus(), 
-				$options);
+				if($friend->inviter_id == Yii::app()->user->id)
+					$label = $friend->invited;
+				else
+					$label = $friend->inviter;
+
+			printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+					$label->getAvatar(true),
+					CHtml::link($label->username, array(
+							'//user/profile/view', 'id'=>$label->id)),
+					$friend->getStatus(), 
+					$friend->status != 3 ? $options : '');
 
 	}
-		echo '</table>';	
+	echo '</table>';	
 } else {
 	echo Yum::t('You do not have any friends yet');
 }

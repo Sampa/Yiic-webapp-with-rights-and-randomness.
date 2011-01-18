@@ -40,7 +40,8 @@ class YumProfileComment extends YumActiveRecord{
 		if($user = $this->profile->user) {
 			if($user->privacy && $user->privacy->message_new_profilecomment) {
 				YumMessage::write($user, $this->user_id,
-						Yum::t('New profile comment from {username}'),
+						Yum::t('New profile comment from {username}', array(
+								'{username}' => $this->user->username)),
 						YumTextSettings::getText('text_profilecomment_new', array(
 								'{username}' => $this->user->username,
 								'{message}' => $this->comment,

@@ -29,7 +29,7 @@ class YumUserRecoveryForm extends YumFormModel {
 	public function attributeLabels()
 	{
 		return array(
-			'login_or_email'=>Yii::t("UserModule.user", "username or email"),
+			'login_or_email'=>Yum::t('Username or email'),
 		);
 	}
 	

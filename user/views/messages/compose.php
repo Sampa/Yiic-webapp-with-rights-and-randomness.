@@ -1,14 +1,10 @@
 <?php 
-if(!isset($to_user_id) || $to_user_id === false) 
-	throw new CException(Yum::t('No recipient given'));
-
-	$this->title = Yum::t('Composing new message');
-	$this->breadcrumbs = array(
-			Yum::t('Messages') => array('index'),
-			Yum::t('Compose new message'),
-			);
+$this->title = Yum::t('Composing new message');
+$this->breadcrumbs = array(
+		Yum::t('Messages') => array('index'),
+		Yum::t('Compose new message'),
+		);
 ?>
-
 
 <div class="form">
 
@@ -22,9 +18,16 @@ if(!isset($to_user_id) || $to_user_id === false)
 
 echo $form->errorSummary($model); 
 
-echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
-echo Yum::t('This message will be sent to {username}', array(
-			'{username}' => YumUser::model()->findByPk($to_user_id)->username));
+if($to_user_id) {
+	echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
+	echo Yum::t('This message will be sent to {username}', array(
+				'{username}' => YumUser::model()->findByPk($to_user_id)->username));
+} else {
+	echo $form->label($model, 'to_user_id');
+	echo $form->dropDownList($model, 'to_user_id', 
+			CHtml::listData(Yii::app()->user->data()->getFriends(), 'id', 'username'));
+
+}
 ?>
 <div class="row">
 <?php echo $form->labelEx($model,'title'); ?>

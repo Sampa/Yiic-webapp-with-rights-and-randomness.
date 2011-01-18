@@ -193,14 +193,17 @@ class YumRegistrationController extends YumController {
 			if ($registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
 				$body = strtr($content->text_email_registration . "\n\nYour Activation Key is $user->activationKey ,\n\n Your temporary password is $password,", array('{activation_url}' => $activation_url));
 			else
-				$body = strtr($content->text_email_registration, array('{activation_url}' => $activation_url));
+				$body = strtr($content->text_email_registration, array(
+							'{username}' => $user->username,
+							'{activation_url}' => $activation_url));
 
 			$mail = array(
-				'from' => Yum::module()->registrationEmail,
-				'to' => $user->profile[0]->email,
-				'subject' => $content->subject_email_registration,
-				'body' => $body,
-			);
+					'from' => Yum::module()->registrationEmail,
+					'to' => $user->profile[0]->email,
+					'subject' => strtr($content->subject_email_registration, array(
+							'{username}' => $user->username)),
+					'body' => $body,
+					);
 			$sent = YumMailer::send($mail);
 		}
 		else {

@@ -29,6 +29,7 @@ class YumUser extends YumActiveRecord {
 	const STATUS_NOTACTIVE = 0;
 	const STATUS_ACTIVE = 1;
 	const STATUS_BANNED = -1;
+	const STATUS_REMOVED = -2;
 
 	public $username;
 	public $password;
@@ -188,7 +189,7 @@ class YumUser extends YumActiveRecord {
 
 		$rules[] = array('username', 'unique', 'message' => Yum::t("This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yum::t('Incorrect symbol\'s. (A-z0-9)'));
-		$rules[] = array('status', 'in', 'range' => array(0, 1, -1));
+		$rules[] = array('status', 'in', 'range' => array(0, 1, -1, -2));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
 		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
 		$rules[] = array('notifyType, avatar', 'safe');
@@ -265,6 +266,7 @@ class YumUser extends YumActiveRecord {
 				//			'default_profile' => array(self::HAS_ONE, 'YumProfile', 'user_id', 'condition' => "profile_id = $this->default_profile"),
 				// And then we rename this one below to 'profiles'
 				'profile' => array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
+				'profileComments' => array(self::HAS_MANY, 'YumProfileComment', 'user_id'),
 				'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 				'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 				'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
@@ -461,6 +463,7 @@ class YumUser extends YumActiveRecord {
 					'0' => Yum::t('Not active'),
 					'1' => Yum::t('Active'),
 					'-1' => Yum::t('Banned'),
+					'-2' => Yum::t('Deleted'),
 					),
 				'AdminStatus' => array(
 					'0' => Yum::t('No'),

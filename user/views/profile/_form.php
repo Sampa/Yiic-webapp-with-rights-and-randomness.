@@ -10,13 +10,11 @@ foreach($profile->loadProfileFields() as $field) {
 	if($field->hint)
 		echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
 
-	echo CHtml::activeLabelEx($profile,$field->varname);
+	echo CHtml::activeLabelEx($profile, Yum::t($field->varname));
 	if ($field->field_type=="TEXT") {
 		echo CHtml::activeTextArea($profile,
 				$field->varname,
 				array('rows'=>6, 'cols'=>50));
-		if(Yii::app()->getModule('user')->rtepath != false)
-			Yii::app()->clientScript->registerScript("ckeditor", "$('#YumProfile_".$field->varname."').ckeditor();"); 
 	} 
 	else if($field->field_type == "DROPDOWNLIST") {
 		echo CHtml::activeDropDownList($profile,

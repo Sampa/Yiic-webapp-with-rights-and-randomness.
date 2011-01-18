@@ -8,6 +8,7 @@ class YumUserIdentity extends CUserIdentity {
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_NOTACTIVE=4;
 	const ERROR_STATUS_BANNED=5;
+	const ERROR_STATUS_REMOVED=6;
 
 	public function authenticateFacebook() {
 		$fbconfig = Yum::module()->facebookConfig;
@@ -118,6 +119,8 @@ class YumUserIdentity extends CUserIdentity {
 			$this->errorCode=self::ERROR_STATUS_NOTACTIVE;
 		else if($user->status == -1)
 			$this->errorCode=self::ERROR_STATUS_BANNED;
+		else if($user->status == -2)
+			$this->errorCode=self::ERROR_STATUS_REMOVED;
 		else {
 			$this->id = $user->id;
 			$this->setState('id', $user->id);

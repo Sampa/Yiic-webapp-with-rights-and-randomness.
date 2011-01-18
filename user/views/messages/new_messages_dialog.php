@@ -21,7 +21,7 @@ echo '<table>';
 	foreach($messages as $message) {
 		if(is_object($message) && $message->from_user instanceof YumUser )
 				printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-					$message->from_user->username,
+					CHtml::link($message->from_user->username, array('//user/profile/view', 'id' => $message->from_user_id)),
 					CHtml::link($message->title, array('//user/messages/view', 'id' => $message->id)),
 					CHtml::link(Yum::t('View'), array('//user/messages/view', 'id' => $message->id)),
 					CHtml::link(Yum::t('Reply'), array('//user/messages/compose', 'to_user_id' => $message->from_user_id)));

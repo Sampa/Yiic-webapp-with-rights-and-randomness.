@@ -61,7 +61,10 @@ class YumMessagesController extends YumController {
 			$model->attributes=$_POST['YumMessage'];
 			$model->from_user_id = Yii::app()->user->id;
 
-			if($model->validate()) {
+			if($model->validate() && isset($_POST['YumMessage']['to_user_id'])) {
+				if(!is_array($_POST['YumMessage']['to_user_id']))
+					$_POST['YumMessage']['to_user_id'] = array($_POST['YumMessage']['to_user_id'][0]);
+
 				foreach($_POST['YumMessage']['to_user_id'] as $user_id) {
 					$model = new YumMessage;
 					$model->attributes = $_POST['YumMessage'];

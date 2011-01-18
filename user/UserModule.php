@@ -10,30 +10,6 @@ class UserModule extends CWebModule {
 	public $version = '0.8';
 	public $debug = false;
 
-	// Table names
-	private $_tables = array(
-			'users' => 'users',
-			'privacySetting' => 'privacysetting',
-			'settings' => 'yumsettings',
-			'textSettings' => 'yumtextsettings',
-			'messages' => 'messages',
-			'usergroup' => 'usergroup',
-			'userUsergroup' => 'user_has_usergroup',
-			'profileFields' => 'profile_fields',
-			'profileFieldsGroup' => 'profile_fields_group',
-			'profile' => 'profiles',
-			'profileComment' => 'profile_comment',
-			'profileVisit' => 'profile_visit',
-			'roles' => 'roles',
-			'membership' => 'membership',
-			'payment' => 'payment',
-			'friendship' => 'friendship',
-			'permission' => 'permission',
-			'action' => 'action',
-			'userRole' => 'user_has_role',
-			'activity' => 'activities',
-			);
-
 	// database related control vars
 	public $installDemoData = true;
 
@@ -57,6 +33,10 @@ class UserModule extends CWebModule {
 	public $enableLogging = true;
 	public $enableUsergroups = true;
 	public $enableOnlineStatus = true; 
+
+	// set to false to enable case insensitive users.
+  // for example, demo and Demo would be the same user then
+	public $caseSensitiveUsers = true;
 
 	/* Avatar options */
 	// Enable the possibility for users to upload an avatar image. The
@@ -214,6 +194,31 @@ class UserModule extends CWebModule {
 		'friendship'=>array('class'=>'YumModule.controllers.YumFriendshipController'),
 		'fieldsgroup'=>array('class'=>'YumModule.controllers.YumFieldsGroupController'),
 	);
+
+	// Table names
+	private $_tables = array(
+			'users' => 'users',
+			'privacySetting' => 'privacysetting',
+			'settings' => 'yumsettings',
+			'textSettings' => 'yumtextsettings',
+			'messages' => 'messages',
+			'usergroup' => 'usergroup',
+			'userUsergroup' => 'user_has_usergroup',
+			'profileFields' => 'profile_fields',
+			'profileFieldsGroup' => 'profile_fields_group',
+			'profile' => 'profiles',
+			'profileComment' => 'profile_comment',
+			'profileVisit' => 'profile_visit',
+			'roles' => 'roles',
+			'membership' => 'membership',
+			'payment' => 'payment',
+			'friendship' => 'friendship',
+			'permission' => 'permission',
+			'action' => 'action',
+			'userRole' => 'user_has_role',
+			'activity' => 'activities',
+			);
+
 
 	public $passwordRequirements = array(
 			'minLen' => 8,

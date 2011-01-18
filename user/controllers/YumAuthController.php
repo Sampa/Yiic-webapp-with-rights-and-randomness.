@@ -46,6 +46,9 @@ class YumAuthController extends YumController {
 			case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
 				$this->loginForm->addError('status', Yum::t('Your account is not activated.'));
 				break;
+			case YumUserIdentity::ERROR_REMOVED:
+				$this->loginForm->addError('status', Yum::t('Your account has been deleted.'));
+				break;
 			case YumUserIdentity::ERROR_STATUS_BANNED:
 				$this->loginForm->addError('status', Yum::t('Your account is blocked.'));
 				break;
@@ -138,8 +141,14 @@ class YumAuthController extends YumController {
 	}
 
 	public function loginByUsername() {
-		if($user = YumUser::model()->find('username = :username', array(
-						':username' => $this->loginForm->username))) 
+		if(Yum::module()->caseSensitiveUsers)
+			$user = YumUser::model()->find('username = :username', array(
+						':username' => $this->loginForm->username));
+		else
+			$user = YumUser::model()->find('upper(username) = :username', array(
+						':username' => strtoupper($this->loginForm->username)));
+
+			if($user)
 			return $this->authenticate($user);
 		else
 			$this->loginForm->addError('password',
@@ -166,6 +175,10 @@ class YumAuthController extends YumController {
 				case YumUserIdentity::ERROR_STATUS_BANNED:
 					$this->loginForm->addError("status",Yum::t('This account is blocked.'));
 					break;
+				case YumUserIdentity::ERROR_STATUS_REMOVED:
+					$this->loginForm->addError('status', Yum::t('Your account has been deleted.'));
+					break;
+
 				case YumUserIdentity::ERROR_PASSWORD_INVALID:
 					if(!$this->loginForm->hasErrors())
 						$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));

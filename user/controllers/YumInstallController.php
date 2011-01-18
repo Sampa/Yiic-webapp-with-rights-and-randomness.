@@ -279,7 +279,7 @@ class YumInstallController extends YumController {
 										'You have requested a new Password. To set your new Password,
 										please go to {activation_url}',
 										'Your account has been activated. Thank you for your registration.',
-										'New friendship Request from {user_from}: {message}. To accept or ignore this request, go to your friendship page: {link_friends} or go to your profile: {link_profile}',
+										'New friendship Request from {username}: {message}. To accept or ignore this request, go to your friendship page: {link_friends} or go to your profile: {link_profile}',
 										'You have a new profile comment from {user}: {message} visit your profile: {link_profile}',
 										'You have received a new message from {user}: {message}',
 'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
@@ -452,10 +452,9 @@ class YumInstallController extends YumController {
 						// Create User_has_role Table
 
 						$sql = "CREATE TABLE IF NOT EXISTS `".$userRoleTable."` (
-							`id` int unsigned NOT NULL auto_increment,
 							`user_id` int unsigned NOT NULL,
 							`role_id` int unsigned NOT NULL,
-							PRIMARY KEY  (`id`)
+							PRIMARY KEY (`user_id`, `role_id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();

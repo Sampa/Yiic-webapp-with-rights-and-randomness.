@@ -171,6 +171,7 @@ class YumProfile extends YumActiveRecord
 	{
 		$relations = array(
 			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
+			'comments' => array(self::BELONGS_TO, 'YumProfileComment', 'user_id'),
 		);
 		
 		$fields = Yii::app()->db->createCommand(

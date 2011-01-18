@@ -211,7 +211,7 @@ class YumUserController extends YumController {
 
 		if(Yum::module()->enableProfiles)
 			$profile = $model->profile[0];
-			
+
 		if(isset($_POST['YumUser'])) {
 			$model->attributes = $_POST['YumUser'];
 
@@ -246,69 +246,36 @@ class YumUserController extends YumController {
 
 
 	/**
-	 * Deletes a User, and if preserve History is deactivated, deletes all
+	 * Deletes a user, and if preserve History is deactivated, deletes all
 	 * profiles of that user.
 	 */
-	public function actionDelete()
+	public function actionDelete($uid = null)
 	{
-		if(Yii::app()->user->isAdmin()) {
-			$this->layout = Yum::module()->adminLayout;
-			if(isset($_GET['id']) && $model = $this->loadUser($_GET['id'])) {
-				if($model->id == Yii::app()->user->id) {
-					Yii::app()->user->setFlash('adminMessage', 'You can not delete your own admin account');
-					if(!Yii::app()->request->isAjaxRequest)
-						$this->redirect(array('//user/user/admin'));
-				} else{
-					if(Yum::module()->enableLogging) {
-						$user=$this->loadUser(Yii::app()->user->id);
-						YumActivityController::logActivity($user, 'user_created');
-					}
-					$model->delete();
-				}
-			}
-		} else {
-			$model = $this->loadUser(Yii::app()->user->id);
+		if($uid == null)
+			$uid = Yii::app()->user->id;
 
-			$preserveProfiles = Yum::module()->preserveProfiles;
-			if(isset($_POST['confirmPassword'])) {
-				if($model->encrypt($_POST['confirmPassword']) == $model->password) {
-					if(Yum::module()->enableProfileHistory == false) {
-						if(is_array($model->profile) && !$preserveProfiles) {
-							foreach($model->profile as $profile) {
-								if(Yum::module()->enableLogging) {
-									YumActivityController::logActivity($model, 'user_removed');
-								}
-								$profile->delete();
-							}
-						} else if (is_object($model->profile) && !$preserveProfiles) {
-							if(Yum::module()->enableLogging) {
-								YumActivityController::logActivity($model, 'user_removed');
-							}
-							$model->profile->delete();
-						}
-					}
-					if(Yum::module()->enableLogging) {
-						YumActivityController::logActivity($model, 'user_removed');
-					}
-					$model->delete();
-					$this->actionLogout();
-				} else {
-					Yii::app()->user->setFlash('profileMessage',
-							sprintf('%s. (%s)',
-								Yum::t('Wrong password confirmation! Account was not deleted'),
-								CHtml::link(Yum::t('Try again'), array( 'delete'))
-								)
-							);
-					$this->redirect('profile');
-				}
-			} else {
-				$this->render('confirmDeletion', array('model' => $model));
-				Yii::app()->end();
+		$model = YumUser::model()->findByPk($uid);
+
+		if(Yii::app()->user->isAdmin()) 
+			if($model->delete()) {
+				Yum::setFlash('The User has been deleted');
+				$this->redirect('user/admin');
 			}
+
+		if(isset($_POST['confirmPassword'])) {
+			if($model->encrypt($_POST['confirmPassword']) == $model->password) {
+				$model->status = YumUser::STATUS_REMOVED;
+				if($model->save('status'))
+					$this->actionLogout();
+				else
+					Yum::setFlash('Error while deleting Account. Account was not deleted');
+			} else {
+				Yum::setFlash('Wrong password confirmation! Account was not deleted');
+			}
+			$this->redirect('profile');
 		}
 
-		if(!Yii::app()->request->isAjaxRequest)
-			$this->redirect(array('//user/user/admin'));
+		$this->render('confirmDeletion', array('model' => $model));
 	}
 
 

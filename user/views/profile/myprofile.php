@@ -1,3 +1,4 @@
+<div id="profile">
 <?php
 $this->pageTitle=Yii::app()->name . ' - ' . Yii::t("UserModule.user", "Profile");
 $this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
@@ -133,4 +134,5 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 		echo Yum::t('Nobody has visited your profile yet');
 	}
 ?>
+</div>
 </div>

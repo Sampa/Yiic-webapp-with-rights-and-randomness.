@@ -15,7 +15,7 @@ if($model->id == Yii::app()->user->id)
 ?>
 
 <?php echo $model->getAvatar(); ?>
-<?php $this->renderPartial('public_fields', array('profile' => $model->profile[0])); ?>
+<?php $this->renderPartial('/profile/public_fields', array('profile' => $model->profile[0])); ?>
 <br />
 <?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> 
 <br /> 

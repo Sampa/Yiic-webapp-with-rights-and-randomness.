@@ -1,5 +1,5 @@
 	<div style="float: left;margin: 5px;">
-	<?php echo $data->user->getAvatar(null, true); ?>
+	<?php echo $data->user->getAvatar(true); ?>
 	</div>
 
 	<div style="float: right;margin: 5px;">

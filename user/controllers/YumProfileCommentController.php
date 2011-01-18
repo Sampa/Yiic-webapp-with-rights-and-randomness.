@@ -40,10 +40,11 @@ class YumProfileCommentController extends YumController
 	}
 
 
-	public function actionDelete() {
-		$comment = YumProfileComment::model()->findByPk($_GET['id']);
-		if($comment->user_id = Yii::app()->user->id
-				|| $comment->profile_id = Yii::app()->user->id) {
+	public function actionDelete($id) {
+		$comment = YumProfileComment::model()->findByPk($id);
+
+		if($comment->user_id == Yii::app()->user->id
+				|| $comment->profile_id == Yii::app()->user->id) {
 			$comment->delete();
 			$this->redirect(array('//user/profile/view', 'id' => $comment->profile_id));
 		} else

@@ -3,10 +3,10 @@
 $template = '<p> %s: %s </p>';
 
 if($data->privacy->show_online_status)
-	if($data->isOnline())
+	if($data->isOnline()) {
 	echo Yum::t('User is Online!');
-else
-	echo Yum::t('User is Offline!');
+	echo CHtml::image(Yum::register('images/green_button.png'));
+}
 
 	printf($template, Yum::t('Username'), $data->username);
 
