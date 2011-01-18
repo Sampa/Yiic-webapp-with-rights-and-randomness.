@@ -1,9 +1,5 @@
 <?php 
 $this->title = Yum::t('Composing new message');
-$this->breadcrumbs = array(
-		Yum::t('Messages') => array('index'),
-		Yum::t('Compose new message'),
-		);
 ?>
 
 <div class="form">

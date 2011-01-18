@@ -44,7 +44,7 @@ class YumMessagesController extends YumController {
 		} else {
 			if(!$model->message_read) {
 				$model->message_read = true;
-				$model->save();
+				$model->save(false, array('message_read'));
 			}
 
 			$this->render('view',array('model'=>$model));

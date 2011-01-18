@@ -1,5 +1,5 @@
 <?php if($model->allow_comments) { ?>
-<h1> <?php echo Yum::t('Profile Comments'); ?> </h1>
+<h2> <?php echo Yum::t('Profile Comments'); ?> </h2>
 
 <?php 
 $dataProvider = new CActiveDataProvider('YumProfileComment', array(

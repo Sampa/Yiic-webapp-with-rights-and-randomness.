@@ -8,6 +8,7 @@ return array(
 		'Friendship request has been rejected' => 'Freundschaftsanfrage zurückgewiesen',
 		'Add as a friend' => 'Als Freund hinzufügen',
 		'New friendship request from {username}' => 'neue Freundschaftsanfrage von {username}',
+		'Friends' => 'Kontakte',
 		'friends only' => 'Nur Freunde',
 		'Cancel request' => 'Anfrage zurückziehen',
 );

@@ -58,6 +58,10 @@ class Yum
 			echo '<div class="info">';
 			echo Yum::getFlash();
 			echo '</div>';
+		Yii::app()->clientScript->registerScript('fade',"
+		setTimeout(function() { $('.info').fadeOut('slow'); }, 5000);	
+"); 
+
 		}
 	}
 

@@ -3,7 +3,7 @@ $profileFields = YumProfileField::model()->findAll();
 if ($profileFields) {
 	echo '<table class="table_profile_fields">';
 	foreach($profileFields as $field) {
-		if($field->isPublic())
+		if($field->isPublic($profile->user->id))
 			if($field->field_type == 'DROPDOWNLIST') {
 				?>
 					<tr>
