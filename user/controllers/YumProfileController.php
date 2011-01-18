@@ -161,7 +161,7 @@ class YumProfileController extends YumController {
 			$model->attributes=$_POST['YumProfile'];
 
 			if($model->save())
-				$this->redirect(array('admin', 'id' => $model->id));
+				$this->redirect(array('view', 'id' => $model->profile_id));
 		}
 
 		$this->render('/profile/update',array(
