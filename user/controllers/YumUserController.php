@@ -164,7 +164,8 @@ class YumUserController extends YumController {
 
 		// When opening a empty user creation mask, we most probably want to
 		// insert an _active_ user
-		$model->status = 1;
+		if(!isset($model->status))
+			$model->status = 1;
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
@@ -260,7 +261,7 @@ class YumUserController extends YumController {
 
 		if(Yii::app()->user->isAdmin()) {
 			//This is necesary for handling human stupidity.
-			if (model->id == Yii::app()->user->id) {
+			if ($model->id == Yii::app()->user->id) {
 				Yii::app()->user->setFlash('adminMessage', 'You can not delete your own admin account');
 			}
 

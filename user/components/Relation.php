@@ -584,8 +584,8 @@ echo CHtml::dropDownList($this->getListBoxName(),
 echo '<ul id="selected">';
 if(isset($assigned) && $assigned)
 	foreach($assigned as $key => $option) {
-		printf('<a id="removelink_%d" style="float: right;margin: 1px;" onclick="remove_selection(%d)"> %s </a>', $key, $key, $remove_link);
-		printf('<input type="hidden" id="selection_%d" name="selection_%d"', $key, $key);
+		printf('<a id="removelink_%d" style="float: right;" onclick="remove_selection(%d)"> %s </a>', $key, $key, $remove_link);
+		printf('<input type="hidden" id="selection_%d" name="selection_%d">', $key, $key);
 		printf('<li id="option_%d">%s</li>', $key, $option);
 }
 echo '</ul>';

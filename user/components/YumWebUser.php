@@ -170,12 +170,8 @@ class YumWebUser extends CWebUser
 	public function isAdmin() {
 		if($this->isGuest)
 			return false;
-		else {
-			if(YumUser::model()->active()->superuser()->findbyPk(Yii::app()->user->id))
-				return true;
-			else
-				return false;
-		}
+		else 
+			return YumUser::model()->findbyPk(Yii::app()->user->id)->superuser;
 	}
 }
 ?>

@@ -30,7 +30,6 @@ class UserModule extends CWebModule {
 	public $enableProfileComments = true;
 	public $enableFriendship = true;
 	public $enableLogging = true;
-	public $enableUsergroups = true;
 	public $enableOnlineStatus = true; 
 
 	// set to false to enable case insensitive users.

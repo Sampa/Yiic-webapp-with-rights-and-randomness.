@@ -15,13 +15,13 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <div style="float: right; margin: 10px;">
 <div class="row">
-<?php echo $form->label($model, 'superuser');
+<?php echo $form->labelEx($model, 'superuser');
 echo $form->dropDownList($model, 'superuser',YumUser::itemAlias('AdminStatus'));
 echo $form->error($model, 'superuser'); ?>
 </div>
 
 <div class="row">
-<?php echo $form->label($model,'status');
+<?php echo $form->labelEx($model,'status');
 echo $form->dropDownList($model,'status',YumUser::itemAlias('UserStatus'));
 echo $form->error($model,'status'); ?>
 </div>
@@ -43,7 +43,7 @@ echo $form->error($model,'status'); ?>
 
 
 <div class="row">
-<?php echo $form->label($model, 'username');
+<?php echo $form->labelEx($model, 'username');
 echo $form->textField($model, 'username');
 echo $form->error($model, 'username'); ?>
 </div>
