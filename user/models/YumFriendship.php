@@ -14,6 +14,7 @@ class YumFriendship extends YumActiveRecord {
 	public function requestFriendship($inviter, $invited, $message = null) {
 		if(!is_object($inviter))
 			$inviter = YumUser::model()->findByPk($inviter);
+
 		if(!is_object($invited))
 			$invited = YumUser::model()->findByPk($invited);
 
@@ -21,6 +22,7 @@ class YumFriendship extends YumActiveRecord {
 			return false;
 
 		$friendship_status = $inviter->isFriendOf($invited);
+
 		if($friendship_status !== false)  {
 			if($friendship_status == 1)
 				$this->addError('invited_id', Yum::t('Friendship request already sent'));
@@ -37,10 +39,11 @@ class YumFriendship extends YumActiveRecord {
 		$this->acknowledgetime = 0;
 		$this->requesttime = time();
 		$this->updatetime = time();
+
 		if($message !== null)
 			$this->message = $message;
 		$this->status = 1;
-		return($this->save());
+		return $this->save();
 	} 
 
 	public function acceptFriendship() {
@@ -127,14 +130,10 @@ class YumFriendship extends YumActiveRecord {
 
 	public function beforeSave() {
 		$this->updatetime = time();
-		return true;
-	}
 
-	public function afterSave() {
 		// If the user has activated email receiving, send a email
 		if($user = YumUser::model()->findByPk($this->friend_id))  {
 			if($user->privacy && $user->privacy->message_new_friendship) {
-
 				YumMessage::write($user, $this->inviter,
 						Yum::t('New friendship request from {username}', array('{username}' => $this->inviter->username)),
 						YumTextSettings::getText('text_friendship_new', array(
@@ -144,7 +143,7 @@ class YumFriendship extends YumActiveRecord {
 								'{message}' => $this->message)));
 			}
 		}
-		return parent::afterSave();
+		return parent::beforeSave();
 	}
 
 	public function search()

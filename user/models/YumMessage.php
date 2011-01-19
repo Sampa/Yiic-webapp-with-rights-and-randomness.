@@ -61,7 +61,7 @@ class YumMessage extends YumActiveRecord
 						YumTextSettings::getText('text_message_new', array(
 								'{user}' => $this->from_user->username,
 								'{message}' => $this->message)));
-		return parent::afterSave();
+		return parent::beforeSave();
 	}
 
 	public static function write($to, $from, $subject, $body, $mail = true) {
@@ -77,7 +77,6 @@ class YumMessage extends YumActiveRecord
 		else 
 			return false;
 
-
 		if(is_object($to))
 			$message->to_user_id = (int) $to->id;
 		else if(is_numeric($to))
@@ -87,9 +86,7 @@ class YumMessage extends YumActiveRecord
 
 		$message->title = $subject;
 		$message->message = $body;
-		if($message->save())
-			return true;
-		return false;
+		return $message->save();
 	}
 
 	/**

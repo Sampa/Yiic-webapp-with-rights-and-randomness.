@@ -231,7 +231,7 @@ class UserModule extends CWebModule {
 
 	public $usernameRequirements=array(
 		'minLen'=>3,
-		'maxLen'=>20,
+		'maxLen'=>30,
 		);
 
 	/**

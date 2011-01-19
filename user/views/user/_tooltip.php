@@ -20,7 +20,7 @@ printf($template, Yum::t('First visit'), date(UserModule::$dateFormat, $data->cr
 printf($template, Yum::t('Last visit'), date(UserModule::$dateFormat, $data->lastvisit)); 
 
 echo CHtml::link(Yum::t('Write a message'), array(
-			'//user/message/compose', 'to_user_id' => $data->id)) . '<br />';
+			'//user/messages/compose', 'to_user_id' => $data->id)) . '<br />';
 echo CHtml::link(Yum::t('Visit profile'), array(
 			'//user/profile/view', 'id' => $data->id));
 

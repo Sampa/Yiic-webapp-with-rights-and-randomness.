@@ -4,6 +4,8 @@ Yii::import('zii.widgets.CPortlet');
 
 class MessageWidget extends CPortlet
 {
+	public $decorationCssClass = 'portlet-decoration messages';
+
 	public function init()
 	{
 		$this->title=Yum::t('New messages');

@@ -4,6 +4,8 @@ Yii::import('zii.widgets.CPortlet');
 
 class ProfileVisitWidget extends CPortlet
 {
+	public $decorationCssClass = 'portlet-decoration profilevisits';
+
 	public function init() {
 		$this->title=Yum::t('Profile visits');
 		if(Yii::app()->user->isGuest)

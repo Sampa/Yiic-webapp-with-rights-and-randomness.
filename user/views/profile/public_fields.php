@@ -1,5 +1,5 @@
 <?php
-$profileFields = YumProfileField::model()->findAll();
+$profileFields = YumProfileField::model()->sort()->findAll();
 if ($profileFields) {
 	echo '<table class="table_profile_fields">';
 	foreach($profileFields as $field) {

@@ -17,6 +17,7 @@ echo CHtml::label(Yum::t('Search for username'), 'search_username') . '<br />';
 echo CHtml::textField('search_username',
 		$search_username, array(
 			'submit' => array('//user/user/browse')));
+echo CHtml::submitButton(Yum::t('Search'));
 ?>
 
 </div>

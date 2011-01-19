@@ -478,8 +478,9 @@ class YumUser extends YumActiveRecord {
 			),
 			'UserStatus' => array(
 				'0' => Yum::t('Not active'),
-				'1' => Yum::t('Active - First visit'),
-				'2' => Yum::t('Active'),
+				'1' => Yum::t('Activated'),
+				'2' => Yum::t('Active - First visit'),
+				'3' => Yum::t('Active'),
 				'-1' => Yum::t('Banned'),
 				'-2' => Yum::t('Deleted'),
 			),

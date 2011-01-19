@@ -4,6 +4,8 @@ Yii::import('zii.widgets.CPortlet');
 
 class ProfileCommentsWidget extends CPortlet
 {
+	public $decorationCssClass = 'portlet-decoration profilecomments';
+
 	public function init() {
 		$this->title = Yum::t('Profile Comments');
 		if(Yii::app()->user->isGuest)

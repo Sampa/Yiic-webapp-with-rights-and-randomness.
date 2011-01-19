@@ -70,7 +70,6 @@ class YumFriendshipController extends YumController {
 						$_POST['message'])) {
 				$this->render('success', array('friendship' => $friendship));
 
-
 				Yii::app()->end();
 			}
 		} 

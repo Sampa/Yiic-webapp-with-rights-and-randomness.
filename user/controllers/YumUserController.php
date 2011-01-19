@@ -301,29 +301,17 @@ class YumUserController extends YumController {
 
 	public function actionBrowse() {
 		$search = '';
-		$role = 0;
 		if(isset($_POST['search_username']))
 			$search = $_POST['search_username'];
-
-		if(isset($_POST['search_role']))
-			$role = $_POST['search_role'];
-
-		if(isset($_GET['search_role']))
-			$role = $_GET['search_role'];
 
 		$criteria = new CDbCriteria;
 
 		$criteria->join = 'LEFT JOIN privacysetting on t.id = privacysetting.user_id';
 		$criteria->addCondition('appear_in_search = 1');
 
-		$criteria->addCondition('status = 1 or status = 2');
+		$criteria->addCondition('status = 1 or status = 2 or status = 3');
 		if($search) 
 			$criteria->addCondition("username = '{$search}'");
-
-		if(isset($role) && $role != 0) {
-			$criteria->addCondition("role_id = {$role}");
-			$criteria->join .= ' LEFT JOIN user_has_role on t.id = user_has_role.user_id';
-		}
 
 		$dataProvider=new CActiveDataProvider('YumUser', array(
 					'criteria' => $criteria, 
@@ -334,7 +322,6 @@ class YumUserController extends YumController {
 		$this->render('browse',array(
 					'dataProvider'=>$dataProvider,
 					'search_username' => $search ? $search : '',
-					'role' => isset($role) ? (int) $role : 0,
 					));
 	}
 

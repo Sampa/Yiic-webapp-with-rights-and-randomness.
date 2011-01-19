@@ -1,6 +1,13 @@
 <?php
 
 return array(
+		'firstname' => 'Vorname',
+		'lastname' => 'Nachname',
+		'birthday' => 'Geburtstag',
+		'zipcode' => 'Postleitzahl',
+		'city' => 'Stadt',
+		'Activated' => 'erstmalig Aktiviert',
+		'Active - First visit' => 'Aktiv - erster Besuch',
 		'Your activation succeeded' => 'Ihre Aktivierung war erfolgreich',
 		'Username or email' => 'Benutzername oder E-Mail',
 		'Visit profile' => 'Profil besuchen',

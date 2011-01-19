@@ -19,7 +19,7 @@ class YumRole extends YumActiveRecord {
 		return parent::model($className);
 	}
 
-	public function getAutoassignRoles() {
+	public static function getAutoassignRoles() {
 		$roles = array();
 		foreach(YumRole::model()->autoassign()->findAll() as $role) {
 			$roles[] = (int) $role->id;
