@@ -22,7 +22,7 @@ class YumFieldsController extends YumController
 	{
 		$this->layout = Yum::module()->adminLayout;
 		$this->render('view',array(
-			'model'=>$this->loadModel(),
+			'model'=>$this->loadModel('YumProfileField'),
 		));
 	}
 
@@ -71,7 +71,7 @@ class YumFieldsController extends YumController
 	public function actionUpdate()
 	{
 		$this->layout = Yum::module()->adminLayout;
-		$model=$this->loadModel();
+		$model=$this->loadModel('YumProfileField');
 		if(isset($_POST['YumProfileField']))
 		{
 			$model->attributes=$_POST['YumProfileField'];
@@ -100,11 +100,10 @@ class YumFieldsController extends YumController
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			$model = $this->loadModel();
+			$model = $this->loadModel('YumProfileField');
 			$sql = 'ALTER TABLE '.YumProfile::model()->tableName().' DROP `'.$model->varname.'`';
 			if ($model->dbConnection->createCommand($sql)->execute()) {
-				if(Yum::module()->enableLogging == true)
-								{
+				if(Yum::module()->enableLogging) {
 								$user= YumUser::model()->findbyPK(Yii::app()->user->id);
 								YumActivityController::logActivity($user, 'profile_field_removed');
 								}
