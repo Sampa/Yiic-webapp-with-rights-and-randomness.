@@ -536,7 +536,7 @@ class YumInstallController extends YumController {
 									(2, 2, 'demo','demo','demo@example.com')";
 								$db->createCommand($sql)->execute();
 
-								$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 2, 'CEmailValidator'), ('firstname', 'First name', 'VARCHAR', 255, 1, 2, ''), ('lastname', 'Last name', 'VARCHAR', 255, 1, 2, ''), ('street','Street', 'VARCHAR', 255, 0, 1, ''), ('city','City', 'VARCHAR', 255, 0, 1, ''), ('about', 'About', 'TEXT', 255, 0, 1, '')";
+								$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 3, 'CEmailValidator'), ('firstname', 'First name', 'VARCHAR', 255, 1, 3, ''), ('lastname', 'Last name', 'VARCHAR', 255, 1, 3, ''), ('street','Street', 'VARCHAR', 255, 0, 3, ''), ('city','City', 'VARCHAR', 255, 0, 3, ''), ('about', 'About', 'TEXT', 255, 0, 3, '')";
 								$db->createCommand($sql)->execute();
 
 							}

@@ -110,6 +110,7 @@ class UserModule extends CWebModule {
 		'recovery'=>array('//user/registration/recovery'),
 		'login'=>array('//user/user'),
 		'return'=>array('//user/profile/view'),
+		'firstVisit'=>array('//user/privacy/update'),
 		// Page to go after admin logs in
 		'returnAdmin'=>array('//user/statistics/index'),
 		// Page to go to after logout

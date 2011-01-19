@@ -68,7 +68,6 @@ return array(
 		'Text Email Activation' => 'Text Email Konto-Aktivierung',
 		'Text for new friendship request' => 'Text für eine neue Kontaktanfrage',
 		'Text for new profile comment' => 'Text für neuen Profilkommentar',
-		'Show friends' => 'Meine Freunde veröffentlich',
 		'Allow profile comments' => 'Profilkommentare erlauben',
 		'Cancel' => 'Abbrechen',
 		'Write comment' => 'Kommentar schreiben',

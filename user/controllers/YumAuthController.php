@@ -278,8 +278,6 @@ class YumAuthController extends YumController {
 						$login_type = 'twitter';
 		}
 		if ($success instanceof YumUser) {
-			$success->lastvisit = time();
-			$success->save(true, array('lastvisit'));
 			//cookie with login type for later flow control in app
 			if ($login_type) {
 				$cookie = new CHttpCookie('login_type', serialize($login_type));
@@ -300,6 +298,11 @@ class YumAuthController extends YumController {
 		} else {
 			if ($user->isPasswordExpired())
 				$this->redirect(array('passwordexpired'));
+			else if($user->lastvisit == 0) {
+				$user->lastvisit = time();
+				$user->save(true, array('lastvisit'));
+				$this->redirect(Yum::module()->firstVisitUrl);
+			}
 			else if (Yum::module()->returnUrl !== '')
 				$this->redirect(Yum::module()->returnUrl);
 			else

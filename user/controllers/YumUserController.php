@@ -316,7 +316,7 @@ class YumUserController extends YumController {
 		$criteria->join = 'LEFT JOIN privacysetting on t.id = privacysetting.user_id';
 		$criteria->addCondition('appear_in_search = 1');
 
-		$criteria->addCondition('status = 1');
+		$criteria->addCondition('status = 1 or status = 2');
 		if($search) 
 			$criteria->addCondition("username = '{$search}'");
 

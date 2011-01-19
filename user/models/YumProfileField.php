@@ -36,7 +36,8 @@ class YumProfileField extends YumActiveRecord
 	const VISIBLE_NO=0;
 	const VISIBLE_ONLY_OWNER=1;
 	const VISIBLE_REGISTER_USER=2;
-	const VISIBLE_ALL=3;
+	const VISIBLE_USER_DECISION=3;
+	const VISIBLE_ALL=4;
 
 	/**
      * Returns the static model of the specified AR class.
@@ -106,22 +107,22 @@ class YumProfileField extends YumActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => Yii::t("UserModule.user", '#'),
-			'field_group_id' => Yii::t("UserModule.user", 'Field group'),
-			'varname' => Yii::t("UserModule.user", 'Variable name'),
-			'title' => Yii::t("UserModule.user", 'Title'),
-			'hint' => Yii::t("UserModule.user", 'Hint'),
-			'field_type' => Yii::t("UserModule.user", 'Field type'),
-			'field_size' => Yii::t("UserModule.user", 'Field size'),
-			'field_size_min' => Yii::t("UserModule.user", 'Field size min'),
-			'required' => Yii::t("UserModule.user", 'Required'),
-			'match' => Yii::t("UserModule.user", 'Match'),
-			'range' => Yii::t("UserModule.user", 'Range'),
-			'error_message' => Yii::t("UserModule.user", 'Error message'),
-			'other_validator' => Yii::t("UserModule.user", 'Other validator'),
-			'default' => Yii::t("UserModule.user", 'Default'),
-			'position' => Yii::t("UserModule.user", 'Position'),
-			'visible' => Yii::t("UserModule.user", 'Visible'),
+			'id' => Yum::t('#'),
+			'field_group_id' => Yum::t('Field group'),
+			'varname' => Yum::t('Variable name'),
+			'title' => Yum::t('Title'),
+			'hint' => Yum::t('Hint'),
+			'field_type' => Yum::t('Field type'),
+			'field_size' => Yum::t('Field size'),
+			'field_size_min' => Yum::t('Field size min'),
+			'required' => Yum::t('Required'),
+			'match' => Yum::t('Match'),
+			'range' => Yum::t('Range'),
+			'error_message' => Yum::t('Error message'),
+			'other_validator' => Yum::t('Other validator'),
+			'default' => Yum::t('Default'),
+			'position' => Yum::t('Position'),
+			'visible' => Yum::t('Visible'),
 		);
 	}
 	
@@ -156,22 +157,23 @@ class YumProfileField extends YumActiveRecord
 				'TEXT'=> Yum::t( 'TEXT'),
 				'DATE'=> Yum::t( 'DATE'),
 				'DROPDOWNLIST' => Yum::t('DROPDOWNLIST'),
-			//	'FLOAT'=> Yii::t("user", 'FLOAT'),
-			//	'BOOL'=> Yii::t("user", 'BOOL'),
-			//	'BLOB'=> Yii::t("user", 'BLOB'),
-			//	'BINARY'=> Yii::t("user", 'BINARY'),
-			//	'FILE'=> 'FILE',
+				'FLOAT'=> Yum::t('FLOAT'),
+				'BOOL'=> Yum::t('BOOL'),
+				'BLOB'=> Yum::t('BLOB'),
+				'BINARY'=> Yum::t('BINARY'),
+				'FILE'=> 'FILE',
 			),
 			'required' => array(
-				'0' => Yii::t("UserModule.user", 'No'),
-				'2' => Yii::t("UserModule.user", 'No, but show on registration form'),
-				'1' => Yii::t("UserModule.user", 'Yes and show on registration form'),
+				'0' => Yum::t('No'),
+				'2' => Yum::t('No, but show on registration form'),
+				'1' => Yum::t('Yes and show on registration form'),
 			),
 			'visible' => array(
-				self::VISIBLE_ALL => Yii::t("UserModule.user", 'For all'),
-				self::VISIBLE_REGISTER_USER => Yii::t("UserModule.user", 'Registered users'),
-				self::VISIBLE_ONLY_OWNER => Yii::t("UserModule.user", 'Only owner'),
-				'0' => Yii::t("UserModule.user", 'Hidden'),
+				self::VISIBLE_USER_DECISION => Yum::t('Let the user choose in privacy settings'),
+				self::VISIBLE_ALL => Yum::t('For all'),
+				self::VISIBLE_REGISTER_USER => Yum::t('Registered users'),
+				self::VISIBLE_ONLY_OWNER => Yum::t('Only owner'),
+				'0' => Yum::t('Hidden'),
 			),
 		);
 		if (isset($code))

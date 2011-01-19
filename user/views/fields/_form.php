@@ -2,7 +2,7 @@
 
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo Yii::t("UserModule.user", 'Fields with <span class="required">*</span> are required.'); ?></p>
+	<p class="note"><?php echo Yum::requiredFieldNote(); ?>
 
 	<?php echo CHtml::errorSummary($model); ?>
 	
@@ -10,28 +10,28 @@
 		<?php echo CHtml::activeLabelEx($model,'varname'); ?>
 		<?php echo CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50,$model->id!==null?'readonly':'')); ?>
 		<?php echo CHtml::error($model,'varname'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user","Allowed are lowercase letters and digits."); ?></p>
+		<p class="hint"><?php echo Yum::t('Allowed are lowercase letters and digits.'); ?></p>
 	</div>
 
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($model,'title'); ?>
 	<?php echo CHtml::activeTextField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
 	<?php echo CHtml::error($model,'title'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Field name on the language of "sourceLanguage".'); ?></p>
+		<p class="hint"><?php echo Yum::t('Field name on the language of "sourceLanguage".'); ?></p>
 	</div>
 	
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($model,'hint'); ?>
 	<?php echo CHtml::activeTextField($model,'hint',array('size'=>60)); ?>
 	<?php echo CHtml::error($model,'hint'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Hint displayed to user e.g "You can enter more values and separate them using comma".'); ?></p>
+		<p class="hint"><?php echo Yum::t('Hint displayed to user e.g "You can enter more values and separate them using comma".'); ?></p>
 	</div>	
 	
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_group_id'); ?>
 		<?php echo CHtml::activeDropDownList($model,'field_group_id',CHtml::listData(YumProfileFieldsGroup::model()->findAll(),'id','title')); ?>
 		<?php echo CHtml::error($model,'field_group_id'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user", 'Select group where field belongs to or leave empty.'); ?></p>
+		<p class="hint"><?php echo Yum::t('Select group where field belongs to or leave empty.'); ?></p>
 	</div>
 	
 	<div class="row">
@@ -45,42 +45,42 @@
 					'field_type',
 					YumProfileField::itemAlias('field_type'))); ?>
 		<?php echo CHtml::error($model,'field_type'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user", 'Column field type in the database. See documentation for the DROPDOWNLIST type.'); ?></p>
+		<p class="hint"><?php echo Yum::t('Column field type in the database. See documentation for the DROPDOWNLIST type.'); ?></p>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_size'); ?>
 		<?php echo CHtml::activeTextField($model,'field_size',array($model->id!==null?'readonly':'')); ?>
 		<?php echo CHtml::error($model,'field_size'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Field size in the database.'); ?></p>
+		<p class="hint"><?php echo Yum::t('Field size in the database.'); ?></p>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_size_min'); ?>
 		<?php echo CHtml::activeTextField($model,'field_size_min'); ?>
 		<?php echo CHtml::error($model,'field_size_min'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'The minimum value of the field (form validator).'); ?></p>
+		<p class="hint"><?php echo Yum::t('The minimum value of the field (form validator).'); ?></p>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'required'); ?>
 		<?php echo CHtml::activeDropDownList($model,'required',YumProfileField::itemAlias('required')); ?>
 		<?php echo CHtml::error($model,'required'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Required field (form validator).'); ?></p>
+		<p class="hint"><?php echo Yum::t('Required field (form validator).'); ?></p>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'match'); ?>
 		<?php echo CHtml::activeTextField($model,'match',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo CHtml::error($model,'match'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user","Regular expression (example: '/^[A-Za-z0-9\s,]+$/u')."); ?></p>
+		<p class="hint"><?php echo Yum::t("Regular expression (example: '/^[A-Za-z0-9\s,]+$/u')."); ?></p>
 	</div>
 
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'range'); ?>
 		<?php echo CHtml::activeTextField($model,'range',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo CHtml::error($model,'range'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Predefined values (example: 1, 2, 3, 4, 5;).'); ?></p>
+		<p class="hint"><?php echo Yum::t('Predefined values (example: 1, 2, 3, 4, 5;).'); ?></p>
 	</div>
 
 	<div class="row">
@@ -127,8 +127,8 @@
 
 	<div class="row buttons">
 	<?php echo CHtml::submitButton($model->isNewRecord 
-			? Yii::t('UserModule.user', 'Create') 
-			: Yii::t('UserModule.user', 'Save')); ?>
+			? Yum::t('Create') 
+			: Yum::t('Save')); ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

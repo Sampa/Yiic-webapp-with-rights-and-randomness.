@@ -20,7 +20,7 @@ if ($profileFields) {
 					<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 					</th>
 					<td><?php 
-						echo CHtml::encode($profile->getAttribute($field->varname)); ?>
+						echo CHtml::encode($profile->{$field->varname}); ?>
 				</td>
 				</tr>
 							<?php

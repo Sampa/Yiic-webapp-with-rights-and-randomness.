@@ -190,7 +190,7 @@ class YumUser extends YumActiveRecord {
 
 		$rules[] = array('username', 'unique', 'message' => Yum::t("This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yum::t('Incorrect symbol\'s. (A-z0-9)'));
-		$rules[] = array('status', 'in', 'range' => array(0, 1, -1, -2));
+		$rules[] = array('status', 'in', 'range' => array(0, 1, 2, -1, -2));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
 		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
 		$rules[] = array('notifyType, avatar', 'safe');

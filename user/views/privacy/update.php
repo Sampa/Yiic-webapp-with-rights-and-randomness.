@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 		Yum::t( 'Update'),
 		);
 
-echo Yum::t('Privacy settings for {username}', array('{username}' => $model->user->username));
+echo '<h2>' .  Yum::t('Privacy settings for {username}', array('{username}' => $model->user->username)) . '</h2>';
 
 ?>
 <div class="form">
@@ -20,23 +20,19 @@ echo Yum::t('Privacy settings for {username}', array('{username}' => $model->use
 echo $form->errorSummary($model);
 ?>
 
-
-
 <?php if(Yum::module()->enableProfiles) { ?>
 <div class="row profile_field_selection">
 <?php
 echo '<h2>' . Yum::t('Profile field public options') . '</h2>';
+echo '<p>' . Yum::t('Select the fields that should be public') . ':</p>';
 $i = 1;
 foreach(YumProfileField::model()->findAll() as $field) {
-	printf('<label for="privacy_for_field_%s">%s</label>%s',
+	printf('<label class="profilefieldlabel" for="privacy_for_field_%d">%s</label>%s<br />',
 			$i,
-			Yum::t('Make {field} public available', array('{field}' => $field->title)),
-			CHtml::dropDownList("privacy_for_field_{$i}",
-				$model->public_profile_fields & $i ? 1 : 0, array(
-					0 => Yum::t('no'),
-					1 => Yum::t('yes'))
-				)
-			) ;
+			$field->title,
+			CHtml::checkBox("privacy_for_field_{$i}",
+				$model->public_profile_fields & $i)
+			);
 
 	$i *= 2;
 }
@@ -73,23 +69,7 @@ foreach(YumProfileField::model()->findAll() as $field) {
 </div>
 
 
-	<?php if(Yum::module()->enableProfiles 
-			&& isset($profile) 
-			&& $profile !== null) {?>
-		<div class="row">
-	<?php 
-	echo CHtml::activeLabelEx($profile, 'privacy'); 
-	echo CHtml::activeDropDownList($profile, 'privacy',
-			array(
-				'protected' => Yum::t( 'protected'),
-				'private' => Yum::t( 'private'),
-				'public' => Yum::t( 'public'),
-				)
-			); 
-	echo CHtml::error($profile,'privacy'); 
-	?>
-
-	</div>
+	<?php if(Yum::module()->enableProfiles) { ?>
 
 <?php if(Yum::module()->enableProfileComments) { ?>
 	<div class="row">
@@ -113,9 +93,9 @@ foreach(YumProfileField::model()->findAll() as $field) {
 	echo CHtml::activeLabelEx($profile, 'show_friends'); 
 	echo CHtml::activeDropDownList($profile, 'show_friends',
 			array(
-				'0' => Yum::t( 'owner'),
-				'1' => Yum::t( 'friends only'),
-				'2' => Yum::t( 'public'),
+				'0' => Yum::t( 'do not make my friends public'),
+				'1' => Yum::t( 'only to my friends'),
+				'2' => Yum::t( 'make my friends public'),
 				)
 			);
 	?>
