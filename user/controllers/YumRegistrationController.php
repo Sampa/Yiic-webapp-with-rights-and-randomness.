@@ -177,7 +177,7 @@ class YumRegistrationController extends YumController {
 		$registrationType = Yum::module()->registrationType;
 
 		$activation_url = $this->createAbsoluteUrl('registration/activation', array(
-					'activationKey' => $user->activationKey,
+					'key' => $user->activationKey,
 					'email' => $user->profile[0]->email)
 		);
 
@@ -210,78 +210,25 @@ class YumRegistrationController extends YumController {
 	}
 
 	/**
-	 * Activation of an user account
+	 * Activation of an user account. The Email and the Activation key send
+	 * by email needs to correct in order to continue. The Status will
+   * be initially set to 1 (active - first Visit) so the administrator
+   * can see, which accounts have been activated, but not yet logged in 
+   * (more than once)
 	 */
 	public function actionActivation($email=null, $key=null) {
+		// If already logged in, we dont activate anymore
 		if (!Yii::app()->user->isGuest)
 			$this->redirect(Yii::app()->user->returnUrl);
 
-		if (isset($_POST['YumUserChangePassword'])) {
-			//FIXME: Ugly hack to pass email and key on $_POST
-			$email = $_POST['email'];
-			$key = $_POST['activationKey'];
-
-			if (YumUser::activate($email, $key)) {
-				$form = new YumUserChangePassword;
-				$form->attributes = $_POST['YumUserChangePassword'];
-
-				if ($form->validate()) {
-					$profile = YumProfile::model()->findByAttributes(array('email'=> $email ));
-					$user = $profile->user;
-					$user->password = YumUser::encrypt($form->password);
-					$user->save();
-
-					// handle the login task
-					$this->doLogin($user->username, $form->password);
-				} else {
-					$errors = $form->getErrors();
-					Yii::app()->user->setFlash('error', Yum::t($errors['password'][0]));
-
-					// Renders the change password form
-					$this->renderPasswordForm(array(
-						'title' => Yum::t("User activation"),
-						'content' => Yum::t("Cannot set password. Try again."),
-							), array(
-						'email' => $email,
-						'key' => $key,
-					));
-					Yii::app()->end();
-				}
-			}
-		}
-
-		if (isset($_GET['email']) && isset($_GET['activationKey'])) {
-			$email = $_GET['email'];
-			$key = $_GET['activationKey'];
-			$profile = YumProfile::model()->findByAttributes(array('email' => $email));
-			if ($profile !== null) {
-				if ($profile->user->status == YumUser::STATUS_ACTIVE_FIRST_VISIT || $profile->user->status == YumUser::STATUS_ACTIVE) {
-					$this->redirect(Yii::app()->user->returnUrl);
-				}
-			} else {
-				$this->redirect($this->createUrl('/user/registration'));
-			}
-		}
-
-		if (YumUser::activate($email, $key)) {
-			// Renders the change password form
-		$this->renderPartial(Yum::module()->activationSuccessView);
-/*			$this->renderPasswordForm(array(
-				'title' => Yum::t("User activation"),
-				'content' => Yum::t("Your account has been activated."),
-					), array(
-				'email' => $email,
-				'key' => $key,
-					)
-			); */
-		} else {
-			$this->actionActivate();
-			/*
-			  $this->render('/user/message',array(
-			  'title'=>Yum::t("User activation"),
-			  'content'=>Yum::t("Incorrect activation URL")));
-			 */
-		}
+		// If everything is set properly, let the model handle the Validation
+		// and do the Activation
+		if ($email != null && $key != null) {
+			if (YumUser::activate($email, $key) != false) 
+				$this->render(Yum::module()->activationSuccessView);
+			else
+				$this->render(Yum::module()->activationFailureView);
+	}
 	}
 
 	/**
@@ -289,13 +236,10 @@ class YumRegistrationController extends YumController {
 	 * activation link. If clicked, he will be prompted to enter his new
 	 * password.
 	 */
-	public function actionRecovery() {
+	public function actionRecovery($email = null, $key = null) {
 		$form = new YumUserRecoveryForm;
 
-		if (isset($_GET['email']) && isset($_GET['activationKey'])) {
-			$email = $_GET['email'];
-			$key = $_GET['activationKey'];
-
+		if ($email != null && $key != null) {
 			$profile = YumProfile::model()->findByAttributes(array('email' => $_GET['email']));
 			if ($profile !== null) {
 				$user = $profile->user;
@@ -354,7 +298,7 @@ class YumRegistrationController extends YumController {
 				Yii::app()->user->setFlash('loginMessage', Yum::t('Instructions have been sent to you. Please check your email.'));
 			}
 
-			if ($user->activationKey == $_GET['activationKey']) {
+			if ($user->activationKey == $_GET['key']) {
 				if (isset($_POST['YumUserChangePassword'])) {
 					$passwordform->attributes = $_POST['YumUserChangePassword'];
 					if ($passwordform->validate()) {
@@ -383,7 +327,7 @@ class YumRegistrationController extends YumController {
 					$user = YumUser::model()->findbyPk($form->user_id);
 
 					$activation_url = $this->createAbsoluteUrl('registration/recovery', array(
-								'activationKey' => $user->activationKey,
+								'key' => $user->activationKey,
 								'email' => $user->profile[0]->email));
 					if (Yum::module()->enableLogging == true)
 						YumActivityController::logActivity($user, 'recovery');

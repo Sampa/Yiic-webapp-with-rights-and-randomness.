@@ -4,8 +4,9 @@
  * YumMailer just implements the send() method that handles (guess what)
  * the mailing process of messages.
  * the first parameter can either be an array containing the Information 
- * or a string containing the recipient. The subject and mesage goes
- * inside the other parameters in this case.
+ * or a string containing the recipient, or a object instance of YumUser.
+ * In the YumUser case, the email will be sent to the E-Mail field of the
+ * most actual profile.
  * @return true if sends mail, false otherwise
  */
 class YumMailer {
@@ -67,8 +68,10 @@ class YumMailer {
 			$mailer->Body = $to['body'];
 			return $mailer->Send();
 		} else {
-			$headers = "From: " . Yum::module()->registrationEmail ."\r\nReply-To: ".Yii::app()->params['adminEmail'];
-			return mail($to['to'], $to['subject'], $to['body'], $headers);
+			$header  = 'MIME-Version: 1.0' . "\r\n";
+			$header .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+			$header .= 'To: ' . $to['to'] . "\r\n";
+			return mail($to['to'], $to['subject'], $to['body'], $header);
 		}
 	}
 }

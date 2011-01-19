@@ -27,8 +27,9 @@
  */
 class YumUser extends YumActiveRecord {
 	const STATUS_NOTACTIVE = 0;
-	const STATUS_ACTIVE_FIRST_VISIT = 1;
-	const STATUS_ACTIVE = 2;
+	const STATUS_ACTIVATED = 1;
+	const STATUS_ACTIVE_FIRST_VISIT = 2;
+	const STATUS_ACTIVE = 3;
 	const STATUS_BANNED = -1;
 	const STATUS_REMOVED = -2;
 
@@ -190,7 +191,7 @@ class YumUser extends YumActiveRecord {
 
 		$rules[] = array('username', 'unique', 'message' => Yum::t("This user's name already exists."));
 		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yum::t('Incorrect symbol\'s. (A-z0-9)'));
-		$rules[] = array('status', 'in', 'range' => array(0, 1, 2, -1, -2));
+		$rules[] = array('status', 'in', 'range' => array(0, 1, 2, 3, -1, -2));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
 		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
 		$rules[] = array('notifyType, avatar', 'safe');
@@ -373,25 +374,42 @@ class YumUser extends YumActiveRecord {
 	}
 
 	/**
-	 * Activation of an user account
+	 * Activation of an user account. 
 	 */
-	public function activate($email=null, $activationKey=null) {
-		if (isset($email) && isset($activationKey)) {
-			$find = YumProfile::model()->findByAttributes(array('email' => $email))->user;
-			if ($find->status == self::STATUS_ACTIVE || $find->status == self::STATUS_ACTIVE_FIRST_VISIT) {
-				$return = true;
-			} else if ($find->activationKey == $activationKey) {
-				$find->activationKey = $find->generateActivationKey(true);
-				$find->status = self::STATUS_ACTIVE_FIRST_VISIT;
-				$find->save();
-				$return = true;
-			} else {
-				$return = false;
+	public function activate($email=null, $key=null) {
+		// If everything is set properly,
+		if ($email != null && $key != null) {
+			// and the emails exists in the database,
+			if($profile = YumProfile::model()->find("email = '{$email}'")) {
+				// and is associated with a correct user,
+				if($user = $profile->user) {	
+					// and this user has the status NOTACTIVE 
+					if ($user->status != self::STATUS_NOTACTIVE)
+						return false;
+					// and the given activationKey is identical to the one in the
+					// database
+					if ($user->activationKey == $key) {
+						// then generate a new Activation key to avoid double activation, 
+						// set the status to ACTIVATED and save the data
+						$user->activationKey = $user->generateActivationKey(true);
+						$user->status = self::STATUS_ACTIVATED;
+						if($user->save(false, array('activationKey', 'status'))) {
+							if(Yum::module()->enableActivationConfirmation) {
+								YumMessage::write($user, 1,
+										Yum::t('Your activation succeeded'),
+										YumTextSettings::getText('text_email_activation', array(
+												'{username}' => $user->username,
+												'{link_login}' =>
+												Yii::app()->controller->createUrl('//user/user/login'))));
+							}
+
+							return $user;
+						}
+					} 
+				}
 			}
-		} else {
-			$return = false;
 		}
-		return $return;
+		return false;
 	}
 
 	/**

@@ -32,6 +32,9 @@ class UserModule extends CWebModule {
 	public $enableLogging = true;
 	public $enableOnlineStatus = true; 
 
+	// Whether to confirm the activation of an user by email
+	public $enableActivationConfirmation = true; 
+
 	// set to false to enable case insensitive users.
   // for example, demo and Demo would be the same user then
 	public $caseSensitiveUsers = true;
@@ -127,7 +130,8 @@ class UserModule extends CWebModule {
 			'message' => '/user/message',
 			'recovery' => '/user/recovery',
 			'passwordForm' => '/user/_activation_passwordform',
-			'activationSuccess' => '/user/activation_success',
+			'activationSuccess' => '/registration/activation_success',
+			'activationFailure' => '/registration/activation_failure',
 			'recoveryChangePassword' =>'/user/changepassword');
 
 	// Activate profile History (profiles are kept always, and when the

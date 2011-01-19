@@ -1,6 +1,7 @@
 <?php
 
 return array(
+		'Your activation succeeded' => 'Ihre Aktivierung war erfolgreich',
 		'Username or email' => 'Benutzername oder E-Mail',
 		'Visit profile' => 'Profil besuchen',
 		'Add as a friend' => 'Als Freund hinzufügen',
