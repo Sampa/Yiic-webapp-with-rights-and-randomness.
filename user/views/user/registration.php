@@ -46,13 +46,17 @@ if(Yii::app()->getModule('user')->enableRoles) {
 	<div class="row">
 <?php
 		if(Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME)
+		{
 			echo CHtml::activeLabelEx($form,'username');
+			echo CHtml::activeTextField($form,'username');
+		}
 		if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
+		{
 			echo CHtml::activeLabelEx($profile,'email');
+			echo CHtml::activeTextField($form,'username');
+		}
 		if(Yum::module()->loginType & UserModule::LOGIN_BY_OPENID)
 			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('OpenID username'));
-
-		echo CHtml::activeTextField($form,'username');
 ?>
 	</div>
 
@@ -116,6 +120,7 @@ if ($profileFields) {
 		}
 		else 
 		{
+			echo CHtml::activeLabelEx($profile, $field->varname);
 			echo CHtml::activeTextField($profile,
 					$field->varname,
 					array(
