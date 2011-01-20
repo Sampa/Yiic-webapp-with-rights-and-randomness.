@@ -26,7 +26,7 @@ foreach($profile->loadProfileFields() as $field) {
 	} else {
 		echo CHtml::activeTextField($profile,
 				$field->varname,
-				array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
+				array('size'=>(($field->field_size_min)?$field->field_size_min:25),'maxlength'=>(($field->field_size)?$field->field_size:255)));
 	}
 	echo CHtml::error($profile,$field->varname); 
 

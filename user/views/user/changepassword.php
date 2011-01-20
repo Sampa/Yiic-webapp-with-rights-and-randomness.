@@ -10,7 +10,6 @@ if(isset($expired) && $expired)
 	$this->renderPartial('password_expired');
 ?>
 
-<h2> <?php echo Yum::t('Change password'); ?></h2>
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 	<?php echo Yum::requiredFieldNote(); ?>

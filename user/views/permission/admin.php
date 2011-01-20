@@ -28,7 +28,7 @@ $this->breadcrumbs=array(
 					),
 				array(
 					'name' => 'action',
-					'value' => '$data->Action->title',
+					'value' => '$data->action->title',
 					),
 				)
 			)

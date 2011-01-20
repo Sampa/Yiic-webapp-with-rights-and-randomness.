@@ -23,6 +23,7 @@ class UserModule extends CWebModule {
 	public $preserveProfiles = true;
 	public $useYiiCheckAccess = false;
 	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
+	public $allowRegistration =true;
 	public $allowRecovery = true;
 	public $enableRoles = true;
 	public $enableMembership = true;
@@ -215,6 +216,7 @@ class UserModule extends CWebModule {
 			'friendship' => 'friendship',
 			'permission' => 'permission',
 			'action' => 'action',
+			'activity' => 'activities',
 			'userRole' => 'user_has_role',
 			'activity' => 'activities',
 			);

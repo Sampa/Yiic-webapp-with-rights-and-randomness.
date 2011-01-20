@@ -69,7 +69,7 @@ class YumRoleController extends YumController {
 				$this->redirect(array('view', 'id' => $model->id));
 			}
 		}
-	}
+	
 
 		$this->render('update', array(
 			'model' => $model,

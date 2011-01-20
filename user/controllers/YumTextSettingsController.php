@@ -6,7 +6,7 @@ class YumTextSettingsController extends YumController {
 	{
 		return array(
 				array('allow', 
-					'actions'=>array('admin','delete', 'create', 'update', 'view'),
+					'actions'=>array('admin','delete', 'create', 'update', 'view','index'),
 					'users'=>array('admin'),
 					),
 				array('deny', 

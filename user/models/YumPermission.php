@@ -11,7 +11,7 @@ class YumPermission extends YumActiveRecord {
 		elseif(isset(Yii::app()->modules['user']['permissionTable']))
 			$this->_tableName = Yii::app()->modules['user']['permissionTable'];
 		else
-			$this->_tableName = '{{permissions}}'; // fallback if nothing is set
+			$this->_tableName = '{{permission}}'; // fallback if nothing is set
 		return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
 	}
 
