@@ -56,7 +56,7 @@ class YumMessage extends YumActiveRecord
 		// If the user has activated email receiving, send a email
 		if($this->isNewRecord)
 			if($this->to_user->privacy && $this->to_user->privacy->message_new_message)
-				YumMailer::send($this->to_user->profile[0]->email,
+				YumMailer::send($this->to_user->profile->email,
 						$this->title,
 						YumTextSettings::getText('text_message_new', array(
 								'{user}' => $this->from_user->username,

@@ -23,7 +23,7 @@ class YumProfileController extends YumController {
 		);
 	}
 
-	public function actionEdit() {
+	public function actionUpdate($id = null) {
 		if(Yum::module()->readOnlyProfiles) {
 			Yum::setFlash('You are not allowed to edit your own profile.
 					Please contact the System administrator');
@@ -31,48 +31,49 @@ class YumProfileController extends YumController {
 			$this->redirect(array('/user/user/profile', 'id'=>$model->id));
 		}
 
-		$model = YumUser::model()->findByPk(Yii::app()->user->id);
-		if(isset($model->profile[0]))
-			$profile = $model->profile[0];
-		else
-			$profile = new YumProfile();
+		if(!$id)
+			$id = Yii::app()->user->data()->id;
+
+		$user = YumUser::model()->findByPk($id);
+		$profile = $user->profile;
 
 		if(isset($_POST['YumUser'])) {
-			$model->attributes=$_POST['YumUser'];
-			if(Yum::module()->enableProfileHistory == true)
-				$profile = new YumProfile();
+			$user->attributes=$_POST['YumUser'];
 
 			if(isset($_POST['YumProfile'])) {
-				$profile->attributes=$_POST['YumProfile'];
+				$profile->attributes = $_POST['YumProfile'];
 				$profile->timestamp = time();
-				$profile->user_id = $model->id;
+				$profile->user_id = $user->id;
 			}
-			$model->validate();
+			$user->validate();
 			$profile->validate();
 
-			if(!$model->hasErrors() && !$profile->hasErrors()) {
-				if($model->profile[0]->email != $profile->email && Yum::module()->notifyEmailChange) {
-					YumMailer::send($profile->email, Yum::t('Email address changed'),
-							Yum::t('A email address has been changed from {oldemail} to {newemail} at {server} on {date}.', array(
-
-									'{oldemail}' => $model->profile[0]->email,
-									'{newemail}' => $profile->email,
-									'{server}' => CHttpRequest::getUserHostAddress(),
-									'{date}' => date(Yum::module()->dateTimeFormat))));
+			if(!$user->hasErrors() && !$profile->hasErrors()) {
+				$currentProfile = $profile;
+				if($user->save() && $profile->save()) {
+					$this->sendNotifyEmail($currentProfile, $profile);
+					Yum::setFlash('Your changes have been saved');
+					$this->redirect(array('/user/user/profile', 'id'=>$user->id));
 				}
-
-				$model->save();
-				$profile->save();
-				Yum::setFlash('Your changes have been saved');
-				$this->redirect(array('/user/user/profile', 'id'=>$model->id));
 			}
 		}
 
 		$this->render(Yum::module()->profileEditView,array(
-					'model'=>$model,
+					'user'=>$user,
 					'profile'=>$profile,
 					));
 
+	}
+
+	public function sendNotifyEmail($currentProfile, $newProfile) {
+		if($currentProfile->email != $newProfile->email 
+				&& Yum::module()->notifyEmailChange) 
+			YumMailer::send($currentProfile->email, Yum::t('Email address changed'),
+					Yum::t('A email address has been changed from {oldemail} to {newemail} at {server} on {date}.', array(
+						'{oldemail}' => $currentProfile->email,
+						'{newemail}' => $newProfile->email,
+						'{server}' => CHttpRequest::getUserHostAddress(),
+						'{date}' => date(Yum::module()->dateTimeFormat))));
 	}
 
 	public function actionVisits() {
@@ -148,33 +149,6 @@ class YumProfileController extends YumController {
 		}
 
 		$this->render('create',array( 'model'=>$model ));
-	}
-
-	public function actionUpdate() {
-		if(Yii::app()->user->isAdmin())
-			$this->layout = Yum::module()->adminLayout;
-		else
-			$this->layout = Yum::module()->layout;
-
-		if(!isset($_GET['id'])) {
-			$profile = YumProfile::model()->find('user_id = ' . Yii::app()->user->id);
-			$_GET['id'] = $profile->profile_id;
-		}
-
-		$model = $this->loadModel();
-		if(isset($_POST['YumProfile']))
-		{
-			$model->attributes=$_POST['YumProfile'];
-
-			if($model->save())
-				$this->redirect(array('view', 'id' => $model->profile_id));
-		}
-
-		$this->render('/profile/update',array(
-					'model'=>$model->user,
-					'profile' => $model,
-					'passwordform' => new YumUserChangePassword(),
-					));
 	}
 
 	public function actionDelete()

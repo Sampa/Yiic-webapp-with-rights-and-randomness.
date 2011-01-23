@@ -123,7 +123,7 @@ class YumMessagesController extends YumController {
 				if((is_object($message->to_user) && $message->to_user->notifyType == 'Digest')
 						|| Yum::module()->notifyType == 'Digest') { 
 					$this->mailMessage($message);
-					$recipients[] = $message->to_user->profile[0]->email;
+					$recipients[] = $message->to_user->profile->email;
 				}
 			}
 			if(count($recipients) == 0)

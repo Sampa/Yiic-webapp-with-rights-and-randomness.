@@ -31,8 +31,8 @@ $this->title = Yii::t("UserModule.user", 'Your profile');
 				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 				</th>
 				<td><?php 
-				if(is_object($model->profile[0]->{ucfirst($field->varname)}))
-					echo CHtml::encode($model->profile[0]->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
+				if(is_object($model->profile->{ucfirst($field->varname)}))
+					echo CHtml::encode($model->profile->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
 						</td>
 						</tr>
 				<?php
@@ -41,7 +41,7 @@ $this->title = Yii::t("UserModule.user", 'Your profile');
 				<tr>
 				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 				</th>
-				<td><?php echo CHtml::encode($model->profile[0]->getAttribute($field->varname)); ?>
+				<td><?php echo CHtml::encode($model->profile->getAttribute($field->varname)); ?>
 				</td>
 				</tr>
 				<?php

@@ -1,9 +1,9 @@
 <?php
-$profiles = Yii::app()->getModule('user')->enableProfiles;
+$profiles = Yum::module()->enableProfiles;
 
 if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 $this->title = Yum::t('View user "{email}"',array(
-			'{email}'=>$model->profile[0]->email));
+			'{email}'=>$model->profile->email));
 else
 $this->title = Yum::t('View user "{username}"',array(
 			'{username}'=>$model->username));
@@ -26,10 +26,10 @@ if(Yii::app()->user->isAdmin()) {
 		if ($profileFields && $model->profile) {
 			foreach($profileFields as $field) {
 				array_push($attributes, array(
-							'label' => Yii::t('UserModule.user', $field->title),
+							'label' => Yum::t($field->title),
 							'type' => 'raw',
 							'value' => is_array($model->profile)
-							? $model->profile[0]->getAttribute($field->varname)
+							? $model->profile->getAttribute($field->varname)
 							: $model->profile->getAttribute($field->varname) ,
 							));
 			}
@@ -79,7 +79,7 @@ if(Yii::app()->user->isAdmin()) {
 				array_push($attributes,array(
 							'label' => Yii::t('UserModule.user', $field->title),
 							'name' => $field->varname,
-							'value' => $model->profile[0]->getAttribute($field->varname),
+							'value' => $model->profile->getAttribute($field->varname),
 							));
 			}
 		}
@@ -104,9 +104,6 @@ if(Yii::app()->user->isAdmin()) {
 
 
 if(Yii::app()->user->isAdmin()) {
-	if($profiles && Yum::module()->enableProfileHistory) {
-		$this->renderPartial('/profile/profile_history', array('model' => $model));
-	}
 	echo '<h2>'.Yum::t('This user belongs to these roles:') .'</h2>';
 
 	if($model->roles) {

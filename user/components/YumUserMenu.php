@@ -24,7 +24,7 @@ class YumUserMenu extends CPortlet {
 		return array( 
 				array('label' => 'Profile', 'items' => array(
 						array('label' => 'My profile', 'url' => array('/user/profile/view')),
-						array('label' => 'Edit personal data', 'url' => array('/user/profile/edit')),
+						array('label' => 'Edit personal data', 'url' => array('/user/profile/update')),
 						array('label' => 'Upload avatar image', 'url' => array('/user/avatar/editAvatar')),
 						array('label' => 'Privacy settings', 'url' => array('/user/privacy/update')),
 						)

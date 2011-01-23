@@ -13,13 +13,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type' => 'raw',
 					'value' => 'CHtml::link($data->visitor->username, array(
 							"/user/profile/view",
-							"id" => $data->visitor->profile[0]->profile_id))'),
+							"id" => $data->visitor->profile->profile_id))'),
 				array(
 					'header' => Yum::t('Visited'),
 					'type' => 'raw',
 					'value' => 'CHtml::link($data->visited->username, array(
 							"/user/profile/view",
-							"id" => $data->visited->profile[0]->profile_id))'),
+							"id" => $data->visited->profile->profile_id))'),
 				array(
 					'name' => 'timestamp_first_visit',
 					'filter' => false,

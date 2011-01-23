@@ -1,5 +1,5 @@
 <?php 
-if(!$profile = @$model->profile[0])
+if(!$profile = @$model->profile)
 	return false;
 
 $this->pageTitle = Yii::app()->name . ' - ' . Yum::t('Profile');
@@ -17,13 +17,13 @@ if($model->id == Yii::app()->user->id)
 
 <?php echo $model->getAvatar(); ?>
 <?php $this->renderPartial('/profile/public_fields', array(
-			'profile' => $model->profile[0])); ?>
+			'profile' => $model->profile)); ?>
 <br />
 <?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> 
 <br /> 
 <?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> 
 <br /> 
 <?php
- if(isset($model->profile[0]))
-	$this->renderPartial('/profileComment/index', array('model' => $model->profile[0])); ?> 
+ if(isset($model->profile))
+	$this->renderPartial('/profileComment/index', array('model' => $model->profile)); ?> 
 </div>

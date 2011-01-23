@@ -11,9 +11,9 @@ if($data->privacy->show_online_status)
 	printf($template, Yum::t('Username'), $data->username);
 
 
-	if(Yum::module()->enableProfiles && isset($data->profile[0])) {
-		printf($template, Yum::t('Firstname'), $data->profile[0]->firstname);
-		printf($template, Yum::t('Lastname'), $data->profile[0]->lastname);
+	if(Yum::module()->enableProfiles && isset($data->profile)) {
+		printf($template, Yum::t('Firstname'), $data->profile->firstname);
+		printf($template, Yum::t('Lastname'), $data->profile->lastname);
 	} 
 
 printf($template, Yum::t('First visit'), date(UserModule::$dateFormat, $data->createtime)); 

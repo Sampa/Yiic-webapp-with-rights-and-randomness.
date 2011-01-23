@@ -30,7 +30,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			array(
 				'name'=>'email',
 				'visible' => Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL,
-				'value'=> 'isset($data->profile[0]) ? $data->profile[0]->email : "No email set"',
+				'value'=> 'isset($data->profile) ? $data->profile->email : "No email set"',
 			),
 			array(
 				'name'=>'createtime',

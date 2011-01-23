@@ -262,11 +262,7 @@ class YumUser extends YumActiveRecord {
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
 				'messages' => array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.id DESC'),
 				'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id'),
-				// An example on how the default_profile relation should be
-				//			'default_profile' => array(self::HAS_ONE, 'YumProfile', 'user_id', 'condition' => "profile_id = $this->default_profile"),
-				// And then we rename this one below to 'profiles'
-				'profile' => array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
-				'profileComments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
+				'profile' => array(self::HAS_ONE, 'YumProfile', 'user_id' ),
 				'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 				'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 				'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST

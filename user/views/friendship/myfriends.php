@@ -9,8 +9,6 @@ $form=$this->beginWidget('CActiveForm', array(
 			)); 
 
 			
-echo '<h2>Meine Kontakte</h2>';
-
 if($friends) {
 	
 	echo '<div class="view-light">';

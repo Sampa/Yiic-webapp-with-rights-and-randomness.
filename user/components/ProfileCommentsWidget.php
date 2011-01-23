@@ -22,7 +22,7 @@ class ProfileCommentsWidget extends CPortlet
 
 			$user = YumUser::model()->findByPk(Yii::app()->user->id);
 			$this->render('profile_comments', array(
-						'commentators' => Yii::app()->user->data()->profile[0]->getProfileCommentators()));
+						'commentators' => Yii::app()->user->data()->profile->getProfileCommentators()));
 	}
 } 
 ?>

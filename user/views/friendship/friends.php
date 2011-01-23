@@ -1,5 +1,5 @@
 <?php
-if(!$profile = @$model->profile[0])
+if(!$profile = @$model->profile)
 	return false;
 
 if($profile->show_friends == 2) {

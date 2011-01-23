@@ -127,7 +127,7 @@ class YumRegistrationController extends YumController {
 		if (!isset($user) && isset($_POST['YumProfile']['email'])) {
 			$email = $_POST['YumProfile']['email'];
 			$profile = YumProfile::model()->findAll($condition = 'email = :email', array(':email' => $email));
-			$user = $profile[0]->user;
+			$user = $profile->user;
 		} else {
 			$user = new YumUser;
 		}
@@ -149,7 +149,7 @@ class YumRegistrationController extends YumController {
 			$registrationType = Yum::module()->registrationType;
 			$password = null;
 			$profile = YumProfile::model()->findAll($condition = 'email = :email', array(':email' => $email));
-			$user = $profile[0]->user;
+			$user = $profile->user;
 			$user->activationKey = $user->generateActivationKey();
 			if ($registrationType == YumRegistration::REG_NO_PASSWORD || $registrationType == YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION) {
 				$password = YumUserChangePassword::createRandomPassword();
@@ -171,14 +171,14 @@ class YumRegistrationController extends YumController {
 
 	// Send the Email to the given user object. $user->email needs to be set.
 	public function sendRegistrationEmail($user, $password=null) {
-		if (!isset($user->profile[0]->email)) {
+		if (!isset($user->profile->email)) {
 			throw new CException(Yum::t('Email is not set when trying to send Registration Email'));
 		}
 		$registrationType = Yum::module()->registrationType;
 
 		$activation_url = $this->createAbsoluteUrl('registration/activation', array(
 					'key' => $user->activationKey,
-					'email' => $user->profile[0]->email)
+					'email' => $user->profile->email)
 		);
 
 		$content = YumTextSettings::model()->find('language = :lang', array(
@@ -195,7 +195,7 @@ class YumRegistrationController extends YumController {
 
 			$mail = array(
 					'from' => Yum::module()->registrationEmail,
-					'to' => $user->profile[0]->email,
+					'to' => $user->profile->email,
 					'subject' => strtr($content->subject_email_registration, array(
 							'{username}' => $user->username)),
 					'body' => $body,
@@ -289,7 +289,7 @@ class YumRegistrationController extends YumController {
 
 				$mail = array(
 					'from' => Yii::app()->params['adminEmail'],
-					'to' => $user->profile[0]->email,
+					'to' => $user->profile->email,
 					'subject' => Yum::t('Password recovery'),
 					'body' => sprintf('You have requested to reset your Password. Your new password, is %s', $password),
 				);
@@ -328,7 +328,7 @@ class YumRegistrationController extends YumController {
 
 					$activation_url = $this->createAbsoluteUrl('registration/recovery', array(
 								'key' => $user->activationKey,
-								'email' => $user->profile[0]->email));
+								'email' => $user->profile->email));
 					if (Yum::module()->enableLogging == true)
 						YumActivityController::logActivity($user, 'recovery');
 
@@ -340,7 +340,7 @@ class YumRegistrationController extends YumController {
 					if (is_object($content)) {
 						$mail = array(
 							'from' => Yii::app()->params['adminEmail'],
-							'to' => $user->profile[0]->email,
+							'to' => $user->profile->email,
 							'subject' => $content->subject_email_registration,
 							'body' => strtr($content->text_email_recovery, array('{activation_url}' => $activation_url)),
 						);

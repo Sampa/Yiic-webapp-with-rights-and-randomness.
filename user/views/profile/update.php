@@ -13,20 +13,20 @@ $this->title = Yum::t('Edit profile');
 
 <?php echo Yum::requiredFieldNote(); ?>
 
-<?php echo CHtml::errorSummary(array($model, $profile)); ?>
+<?php echo CHtml::errorSummary(array($user, $profile)); ?>
 
 <div class="row">
-<?php echo CHtml::activeLabelEx($model,'username'); ?>
-<?php echo CHtml::activeTextField($model,'username',array(
+<?php echo CHtml::activeLabelEx($user,'username'); ?>
+<?php echo CHtml::activeTextField($user,'username',array(
 			'size'=>20,'maxlength'=>20)); ?>
-<?php echo CHtml::error($model,'username'); ?>
+<?php echo CHtml::error($user,'username'); ?>
 </div>
 
 <?php if(isset($profile) && is_object($profile)) 
 	$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord 
+		<?php echo CHtml::submitButton($user->isNewRecord 
 			? Yum::t('Create my profile') 
 			: Yum::t('Save profile changes')); ?>
 	</div>

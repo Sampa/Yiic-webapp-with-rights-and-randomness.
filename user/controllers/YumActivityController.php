@@ -136,7 +136,7 @@ class YumActivityController extends YumController {
 				break;
 			case 'fb_failed_login_attempt' :
 				Yii::log(Yum::t('Error trying to login {facebook_id}. Session expired.', array(
-								'{facebook_id}' => $user->profile[0]->facebook_id)),
+								'{facebook_id}' => $user->profile->facebook_id)),
 						'warning',
 						'modules.user.controllers.YumUserController');
 				break;
