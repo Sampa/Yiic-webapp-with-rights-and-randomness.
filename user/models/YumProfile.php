@@ -36,6 +36,8 @@ class YumProfile extends YumActiveRecord
 		return parent::model($className);
 	}
 
+	// All fields that the user has activated in his privacy settings will
+	// be obtained and returned for the use in the profile view
 	public function getPublicFields() {
 		$fields = array();
 
@@ -171,7 +173,7 @@ class YumProfile extends YumActiveRecord
 	{
 		$relations = array(
 			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
-			'comments' => array(self::BELONGS_TO, 'YumProfileComment', 'user_id'),
+			'comments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
 		);
 
 		$fields = Yii::app()->db->createCommand(
@@ -184,6 +186,17 @@ class YumProfile extends YumActiveRecord
 
 		return $relations;
 
+	}
+
+	// Retrieve a list of all users that have commentd my profile
+	// Do not show my own profile visit
+	public function getProfileCommentators() {
+		$commentators = array();
+		foreach($this->comments as $comment)
+			if($comment->user_id != Yii::app()->user->id)
+				$commentators[$comment->user_id] = $comment->user;
+
+		return $commentators;
 	}
 
 	public function attributeLabels()

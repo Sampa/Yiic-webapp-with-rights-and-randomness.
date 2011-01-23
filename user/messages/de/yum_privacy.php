@@ -1,5 +1,8 @@
 <?php
 return array(
+		'Log profile visits' => 'Meine Profilbesuche anzeigen',
+		'Do not show the owner of a profile when i visit him' => 'Niemandem zeigen, wen ich besucht habe',
+		'Show the owner when i visit his profile' => 'Dem Profileigentümer erkenntlich machen, wenn ich sein Profil besuche',
 		'Select the fields that should be public' => 'Diese Felder sind öffentlich einsehbar',
 		'Show online status' => 'Online-Status anzeigen',
 		'Do not show my online status' => 'Status verstecken',

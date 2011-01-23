@@ -2,14 +2,20 @@
 $this->title = Yum::t('My friends');
 $this->breadcrumbs = array(Yum::t('Friends'));
 
+
 $form=$this->beginWidget('CActiveForm', array(
 			'id'=>'groups-form',
 			'enableAjaxValidation'=>false,
 			)); 
 
+			
+echo '<h2>Meine Kontakte</h2>';
+
 if($friends) {
-	echo '<table>';
-	echo '<th></th></th><th>Username</th><th>Status</th>';
+	
+	echo '<div class="view-light">';
+	
+	echo '<table width="100%">';
 
 	foreach($friends as $friend) {
 		$options = array();
@@ -37,15 +43,20 @@ if($friends) {
 				else
 					$label = $friend->inviter;
 
-			printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+			printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td class="text-right">%s</td></tr>',
 					$label->getAvatar(true),
 					CHtml::link($label->username, array(
 							'//user/profile/view', 'id'=>$label->id)),
 					$friend->getStatus(), 
-					$friend->status != 3 ? $options : '');
+					CHtml::link(Yum::t('Write a message'), array(
+							'//user/messages/compose', 'to_user_id'=>$label->id)),
+							$friend->status != 3 ? $options : ''
+							
+							);
 
 	}
-	echo '</table>';	
+	echo '</table>';
+	echo '</div>';
 } else {
 	echo Yum::t('You do not have any friends yet');
 }

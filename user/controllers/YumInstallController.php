@@ -242,6 +242,7 @@ class YumInstallController extends YumController {
 							`text_email_recovery` text,
 							`text_email_activation` text,
 							`text_friendship_new` text,
+							`text_friendship_confirmed` text,
 							`text_profilecomment_new` text,
 							`text_message_new` text,
 							`text_membership_ordered` text,
@@ -264,6 +265,7 @@ class YumInstallController extends YumController {
 									`text_email_recovery`,
 									`text_email_activation`,
 									`text_friendship_new`,
+									`text_friendship_confirmed`,
 									`text_profilecomment_new`,
 									`text_message_new`,
 									`text_membership_ordered`,
@@ -281,8 +283,9 @@ class YumInstallController extends YumController {
 										please go to {activation_url}',
 										'Your account has been activated. Thank you for your registration.',
 										'New friendship Request from {username}: {message}. To accept or ignore this request, go to your friendship page: {link_friends} or go to your profile: {link_profile}',
-										'You have a new profile comment from {user}: {message} visit your profile: {link_profile}',
-										'You have received a new message from {user}: {message}',
+										'The User {username} has accepted your friendship request',
+										'You have a new profile comment from {username}: {message} visit your profile: {link_profile}',
+										'You have received a new message from {username}: {message}',
 'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
 'Your payment has been received on {payment_date} and your Membership {id} is now active',
 'Please select a Membership of your choice',
@@ -298,18 +301,19 @@ class YumInstallController extends YumController {
 							 'Sie haben sich für eine Applikation registriert.',
 							 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
 							 'Ihr Konto wurde freigeschaltet.',
-							 'Der Benutzer {user} hat Ihnen eine Freundschaftsanfrage gesendet. 
+							 'Der Benutzer {username} hat Ihnen eine Freundschaftsanfrage gesendet. 
 
 							 Nachricht: {message}
 
 							 Klicken sie <a href=\"{link_friends}\">hier</a>, um diese Anfrage zu bestätigen oder zu ignorieren. Alternativ können sie <a href=\"{link_profile}\">hier</a> auf ihre Profilseite zugreifen.',
+							'Der Benutzer {username} hat ihre Freundschaftsanfrage bestätigt.',
 							 '
 							 Benutzer {username} hat Ihnen eine Nachricht auf Ihrer Pinnwand hinterlassen: 
 
 							 {message}
 
 							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
-								 'Sie haben eine neue Nachricht von {user} bekommen: {message}',
+								 'Sie haben eine neue Nachricht von {username} bekommen: {message}',
 'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
 'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.',
 'Bitte wählen Sie ein Paket ihrer Wahl:',
@@ -326,8 +330,9 @@ class YumInstallController extends YumController {
 									'Has solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor ve a {activation_url}',
 									'Tu cuenta ha sido activada. Gracias por registrarte.',
 									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link}',
-									'Tienes un nuevo comentario en tu perfil de {user}: {message} visita tu perfil: {link}',
-									'Has recibido un mensaje de {user}: {message}',
+									'Tienes un nuevo comentario en tu perfil de {username}: {message} visita tu perfil: {link}',
+									'Please translatore thisse hiere toh tha espagnola langsch {username}',
+									'Has recibido un mensaje de {username}: {message}',
 									'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
 									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa',
 									'Por favor, selecciona un tipo de Membresía',

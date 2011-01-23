@@ -31,7 +31,14 @@ class UserModule extends CWebModule {
 	public $enableProfileComments = true;
 	public $enableFriendship = true;
 	public $enableLogging = true;
+
+
 	public $enableOnlineStatus = true; 
+	
+	// After how much seconds without an action does a user gets indicated as 
+	// offline? Note that, of course, clicking the Logout button will indicate
+	// him as offline anyway.
+	public $offlineIndicationTime = 3600; // 5 Minutes
 
 	// Whether to confirm the activation of an user by email
 	public $enableActivationConfirmation = true; 
@@ -223,7 +230,9 @@ class UserModule extends CWebModule {
 	public $usernameRequirements=array(
 		'minLen'=>3,
 		'maxLen'=>30,
-		);
+		'match' => '/^[A-Za-z0-9_]+$/u',
+		'dontMatchMessage' => 'Incorrect symbol\'s. (A-z0-9)',
+	);
 
 	/**
 	 * Implements support for getting URLs, Tables and Views

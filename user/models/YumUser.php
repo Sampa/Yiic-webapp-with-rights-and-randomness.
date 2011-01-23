@@ -46,9 +46,11 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function isOnline() {
-		return $this->lastaction > time() - 5 * 60;
+		return $this->lastaction > time() - Yum::module()->offlineIndicationTime;
 	}
 
+	// If Online status is enabled, we need to set the timestamp of the
+  // last action when a user does something
 	public function setLastAction() {
 		$this->lastaction = time();
 		return $this->save();
@@ -60,6 +62,8 @@ class YumUser extends YumActiveRecord {
 			$this->save('lastaction');
 		}
 	}
+
+	// This function tries to generate a as human-readable password as possible
 	public static function generatePassword() { 
 		$consonants = array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z"); 
 		$vocals = array("a","e","i","o","u"); 
@@ -76,6 +80,7 @@ class YumUser extends YumActiveRecord {
 		return $password;
 	}
 
+	// Which memberships are bought by the user
 	public function getActiveMemberships() {
 		$roles = array();
 		foreach($this->memberships as $membership) {
@@ -142,18 +147,6 @@ class YumUser extends YumActiveRecord {
 		return parent::afterSave();
 	}
 
-	public function getAdministerableUsers() {
-		$users = array();
-		$users = $this->users;
-		foreach ($this->roles as $role) {
-			if ($role->roles)
-				foreach ($role->roles as $role)
-					$users = array_merge($this->users, $role->users);
-		}
-
-		return $users;
-	}
-
 	/**
 	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
 	 * Following algorith of searching valid table name is implemented:
@@ -189,8 +182,14 @@ class YumUser extends YumActiveRecord {
 						'{minLen}' => $usernameRequirements['minLen'],
 						'{maxLen}' => $usernameRequirements['maxLen'])));
 
-		$rules[] = array('username', 'unique', 'message' => Yum::t("This user's name already exists."));
-		$rules[] = array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => Yum::t('Incorrect symbol\'s. (A-z0-9)'));
+		$rules[] = array('username',
+				'unique',
+				'message' => Yum::t("This user's name already exists."));
+		$rules[] = array(
+				'username',
+				'match',
+				'pattern' => $usernameRequirements['match'],
+				'message' => Yum::t($usernameRequirements['dontMatchMessage'])); 
 		$rules[] = array('status', 'in', 'range' => array(0, 1, 2, 3, -1, -2));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
 		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
@@ -267,7 +266,7 @@ class YumUser extends YumActiveRecord {
 				//			'default_profile' => array(self::HAS_ONE, 'YumProfile', 'user_id', 'condition' => "profile_id = $this->default_profile"),
 				// And then we rename this one below to 'profiles'
 				'profile' => array(self::HAS_MANY, 'YumProfile', 'user_id', 'order' => 'profile.profile_id DESC'),
-				'profileComments' => array(self::HAS_MANY, 'YumProfileComment', 'user_id'),
+				'profileComments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
 				'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 				'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 				'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST

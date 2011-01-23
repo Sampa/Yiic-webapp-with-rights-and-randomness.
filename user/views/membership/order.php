@@ -1,45 +1,56 @@
-<h2> Paketbestellung </h2>
-<?php echo YumTextSettings::getText('text_membership_header'); ?>
+<?php $this->breadcrumbs = array('Mitgliedschaft');?>
 
-<br />
-<div class="form">
-<p class="note">
-Felder mit * sind Pflichtfelder
-</p>
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-'id'=>'membership-has-company-form',
-	'enableAjaxValidation'=>true,
-	)); 
-	echo $form->errorSummary($model);
-?>
+	<h2>Mitgliedschaft</h2>
+	
+	<div class="form">
+		<?php $form=$this->beginWidget('CActiveForm', array(
+		'id'=>'membership-has-company-form',
+			'enableAjaxValidation'=>true,
+			)); 
+			echo $form->errorSummary($model);
+		?>
 
 
-<div class="row">
-<?php echo $form->labelEx($model,'membership_id'); ?> <br />
-<?php echo CHtml::activeRadioButtonList($model, 'membership_id', 
-CHtml::listData(YumRole::model()->findAll('price != 0'), 'id', 'description'),
-array('template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'));
-?>
+		<div class="row">
+		
+			<?php echo CHtml::activeRadioButtonList($model, 'membership_id', 
+			CHtml::listData(YumRole::model()->findAll('price != 0'), 'id', 'description'),
+			array('template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'));
+			?>
+			<div class="clear"></div>
+		</div>
+		<br />
+		<div class="row">
+			<?php echo $form->labelEx($model,'payment_id'); ?> <br />
+			<?php echo CHtml::activeRadioButtonList($model, 'payment_id', 
+			CHtml::listData(YumPayment::model()->findAll(), 'id', 'title'),
+			array('template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'));
+			?>
+			<div class="clear"></div>
+		</div>
+		<?php echo $form->error($model,'membership_id'); ?>
 
-<br />
-
-<div class="row">
-<?php echo $form->labelEx($model,'payment_id'); ?> <br />
-<?php echo CHtml::activeRadioButtonList($model, 'payment_id', 
-CHtml::listData(YumPayment::model()->findAll(), 'id', 'title'),
-array('template' => '<div style="float:left;margin-right:5px;">{input}</div>{label}'));
-?>
-
-
-<?php echo $form->error($model,'membership_id'); ?>
-</div>
-
-<?php echo YumTextSettings::getText('text_membership_footer'); ?>
-<br />
-<?php
-echo CHtml::Button(Yum::t('Cancel'), array(
-			'submit' => array('membership/index'))); 
-echo CHtml::submitButton(Yum::t('Order membership'));
-$this->endWidget(); ?>
-</div> <!-- form -->
+	<?php
+		echo CHtml::submitButton(Yum::t('Order membership'));
+		
+	?>
+	</div> <!-- form -->
+	
+	<div style="padding:20px 60px 60px;">
+		<div class="more-info" id="more-information">mehr Informationen</div>
+		<div id="detail-information" style="display:none;">
+			<div class="membership-header"></div>
+			<div class="clear"></div>
+			<div class="membership-details"></div>
+			<div class="membership-content"></div>
+		</div>
+	</div>
+	<?php
+    Yii::app()->clientScript->registerScript('toggle', "
+		$('#detail-information').hide();	  
+		$('#more-information').click(function() {
+	   	$('#detail-information').fadeToggle('slow');
+	   });
+    ");
+    ?>
+	<?php $this->endWidget(); ?>

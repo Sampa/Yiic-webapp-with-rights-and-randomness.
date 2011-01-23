@@ -20,8 +20,7 @@ class YumFriendshipController extends YumController {
 						|| $friendship->friend_id == Yii::app()->user->id)
 					if(isset($_POST['YumFriendship']['add_request']))
 					{
-						$friendship->status = 2;
-						$friendship->save();
+						$friendship->acceptFriendship();
 					} elseif(isset($_POST['YumFriendship']['deny_request'])) {
 						$friendship->status = 3;
 						$friendship->save();
@@ -83,6 +82,7 @@ class YumFriendshipController extends YumController {
 	public function ActionConfirmFriendship($id,$key)
 	{
 		$friendship=YumFriendship::model()->findByPK($id);
+
 		if($friendship->friend_id == $key)
 		{
 			$friendship->acceptFriendship();

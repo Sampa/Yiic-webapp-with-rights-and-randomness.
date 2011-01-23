@@ -29,7 +29,8 @@ echo '<h2>' . Yum::t('Profile field public options') . '</h2>';
 echo '<p>' . Yum::t('Select the fields that should be public') . ':</p>';
 $i = 1;
 foreach(YumProfileField::model()->findAll() as $field) {
-	printf('<label class="profilefieldlabel" for="privacy_for_field_%d">%s</label>%s<br />',
+	printf('<label class="profilefieldlabel" 
+			for="privacy_for_field_%d">%s</label>%s<br />',
 			$i,
 			$field->title,
 			CHtml::checkBox("privacy_for_field_{$i}",
@@ -60,21 +61,7 @@ foreach(YumProfileField::model()->findAll() as $field) {
 <?php echo $form->error($model,'message_new_message'); ?>
 </div>
 
-
-
-<div class="row">
-<?php echo $form->labelEx($model,'message_new_profilecomment'); ?>
-<?php echo $form->dropDownList($model, 'message_new_profilecomment', array(
-			0 => Yum::t('No'),
-			1 => Yum::t('Yes'))); ?>
-<?php echo $form->error($model,'message_new_profilecomment'); ?>
-</div>
-
-
-	<?php if(Yum::module()->enableProfiles) { ?>
-
-<?php if(Yum::module()->enableProfileComments) { ?>
-	<div class="row">
+		<div class="row">
 	<?php 
 	echo CHtml::activeLabelEx($profile, 'allow_comments'); 
 	echo CHtml::activeDropDownList($profile, 'allow_comments',
@@ -85,9 +72,33 @@ foreach(YumProfileField::model()->findAll() as $field) {
 			);
 	?>
 	</div>
-<?php } ?>
 
-<?php } ?>
+
+	<?php if(Yum::module()->enableProfiles) { ?>
+
+		<?php if(Yum::module()->enableProfileComments) { ?>
+			<div class="row">
+				<?php echo $form->labelEx($model,'message_new_profilecomment'); ?>
+				<?php echo $form->dropDownList($model, 'message_new_profilecomment', array(
+							0 => Yum::t('No'),
+							1 => Yum::t('Yes'))); ?>
+				<?php echo $form->error($model,'message_new_profilecomment'); ?>
+				</div>
+
+				<div class="row">
+				<?php 
+				echo CHtml::activeLabelEx($profile, 'allow_comments'); 
+			echo CHtml::activeDropDownList($profile, 'allow_comments',
+					array(
+						'0' => Yum::t( 'No'),
+						'1' => Yum::t( 'Yes'),
+						)
+					);
+			?>
+				</div>
+				<?php } ?>
+
+				<?php } ?>
 
 <?php if(Yum::module()->enableFriendship) { ?>
 	<div class="row">
@@ -117,6 +128,21 @@ foreach(YumProfileField::model()->findAll() as $field) {
 	?>
 	</div>
 <?php } ?>
+
+<?php if(Yum::module()->enableProfiles) { ?>
+	<div class="row">
+	<?php 
+	echo CHtml::activeLabelEx($model, 'log_profile_visits'); 
+	echo CHtml::activeDropDownList($model, 'log_profile_visits',
+			array(
+				'0' => Yum::t( 'Do not show the owner of a profile when i visit him'),
+				'1' => Yum::t( 'Show the owner when i visit his profile'),
+				)
+			);
+	?>
+	</div>
+<?php } ?>
+
 <?php if(Yum::module()->enableRoles) { ?>
 	<div class="row">
 	<?php 

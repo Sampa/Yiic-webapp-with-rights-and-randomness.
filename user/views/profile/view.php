@@ -13,7 +13,6 @@ Yum::renderFlash();
 <?php 
 if($model->id == Yii::app()->user->id)
 	$this->renderPartial('/messages/new_messages');
-
 ?>
 
 <?php echo $model->getAvatar(); ?>

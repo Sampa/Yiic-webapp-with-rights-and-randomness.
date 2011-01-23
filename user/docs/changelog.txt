@@ -1,6 +1,11 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- Added 'visitors' to profiles (who visited whom when, and display it)
+- Added possibility to enable profile visit logs for an user in the privacy
+settings (thyseus)
+- Added YumUser::STATUS_ACTIVATED (thyseus) (activated but did not log in yet after
+actiation)
 - Added YumUser::STATUS_REMOVED (thyseus)
 - Added new membership system (thyseus)
 - Messages with CJuiDialog popup (thyseus)
@@ -13,8 +18,6 @@ New in 0.8:
 - Support for Facebook Connect (bigchirv)
 - New User activity logging subsystem (see YumActivityController) - logging of login, logout, wrong password attempt, recovery and registration into database and Yii log file
 - Added avatar upload possibility for users
-- Automatic image scaling of uploaded avatars using CImageModifier (thyseus)
-- Added 'visitors' to profiles (who visited whom when, and display it)
 - Added support for send emails out of SwiftMailer (docs/swiftMailer.txt)
 - Added DROPDOWNLIST field type to profile fields. see docs/dropdownlist_in_registration_form.txt for information on how to use this (thyseus)
 - Added possibility to make roles selectable on registration (thyseus)
@@ -22,8 +25,6 @@ New in 0.8:
 - New default URL route '<app>/user/login' instead of less beautiful '<app>/user/user/login' (thyseus)
 - Refactored Registration Process into YumRegistrationController (makes YumUserController less fussy) (thyseus)
 - Removed AllowInactiveAccountLogin (don't needed anymore because of the new registration Options) (thyseus)
-- Possibility to show administration hierarchy by HierarchyController (thyseus)
-- Prepared ROLE_has_ROLE to determine what users of which role can administrate user that have which Role (thyseus)
 - Added User Statistics (thyseus)
 - Removed adminpanel (thyseus)
 - added password expiration date (experimental) (thyseus)

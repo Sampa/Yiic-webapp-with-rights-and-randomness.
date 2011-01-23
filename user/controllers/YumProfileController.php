@@ -109,11 +109,17 @@ class YumProfileController extends YumController {
 	}
 
 	public function updateVisitor($visitor_id, $visited_id) {
+		// If the user does not want to log his profile visits, cancel here
+		if(isset(Yii::app()->user->data()->privacy) &&
+				!Yii::app()->user->data()->privacy->log_profile_visits)
+			return false;
+			
 		// Visiting my own profile doesn't count as visit
 		if($visitor_id == $visited_id)
 			return true;
 
-		$visit = YumProfileVisit::model()->find('visitor_id = :visitor_id and visited_id = :visited_id', array(
+		$visit = YumProfileVisit::model()->find(
+				'visitor_id = :visitor_id and visited_id = :visited_id', array(
 					':visitor_id' => $visitor_id,
 					':visited_id' => $visited_id));
 		if($visit) {

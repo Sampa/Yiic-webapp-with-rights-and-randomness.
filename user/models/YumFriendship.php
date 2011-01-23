@@ -49,7 +49,14 @@ class YumFriendship extends YumActiveRecord {
 	public function acceptFriendship() {
 		$this->acknowledgetime = time();
 		$this->status = 2;
-		return($this->save());
+		if(isset($this->inviter->privacy) 
+				&& $this->inviter->privacy->message_new_friendship) {
+			YumMessage::write($this->inviter, $this->invited,
+					Yum::t('Your friendship request has been accepted'),
+					YumTextSettings::getText('text_friendship_confirmed', array(
+							'{username}' => $this->inviter->username)));
+		}
+		return $this->save();
 	} 
 
 	public function getFriend() {
@@ -135,7 +142,8 @@ class YumFriendship extends YumActiveRecord {
 		if($user = YumUser::model()->findByPk($this->friend_id))  {
 			if($user->privacy && $user->privacy->message_new_friendship) {
 				YumMessage::write($user, $this->inviter,
-						Yum::t('New friendship request from {username}', array('{username}' => $this->inviter->username)),
+						Yum::t('New friendship request from {username}', array(
+								'{username}' => $this->inviter->username)),
 						YumTextSettings::getText('text_friendship_new', array(
 								'{username}' => $this->inviter->username,
 								'{link_friends}' => Yii::app()->controller->createUrl('//user/friendship/index'),

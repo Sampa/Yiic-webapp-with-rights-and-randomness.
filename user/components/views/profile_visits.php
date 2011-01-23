@@ -1,13 +1,18 @@
 <?php
-echo Yum::t('This users have visited your profile recently') . ': <br />';
+echo '<p>'. Yum::t('This users have visited your profile recently') . ': </p>';
 
 	if($visits) {
 		foreach($visits as $visit)
-			printf('<div style="float:left">%s %s</div>', 
+			printf('<div style="text-align:center; float:left; width:100px; padding-bottom:10px;">%s <br/> %s</div>', 
 					CHtml::link($visit->visitor->getAvatar(true), array(
 							'//user/profile/view', 'id' => $visit->visitor_id)),
-						CHtml::link($visit->visitor->username, array(
-								'//user/profile/view', 'id' => $visit->visitor_id)));
+							
+							
+						substr($visit->visitor->username,0,12)
+								
+								
+								
+								);
 					} else
 					echo Yum::t('Nobody has visited your profile yet');
 					?>
