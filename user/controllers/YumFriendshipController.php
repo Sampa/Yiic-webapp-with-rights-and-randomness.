@@ -1,6 +1,5 @@
 <?php
 class YumFriendshipController extends YumController {
-
 	// make sure that friendship is enabled in the configuration
 	public function beforeAction($action) {
 		if(!Yum::module()->enableFriendship) 

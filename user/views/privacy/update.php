@@ -1,11 +1,13 @@
 <?php
 $this->breadcrumbs=array(
 		Yum::t('Privacysettings')=>array('index'),
-		$model->user->username=>array('//user/user/view','id'=>$model->user_id),
+		$model->user->username=>array(
+			'//user/user/view','id'=>$model->user_id),
 		Yum::t( 'Update'),
 		);
 
-echo '<h2>' .  Yum::t('Privacy settings for {username}', array('{username}' => $model->user->username)) . '</h2>';
+$this->title = Yum::t('Privacy settings for {username}', array(
+			'{username}' => $model->user->username));
 
 ?>
 <div class="form">

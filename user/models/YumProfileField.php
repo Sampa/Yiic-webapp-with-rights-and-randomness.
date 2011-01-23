@@ -53,7 +53,7 @@ class YumProfileField extends YumActiveRecord
 		if($user == null)
 			$user = Yii::app()->user->id;
 
-		if($privacy= YumUser::model()->findByPk($user)->privacy) {
+		if($privacy = YumUser::model()->findByPk($user)->privacy) {
 			if($privacy->public_profile_fields & pow(2, $this->id))
 				return true;
 		}

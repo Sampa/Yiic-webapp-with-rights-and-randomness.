@@ -1,20 +1,5 @@
 <?php
 /**
- * This is the model class for table "{{profiles}}".
- *
- * The followings are the available columns in table '{{profiles}}':
- * @property integer $profile_id
- * @property integer $user_id
- * @property integer $timestamp
- * @property string $privacy
- * @property string $lastname  //FIXME: Shouldn't be mandatory field
- * @property string $firstname //FIXME: Shouldn't be mandatory field
- * @property string $email
- * @property string $about
- * @property string $street
- *
- * Relations:
- * @property YumUser $user
  */
 
 Yii::import('application.modules.user.components.Compare');
@@ -49,6 +34,21 @@ class YumProfile extends YumActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getPublicFields() {
+		$fields = array();
+
+		if($privacy = @YumUser::model()->findByPk($this->user_id)->privacy->public_profile_fields) {
+			$i = 1;
+			foreach(YumProfileField::model()->findAll() as $field) {
+				if($i & $privacy)
+					$fields[] = $field;
+				$i*=2;
+			}
+		}
+
+		return $fields;
 	}
 
 	/**

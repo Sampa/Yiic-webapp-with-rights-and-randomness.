@@ -69,6 +69,7 @@ class YumAdminMenu extends CPortlet {
 							)
 						),
 				array('label' => 'Misc', 'items' => array(
+							array('label' => 'Upload avatar for admin', 'url' => array('//user/avatar/editAvatar')),
 							array('label' => 'Change admin Password', 'url' => array('//user/user/changePassword')),
 							array('label' => 'Logout', 'url' => array('//user/user/logout')),
 							)

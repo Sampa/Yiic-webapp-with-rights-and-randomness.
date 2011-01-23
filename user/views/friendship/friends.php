@@ -1,5 +1,8 @@
 <?php
-if(isset($model->profile[0]) && $model->profile[0]->show_friends == 2) {
+if(!$profile = @$model->profile[0])
+	return false;
+
+if($profile->show_friends == 2) {
 	echo '<div id="friends">';
 		if(isset($model->friends)) {
 			echo ucwords($model->username . '\'s friends');
@@ -8,11 +11,13 @@ if(isset($model->profile[0]) && $model->profile[0]->show_friends == 2) {
 					<div class="friend">
 					<div class="avatar">
 					<?php
-					echo $model->getAvatar($friend, true);
+					echo $friend->getAvatar(true);
 				?>
 					<div class="username">
 					<?php 
-					echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile/view',array('id'=>$friend->id)));
+					echo CHtml::link(ucwords($friend->username),
+							Yii::app()->createUrl('user/profile/view',array(
+									'id'=>$friend->id)));
 				?>
 					</div>
 					</div>
@@ -20,7 +25,8 @@ if(isset($model->profile[0]) && $model->profile[0]->show_friends == 2) {
 					<?php
 			}
 		} else {
-			echo Yum::t('{username} has no friends yet', array('{username}' => $model->username)); 
+			echo Yum::t('{username} has no friends yet', array(
+						'{username}' => $model->username)); 
 		}
 echo '</div><!-- friends -->';
 }

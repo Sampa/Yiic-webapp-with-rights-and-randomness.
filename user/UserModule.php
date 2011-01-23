@@ -49,25 +49,14 @@ class UserModule extends CWebModule {
 	// Where to save the avatar images? (Yii::app()->baseUrl . $avatarPath)	
 	public $avatarPath = 'images';
 
-	// Use CImageModifier to scale uploaded avatar images to the specified
-	// size. If this is set to false, the image will be forced to be 
-	// between 50px and $avatarMaxWidth
-	public $avatarScaleImage = true;
-
 	// Maximum width of avatar in pixels. Correct aspect ratio should be set up
 	// by CImageModifier automatically
 	// Set to 0 to disable image size check
 	public $avatarMaxWidth = 200;
+	public $avatarThumbnailWidth = 50; // For display in user browse, friend list
 	public $avatarDisplayWidth = 200;
 
-	// Some default options for the CImageModifier
-	public $imageModifierOptions = array(
-			'upload_max_filesize' => 9999999, // 9,99 MB
-			'file_max_size' => 9999999, // 9,99 MB
-			'file_src_size' => 9999999, // 9,99 MB
-			);
-
-	public $password_expiration_time = 30;
+	public $password_expiration_time = 30; // days
 	public $activationPasswordSet = false;
 	public $autoLogin = false;
 	public $activateFromWeb = true;

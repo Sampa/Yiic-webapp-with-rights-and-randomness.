@@ -1,12 +1,14 @@
-<div id="profile">
-<h2> <?php echo CHtml::activeLabel($model,'username'); ?> </h2>
-<?php
+<?php 
+if(!$profile = @$model->profile[0])
+	return false;
+
 $this->pageTitle = Yii::app()->name . ' - ' . Yum::t('Profile');
+$this->title = CHtml::activeLabel($model,'username'); 
 $this->breadcrumbs = array(Yum::t('Profile'), $model->username);
-$this->title = Yum::t('Profile');
 Yum::renderFlash(); 
 ?>
 
+<div id="profile">
 
 <?php 
 if($model->id == Yii::app()->user->id)
@@ -15,7 +17,8 @@ if($model->id == Yii::app()->user->id)
 ?>
 
 <?php echo $model->getAvatar(); ?>
-<?php $this->renderPartial('/profile/public_fields', array('profile' => $model->profile[0])); ?>
+<?php $this->renderPartial('/profile/public_fields', array(
+			'profile' => $model->profile[0])); ?>
 <br />
 <?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> 
 <br /> 
