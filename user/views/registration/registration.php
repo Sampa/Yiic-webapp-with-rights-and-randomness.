@@ -1,35 +1,19 @@
 <?php 
-$this->pageTitle = Yii::app()->name . ' - '.Yii::t("user", "Registration");
-
-$this->title = Yii::t("UserModule.user", "Registration");
-
-$this->breadcrumbs = array(Yii::t("UserModule.user", "Registration"));
+$this->pageTitle = Yii::app()->name . ' - '.Yum::t( 'Registration');
+$this->title = Yum::t('Registration');
+$this->breadcrumbs = array(Yum::t('Registration'));
 ?>
 
-<?php if(Yii::app()->user->hasFlash('registration')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('registration'); ?>
-</div>
-<?php else: ?>
 
-<?php
-$settings = YumTextSettings::model()->find("language = :language", array(
-			':language' => Yii::app()->language));
-
-if($settings) 
-	printf('%s<br /><br />', $settings->text_registration_header);
-
-?>
-
+<?php Yum::renderFlash(); ?>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
-
-	<?php echo Yum::requiredFieldNote(); ?>
-	<?php echo CHtml::errorSummary($form); ?>
+<?php echo Yum::requiredFieldNote(); ?>
+<?php echo CHtml::errorSummary($form, $profile); ?>
 
 <?php
-if(Yii::app()->getModule('user')->enableRoles) {
+if(Yum::module()->enableRoles) {
 	$roles = YumRole::model()->selectable()->findAll();
 	if(count($roles) > 0) {
 		printf('<p>%s:</p>', Yum::t('Designation'));
@@ -45,13 +29,11 @@ if(Yii::app()->getModule('user')->enableRoles) {
 
 	<div class="row">
 <?php
-		if(Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME)
-		{
+		if(Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME) {
 			echo CHtml::activeLabelEx($form,'username');
 			echo CHtml::activeTextField($form,'username');
 		}
-		if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
-		{
+		if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) {
 			echo CHtml::activeLabelEx($profile,'email');
 			echo CHtml::activeTextField($form,'username');
 		}
@@ -95,7 +77,7 @@ if ($profileFields) {
 			{
 				$user=$tmp_profile->user;
 				if ($user !== null && $user->status == YumUser::STATUS_NOTACTIVE)
-					echo $this->renderPartial('/user/_resend_activation_partial', array('user'=>$user, 'form'=>$form));
+					echo $this->renderPartial('/user/_resend_activation_partial', array('user'=>$user, 'user'=>$user));
 			}
 		}
 		elseif ($field->field_type == "TEXT")
@@ -133,11 +115,6 @@ if ($profileFields) {
 	}
 }
 ?>
-<?php 
-
-if($registrationtype != YumRegistration::REG_NO_PASSWORD &&  $registrationtype != YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION)
-{
-	?>
 	<div class="row">
 	<?php echo CHtml::activeLabelEx($form,'password'); ?>
 	<?php echo CHtml::activePasswordField($form,'password'); ?>
@@ -147,30 +124,22 @@ if($registrationtype != YumRegistration::REG_NO_PASSWORD &&  $registrationtype !
 	<?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
 	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
 	</div>
-<?php 
-}
-?>
-	<?php if(extension_loaded('gd') && Yii::app()->getModule('user')->enableCaptcha): ?>
+
+	<?php if(extension_loaded('gd') && Yum::module()->enableCaptcha): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>
 		<div>
 		<?php $this->widget('CCaptcha'); ?>
 		<?php echo CHtml::activeTextField($form,'verifyCode'); ?>
 		</div>
-		<p class="hint"><?php echo Yii::t("UserModule.user","Please enter the letters as they are shown in the image above."); ?>
-		<br/><?php echo Yii::t("UserModule.user","Letters are not case-sensitive."); ?></p>
+		<p class="hint"><?php echo Yum::t('Please enter the letters as they are shown in the image above.'); ?>
+		<br/><?php echo Yum::t('Letters are not case-sensitive.'); ?></p>
 	</div>
 	<?php endif; ?>
 	
-<?php
-if($settings) 
-	printf('%s<br /><br />', $settings->text_registration_footer);
-?>
-
 	<div class="row submit">
-		<?php echo CHtml::submitButton(Yii::t("UserModule.user", "Registration")); ?>
+		<?php echo CHtml::submitButton(Yum::t('Registration')); ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->
-<?php endif; ?>

@@ -2,7 +2,8 @@
 /**
  * RegistrationForm class.
  * RegistrationForm is the data structure for keeping
- * user registration form data. It is used by the 'registration' action of 'YumUserController'.
+ * user registration form data. It is used by the 'registration' action of 
+ * 'YumUserController'.
  * @package Yum.models
  */
 class YumRegistrationForm extends YumUser {

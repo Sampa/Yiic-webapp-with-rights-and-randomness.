@@ -59,16 +59,15 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 	<div class="row">
 	<p class="hint">
 	<?php 
-if($module->registrationType != YumRegistration::REG_DISABLED)
+if($module->enableRegistration)
 	echo CHtml::link(Yum::t("Registration"), $this->module->registrationUrl);
-	if($module->registrationType != YumRegistration::REG_DISABLED 
-			&& $module->allowRecovery)
-	echo ' | ';
-if($module->allowRecovery)
-	echo CHtml::link(Yum::t("Lost password?"), $this->module->recoveryUrl);
-	?>
+	if($module->enableRecovery) {
+		echo ' | ';
+		echo CHtml::link(Yum::t("Lost password?"), $this->module->recoveryUrl);
+	}
+?>
 	</p>
-</div>
+	</div>
 
 <div class="row rememberMe">
 <?php echo CHtml::activeCheckBox($model,'rememberMe', array('style' => 'display: inline;')); ?>

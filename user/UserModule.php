@@ -22,9 +22,8 @@ class UserModule extends CWebModule {
 	//configuration related control vars
 	public $preserveProfiles = true;
 	public $useYiiCheckAccess = false;
-	public $registrationType = YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION;
-	public $allowRegistration =true;
-	public $allowRecovery = true;
+	public $enableRegistration = true;
+	public $enableRecovery = true;
 	public $enableRoles = true;
 	public $enableMembership = true;
 	public $enableProfiles = true;
@@ -106,7 +105,7 @@ class UserModule extends CWebModule {
 	public $dateTimeFormat = 'm-d-Y G:i:s';  //"d.m.Y H:i:s"
 
 	private $_urls=array(
-		'registration'=>array('//user/registration/'),
+		'registration'=>array('//user/registration/registration'),
 		'recovery'=>array('//user/registration/recovery'),
 		'login'=>array('//user/user'),
 		'return'=>array('//user/profile/view'),
@@ -122,10 +121,10 @@ class UserModule extends CWebModule {
 			'profileComment' => '/profileComment/_view',
 			'profileEdit' => '/profile/update',
 			'menu' => '/user/menu',
-			'registration' => '/user/registration',
+			'registration' => '/registration/registration',
 			'activate' => '/user/resend_activation',
 			'message' => '/user/message',
-			'recovery' => '/user/recovery',
+			'recovery' => '/registration/recovery',
 			'passwordForm' => '/user/_activation_passwordform',
 			'activationSuccess' => '/registration/activation_success',
 			'activationFailure' => '/registration/activation_failure',
