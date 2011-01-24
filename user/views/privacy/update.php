@@ -23,16 +23,16 @@ echo $form->errorSummary($model);
 ?>
 
 <?php if(Yum::module()->enableProfiles) { ?>
-<div class="row profile_field_selection">
-<?php
-echo '<h2>' . Yum::t('Profile field public options') . '</h2>';
-echo '<p>' . Yum::t('Select the fields that should be public') . ':</p>';
-$i = 1;
-foreach(YumProfileField::model()->findAll() as $field) {
-	printf('<label class="profilefieldlabel" 
+	<div class="row profile_field_selection">
+		<?php
+		echo '<h2>' . Yum::t('Profile field public options') . '</h2>';
+	echo '<p>' . Yum::t('Select the fields that should be public') . ':</p>';
+	$i = 1;
+	foreach(YumProfileField::model()->findAll() as $field) {
+		printf('<label class="profilefieldlabel" 
 			for="privacy_for_field_%d">%s</label>%s<br />',
 			$i,
-			$field->title,
+			Yum::t($field->title),
 			CHtml::checkBox("privacy_for_field_{$i}",
 				$model->public_profile_fields & $i)
 			);
@@ -61,29 +61,9 @@ foreach(YumProfileField::model()->findAll() as $field) {
 <?php echo $form->error($model,'message_new_message'); ?>
 </div>
 
-		<div class="row">
-	<?php 
-	echo CHtml::activeLabelEx($profile, 'allow_comments'); 
-	echo CHtml::activeDropDownList($profile, 'allow_comments',
-			array(
-				'0' => Yum::t( 'No'),
-				'1' => Yum::t( 'Yes'),
-				)
-			);
-	?>
-	</div>
-
-
 	<?php if(Yum::module()->enableProfiles) { ?>
 
 		<?php if(Yum::module()->enableProfileComments) { ?>
-			<div class="row">
-				<?php echo $form->labelEx($model,'message_new_profilecomment'); ?>
-				<?php echo $form->dropDownList($model, 'message_new_profilecomment', array(
-							0 => Yum::t('No'),
-							1 => Yum::t('Yes'))); ?>
-				<?php echo $form->error($model,'message_new_profilecomment'); ?>
-				</div>
 
 				<div class="row">
 				<?php 
@@ -96,6 +76,15 @@ foreach(YumProfileField::model()->findAll() as $field) {
 					);
 			?>
 				</div>
+
+			<div class="row message_new_profilecomment">
+				<?php echo $form->labelEx($model,'message_new_profilecomment'); ?>
+				<?php echo $form->dropDownList($model, 'message_new_profilecomment', array(
+							0 => Yum::t('No'),
+							1 => Yum::t('Yes'))); ?>
+				<?php echo $form->error($model,'message_new_profilecomment'); ?>
+				</div>
+
 				<?php } ?>
 
 				<?php } ?>
@@ -173,3 +162,17 @@ echo CHtml::Button(Yum::t( 'Cancel'), array(
 echo CHtml::submitButton(Yum::t('Save')); 
 $this->endWidget(); ?>
 </div> <!-- form -->
+
+
+<?php Yii::app()->clientScript->registerScript('profile_toggle', "
+	if($('#YumProfile_allow_comments').val() == '0')
+	$('.message_new_profilecomment').hide();
+
+	$('#YumProfile_allow_comments').change(function () {
+	if($(this).val() == '0')
+	$('.message_new_profilecomment').hide(500);
+	if($(this).val() == '1')
+	$('.message_new_profilecomment').show(500);
+});
+");
+?>

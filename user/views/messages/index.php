@@ -5,6 +5,8 @@ $this->breadcrumbs=array(
 	Yum::t('Messages')=>array('index'),
 	Yum::t('My inbox'));
 
+echo Yum::renderFlash();
+
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'yum-messages-grid',
 	'dataProvider' => $dataProvider,

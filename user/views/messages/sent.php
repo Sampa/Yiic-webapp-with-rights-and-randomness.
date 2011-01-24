@@ -19,18 +19,19 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
 		array(
 			'type' => 'raw',
+			'name' => Yum::t('title'),
+			'value' => 'CHtml::link($data->getTitle(), array("view", "id" => $data->id))',
+		),
+		array(
+			'type' => 'raw',
 			'name' => Yum::t('Sent at'),
 			'value' => '$data->getDate()',
 		),
 
-		array(
-			'type' => 'raw',
-			'name' => Yum::t('title'),
-			'value' => '$data->title',
-		),
+
 		array(
 			'class'=>'CButtonColumn',
-			'template' => '{view}{delete}',
+			'template' => '{view}',
 		),
 	),
 )); ?>

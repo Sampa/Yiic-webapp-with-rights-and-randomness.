@@ -76,8 +76,7 @@ class YumMessagesController extends YumController {
 									'{to}' => $model->to_user->username,
 									)));
 				}
-				$this->redirect(array(
-							'//user/profile/view', 'id' => $model->to_user_id));
+				$this->redirect(array('index'));
 			}
 		}
 

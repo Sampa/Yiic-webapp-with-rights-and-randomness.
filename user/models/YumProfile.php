@@ -26,6 +26,14 @@ class YumProfile extends YumActiveRecord
 						'class' => 'Compare')));
 	}
 
+	public function recentComments($count = 3) {
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'profile_id = ' .$this->profile_id;
+		$criteria->order = 'createtime DESC';
+		$criteria->limit = $count;
+		return YumProfileComment::model()->findAll($criteria);
+	}
+
 
 	/**
 	 * @param string $className

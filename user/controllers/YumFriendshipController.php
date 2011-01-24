@@ -51,14 +51,11 @@ class YumFriendshipController extends YumController {
 
 	} 
 
-	public function actionInvite() {
-		if(isset($_GET['user_id']))
-			$user_id = $_GET['user_id'];
-
+	public function actionInvite($user_id = null) {
 		if(isset($_POST['user_id']))
 			$user_id = $_POST['user_id'];
 
-		if(!isset($user_id))
+		if($user_id == null)
 			return false;
 
 		if(isset($_POST['message']) && isset($user_id)) {
@@ -66,9 +63,8 @@ class YumFriendshipController extends YumController {
 			if($friendship->requestFriendship(Yii::app()->user->id,
 						$_POST['user_id'],
 						$_POST['message'])) {
-				$this->render('success', array('friendship' => $friendship));
-
-				Yii::app()->end();
+				Yum::setFlash('The friendship request has been sent');
+				$this->redirect(array('//user/profile/view', 'id' => $user_id));
 			}
 		} 
 

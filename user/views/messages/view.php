@@ -16,9 +16,19 @@ echo ': ' . $model->title; ?>
 
 <hr />
 <?php
-if(Yii::app()->user->id != $model->from_user_id)
- echo CHtml::Button(Yum::t('Reply to message'), array(
-			'submit' => array(
-				'//user/messages/compose',
-				'to_user_id' => $model->from_user_id)));
+if(Yii::app()->user->id != $model->from_user_id) {
+	echo CHtml::link(Yum::t('Reply to message'), '', array(
+				'onclick' => "$('.reply').toggle(500)"));
+
+	echo '<div class="reply" style="display: none;">';
+	$reply = new YumMessage;
+
+	if(substr($model->title, 0, 3) != 'Re:')
+		$reply->title = 'Re: ' . $model->title;
+
+	$this->renderPartial('reply', array(
+				'to_user_id' => $model->from_user_id,
+				'model' => $reply));
+	echo '</div>';
+}
 ?>

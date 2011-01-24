@@ -168,6 +168,11 @@ class YumMessage extends YumActiveRecord
 		return date(Yii::app()->getModule('user')->dateTimeFormat, $this->timestamp);
 	}
 
+	public function beforeDelete() {
+		if($this->to_user_id != Yii::app()->user->id)
+			return false;
+		return parent::beforeDelete();
+	}
 
 	public function relations()
 	{

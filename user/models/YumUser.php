@@ -430,6 +430,7 @@ class YumUser extends YumActiveRecord {
 				'activationKey' => Yum::t("Activation key"),
 				'createtime' => Yum::t("Registration date"),
 				'lastvisit' => Yum::t("Last visit"),
+				'lastaction' => Yum::t("Online status"),
 				'superuser' => Yum::t("Superuser"),
 				'status' => Yum::t("Status"),
 				'avatar' => Yum::t("Avatar image"),

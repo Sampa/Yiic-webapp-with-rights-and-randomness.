@@ -1,6 +1,7 @@
 <?php
 
 return array(
+		'The friendship request has been sent' => 'Die Freundschaftsanfrage wurde gesendet',
 		'firstname' => 'Vorname',
 		'lastname' => 'Nachname',
 		'birthday' => 'Geburtstag',
@@ -66,7 +67,9 @@ return array(
 		'Manage text settings' => 'Texteinstellungen',
 		'Language' => 'Sprache',
 		'Receive a Email for new Friendship request' => 'E-Mail Benachrichtigung bei neuer Kontaktanfrage',
+		'Friends of {username}:' => 'Freunde von {username}:',
 		'Receive a Email when new Message arrives' => 'E-Mail Benachrichtigung bei neuer interner Nachricht',
+		'city' => 'Stadt',
 		'Receive a Email when a new profile comment was made' => 'E-Mail Benachrichtigung bei Profilkommentar',
 		'Text Registration Header' => 'Text im Registrierung-header',
 		'Text Registration Footer' => 'Text im Registrierung-footer',
@@ -113,7 +116,7 @@ return array(
 		'Confirmation pending' => 'Bestätigung ausstehend',
 		'Confirm' => 'Bestätigen',
 		'Ignore' => 'Ignorieren',
-		'Deny' => 'Abweisen',
+		'Deny' => 'Ablehnen',
 		'Back to my profile' => 'Zurück zu meinem Profil',
 		'Go to profile of {username}' => 'Zum Profil von {username}',
 		'Friendship' => 'Freundschaft',

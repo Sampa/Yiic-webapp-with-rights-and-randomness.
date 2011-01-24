@@ -5,7 +5,7 @@ $this->breadcrumbs = array(
 );
 
 $this->title = Yum::t('My memberships');
-
+echo Yum::renderFlash();
 ?>
 
 
