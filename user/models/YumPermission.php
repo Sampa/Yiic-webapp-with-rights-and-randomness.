@@ -30,7 +30,7 @@ class YumPermission extends YumActiveRecord {
 			'subordinate' => array(self::BELONGS_TO, 'YumUser', 'subordinate_id'),
 			'principal_role' => array(self::BELONGS_TO, 'YumRole', 'principal_id'),
 			'subordinate_role' => array(self::BELONGS_TO, 'YumRole', 'subordinate_id'),
-			'action' => array(self::BELONGS_TO, 'YumAction', 'action')
+			'Action' => array(self::BELONGS_TO, 'YumAction', 'action')
 		);
 	}
 

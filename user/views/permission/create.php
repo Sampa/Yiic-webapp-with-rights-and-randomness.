@@ -78,7 +78,7 @@
 		<?php echo $form->labelEx($model,'action'); ?>
 		<?php $this->widget('Relation', array(
 					'model' => $model,
-					'relation' => 'action',
+					'relation' => 'Action',
 					'fields' => 'title',
 					));?>
 		<?php echo $form->error($model,'action'); ?>

@@ -200,21 +200,19 @@ class Relation extends CWidget
 
 	public function init()
 	{
-		if(!is_object($this->model)) 
-		{
-			if(!$this->_model = new $this->model) 
+		if(!is_object($this->model)) {
+			if(!$this->_model = new $this->model) {
 				throw new CException(
 						Yii::t('yii','Relation widget is not able to instantiate the given Model'));
-		} 
-		else 
-		{
-			$this->_model = $this->model;
+			}
 		}
+		else 
+			$this->_model = $this->model;
 
 		// Instantiate Model and related Model
 		foreach($this->_model->relations() as $key => $value) 
 		{
-			if(strcmp($this->relation,$key) == 0) 
+			if(strcmp($this->relation, $key) == 0) 
 			{
 				// $key = Name of the Relation
 				// $value[0] = Type of the Relation
@@ -271,8 +269,8 @@ class Relation extends CWidget
 					}
 
 		/**
-		 * This function fetches all needed data of the related Object and returns them
-		 * in an array that is prepared for use in ListData.
+		 * This function fetches all needed data of the related Object and returns 
+		 * them in an array that is prepared for use in ListData.
 		 */
 		public function getRelatedData() 
 		{
@@ -390,10 +388,9 @@ class Relation extends CWidget
 		 */
 		public function getAssignedObjects() 
 		{
-			if(!$this->_model->{$this->_model->tableSchema->primaryKey})
-				return array();
+			if($this->_model->{$this->_model->tableSchema->primaryKey}) {
 
-			$sql = sprintf("select * from %s where %s = %s",
+			$sql = sprintf('select * from %s where %s = %s',
 					$this->manyManyTable,
 					$this->manyManyTableLeft,
 					$this->_model->{$this->_model->tableSchema->primaryKey});
@@ -404,9 +401,14 @@ class Relation extends CWidget
 				$id = $foreignObject[$this->manyManyTableRight];
 				$objects[$id] = $this->_relatedModel->findByPk($id); 
 			}
+			}
 
+			// also add assigned models that are not yet saved in the database
 			foreach($this->_model->{$this->relation} as $relobj) 
-				$objects[$relobj->id] = $relobj;
+				if(is_object($relobj))
+					$objects[$relobj->id] = $relobj;
+				else if(is_numeric($relobj))
+						$objects[$relobj] = $relobj;
 
 			return isset($objects) ? $objects : array();
 		}
@@ -559,7 +561,7 @@ class Relation extends CWidget
 ");
 
 			// before we render our dropdownlists, we need to gather <option> 
-			// parameters that // we pass over to CHtml::dropDownList 
+			// parameters that we pass over to CHtml::dropDownList 
 			$options = array();
 			$assigned = array();
 			foreach($relatedmodels as $key => $obj) { 

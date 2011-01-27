@@ -1,7 +1,8 @@
+<div class="form">
 <?php
 $this->title = Yum::t('Upload avatar');
 
-$this->breadcrumbs = array(Yum::t('Upload avatar'));
+$this->breadcrumbs = array(Yum::t('Profile'), Yum::t('Upload avatar'));
 
 if($model->avatar) {
 	echo Yum::t('Your Avatar image');
@@ -30,3 +31,5 @@ if(Yum::module()->avatarMaxWidth != 0)
 	echo CHtml::submitButton(Yum::t('Upload Avatar'));
 	echo CHtml::endForm();
 
+?>
+</div>

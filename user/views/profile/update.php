@@ -2,7 +2,7 @@
 $this->pageTitle = Yii::app()->name . ' - '.Yum::t( "Profile");
 $this->breadcrumbs=array(
 		Yum::t('Profile') => array('profile'),
-		Yum::t('Edit'));
+		Yum::t('Edit profile'));
 $this->title = Yum::t('Edit profile');
 ?>
 

@@ -341,21 +341,8 @@ class YumUser extends YumActiveRecord {
 		$this->createtime = time();
 		$this->superuser = 0;
 
-		switch (Yum::module()->registrationType) {
-			case YumRegistration::REG_SIMPLE:
-				$this->status = YumUser::STATUS_ACTIVE;
-				break;
-			case YumRegistration::REG_NO_PASSWORD:
-			case YumRegistration::REG_EMAIL_CONFIRMATION:
-			case YumRegistration::REG_CONFIRMATION_BY_ADMIN:
-				$this->status = YumUser::STATUS_NOTACTIVE;
-				break;
-			case YumRegistration::REG_NO_PASSWORD_ADMIN_CONFIRMATION:
-			case YumRegistration::REG_EMAIL_AND_ADMIN_CONFIRMATION:
-				// Users stay banned until they confirm their email address.
-				$this->status = YumUser::STATUS_BANNED;
-				break;
-		}
+		// Users stay banned until they confirm their email address.
+		$this->status = YumUser::STATUS_NOTACTIVE;
 
 		if(Yum::module()->enableRoles) 
 			$this->roles = YumRole::getAutoassignRoles(); 

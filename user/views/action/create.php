@@ -1,15 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'Actions'=>array('index'),
-	'Create',
+	Yum::t('Actions')=>array('index'),
+	Yum::t('Create'),
 );
 
-$this->menu=array(
-	array('label'=>'List Action', 'url'=>array('index')),
-	array('label'=>'Manage Action', 'url'=>array('admin')),
-);
 ?>
 
-<h1>Create Action</h1>
+<h1> <?php echo Yum::t('Create Action'); ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

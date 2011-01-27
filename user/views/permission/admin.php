@@ -1,7 +1,7 @@
 <?php
 $this->breadcrumbs=array(
-		'Permissions'=>array('index'),
-		'Manage',
+		Yum::t('Permissions')=>array('index'),
+		Yum::t('Manage'),
 		);
 
 ?>
@@ -26,10 +26,8 @@ $this->breadcrumbs=array(
 					'name' => 'principal',
 					'value' => '$data->type == "user" ? $data->principal : $data->principal_role->title'
 					),
-				array(
-					'name' => 'action',
-					'value' => '$data->action->title',
-					),
+				'Action.title',
+				'Action.comment',
 				)
 			)
 		); ?>

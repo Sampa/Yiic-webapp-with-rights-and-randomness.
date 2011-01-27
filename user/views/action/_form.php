@@ -3,9 +3,10 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'action-form',
 	'enableAjaxValidation'=>false,
-)); ?>
+)); 
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+echo Yum::requiredFieldNote();
+?>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -28,7 +29,9 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<?php echo CHtml::submitButton($model->isNewRecord 
+			? Yum::t('Create') 
+			: Yum::t('Save')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

@@ -10,7 +10,7 @@ $dataProvider = new CActiveDataProvider('YumProfileComment', array(
 			)
 		);
 
-$this->renderPartial('/profileComment/create', array(
+$this->renderPartial('YumModule.views.profileComment.create', array(
 			'comment' => new YumProfileComment,
 			'profile' => $model));
 

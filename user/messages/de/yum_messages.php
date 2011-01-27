@@ -1,5 +1,6 @@
 <?php
 return array(
+		'Compose' => 'Nachricht schreiben',
 		'Message from' => 'Nachricht von',
 		'Message' => 'Nachricht',
 		'Content' => 'Inhalt',

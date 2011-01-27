@@ -2,7 +2,7 @@
 if($messages) {
 	echo '<div class="success">';
 
-	echo Yii::t('UserModule.user', 'You have new messages!');
+	echo Yum::t('You have new messages!');
 
 	echo '<ul>';
 	foreach($messages as $message) {
