@@ -152,7 +152,7 @@ foreach(YumProfileField::model()->findAll() as $field) {
 			CHtml::checkBox("privacy_for_field_{$i}",
 				$model->public_profile_fields & $i),
 			$i,
-			$field->title
+			Yum::t($field->title)
 			
 			);
 	$i *= 2;
