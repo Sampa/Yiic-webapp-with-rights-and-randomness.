@@ -2,8 +2,8 @@
 $this->title = Yii::t('UserModule.user', 'Statistics');
 
 $this->breadcrumbs = array(
-    Yii::t("UserModule.user", 'Users') => array('index'),
-    Yii::t("UserModule.user", 'Statistics'));
+    Yum::t('Users') => array('index'),
+    Yum::t('Statistics'));
 
 $path = Yii::app()->getBasePath() . '/modules/user/views/statistics/statistics.css';
 $cssfile = Yii::app()->assetManager->publish($path);
@@ -12,8 +12,7 @@ $this->renderPartial('/messages/new_messages');
 
 if (Yum::module()->debug == true) {
     echo CHtml::openTag('div', array('style' => 'background-color: red;color:white;'));
-    echo Yii::t('UserModule.user',
-            'You are running the Yii User Management Module {version} in Debug Mode!',
+    echo Yum::t('You are running the Yii User Management Module {version} in Debug Mode!',
             array('{version}' => Yum::module()->version));
     echo CHtml::closeTag('div');
 }

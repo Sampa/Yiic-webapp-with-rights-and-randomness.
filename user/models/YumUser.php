@@ -230,9 +230,23 @@ class YumUser extends YumActiveRecord {
 		return $roles;
 	}
 
+	public function getPermissions() {
+		$roles = $this->roles;
+		$roles = array_merge($roles, $this->getActiveMemberships());
+
+		$permissions = array();
+		foreach($roles as $role) {
+			$sql = "select id, action.title from permission left join action on action.id = permission.action where type = 'role' and principal_id = {$role->id}";
+			foreach(Yii::app()->db->createCommand($sql)->query()->readAll() as $permission) 
+				$permissions[$permission['id']] = $permission['title'];
+		}
+
+		return $permissions;
+	}
+
 	public function can($action) {
-		foreach ($this->permissions as $permission)
-			if ($permission->action->title == $action)
+		foreach ($this->getPermissions() as $permission)
+			if ($permission == $action)
 				return true;
 
 		return false;
@@ -357,22 +371,19 @@ class YumUser extends YumActiveRecord {
 
 	/**
 	 * Activation of an user account. 
+	 * If everything is set properly, and the emails exists in the database,
+	 * and is associated with a correct user, and this user has the status 
+	 * NOTACTIVE and the given activationKey is identical to the one in the
+	 * database then generate a new Activation key to avoid double activation, 
+	 * set the status to ACTIVATED and save the data
 	 */
 	public function activate($email=null, $key=null) {
-		// If everything is set properly,
 		if ($email != null && $key != null) {
-			// and the emails exists in the database,
 			if($profile = YumProfile::model()->find("email = '{$email}'")) {
-				// and is associated with a correct user,
 				if($user = $profile->user) {	
-					// and this user has the status NOTACTIVE 
 					if ($user->status != self::STATUS_NOTACTIVE)
 						return false;
-					// and the given activationKey is identical to the one in the
-					// database
 					if ($user->activationKey == $key) {
-						// then generate a new Activation key to avoid double activation, 
-						// set the status to ACTIVATED and save the data
 						$user->activationKey = $user->generateActivationKey(true);
 						$user->status = self::STATUS_ACTIVATED;
 						if($user->save(false, array('activationKey', 'status'))) {

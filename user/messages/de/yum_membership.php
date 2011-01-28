@@ -1,5 +1,9 @@
 <?php
 return array(
+	'Set payment date to today' => 'Zahlungseingang bestätigen',
+	'Ordered at' => 'Bestellt am',
+	'Ends at' => 'Endet am',
+	'Payment date' => 'Bezahlt am',
 	'Price' => 'Preis',
 	'Order number' => 'Bestellnummer',
 	'Order membership' => 'Mitgliedschaft bestellen',

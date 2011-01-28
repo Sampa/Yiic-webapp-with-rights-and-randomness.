@@ -128,7 +128,8 @@ class UserModule extends CWebModule {
 			'passwordForm' => '/user/_activation_passwordform',
 			'activationSuccess' => '/registration/activation_success',
 			'activationFailure' => '/registration/activation_failure',
-			'recoveryChangePassword' =>'/user/changepassword');
+			'recoveryChangePassword' =>'/user/changepassword',
+			'membershipExpired' =>'/membership/membership_expired');
 
 	// Activate profile History (profiles are kept always, and when the
   // user changes his profile, it gets added to the database rather than

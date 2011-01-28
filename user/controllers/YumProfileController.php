@@ -90,23 +90,22 @@ class YumProfileController extends YumController {
 		return parent::beforeAction($action);
 	}
 
-	public function actionView() {
-		if(!isset($_GET['id']))
-			$_GET['id'] = Yii::app()->user->id;
+	public function actionView($id = null) {
+		if(!$id)
+			$id = Yii::app()->user->id;
 
 		if(!Yum::module()->profilesViewableByGuests)
 			if(Yii::app()->user->isGuest)
 				throw new CHttpException(403);
 
-		$this->layout = Yum::module()->profileLayout;
 		$view = Yum::module()->profileView;
 
-		$model = YumUser::model()->findByPk($_GET['id']);
+		$model = YumUser::model()->findByPk($id);
 
 		$this->render($view, array(
 					'model' => $model));
 
-		$this->updateVisitor(Yii::app()->user->id, $model->id);
+		$this->updateVisitor(Yii::app()->user->id, $id);
 	}
 
 	public function updateVisitor($visitor_id, $visited_id) {

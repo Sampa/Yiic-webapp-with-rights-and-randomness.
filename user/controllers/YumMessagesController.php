@@ -52,6 +52,11 @@ class YumMessagesController extends YumController {
 	}
 
 	public function actionCompose() {
+		if(!Yii::app()->user->isAdmin() 
+				&& !Yii::app()->user->data()->can('writeMessages')) {
+			$this->render(Yum::module()->membershipExpiredView);
+			Yii::app()->end();
+		}
 		$model = new YumMessage;
 
 		$this->performAjaxValidation($model, 'yum-messages-form');

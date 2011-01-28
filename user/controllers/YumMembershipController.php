@@ -4,6 +4,10 @@ class YumMembershipController extends YumController {
 	public function accessRules() {
 		return array(
 				array('allow', 
+					'actions'=>array('activate'),
+					'users'=>array('*'),
+					),
+				array('allow', 
 					'actions'=>array('index', 'order'),
 					'users'=>array('@'),
 					),
