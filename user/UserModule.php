@@ -25,11 +25,13 @@ class UserModule extends CWebModule {
 	public $enableRegistration = true;
 	public $enableRecovery = true;
 	public $enableRoles = true;
-	public $enableMembership = true;
 	public $enableProfiles = true;
 	public $enableProfileComments = true;
 	public $enableFriendship = true;
 	public $enableLogging = true;
+
+	public $enableMembership = true;
+	public $sendMembershipConfirmationMail = true;
 
 
 	public $enableOnlineStatus = true; 
@@ -129,6 +131,7 @@ class UserModule extends CWebModule {
 			'activationSuccess' => '/registration/activation_success',
 			'activationFailure' => '/registration/activation_failure',
 			'recoveryChangePassword' =>'/user/changepassword',
+			'messageCompose' =>'application.modules.user.views.messages.compose',
 			'membershipExpired' =>'/membership/membership_expired');
 
 	// Activate profile History (profiles are kept always, and when the

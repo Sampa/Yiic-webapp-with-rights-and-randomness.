@@ -1,24 +1,15 @@
 <?php
 if(Yum::module()->messageSystem != YumMessage::MSG_NONE && $model->id != Yii::app()->user->id) {
 
-	$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-				'id'=>'message',
-				'options'=>array(
-					'width' => '600px',
-					'model' => true,
-					'title'=> Yum::t('Write a message to {username}', array(
-							'{username}' => $model->username)),
-					'autoOpen'=>false,
-					),
-				));
+echo '<div style="display: none;" id="write_a_message">';
 
-	$this->renderPartial('/messages/compose', array(
+	$this->renderPartial(Yum::module()->messageComposeView, array(
 				'model' => new YumMessage,
 				'to_user_id' => $model->id), false, true);
 
-	$this->endWidget('zii.widgets.jui.CJuiDialog');
+echo '</div>';
 
-	echo CHtml::link(Yum::t('Write a message to this User'), '#',
-			array('onclick'=>'$("#message").dialog("open"); return false;'));
+	echo CHtml::link(Yum::t('Write a message to this User'), '',
+			array('onclick'=>"$('#write_a_message').toggle(500);"));
 }
 ?>

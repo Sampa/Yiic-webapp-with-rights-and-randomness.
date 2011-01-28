@@ -59,28 +59,17 @@ class YumMessagesController extends YumController {
 		}
 		$model = new YumMessage;
 
-		$this->performAjaxValidation($model, 'yum-messages-form');
-
 		if(isset($_POST['YumMessage'])) {			
 			$model = new YumMessage;
 			$model->attributes=$_POST['YumMessage'];
 			$model->from_user_id = Yii::app()->user->id;
 
-			if($model->validate() && isset($_POST['YumMessage']['to_user_id'])) {
-				if(!is_array($_POST['YumMessage']['to_user_id']))
-					$_POST['YumMessage']['to_user_id'] = array($_POST['YumMessage']['to_user_id'][0]);
+			if($model->save()) {
+				Yum::setFlash(Yum::t('Message "{message}" has been sent to {to}', array(
+								'{message}' => $model->title,
+								'{to}' => YumUser::model()->findByPk($model->to_user_id)->username
+								)));
 
-				foreach($_POST['YumMessage']['to_user_id'] as $user_id) {
-					$model = new YumMessage;
-					$model->attributes = $_POST['YumMessage'];
-					$model->from_user_id = Yii::app()->user->id;
-					$model->to_user_id = $user_id;
-					$model->save();
-					Yum::setFlash(Yum::t('Message "{message}" has been sent to {to}', array(
-									'{message}' => $model->title,
-									'{to}' => $model->to_user->username,
-									)));
-				}
 				$this->redirect(array('index'));
 			}
 		}

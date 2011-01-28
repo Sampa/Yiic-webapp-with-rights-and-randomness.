@@ -1,6 +1,7 @@
 <?php
 
 return array(
+		'Only your friends are shown here' => 'Nur ihre Freunde werden hier angezeigt',
 		'The friendship request has been sent' => 'Die Freundschaftsanfrage wurde gesendet',
 		'firstname' => 'Vorname',
 		'lastname' => 'Nachname',

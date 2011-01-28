@@ -52,16 +52,19 @@ class YumMessage extends YumActiveRecord
 
 	public function beforeSave() {
 		$this->timestamp = time();
+		return parent::beforeSave();	
+	}
 
+	public function afterSave() {
 		// If the user has activated email receiving, send a email
-		if($this->isNewRecord)
+		if(!$this->isNewRecord)
 			if($this->to_user->privacy && $this->to_user->privacy->message_new_message)
 				YumMailer::send($this->to_user->profile->email,
 						$this->title,
 						YumTextSettings::getText('text_message_new', array(
 								'{user}' => $this->from_user->username,
 								'{message}' => $this->message)));
-		return parent::beforeSave();
+		return parent::afterSave();
 	}
 
 	public static function write($to, $from, $subject, $body, $mail = true) {
@@ -161,6 +164,15 @@ class YumMessage extends YumActiveRecord
 				'answered' => array(
 					'condition' => "to_user_id = {$id} and answered = 1"),
 				);
+	}
+
+	public function limit($limit=10)
+	{
+		$this->getDbCriteria()->mergeWith(array(
+					'order'=>'timestamp DESC',
+					'limit'=>$limit,
+					));
+		return $this;
 	}
 
 	public function getDate()

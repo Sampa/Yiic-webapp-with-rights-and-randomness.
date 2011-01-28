@@ -24,7 +24,7 @@ class YumMembership extends YumActiveRecord{
 	}
 
 	public function afterSave() {
-		if($this->isNewRecord)
+		if($this->isNewRecord && Yum::module()->sendMembershipConfirmationMail)
 			YumMessage::write($this->user, 1,
 					Yum::t('Order confirmed'),
 					YumTextSettings::getText('text_membership_ordered', array(

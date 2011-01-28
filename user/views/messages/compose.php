@@ -16,13 +16,14 @@ $this->breadcrumbs = array(Yum::t('Messages'), Yum::t('Compose'));
 echo $form->errorSummary($model); 
 
 if($to_user_id) {
-	echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
+	echo CHtml::hiddenField('YumMessage[to_user_id]', $to_user_id);
 	echo Yum::t('This message will be sent to {username}', array(
 				'{username}' => YumUser::model()->findByPk($to_user_id)->username));
 } else {
 	echo $form->label($model, 'to_user_id');
 	echo $form->dropDownList($model, 'to_user_id', 
 			CHtml::listData(Yii::app()->user->data()->getFriends(), 'id', 'username'));
+	echo '<div class="hint">'.Yum::t('Only your friends are shown here').'</div>';
 
 }
 ?>
@@ -40,17 +41,9 @@ if($to_user_id) {
 
 <div class="row buttons">
 
-<?php 
-if(Yii::app()->request->isAjaxRequest) {
-	echo CHtml::ajaxSubmitButton($model->isNewRecord 
-			? Yum::t('Send') 
-			: Yum::t('Save'), array('//user/messages/compose'), array(
-		'update' => '#message' )); 
-} else {
-	echo CHtml::submitButton($model->isNewRecord 
+<?php echo CHtml::submitButton($model->isNewRecord 
 			? Yum::t('Send') 
 			: Yum::t('Save'));
-}
 ?>
 
 </div>

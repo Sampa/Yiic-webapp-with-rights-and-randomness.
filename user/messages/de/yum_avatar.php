@@ -1,5 +1,6 @@
 <?php
 return array(
+		'The image was uploaded successfully' => 'Das Bild wurde erfolgreich hochgeladen',
 		'Your Avatar image' => 'Ihr Avatar-Bild',
 		'Avatar image' => 'Profilbild',
 		'Remove Avatar' => 'Profilbild entfernen',

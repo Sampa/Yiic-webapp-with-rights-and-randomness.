@@ -8,7 +8,6 @@ $form=$this->beginWidget('CActiveForm', array(
 			'enableAjaxValidation'=>false,
 			)); 
 
-			
 if($friends) {
 	
 	echo '<div class="view-light">';
