@@ -2,7 +2,7 @@
 $this->breadcrumbs=array(
 		Yum::t('Privacysettings')=>array('index'),
 		$model->user->username=>array(
-			'/profile/view','id'=>$model->user_id),
+			'//user/user/view','id'=>$model->user_id),
 		Yum::t( 'Update'),
 		);
 
@@ -21,7 +21,6 @@ $this->title = Yum::t('Privacy settings for {username}', array(
 			)); 
 echo $form->errorSummary($model);
 ?>
-
 
 <div class="row">
 <?php echo $form->labelEx($model,'message_new_friendship'); ?>
@@ -153,10 +152,11 @@ foreach(YumProfileField::model()->findAll() as $field) {
 			CHtml::checkBox("privacy_for_field_{$i}",
 				$model->public_profile_fields & $i),
 			$i,
-			Yum::t($field->title) 
+			$field->title
+			
 			);
 	$i *= 2;
-
+	
 	if ($counter%4==0) echo '</div><div class="float-left" style="width: 175px;">';
 }
 if ($counter%4!=0) echo '</div>';

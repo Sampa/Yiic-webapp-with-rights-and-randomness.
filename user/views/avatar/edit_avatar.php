@@ -5,8 +5,9 @@ $this->title = Yum::t('Upload avatar');
 $this->breadcrumbs = array(Yum::t('Profile'), Yum::t('Upload avatar'));
 
 if($model->avatar) {
+	echo '<h2>';
 	echo Yum::t('Your Avatar image');
-	echo '<br />';
+	echo '</h2>';
 	echo $model->getAvatar();
 }
 else

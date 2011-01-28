@@ -1,13 +1,13 @@
 <?php
 if($comments) {
-	echo Yum::t('This users have commented your profile recently') . '<br />';
+	echo '<p><strong>'.Yum::t('This users have commented your profile recently') . '</strong></p>';
 	foreach($comments as $comment) {
-			printf('<div style="float:left;margin: 0px 10px;">%s %s</div>', 
+			printf('<div style="text-align:center;width: 50px;float:left;margin: 0px 10px 10px 0;">%s %s</div>', 
 					CHtml::link($comment->user->getAvatar(true), array(
 							'//user/profile/view', 'id' => $comment->user_id)),
 					CHtml::link($comment->user->username, array(
 							'//user/profile/view', 'id' => $comment->user_id)));
-			printf('<div style="float:left;width:200px;">%s </div>', 
+			printf('<div style="float:left;width:250px; margin-bottom:10px;">%s </div>', 
 						substr($comment->comment, 0, 100));
 	echo '<div style="clear: both;"></div>';
 

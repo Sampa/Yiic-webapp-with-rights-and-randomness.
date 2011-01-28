@@ -8,6 +8,9 @@ $form=$this->beginWidget('CActiveForm', array(
 			'enableAjaxValidation'=>false,
 			)); 
 
+			
+echo '<h2>Meine Kontakte</h2>';
+
 if($friends) {
 	
 	echo '<div class="view-light">';
@@ -26,8 +29,8 @@ if($friends) {
 			} else {
 				$options = CHtml::submitButton(Yum::t('Confirm'), array(
 							'id'=>'add_request','name'=>'YumFriendship[add_request]'));
-//				$options .= CHtml::submitButton(Yum::t('Ignore'), array(
-//							'id'=>'ignore_request','name'=>'YumFriendship[ignore_request]'));
+				$options .= CHtml::submitButton(Yum::t('Ignore'), array(
+							'id'=>'ignore_request','name'=>'YumFriendship[ignore_request]'));
 				$options .= CHtml::submitButton(Yum::t('Deny'), array(
 							'id'=>'deny_request','name'=>'YumFriendship[deny_request]'));
 			}
