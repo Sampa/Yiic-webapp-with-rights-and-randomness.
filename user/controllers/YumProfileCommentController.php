@@ -46,7 +46,7 @@ class YumProfileCommentController extends YumController
 		if($comment->user_id == Yii::app()->user->id
 				|| $comment->profile_id == Yii::app()->user->id) {
 			$comment->delete();
-			$this->redirect(array('//user/profile/view', 'id' => $comment->profile_id));
+			$this->redirect(array(Yum::module()->profileView, 'id' => $comment->profile->user_id));
 		} else
 			throw new CHttpException(400,
 					Yum::t('You are not the owner of this Comment or this Profile!'));

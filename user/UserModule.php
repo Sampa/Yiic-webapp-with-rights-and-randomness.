@@ -7,7 +7,7 @@ Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
 class UserModule extends CWebModule {
-	public $version = '0.8';
+	public $version = '0.8-svn';
 	public $debug = false;
 
 	// database related control vars
@@ -19,6 +19,7 @@ class UserModule extends CWebModule {
 	public $loginLayout = 'yum';
 	public $adminLayout = 'yum';
 	public $profileLayout = 'yumprofile';
+
 	//configuration related control vars
 	public $preserveProfiles = true;
 	public $useYiiCheckAccess = false;

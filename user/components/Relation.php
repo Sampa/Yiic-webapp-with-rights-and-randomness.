@@ -540,8 +540,9 @@ class Relation extends CWidget
 					Yii::getPathOfAlias('zii.widgets.assets.gridview').'/delete.png'));
 
 			Yii::app()->clientScript->registerScript('relation', "
-		$('#".$this->getListBoxId()."').change(function() {
+		$('#".$this->getListBoxId()."').bind('change', function() {
 			id = $(this).val();
+			if(id != 0) {
 			option = $('.option_' + id);
 
 			selection = '<li id=\"option_'+id+'\">' + option.html() + '</li>';
@@ -555,6 +556,7 @@ class Relation extends CWidget
 			$('#selected').append(selection);
 			$('#selected').append(clear);
 			option.remove();
+}
 
 });
 

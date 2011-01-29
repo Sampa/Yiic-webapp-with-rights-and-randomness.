@@ -52,7 +52,7 @@ class YumProfile extends YumActiveRecord
 		if($privacy = @YumUser::model()->findByPk($this->user_id)->privacy->public_profile_fields) {
 			$i = 1;
 			foreach(YumProfileField::model()->findAll() as $field) {
-				if($i & $privacy)
+				if($i & $privacy && $field->visible != 0)
 					$fields[] = $field;
 				$i*=2;
 			}
@@ -113,7 +113,7 @@ class YumProfile extends YumActiveRecord
 						'min' => $field->field_size_min);
 
 				if ($field->error_message)
-					$field_rule['message'] = Yii::t("UserModule.user", $field->error_message);
+					$field_rule['message'] = Yum::t($field->error_message);
 				array_push($rules,$field_rule);
 			}
 
@@ -218,7 +218,7 @@ class YumProfile extends YumActiveRecord
 		);
 
 		foreach (self::$fields as $field)
-			$labels[$field->varname] = Yii::t("UserModule.user", $field->title);
+			$labels[$field->varname] = Yum::t($field->title);
 
 		return $labels;
 	}

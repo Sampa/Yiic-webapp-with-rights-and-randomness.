@@ -8,7 +8,7 @@ class YumAvatarController extends YumController {
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
 		$model->avatar = '';
 		$model->save();
-		$this->redirect(array('user/profile'));	
+		$this->redirect(array('user/profile/view', 'id' => $model->id));	
 	}
 
 	public function beforeAction($action) {

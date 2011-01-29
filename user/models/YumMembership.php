@@ -9,6 +9,12 @@ class YumMembership extends YumActiveRecord{
 		return 'membership';
 	}
 
+	public function activate() {
+		$this->end_date = time() + ($this->role->duration * 365 * 60 * 60);
+		$this->payment_date = time();
+		$this->save();
+	}
+
 	public function daysLeft() {
 		$difference = $this->end_date - time();
 		return sprintf('%d', (int) $difference / 86400 + 1);
