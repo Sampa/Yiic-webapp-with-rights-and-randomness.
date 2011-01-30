@@ -1,6 +1,7 @@
 <?php
 
 return array(
+		'Your friendship request has been accepted' => 'Ihre Kontaktanfrage wurde akzeptiert.',
 		'City' => 'Stadt',
 		'Only your friends are shown here' => 'Nur ihre Kontakte werden hier angezeigt',
 		'The friendship request has been sent' => 'Die Kontaktanfrage wurde gesendet',

@@ -74,7 +74,6 @@ echo $form->errorSummary($model);
 	echo CHtml::activeDropDownList($profile, 'show_friends',
 			array(
 				'0' => Yum::t( 'do not make my friends public'),
-				'1' => Yum::t( 'only to my friends'),
 				'2' => Yum::t( 'make my friends public'),
 				)
 			);

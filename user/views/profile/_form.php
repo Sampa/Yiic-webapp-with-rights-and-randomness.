@@ -10,7 +10,7 @@ foreach($profile->loadProfileFields() as $field) {
 	if($field->hint)
 		echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
 
-	echo CHtml::activeLabelEx($profile, Yum::t($field->varname));
+	echo CHtml::activeLabelEx($profile, $field->varname);
 	if ($field->field_type=="TEXT") {
 		echo CHtml::activeTextArea($profile,
 				$field->varname,

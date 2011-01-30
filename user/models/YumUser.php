@@ -192,7 +192,7 @@ class YumUser extends YumActiveRecord {
 				'message' => Yum::t($usernameRequirements['dontMatchMessage'])); 
 		$rules[] = array('status', 'in', 'range' => array(0, 1, 2, 3, -1, -2));
 		$rules[] = array('superuser', 'in', 'range' => array(0, 1));
-		$rules[] = array('createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
+		$rules[] = array('username, createtime, lastvisit, lastpasswordchange, superuser, status', 'required');
 		$rules[] = array('notifyType, avatar', 'safe');
 		$rules[] = array('password', 'required', 'on' => array('insert'));
 		$rules[] = array('createtime, lastvisit, lastaction, superuser, status', 'numerical', 'integerOnly' => true);
