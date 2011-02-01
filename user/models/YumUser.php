@@ -56,6 +56,12 @@ class YumUser extends YumActiveRecord {
 		return $this->save();
 	}
 
+	public function getLogins() {
+		$sql = "select count(*) from activities where user_id = {$this->id} and action = 'login'";
+		$result = Yii::app()->db->createCommand($sql)->queryAll();
+		return $result[0]['count(*)'];
+	}
+
 	public function logout() {
 		if(Yum::module()->enableOnlineStatus && !Yii::app()->user->isGuest) {
 			$this->lastaction = 0;
@@ -275,7 +281,9 @@ class YumUser extends YumActiveRecord {
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
 				'messages' => array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.id DESC'),
+				'sent_messages' => array(self::HAS_MANY, 'YumMessage', 'from_user_id'),
 				'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id'),
+				'visited' => array(self::HAS_MANY, 'YumProfileVisit', 'visitor_id'),
 				'profile' => array(self::HAS_ONE, 'YumProfile', 'user_id' ),
 				'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 				'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
@@ -512,7 +520,7 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function getAvatar($thumb = false) {
-		if (Yum::module()->enableAvatar) {
+		if (Yum::module()->enableAvatar && $this->profile) {
 			$return = '<div class="avatar">';
 
 			$options = array();

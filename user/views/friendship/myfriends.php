@@ -2,15 +2,12 @@
 $this->title = Yum::t('My friends');
 $this->breadcrumbs = array(Yum::t('Friends'));
 
-
 $form=$this->beginWidget('CActiveForm', array(
 			'id'=>'groups-form',
 			'enableAjaxValidation'=>false,
 			)); 
 
 			
-echo '<h2>Meine Kontakte</h2>';
-
 if($friends) {
 	
 	echo '<div class="view-light">';

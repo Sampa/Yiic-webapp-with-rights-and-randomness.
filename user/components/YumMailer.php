@@ -10,7 +10,7 @@
  * @return true if sends mail, false otherwise
  */
 class YumMailer {
-	static public function send($to, $subject = null, $body = null) {
+	static public function send($to, $subject = null, $body = null, $header = null) {
 		if($to instanceof YumUser)
 			$to = $to->profile->email;
 
@@ -68,9 +68,12 @@ class YumMailer {
 			$mailer->Body = $to['body'];
 			return $mailer->Send();
 		} else {
-			$header  = 'MIME-Version: 1.0' . "\r\n";
+			if($header == null) {
+				$header  = 'MIME-Version: 1.0' . "\r\n";
 			$header .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+			$header .= 'From: ' . Yum::module()->registrationEmail . "\r\n";
 			$header .= 'To: ' . $to['to'] . "\r\n";
+}
 			return mail($to['to'], $to['subject'], $to['body'], $header);
 		}
 	}

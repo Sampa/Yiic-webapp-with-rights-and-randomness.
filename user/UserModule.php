@@ -123,6 +123,7 @@ class UserModule extends CWebModule {
 			'profile' => '/profile/view',
 			'profileComment' => '/profileComment/_view',
 			'profileEdit' => '/profile/update',
+			'privacysetting' => '/privacy/update',
 			'menu' => '/user/menu',
 			'registration' => '/registration/registration',
 			'activate' => '/user/resend_activation',

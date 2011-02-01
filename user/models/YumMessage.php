@@ -36,17 +36,11 @@ class YumMessage extends YumActiveRecord
 	}
 
 	public function beforeValidate() {
-		$users = $this->to_user_id;
-		if(!is_array($users)) 
-			$users = array($this->to_user_id);
-
-		foreach($users as $to_user_id) {
-			$to_user = YumUser::model()->findByPk($to_user_id);
+			$to_user = YumUser::model()->findByPk($this->to_user_id);
 			if($to_user && isset($to_user->privacy)) {
 				if(in_array($this->from_user->username, $to_user->privacy->getIgnoredUsers()))
 					$this->addError('to_user_id', Yum::t('One of the recipients ({username}) has ignored you. Message will not be sent!', array('{username}' => $to_user->username)));
 			}
-		}
 		return parent::beforeValidate();
 	}
 

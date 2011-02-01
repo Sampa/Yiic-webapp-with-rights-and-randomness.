@@ -60,8 +60,7 @@ class YumMessagesController extends YumController {
 		$model = new YumMessage;
 
 		if(isset($_POST['YumMessage'])) {			
-			$model = new YumMessage;
-			$model->attributes=$_POST['YumMessage'];
+			$model->attributes = $_POST['YumMessage'];
 			$model->from_user_id = Yii::app()->user->id;
 
 			if($model->save()) {
@@ -94,6 +93,9 @@ class YumMessagesController extends YumController {
 	{
 		$this->render('index',array(
 					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
+							'pagination' => array(
+								'pageSize' => 20,
+								),
 							'criteria' => array(
 								'order' => 'timestamp DESC',
 								'condition' => 'to_user_id = '. Yii::app()->user->id)))));
@@ -103,6 +105,10 @@ class YumMessagesController extends YumController {
 	{
 		$this->render('sent',array(
 					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
+							'pagination' => array(
+								'pageSize' => 20,
+								),
+
 							'criteria' => array(
 								'condition' => 'from_user_id = '. Yii::app()->user->id)))));
 	}

@@ -1,5 +1,6 @@
 <?php
 
+Yii::import('application.modules.user.controllers.YumController');
 class YumUserController extends YumController {
 	public $defaultAction = 'login';
 
@@ -91,6 +92,10 @@ class YumUserController extends YumController {
 	}
 
 	public function actionLogin() {
+		// Do not show the login form if a session expires but a ajax request
+		// is still generated
+		if(Yii::app()->user->isGuest && Yii::app()->request->isAjaxRequest)
+			return false;
 		$this->redirect(array('/user/auth'));
 	}
 
@@ -328,7 +333,6 @@ class YumUserController extends YumController {
 	public function actionList()
 	{
 		$dataProvider=new CActiveDataProvider('YumUser', array(
-					'criteria' => array('condition' => 'status = 1'),
 					'pagination'=>array(
 						'pageSize'=>Yum::module()->pageSize,
 						)));

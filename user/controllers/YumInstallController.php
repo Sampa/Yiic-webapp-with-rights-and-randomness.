@@ -477,7 +477,7 @@ class YumInstallController extends YumController {
 										`timestamp` int unsigned NOT NULL,
 										`from_user_id` int unsigned NOT NULL,
 										`to_user_id` int unsigned NOT NULL,
-										`title` varchar(45) NOT NULL,
+										`title` varchar(255) NOT NULL,
 										`message` text,
 										`message_read` tinyint(1) NOT NULL,
 										`answered` tinyint(1) NOT NULL,

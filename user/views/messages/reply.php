@@ -8,7 +8,7 @@
 
 <?php echo Yum::requiredFieldNote(); 
 
-	echo CHtml::hiddenField('YumMessage[to_user_id][]', $to_user_id);
+	echo CHtml::hiddenField('YumMessage[to_user_id]', $to_user_id);
 	echo Yum::t('This message will be sent to {username}', array(
 				'{username}' => YumUser::model()->findByPk($to_user_id)->username));
 ?>

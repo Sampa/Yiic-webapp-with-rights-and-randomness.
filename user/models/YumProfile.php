@@ -103,7 +103,6 @@ class YumProfile extends YumActiveRecord
 			if ($field->field_type == 'DROPDOWNLIST')
 				array_push($safe, $field->varname);
 
-
 			if ($field->field_type =='VARCHAR'
 					||$field->field_type=='TEXT')
 			{
@@ -188,7 +187,8 @@ class YumProfile extends YumActiveRecord
 				"select * from ".YumProfileField::model()->tableName()." where field_type = 'DROPDOWNLIST'")->queryAll();
 
 		foreach($fields as $field) {
-			$relations[ucfirst($field['varname'])] = array(self::BELONGS_TO, ucfirst($field['varname']), $field['varname']);
+			$relations[ucfirst($field['varname'])] = array(
+					self::BELONGS_TO, ucfirst($field['varname']), $field['varname']);
 
 		}
 
@@ -233,7 +233,7 @@ class YumProfile extends YumActiveRecord
     {
         if(self::$fields===null)
         {
-            self::$fields=YumProfileField::model()->forOwner()->findAll();
+            self::$fields=YumProfileField::model()->findAll();
             if(self::$fields==null)
                 self::$fields=array();
         }

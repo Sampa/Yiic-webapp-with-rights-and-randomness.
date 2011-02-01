@@ -6,7 +6,6 @@ $this->breadcrumbs=array(
 $this->title = Yum::t('Edit profile');
 ?>
 
-<h2> <?php echo Yum::t('Update my profile'); ?> </h2>
 <div class="form">
 
 <?php echo CHtml::beginForm(); ?>

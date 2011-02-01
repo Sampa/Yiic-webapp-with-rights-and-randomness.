@@ -39,11 +39,11 @@ class YumPrivacysettingController extends YumController
 			$profile->validate();
 			}
 
-			if(!$model->hasErrors() && !$model->user->profile->hasErrors()) {
+			if(!$model->hasErrors()) {
 				$profile->save();
 				$model->save();
 				Yum::setFlash('Your privacy settings have been saved');
-				$this->redirect(array('//user/profile/view'));
+				$this->redirect(array(Yum::module()->privacysettingView));
 			}
 		}
 
@@ -55,7 +55,7 @@ class YumPrivacysettingController extends YumController
 		}
 
 
-		$this->render('update',array(
+		$this->render(Yum::module()->privacysettingView,array(
 					'model'=>$model,
 					'profile'=> isset($model->user) && isset($model->user->profile)
 					? $model->user->profile 

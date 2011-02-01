@@ -1,6 +1,7 @@
 <?php 
-$this->title = Yum::t('Composing new message');
-if(!isset($this->breadcrumbs))
+/*if(!isset($this->title) || $this->title == '')
+	$this->title = Yum::t('Composing new message'); */
+if($this->breadcrumbs == array())
 	$this->breadcrumbs = array(Yum::t('Messages'), Yum::t('Compose'));
 ?>
 

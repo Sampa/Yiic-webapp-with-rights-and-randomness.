@@ -91,6 +91,7 @@ class YumProfileController extends YumController {
 	}
 
 	public function actionView($id = null) {
+		// If no profile id is provided, take myself
 		if(!$id)
 			$id = Yii::app()->user->id;
 
@@ -100,12 +101,20 @@ class YumProfileController extends YumController {
 
 		$view = Yum::module()->profileView;
 
-		$model = YumUser::model()->findByPk($id);
-
-		$this->render($view, array(
-					'model' => $model));
+		if(is_numeric($id))
+			$model = YumUser::model()->findByPk($id);
+		else if(is_string($id))
+			$model = YumUser::model()->find("username = '{$id}'");
 
 		$this->updateVisitor(Yii::app()->user->id, $id);
+
+		if(Yii::app()->request->isAjaxRequest)
+			$this->renderPartial($view, array(
+						'model' => $model));
+		else
+			$this->render($view, array(
+						'model' => $model));
+
 	}
 
 	public function updateVisitor($visitor_id, $visited_id) {

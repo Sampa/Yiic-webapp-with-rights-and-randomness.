@@ -25,7 +25,7 @@ echo '<br />';
 	<?php echo CHtml::encode($data->action); ?>
 	<br />
 
-<?php if($data->message != null)
-	echo $data->message; ?>
+<?php //if($data->message != null)
+//	echo $data->message; ?>
 
 </div>

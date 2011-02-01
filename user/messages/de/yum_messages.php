@@ -1,5 +1,7 @@
 <?php
 return array(
+		'Compose new message' => 'Nachricht schreiben',
+		'Composing new message' => 'Nachricht schreiben',
 		'Compose' => 'Nachricht schreiben',
 		'Message from' => 'Nachricht von',
 		'Message' => 'Nachricht',
