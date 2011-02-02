@@ -7,7 +7,7 @@
 			)); 
 echo $form->errorSummary($comment);
 
-echo CHtml::hiddenField('YumProfileComment[profile_id]', $profile->profile_id); ?>
+echo CHtml::hiddenField('YumProfileComment[profile_id]', $profile->id); ?>
 
 <div class="row">
 <?php echo $form->labelEx($comment,'comment'); ?>

@@ -534,7 +534,7 @@ class YumInstallController extends YumController {
 							}
 							if(isset($_POST['installProfiles']))
 							{
-								$sql = "INSERT INTO `".$profileTable."` (`profile_id`, `user_id`, `lastname`, `firstname`, `email`) VALUES
+								$sql = "INSERT INTO `".$profileTable."` (`id`, `user_id`, `lastname`, `firstname`, `email`) VALUES
 									(1, 1, 'admin','admin','webmaster@example.com'),
 									(2, 2, 'demo','demo','demo@example.com')";
 								$db->createCommand($sql)->execute();
