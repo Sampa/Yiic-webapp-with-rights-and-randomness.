@@ -411,8 +411,7 @@ class YumInstallController extends YumController {
 							`street` varchar(255),
 							`city` varchar(255),
 							`about` text,
-							PRIMARY KEY  (`profile_id`),
-							KEY `fk_profiles_users` (`user_id`)
+							PRIMARY KEY  (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
@@ -482,9 +481,7 @@ class YumInstallController extends YumController {
 										`message_read` tinyint(1) NOT NULL,
 										`answered` tinyint(1) NOT NULL,
 										`draft` tinyint(1) default NULL,
-										PRIMARY KEY  (`id`),
-										KEY `fk_messages_users` (`from_user_id`),
-										KEY `fk_messages_users1` (`to_user_id`)
+										PRIMARY KEY  (`id`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"; 
 
 								$db->createCommand($sql)->execute();

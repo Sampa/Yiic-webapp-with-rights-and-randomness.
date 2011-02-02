@@ -213,9 +213,6 @@ your Yii Web Application </p>
 
 	<div style="clear:both;"> </div>
 
-	<label for="installDemoData"> Install Demo data (recommended) ? </label>
-	<?php echo CHtml::checkBox('installDemoData', $this->module->installDemoData); ?>
-
 </div>
 
 	<?php 
