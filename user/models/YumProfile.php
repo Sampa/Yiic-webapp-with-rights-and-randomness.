@@ -28,12 +28,16 @@ class YumProfile extends YumActiveRecord
 
 	public function recentComments($count = 3) {
 		$criteria = new CDbCriteria;
-		$criteria->condition = 'profile_id = ' .$this->profile_id;
+		$criteria->condition = 'id = ' .$this->id;
 		$criteria->order = 'createtime DESC';
 		$criteria->limit = $count;
 		return YumProfileComment::model()->findAll($criteria);
 	}
 
+	public function beforeValidate() {
+		$this->timestamp = time();
+		return parent::beforeValidate();
+	}
 
 	/**
 	 * @param string $className
@@ -210,8 +214,8 @@ class YumProfile extends YumActiveRecord
 	public function attributeLabels()
 	{
 		$labels = array(
+			'id' => Yum::t('Profile ID'),
 			'user_id' => Yum::t('User ID'),
-			'profile_id' => Yum::t('Profile ID'),
 			'privacy' => Yum::t('Privacy'),
 			'show_friends' => Yum::t('Show friends'),
 			'allow_comments' => Yum::t('Allow profile comments'),

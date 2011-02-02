@@ -399,7 +399,7 @@ class YumInstallController extends YumController {
 
 						// Create Profiles Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
-							`profile_id` int unsigned NOT NULL auto_increment,
+							`id` int unsigned NOT NULL auto_increment,
 							`user_id` int unsigned NOT NULL,
 							`timestamp` timestamp NOT NULL,
 							`privacy` ENUM('protected', 'private', 'public') NOT NULL,

@@ -3,13 +3,11 @@
 Yii::import('application.modules.user.controllers.YumController');
 
 class YumProfileController extends YumController {
-	const PAGE_SIZE=10;
-
 	public function accessRules()
 	{
 		return array(
 			array('allow',
-				'actions'=>array('index', 'create', 'admin','delete', 'visits'),
+				'actions'=>array('index', 'admin', 'visits'),
 				'expression' => 'Yii::app()->user->isAdmin()'
 				),
 			array('allow',
@@ -24,34 +22,22 @@ class YumProfileController extends YumController {
 	}
 
 	public function actionUpdate($id = null) {
-		if(Yum::module()->readOnlyProfiles) {
-			Yum::setFlash('You are not allowed to edit your own profile.
-					Please contact the System administrator');
-
-			$this->redirect(array('/user/user/profile', 'id'=>$model->id));
-		}
-
 		if(!$id)
 			$id = Yii::app()->user->data()->id;
 
 		$user = YumUser::model()->findByPk($id);
 		$profile = $user->profile;
 
-		if(isset($_POST['YumUser'])) {
+		if(isset($_POST['YumUser']) && isset($_POST['YumProfile'])) {
 			$user->attributes=$_POST['YumUser'];
+			$profile->attributes = $_POST['YumProfile'];
+			$profile->user_id = $user->id;
 
-			if(isset($_POST['YumProfile'])) {
-				$profile->attributes = $_POST['YumProfile'];
-				$profile->timestamp = time();
-				$profile->user_id = $user->id;
-			}
-			$user->validate();
 			$profile->validate();
+			$user->validate();
 
 			if(!$user->hasErrors() && !$profile->hasErrors()) {
-				$currentProfile = $profile;
 				if($user->save() && $profile->save()) {
-					$this->sendNotifyEmail($currentProfile, $profile);
 					Yum::setFlash('Your changes have been saved');
 					$this->redirect(array('/user/user/profile', 'id'=>$user->id));
 				}
@@ -62,18 +48,6 @@ class YumProfileController extends YumController {
 					'user'=>$user,
 					'profile'=>$profile,
 					));
-
-	}
-
-	public function sendNotifyEmail($currentProfile, $newProfile) {
-		if($currentProfile->email != $newProfile->email 
-				&& Yum::module()->notifyEmailChange) 
-			YumMailer::send($currentProfile->email, Yum::t('Email address changed'),
-					Yum::t('A email address has been changed from {oldemail} to {newemail} at {server} on {date}.', array(
-						'{oldemail}' => $currentProfile->email,
-						'{newemail}' => $newProfile->email,
-						'{server}' => CHttpRequest::getUserHostAddress(),
-						'{date}' => date(Yum::module()->dateTimeFormat))));
 	}
 
 	public function actionVisits() {
@@ -141,41 +115,6 @@ class YumProfileController extends YumController {
 		}
 	}
 
-	public function actionCreate()
-	{
-		$this->layout = Yum::module()->adminLayout;
-		$model = new YumProfile;
-
-		if(isset($_POST['YumProfile'])) {
-			$model->attributes=$_POST['YumProfile'];
-
-			if($model->validate())
-			{
-				$model->save();
-				$this->redirect(array('view', 'id' => $model->id));
-			}
-		}
-
-		$this->render('create',array( 'model'=>$model ));
-	}
-
-	public function actionDelete()
-	{
-		$this->layout = Yum::module()->adminLayout;
-
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$model = $this->loadModel();
-			$model->delete();
-
-			if(!isset($_POST['ajax']))
-				$this->redirect(array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
-
 	public function actionIndex()
 	{
 		if(Yii::app()->user->isAdmin())
@@ -187,13 +126,14 @@ class YumProfileController extends YumController {
 	public function actionAdmin()
 	{
 		$this->layout = Yum::module()->adminLayout;
-		$model= new YumProfile;
+		$model = new YumProfile;
+
 		$dataProvider=new CActiveDataProvider('YumProfile', array(
 			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
+				'pageSize'=>Yum::module()->pageSize,
 			),
 			'sort'=>array(
-				'defaultOrder'=>'profile_id',
+				'defaultOrder'=>'id',
 			),
 		));
 

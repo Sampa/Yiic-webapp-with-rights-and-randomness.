@@ -1,4 +1,6 @@
 <?php
+// This is the entry script of the Yii User Management Module
+// You can see all default configuration options defined here
 
 Yii::setPathOfAlias('YumModule' , dirname(__FILE__));
 Yii::setPathOfAlias('YumComponents' , dirname(__FILE__) . '/components/');
@@ -10,9 +12,6 @@ class UserModule extends CWebModule {
 	public $version = '0.8-svn';
 	public $debug = false;
 
-	// database related control vars
-	public $installDemoData = true;
-
 	//layout related control vars
 	public $baseLayout = 'application.views.layouts.main';
 	public $layout = 'yum';
@@ -21,8 +20,12 @@ class UserModule extends CWebModule {
 	public $profileLayout = 'yumprofile';
 
 	//configuration related control vars
-	public $preserveProfiles = true;
+
+	// set useYiiCheckAccess to true to disable Yums own checkAccess routines.
+  // Use this when you implement your own access logic or use yum together with
+  // SrBAC
 	public $useYiiCheckAccess = false;
+
 	public $enableRegistration = true;
 	public $enableRecovery = true;
 	public $enableRoles = true;
@@ -32,14 +35,12 @@ class UserModule extends CWebModule {
 	public $enableLogging = true;
 
 	public $enableMembership = true;
-	public $sendMembershipConfirmationMail = true;
-
 
 	public $enableOnlineStatus = true; 
 	
 	// After how much seconds without an action does a user gets indicated as 
 	// offline? Note that, of course, clicking the Logout button will indicate
-	// him as offline anyway.
+	// him as offline instantly anyway.
 	public $offlineIndicationTime = 3600; // 5 Minutes
 
 	// Whether to confirm the activation of an user by email
@@ -119,6 +120,7 @@ class UserModule extends CWebModule {
 		'returnLogout'=>array('//user/user/login'));
 
 	private $_views = array(
+			'adminUserDetail' => '//user/user/view',
 			'login' => '/user/login',
 			'profile' => '/profile/view',
 			'profileComment' => '/profileComment/_view',
@@ -136,18 +138,6 @@ class UserModule extends CWebModule {
 			'messageCompose' =>'application.modules.user.views.messages.compose',
 			'membershipExpired' =>'/membership/membership_expired');
 
-	// Activate profile History (profiles are kept always, and when the
-  // user changes his profile, it gets added to the database rather than
-  // updated).
-	public $enableProfileHistory = true;
-
-	// When readOnlyProfiles is set, only administrators can update Profile
-  // Information
-	public $readOnlyProfiles = false;
-
-	// When forceProtectedProfiles is set, only administrators and the user
-  // himself can view the profile
-	public $forceProtectedProfiles = false;
 	public $profilesViewableByGuests = false;
 
 	// LoginType :
@@ -221,7 +211,6 @@ class UserModule extends CWebModule {
 			'userRole' => 'user_has_role',
 			'activity' => 'activities',
 			);
-
 
 	public $passwordRequirements = array(
 			'minLen' => 8,

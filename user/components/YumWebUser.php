@@ -1,18 +1,9 @@
 <?php
-
-Yii::import('application.modules.user.models.*');
-Yii::setPathOfAlias( 'YumModule' , dirname(__FILE__) . '/../');
-
 class YumWebUser extends CWebUser
 {
-	public $loginUrl=array('//user/user/login');
-
-	public function init()
-	{
-		parent::init();
-		$this->loginUrl=$this->loginUrl;
-	}
-
+	// Use this function to access the AR Model of the actually
+	// logged in user, for example
+	// echo Yii::app()->user->data()->profile->firstname;
 	public function data() {
 		if($model = YumUser::model()->findByPk($this->id))
 			return $model;
@@ -48,16 +39,13 @@ class YumWebUser extends CWebUser
 	public static function hasUsers($uid = 0)
 	{
 		if($uid == 0)
-			$uid = Yii::app()->user->getId();
+			$uid = Yii::app()->user->id;
 
 		$user = YumUser::model()->findByPk($uid);
 
 		return isset($user->users) && $user->users !== array();
 	}
 
-	/**
-	 * Checks if this (non-admin) User can administrate some users of a specific role
-	 */
 	public static function hasRoles($uid = 0)
 	{
 		if($uid == 0)
@@ -102,37 +90,6 @@ class YumWebUser extends CWebUser
 	}
 
 	/**
-	 * Checks if this (non-admin) User can administrate the given user of a specific role
-	 */
-	public static function hasRoleOfUser($username, $uid = 0)
-	{
-		if($uid == 0)
-			$uid = Yii::app()->user->getId();
-
-		$user = YumUser::model()->findByPk($uid);
-
-		if(!is_array($username))
-			$username = array ($username);
-
-		if(isset($user->roles)) 
-			foreach($user->roles as $roleobj) {
-				if(isset($roleobj->roles))
-					foreach($roleobj->roles as $administerable_role) {
-						if($administerable_role->users)
-							foreach($administerable_role->users as $userobj) {
-								if(in_array($userobj->username, $username) ||
-										in_array($userobj->id, $username))
-									return true;
-							}
-					}
-			}
-
-		return false;
-	}
-
-
-
-	/**
 	 * Checks if the user has the given Role
 	 * @mixed Role string or array of strings that should be checked
 	 * @int (optional) id of the user that should be checked 
@@ -140,13 +97,12 @@ class YumWebUser extends CWebUser
 	 */
 	public static function hasRole($role, $uid = 0) {
 		if($uid == 0)
-			$uid = Yii::app()->user->getId();
+			$uid = Yii::app()->user->id;
 
 		if(!is_array($role))
 			$role = array ($role);
 
 		if($user = YumUser::model()->findByPk($uid)) {
-
 			// Check if a user has a active membership and, if so, add this
 			// to the roles
 			$roles = array_merge($user->roles, $user->getActiveMemberships());
@@ -171,7 +127,7 @@ class YumWebUser extends CWebUser
 		if($this->isGuest)
 			return false;
 		else 
-			return YumUser::model()->findbyPk(Yii::app()->user->id)->superuser;
+			return Yii::app()->user->data()->superuser;
 	}
 }
 ?>

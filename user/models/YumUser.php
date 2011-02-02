@@ -473,15 +473,10 @@ class YumUser extends YumActiveRecord {
 
 	public static function itemAlias($type, $code=NULL) {
 		$_items = array(
-			'NotifyType' => array(
-				'None' => Yum::t('None'),
-				'Digest' => Yum::t('Digest'),
-				'Instant' => Yum::t('Instant'),
-			),
 			'UserStatus' => array(
 				'0' => Yum::t('Not active'),
-				'1' => Yum::t('Activated'),
-				'2' => Yum::t('Active - First visit'),
+				'1' => Yum::t('Activated, not yet logged in once'),
+				'2' => Yum::t('Active - first visit'),
 				'3' => Yum::t('Active'),
 				'-1' => Yum::t('Banned'),
 				'-2' => Yum::t('Deleted'),

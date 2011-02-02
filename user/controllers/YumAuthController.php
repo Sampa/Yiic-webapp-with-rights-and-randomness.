@@ -23,7 +23,6 @@ class YumAuthController extends YumController {
 	/**
 	* Handles user login via OpenLDAP
 	*/
-
 	public function loginByLdap()
 	{
 		if (!Yum::module()->loginType & UserModule::LOGIN_BY_LDAP)
