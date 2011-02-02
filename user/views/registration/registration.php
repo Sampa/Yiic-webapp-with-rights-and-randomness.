@@ -2,45 +2,21 @@
 $this->pageTitle = Yii::app()->name . ' - '.Yum::t( 'Registration');
 $this->title = Yum::t('Registration');
 $this->breadcrumbs = array(Yum::t('Registration'));
-?>
-
-
-<?php Yum::renderFlash(); ?>
+Yum::renderFlash(); ?>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 <?php echo Yum::requiredFieldNote(); ?>
 <?php echo CHtml::errorSummary($form, $profile); ?>
 
+<div class="row">
 <?php
-if(Yum::module()->enableRoles) {
-	$roles = YumRole::model()->selectable()->findAll();
-	if(count($roles) > 0) {
-		printf('<p>%s:</p>', Yum::t('Designation'));
-		// render a Radio Button list and preselect the first entry:
-		$data = CHtml::listData($roles, 'id', 'title');
-		echo CHtml::radioButtonList('roles', key($data),
-				$data,
-				array('labelOptions' => array('style' => 'display: inline;')));
-
-	}
-}
+echo CHtml::activeLabelEx($form,'username');
+echo CHtml::activeTextField($form,'username');
+echo CHtml::activeLabelEx($profile,'email');
+echo CHtml::activeTextField($form,'username');
 ?>
-
-	<div class="row">
-<?php
-		if(Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME) {
-			echo CHtml::activeLabelEx($form,'username');
-			echo CHtml::activeTextField($form,'username');
-		}
-		if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL) {
-			echo CHtml::activeLabelEx($profile,'email');
-			echo CHtml::activeTextField($form,'username');
-		}
-		if(Yum::module()->loginType & UserModule::LOGIN_BY_OPENID)
-			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('OpenID username'));
-?>
-	</div>
+</div>
 
 <?php 
 $profileFields = YumProfileField::model()->forRegistration()->sort()->findAll();
