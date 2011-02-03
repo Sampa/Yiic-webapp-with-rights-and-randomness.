@@ -48,8 +48,14 @@ class Yum
 		}
 	}
 
-	public static function logActivity($user, $action, $message = null) {
-		return YumActivityController::logActivity($user, $action, $message);
+	/* A wrapper for the Yii::log function. If no category is given, we
+	 * use the YumController as a fallback value.
+	 * In addition to that, the message is being translated by Yum::t() */
+	public static function log($message,
+			$level = 'info',
+			$category = 'application.modules.user.controllers.YumController') {
+		if(Yum::module()->enableLogging)
+			return Yii::log(Yum::t($message), $level, $category);
 	}
 
 	public static function renderFlash()

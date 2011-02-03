@@ -58,6 +58,7 @@ class YumMessagesController extends YumController {
 			Yii::app()->end();
 		}
 
+		$this->performAjaxValidation('YumMessage', 'yum-messages-form');
 		$model = new YumMessage;
 
 		if(isset($_POST['YumMessage'])) {			

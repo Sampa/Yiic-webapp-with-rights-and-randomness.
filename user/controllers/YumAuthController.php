@@ -97,8 +97,7 @@ class YumAuthController extends YumController {
 					//No superuser account can log in using Facebook
 					$user = $profile->user;
 					if ($user->superuser) {
-						if (Yum::module()->enableLogging == true)
-							YumActivityController::logActivity($user, 'fb_failed_login_attempt');
+						Yum::log('A superuser tried to login by facebook', 'error');
 						return false;
 					}
 					//Current account and FB account blending
@@ -118,8 +117,7 @@ class YumAuthController extends YumController {
 					case YumUserIdentity::ERROR_NONE:
 						$duration = 3600*24*30; //30 days
 						Yii::app()->user->login($identity, $duration);
-						if(Yum::module()->enableLogging == true)
-							YumActivityController::logActivity($user, 'fblogin');
+							Yum::log('User ' . $user->username .' logged in via facebook');
 						return $user;
 						break;
 					case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
@@ -139,8 +137,7 @@ class YumAuthController extends YumController {
 				 * approach to solve this issue is more than welcomed.
 				 */
 
-				if(Yum::module()->enableLogging == true)
-					YumActivityController::logActivity($user, 'fb_failed_login_attempt');
+					Yum::log('Failed login attempt for ' . $user->username . ' via facebook', 'error');
 				return false;
 			}
 		}
@@ -283,7 +280,8 @@ class YumAuthController extends YumController {
 				$cookie->expire = time() + (3600*24*30);
 				Yii::app()->request->cookies['login_type'] = $cookie;
 			}
-			YumActivityController::logActivity(Yii::app()->user->id, 'login');
+			Yum::log(Yum::t('User {username} successfully logged in', array(
+							'{username}' => $success->username)));
 			$this->redirectUser($success);
 		}
 
@@ -322,6 +320,7 @@ class YumAuthController extends YumController {
 		}
 
 		$user = YumUser::model()->findByPk(Yii::app()->user->id);
+		$username = $user->username;
 		$user->logout();
 
 		if (Yii::app()->user->name == 'facebook') {
@@ -338,14 +337,13 @@ class YumAuthController extends YumController {
 				Yii::app()->request->cookies[$cookie->name] = $cookie;
 			}
 			$session = $facebook->getSession();
+				Yum::log('Facebook logout from user '. $username);
 			Yii::app()->user->logout();
-			if (Yum::module()->enableLogging)
-				Yum::logActivity(Yii::app()->user->id, 'fblogout');
 			$this->redirect($facebook->getLogoutUrl(array('next' => $this->createAbsoluteUrl(Yum::module()->returnLogoutUrl), 'session_key' => $session['session_key'])));
 		}
 		else {
-			if (Yum::module()->enableLogging == true)
-				Yum::logActivity(Yii::app()->user->id, 'logout');
+			Yum::log(Yum::t('User {username} logged off', array(
+							'{username}' => $username)));
 
 			Yii::app()->user->logout();
 			$this->redirect(Yum::module()->returnLogoutUrl);

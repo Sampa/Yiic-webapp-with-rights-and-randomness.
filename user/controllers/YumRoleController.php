@@ -42,7 +42,9 @@ class YumRoleController extends YumController {
 			if($model->save()) {
 				if(Yum::module()->enableLogging == true) {
 					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-					YumActivityController::logActivity($user, 'role_created');
+					Yum::log(Yum::t('The role {role} has been created by {username}', array(
+									'{role}' =>  $model->title,
+									'{username}' => Yii::app()->user->data()->username)));
 				}
 				$this->redirect(array('admin'));
 			}
@@ -61,13 +63,8 @@ class YumRoleController extends YumController {
 
 			$model->users = Relation::retrieveValues($_POST);
 
-			if ($model->validate() && $model->save()) {
-				if (Yum::module()->enableLogging == true) {
-					$user = YumUser::model()->findbyPK(Yii::app()->user->id);
-					YumActivityController::logActivity($user, 'role_updated');
-				}
+			if ($model->validate() && $model->save()) 
 				$this->redirect(array('view', 'id' => $model->id));
-			}
 		}
 	
 
@@ -92,10 +89,6 @@ class YumRoleController extends YumController {
 	public function actionDelete() {
 		$this->layout = Yum::module()->adminLayout;
 		if (Yii::app()->request->isPostRequest) {
-			if (Yum::module()->enableLogging == true) {
-				$user = YumUser::model()->findbyPK(Yii::app()->user->id);
-				YumActivityController::logActivity($user, 'role_removed');
-			}
 			$this->loadModel()->delete();
 
 			if (!isset($_POST['ajax']))

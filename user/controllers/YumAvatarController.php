@@ -43,7 +43,9 @@ class YumAvatarController extends YumController {
 					$model->avatar = $filename;
 					if($model->save()) {
 						Yum::setFlash(Yum::t('The image was uploaded successfully'));
-						Yum::logActivity(Yii::app()->user->id, 'avatar_uploaded');
+						Yum::log(Yum::t('User {username} uploaded avatar image {filename}', array(
+										'{username}' => $model->username,
+										'{filename}' => $model->avatar)));
 						$this->redirect(array('user/profile'));	
 					}
 				}

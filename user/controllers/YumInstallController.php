@@ -48,7 +48,6 @@ class YumInstallController extends YumController {
 							'permissionTable',
 							'friendshipTable',
 							'actionTable',
-							'activityTable',
 							'usergroupTable',
 							'settingsTable',
 							'textSettingsTable');
@@ -140,21 +139,6 @@ class YumInstallController extends YumController {
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 						$db->createCommand($sql)->execute();
-					}
-					if(isset($_POST['installActivityLog'])) {  
-						$sql = "CREATE TABLE IF NOT EXISTS `".$activityTable."` (
-							`id` int(11) NOT NULL AUTO_INCREMENT,
-							`timestamp` int NOT NULL,
-							`user_id` int(11),
-							`remote_addr` varchar(16),
-							`http_user_agent` varchar(255),
-							`action` varchar(255),
-							`message` text,
-							PRIMARY KEY (`id`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
-
-						$db->createCommand($sql)->execute();
-
 					}
 					if(isset($_POST['installPermission'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$actionTable."` (
@@ -486,65 +470,63 @@ class YumInstallController extends YumController {
 
 								$db->createCommand($sql)->execute();
 						}
-						if(isset($_POST['installDemoData'])) 
+
+						$sql = "INSERT INTO `".$privacySettingTable."` (`user_id`) values (2)";
+						$db->createCommand($sql)->execute();
+
+						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
+							(1, 'admin', '".YumUser::encrypt('admin')."', '', ".time().", 0, 1, 1),
+							(2, 'demo', '".YumUser::encrypt('demo')."', '', ".time().", 0, 0, 1)";
+						$db->createCommand($sql)->execute();
+
+						if(isset($_POST['installMembership'])) {
+							$sql = "insert into `{$paymentTable}` (`title`) values ('Prepayment'), ('Paypal')";
+
+							$db->createCommand($sql)->execute();
+						}
+
+						if(isset($_POST['installRole']))
 						{
+							$sql = "INSERT INTO `".$actionTable ."` (`title`) VALUES ('message_write'), ('message_receive'), ('view_profile_visits')";
 
-							$sql = "INSERT INTO `".$privacySettingTable."` (`user_id`) values (2)";
-								$db->createCommand($sql)->execute();
-
-							$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
-								(1, 'admin', '".YumUser::encrypt('admin')."', '', ".time().", 0, 1, 1),
-								(2, 'demo', '".YumUser::encrypt('demo')."', '', ".time().", 0, 0, 1)";
 							$db->createCommand($sql)->execute();
 
-							if(isset($_POST['installMembership'])) {
-								$sql = "insert into `{$paymentTable}` (`title`) values ('Prepayment'), ('Paypal')";
+							$sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `template`, `comment`) VALUES
+								(3, 0, 'role', 1, 0, 'Users can write messagse'),
+								(3, 0, 'role', 2, 0, 'Users can receive messagse'),
+								(3, 0, 'role', 3, 0, 'Users are able to view visits of his profile');";
 
-								$db->createCommand($sql)->execute();
-							}
-
-							if(isset($_POST['installRole']))
-							{
-								$sql = "INSERT INTO `".$actionTable ."` (`title`) VALUES ('message_write'), ('message_receive'), ('view_profile_visits')";
-
-								$db->createCommand($sql)->execute();
-
-								$sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `template`, `comment`) VALUES
-									(3, 0, 'role', 1, 0, 'Users can write messagse'),
-									(3, 0, 'role', 2, 0, 'Users can receive messagse'),
-									(3, 0, 'role', 3, 0, 'Users are able to view visits of his profile');";
-
-								$db->createCommand($sql)->execute();
+							$db->createCommand($sql)->execute();
 
 
 
-								$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`, `searchable`) VALUES
-									('UserCreator', 'This users can create new Users', 0, 0, 0),
-									('UserRemover', 'This users can remove other Users', 0, 0, 0),
-									('Demo', 'Users having the demo role', 0, 0, 1),
-									('Business', 'Example Business account', 9.99, 7, 0),
-									('Premium', 'Example Premium account', 19.99, 28, 0) ";
-								$db->createCommand($sql)->execute();
+							$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`, `searchable`) VALUES
+								('UserCreator', 'This users can create new Users', 0, 0, 0),
+								('UserRemover', 'This users can remove other Users', 0, 0, 0),
+								('Demo', 'Users having the demo role', 0, 0, 1),
+								('Business', 'Example Business account', 9.99, 7, 0),
+								('Premium', 'Example Premium account', 19.99, 28, 0) ";
+							$db->createCommand($sql)->execute();
 
-								$sql = "INSERT INTO `".$userRoleTable."` (`user_id`, `role_id`) VALUES
-									(2, 3)";
-								$db->createCommand($sql)->execute();
+							$sql = "INSERT INTO `".$userRoleTable."` (`user_id`, `role_id`) VALUES
+								(2, 3)";
+							$db->createCommand($sql)->execute();
 
-
-							}
-							if(isset($_POST['installProfiles']))
-							{
-								$sql = "INSERT INTO `".$profileTable."` (`id`, `user_id`, `lastname`, `firstname`, `email`) VALUES
-									(1, 1, 'admin','admin','webmaster@example.com'),
-									(2, 2, 'demo','demo','demo@example.com')";
-								$db->createCommand($sql)->execute();
-
-								$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 3, 'CEmailValidator'), ('firstname', 'First name', 'VARCHAR', 255, 1, 3, ''), ('lastname', 'Last name', 'VARCHAR', 255, 1, 3, ''), ('street','Street', 'VARCHAR', 255, 0, 3, ''), ('city','City', 'VARCHAR', 255, 0, 3, ''), ('about', 'About', 'TEXT', 255, 0, 3, '')";
-								$db->createCommand($sql)->execute();
-
-							}
 
 						}
+						if(isset($_POST['installProfiles']))
+						{
+							$sql = "INSERT INTO `".$profileTable."` (`id`, `user_id`, `lastname`, `firstname`, `email`) VALUES
+								(1, 1, 'admin','admin','webmaster@example.com'),
+								(2, 2, 'demo','demo','demo@example.com')";
+							$db->createCommand($sql)->execute();
+
+							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 3, 'CEmailValidator'), ('firstname', 'First name', 'VARCHAR', 255, 1, 3, ''), ('lastname', 'Last name', 'VARCHAR', 255, 1, 3, ''), ('street','Street', 'VARCHAR', 255, 0, 3, ''), ('city','City', 'VARCHAR', 255, 0, 3, ''), ('about', 'About', 'TEXT', 255, 0, 3, '')";
+							$db->createCommand($sql)->execute();
+
+						}
+
+
 
 						// Do it
 						$transaction->commit();
@@ -578,7 +560,6 @@ class YumInstallController extends YumController {
 							'usergroupTable' => Yum::resolveTableName($this->module->usergroupTable,Yii::app()->db),
 							'permissionTable' => Yum::resolveTableName($this->module->permissionTable,Yii::app()->db),
 							'friendshipTable' => Yum::resolveTableName($this->module->friendshipTable,Yii::app()->db),
-							'activityTable' => Yum::resolveTableName($this->module->activityTable, Yii::app()->db),
 							'actionTable' => Yum::resolveTableName($this->module->actionTable,Yii::app()->db),
 							));
 			}

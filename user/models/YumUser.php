@@ -145,11 +145,6 @@ class YumUser extends YumActiveRecord {
 			$setting->user_id = $this->id;
 			$setting->save();
 		}
-
-		if(Yum::module()->enableLogging)
-			YumActivityController::logActivity($this,
-					$this->isNewRecord ? 'user_created' : 'user_updated');
-
 		return parent::afterSave();
 	}
 

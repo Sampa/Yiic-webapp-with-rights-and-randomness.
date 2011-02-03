@@ -199,23 +199,6 @@ your Yii Web Application </p>
 
 	<div style="clear:both;"> </div>
 
-	<label for="installPermission"> Install activity Log  </label>
-	<?php echo CHtml::checkBox('installActivityLog', true); ?>
-
-	<div id="activity_log">
-		<table>
-			<tr>
-				<td> Table for the activity Log </td>
-				<td> <?php echo CHtml::textField('activityTable', $activityTable); ?> </td>
-			</tr>
-				</table>
-				</div>
-
-	<div style="clear:both;"> </div>
-
-	<label for="installDemoData"> Install Demo data (recommended) ? </label>
-	<?php echo CHtml::checkBox('installDemoData', true); ?>
-
 </div>
 
 	<?php 
@@ -243,9 +226,6 @@ your Yii Web Application </p>
 	});
 	$('#installProfiles').click(function() {
 	$('#profiles').toggle();
-	});
-	$('#installActivityLog').click(function() {
-	$('#activity_log').toggle();
 	});
 
 	";

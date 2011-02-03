@@ -164,7 +164,6 @@ class UserModule extends CWebModule {
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'auth'=>array('class'=>'YumModule.controllers.YumAuthController'),
 		'action'=>array('class'=>'YumModule.controllers.YumActionController'),
-		'activities'=>array('class'=>'YumModule.controllers.YumActivityController'),
 		'permission'=>array('class'=>'YumModule.controllers.YumPermissionController'),
 		'comments'=>array('class'=>'YumModule.controllers.YumProfileCommentController'),
 		'avatar'=>array('class'=>'YumModule.controllers.YumAvatarController'),

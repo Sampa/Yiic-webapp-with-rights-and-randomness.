@@ -43,11 +43,6 @@ class YumTextSettingsController extends YumController {
 
 
 			if($model->save()) {
-				if(Yum::module()->enableLogging) {
-					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-					YumActivityController::logActivity($user, 'text_settings_created');
-				}
-
 					$this->redirect(array('view','id'=>$model->id));
 			}
 		}
@@ -71,11 +66,6 @@ class YumTextSettingsController extends YumController {
 
 			if($model->save())
 			{
-				if(Yum::module()->enableLogging == true)
-				{
-					$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-					YumActivityController::logActivity($user, 'text_settings_updated');
-				}
 				$this->redirect(array('view','id'=>$model->id));
 			}}
 
@@ -88,11 +78,6 @@ class YumTextSettingsController extends YumController {
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
-			if(Yum::module()->enableLogging == true)
-			{
-				$user= YumUser::model()->findbyPK(Yii::app()->user->id);
-				YumActivityController::logActivity($user, 'text_settings_removed');
-			}
 			$this->loadModel()->delete();
 
 			if(Yii::app()->request->getQuery('ajax') === null)
