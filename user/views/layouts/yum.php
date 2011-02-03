@@ -7,6 +7,7 @@ $module = Yum::module();
 $this->beginContent($module->baseLayout); ?>
 
 <div id="usermenu">
+<?php Yum::renderFlash(); ?>
 <?php $this->renderMenu(); ?>
 </div>
 

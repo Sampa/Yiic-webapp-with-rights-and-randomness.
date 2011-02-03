@@ -11,7 +11,7 @@ Yii::import('application.modules.user.controllers.YumController');
 class YumRegistrationController extends YumController {
 	public $defaultAction = 'registration';
 
-	// Only allow the registration if the user isn´ t already logged in and
+	// Only allow the registration if the user is not already logged in and
 	// the function is activated in the Module Configuration
 	public function beforeAction($action) {
 		if (!Yum::module()->enableRegistration || !Yii::app()->user->isGuest) 
@@ -56,8 +56,7 @@ class YumRegistrationController extends YumController {
 		$form = new YumRegistrationForm;
 		$profile = new YumProfile;
 
-var_dump($_POST);
-		if (isset($_POST['YumRegistrationForm']) && isset($_POST['YumProfile'])) {
+		if (isset($_POST['YumRegistrationForm'])) { 
 			$form->attributes = $_POST['YumRegistrationForm'];
 			$profile->attributes = $_POST['YumProfile'];
 
@@ -84,7 +83,7 @@ var_dump($_POST);
 	}
 
 		// Send the Email to the given user object. $user->email needs to be set.
-		public function sendRegistrationEmail($user, $password=null) {
+		public function sendRegistrationEmail($user) {
 			if (!isset($user->profile->email)) {
 				throw new CException(Yum::t('Email is not set when trying to send Registration Email'));
 			}

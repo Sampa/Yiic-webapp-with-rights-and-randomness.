@@ -3,20 +3,17 @@
  * RegistrationForm class.
  * RegistrationForm is the data structure for keeping
  * user registration form data. It is used by the 'registration' action of 
- * 'YumUserController'.
+ * 'YumRegistrationController'.
  * @package Yum.models
  */
 class YumRegistrationForm extends YumUser {
 	public $verifyPassword;
-	
-	/**
-	 * @var string
-	 */
-	public $verifyCode;
+	public $verifyCode; // Captcha
 
 	public function rules() 
 	{
 		$rules = parent::rules();
+
 		if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 			$rules[] = array('username', 'required');
 		$rules[] = array('password, verifyPassword', 'required');
@@ -25,16 +22,4 @@ class YumRegistrationForm extends YumUser {
 
 		return $rules;
 	}
-	
-	public function genRandomString($length = 10)
-	{
-	$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-	$string ='';    
-	for ($p = 0; $p < $length; $p++)
-	{
-        $string .= $characters[mt_rand(0, strlen($characters)-1)];
-	}
-	return $string;
-	}
-
 }

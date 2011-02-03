@@ -3,11 +3,9 @@
 $this->pageTitle=Yii::app()->name . ' - ' . Yii::t("UserModule.user", "Profile");
 $this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
 $this->title = Yii::t("UserModule.user", 'Your profile');
-?>
+$this->renderPartial('/messages/new_messages');?>
 
-<?php $this->renderPartial('/messages/new_messages');?>
 
-<?php Yum::renderFlash(); ?>
 <div class="avatar">
 <?php echo $model->renderAvatar(); ?>
 </div>

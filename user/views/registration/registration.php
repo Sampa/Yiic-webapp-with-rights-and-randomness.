@@ -2,19 +2,25 @@
 $this->pageTitle = Yii::app()->name . ' - '.Yum::t( 'Registration');
 $this->title = Yum::t('Registration');
 $this->breadcrumbs = array(Yum::t('Registration'));
-Yum::renderFlash(); ?>
+?>
 
 <div class="form">
-<?php echo CHtml::beginForm(); ?>
+<?php $activeform = $this->beginWidget('CActiveForm', array(
+			'id'=>'registration-form',
+			'enableAjaxValidation'=>true,
+			'focus'=>array($form,'username'),
+			));
+?>
+
 <?php echo Yum::requiredFieldNote(); ?>
-<?php echo CHtml::errorSummary($form, $profile); ?>
+<?php echo CHtml::errorSummary(array($form, $profile)); ?>
 
 <div class="row">
 <?php
-echo CHtml::activeLabelEx($form,'username');
-echo CHtml::activeTextField($form,'username');
-echo CHtml::activeLabelEx($profile,'email');
-echo CHtml::activeTextField($form,'username');
+echo $activeform->labelEx($form,'username');
+echo $activeform->textField($form,'username');
+echo $activeform->labelEx($profile,'email');
+echo $activeform->textField($form,'username');
 ?>
 </div>
 
@@ -32,8 +38,8 @@ if ($profileFields) {
 <?php
 		if ($field->range) 
 		{
-				echo CHtml::activeLabelEx($profile, $field->varname);
-				echo CHtml::activeDropDownList($profile,
+				echo $activeform->labelEx($profile, $field->varname);
+				echo $activeform->dropDownList($profile,
 					$field->varname,
 					YumProfile::range($field->range));
 		}
@@ -92,15 +98,16 @@ if ($profileFields) {
 }
 ?>
 	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'password'); ?>
-	<?php echo CHtml::activePasswordField($form,'password'); ?>
-	</div>
-	
-	<div class="row">
-	<?php echo CHtml::activeLabelEx($form,'verifyPassword'); ?>
-	<?php echo CHtml::activePasswordField($form,'verifyPassword'); ?>
+	<?php echo $activeform->labelEx($form,'password'); ?>
+	<?php echo $activeform->passwordField($form,'password'); ?>
 	</div>
 
+<div class="row">
+	<?php echo $activeform->labelEx($form,'verifyPassword'); ?>
+	<?php echo $activeform->passwordField($form,'verifyPassword'); ?>
+	</div>
+
+	
 	<?php if(extension_loaded('gd') && Yum::module()->enableCaptcha): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>
@@ -117,5 +124,5 @@ if ($profileFields) {
 		<?php echo CHtml::submitButton(Yum::t('Registration')); ?>
 	</div>
 
-<?php echo CHtml::endForm(); ?>
+<?php $this->endWidget(); ?>
 </div><!-- form -->

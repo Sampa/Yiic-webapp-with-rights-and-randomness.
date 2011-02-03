@@ -52,6 +52,9 @@ class YumAuthController extends YumController {
 				$this->loginForm->addError('status', Yum::t('Your account is blocked.'));
 				break;
 			case YumUserIdentity::ERROR_PASSWORD_INVALID:
+				Yum::log(Yum::t('Failed login attempt for {username} via LDAP', array(
+								'{username}' => $this->loginForm->username)), 'error');
+
 				if (!$this->loginForm->hasErrors())
 					$this->loginForm->addError("password", Yum::t('Username or Password is incorrect'));
 				break;
@@ -127,6 +130,8 @@ class YumAuthController extends YumController {
 						$user->addError('status', Yum::t('Your account is blocked.'));
 						break;
 					case YumUserIdentity::ERROR_PASSWORD_INVALID:
+						Yum::log(Yum::t('Failed login attempt for {username} via facebook', array(
+										'{username}' => $user->username)), 'error');
 						$user->addError('status', Yum::t('Password incorrect.'));
 						break;
 				}
@@ -185,6 +190,9 @@ class YumAuthController extends YumController {
 					break;
 
 				case YumUserIdentity::ERROR_PASSWORD_INVALID:
+					Yum::log(Yum::t('Failed login attempt for {username}', array(
+									'{username}' => $this->loginForm->username)), 'error');
+
 					if(!$this->loginForm->hasErrors())
 						$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
 					break;

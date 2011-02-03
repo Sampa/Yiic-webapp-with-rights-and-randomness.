@@ -114,10 +114,8 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function beforeValidate() {
-
 		if ($this->isNewRecord)
 			$this->createtime = time();
-
 
 		return true;
 	}
