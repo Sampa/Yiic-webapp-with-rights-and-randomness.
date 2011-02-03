@@ -51,12 +51,13 @@ class YumMessagesController extends YumController {
 		}
 	}
 
-	public function actionCompose() {
+	public function actionCompose($to_user_id = null) {
 		if(!Yii::app()->user->isAdmin() 
 				&& !Yii::app()->user->data()->can('writeMessages')) {
 			$this->render(Yum::module()->membershipExpiredView);
 			Yii::app()->end();
 		}
+
 		$model = new YumMessage;
 
 		if(isset($_POST['YumMessage'])) {			
@@ -75,7 +76,7 @@ class YumMessagesController extends YumController {
 
 		$this->render('compose',array(
 			'model'=>$model,
-			'to_user_id' => isset($_GET['to_user_id']) ? $_GET['to_user_id'] : false,
+			'to_user_id' => $to_user_id,
 		));
 	}
 

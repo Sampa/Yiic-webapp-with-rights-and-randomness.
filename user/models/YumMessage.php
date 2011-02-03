@@ -36,17 +36,14 @@ class YumMessage extends YumActiveRecord
 	}
 
 	public function beforeValidate() {
-			$to_user = YumUser::model()->findByPk($this->to_user_id);
-			if($to_user && isset($to_user->privacy)) {
-				if(in_array($this->from_user->username, $to_user->privacy->getIgnoredUsers()))
-					$this->addError('to_user_id', Yum::t('One of the recipients ({username}) has ignored you. Message will not be sent!', array('{username}' => $to_user->username)));
-			}
-		return parent::beforeValidate();
-	}
-
-	public function beforeSave() {
 		$this->timestamp = time();
-		return parent::beforeSave();	
+
+		$to_user = YumUser::model()->findByPk($this->to_user_id);
+		if($to_user && isset($to_user->privacy)) {
+			if(in_array($this->from_user->username, $to_user->privacy->getIgnoredUsers()))
+				$this->addError('to_user_id', Yum::t('One of the recipients ({username}) has ignored you. Message will not be sent!', array('{username}' => $to_user->username)));
+		}
+		return parent::beforeValidate();
 	}
 
 	public function afterSave() {
@@ -58,8 +55,9 @@ class YumMessage extends YumActiveRecord
 						YumTextSettings::getText('text_message_new', array(
 								'{user}' => $this->from_user->username,
 								'{message}' => $this->message)));
+
 		return parent::afterSave();
-	}
+	} 
 
 	public static function write($to, $from, $subject, $body, $mail = true) {
 		$message = new YumMessage();
@@ -176,7 +174,7 @@ class YumMessage extends YumActiveRecord
 
 	public function beforeDelete() {
 		if($this->to_user_id != Yii::app()->user->id)
-			return false;
+			throw new CHttpException(403);
 		return parent::beforeDelete();
 	}
 

@@ -2,20 +2,20 @@
 $this->title = Yum::t('My friends');
 $this->breadcrumbs = array(Yum::t('Friends'));
 
-$form=$this->beginWidget('CActiveForm', array(
-			'id'=>'groups-form',
-			'enableAjaxValidation'=>false,
-			)); 
 
 			
 if($friends) {
-	
 	echo '<div class="view-light">';
 	
 	echo '<table width="100%">';
 
 	foreach($friends as $friend) {
 		$options = array();
+$form=$this->beginWidget('CActiveForm', array(
+			'id'=>'groups-form',
+			'enableAjaxValidation'=>false,
+			)); 
+
 		echo CHtml::activeHiddenField($friend, 'inviter_id');
 		echo CHtml::activeHiddenField($friend, 'friend_id');
 
@@ -33,7 +33,7 @@ if($friends) {
 			}
 		} else if($friend->status == 2) { // Users are friends
 			$options = CHtml::submitButton(Yum::t('Remove friend'),array(
-						'id'=>'remove_friend','name'=>'YumFriendship[remove_friend]'));
+						'id'=>'remove_friend','name'=>'YumFriendship[remove_friend]','confirm' => Yum::t('Are you sure you want to remove this friend?')));
 		}
 				if($friend->inviter_id == Yii::app()->user->id)
 					$label = $friend->invited;
@@ -51,6 +51,7 @@ if($friends) {
 							
 							);
 
+$this->endWidget();
 	}
 	echo '</table>';
 	echo '</div>';
@@ -58,6 +59,5 @@ if($friends) {
 	echo Yum::t('You do not have any friends yet');
 }
 
-$this->endWidget();
 ?>
 

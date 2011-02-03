@@ -120,7 +120,6 @@ class UserModule extends CWebModule {
 		'returnLogout'=>array('//user/user/login'));
 
 	private $_views = array(
-			'adminUserDetail' => '//user/user/view',
 			'login' => '/user/login',
 			'profile' => '/profile/view',
 			'profileComment' => '/profileComment/_view',

@@ -139,18 +139,19 @@ class YumFriendship extends YumActiveRecord {
 		$this->updatetime = time();
 
 		// If the user has activated email receiving, send a email
-		if($user = YumUser::model()->findByPk($this->friend_id))  {
-			if($user->privacy && $user->privacy->message_new_friendship) {
-				YumMessage::write($user, $this->inviter,
-						Yum::t('New friendship request from {username}', array(
-								'{username}' => $this->inviter->username)),
-						YumTextSettings::getText('text_friendship_new', array(
-								'{username}' => $this->inviter->username,
-								'{link_friends}' => Yii::app()->controller->createUrl('//user/friendship/index'),
-								'{link_profile}' => Yii::app()->controller->createUrl('//user/profile/view'),
-								'{message}' => $this->message)));
+		if($this->isNewRecord)
+			if($user = YumUser::model()->findByPk($this->friend_id))  {
+				if($user->privacy && $user->privacy->message_new_friendship) {
+					YumMessage::write($user, $this->inviter,
+							Yum::t('New friendship request from {username}', array(
+									'{username}' => $this->inviter->username)),
+							YumTextSettings::getText('text_friendship_new', array(
+									'{username}' => $this->inviter->username,
+									'{link_friends}' => Yii::app()->controller->createUrl('//user/friendship/index'),
+									'{link_profile}' => Yii::app()->controller->createUrl('//user/profile/view'),
+									'{message}' => $this->message)));
+				}
 			}
-		}
 		return parent::beforeSave();
 	}
 
