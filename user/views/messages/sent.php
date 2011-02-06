@@ -6,29 +6,23 @@ $this->breadcrumbs=array(
 	Yum::t('Sent messages'));
 
 $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'yum-messages-grid',
-	'dataProvider' => $dataProvider,
+	'id'=>'yum-sent-messages-grid',
+	'dataProvider' => $model->search(true),
 	'columns'=>array(
 		array(
+			'name' => 'to_user_id',
 			'type' => 'raw',
-			'name' => Yum::t('To'),
-			'value' => 'CHtml::link($data->to_user->username, array(
-					Yum::route(\'user/profile\'),
-					"id" => $data->to_user_id)
-				)'
+			'value' => 'isset($data->to_user) ? CHtml::link($data->to_user->username, array("//user/profile/view", "id" => $data->to_user->username)) : ""',
 			),
 		array(
 			'type' => 'raw',
-			'name' => Yum::t('title'),
-			'value' => 'CHtml::link($data->getTitle(), array("view", "id" => $data->id))',
+			'name' => 'title',
+			'value' => 'CHtml::link($data->title, array("view", "id" => $data->id))',
 		),
 		array(
-			'type' => 'raw',
-			'name' => Yum::t('Sent at'),
+			'name' => 'timestamp',
 			'value' => '$data->getDate()',
 		),
-
-
 		array(
 			'class'=>'CButtonColumn',
 			'template' => '{view}',

@@ -1,6 +1,8 @@
 Changelog for Yii User Management Module (Yum) 
 
 New in 0.8:
+- BUGFIX: Dont show if the message has been read by the recipient in my sent
+  messages anymore
 - Added 'visitors' to profiles (who visited whom when, and display it)
 - Added possibility to enable profile visit logs for an user in the privacy
 settings (thyseus)

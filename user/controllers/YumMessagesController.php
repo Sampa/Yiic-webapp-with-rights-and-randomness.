@@ -1,4 +1,6 @@
 <?php
+/* This is the controller for the internal messaging System of
+ * the Yii User Management Module. */
 
 Yii::import('application.modules.user.controllers.YumController');
 
@@ -38,17 +40,24 @@ class YumMessagesController extends YumController {
 	public function actionView() {
 		$model = $this->loadModel('YumMessage');
 
-		if($model->to_user_id != Yii::app()->user->id
-				&& $model->from_user_id != Yii::app()->user->id) {
-			$this->render('message_view_forbidden');
-		} else {
-			if(!$model->message_read) {
+		// If the model is a draft and i am not the author of the message, throw 403
+		if($model->draft && $model->from_user_id != Yii::app()->user->id) 
+			throw new CHttpException(403);
+
+		// Only allow to view the message if i am either the recipient or the author
+		if($model->to_user_id == Yii::app()->user->id
+				|| $model->from_user_id == Yii::app()->user->id) {
+		// If the recipient reads the message the first time, set the
+		// message_read boolean 
+			if(!$model->message_read 
+					&& $model->to_user_id == Yii::app()->user->id) {
 				$model->message_read = true;
 				$model->save(false, array('message_read'));
 			}
-
 			$this->render('view',array('model'=>$model));
-		}
+		} else
+			throw new CHttpException(403);
+
 	}
 
 	public function actionCompose($to_user_id = null) {
@@ -61,16 +70,18 @@ class YumMessagesController extends YumController {
 		$this->performAjaxValidation('YumMessage', 'yum-messages-form');
 		$model = new YumMessage;
 
-		if(isset($_POST['YumMessage'])) {			
+		$this->performAjaxValidation('YumMessage', 'yum-messages-form');
+
+		if(isset($_POST['YumMessage'])) {
 			$model->attributes = $_POST['YumMessage'];
 			$model->from_user_id = Yii::app()->user->id;
-
-			if($model->save()) {
+			$model->validate();
+			if(!$model->hasErrors()) {
+				$model->save();
 				Yum::setFlash(Yum::t('Message "{message}" has been sent to {to}', array(
 								'{message}' => $model->title,
 								'{to}' => YumUser::model()->findByPk($model->to_user_id)->username
-								)));
-
+								))); 
 				$this->redirect(array('index'));
 			}
 		}
@@ -93,26 +104,18 @@ class YumMessagesController extends YumController {
 
 	public function actionIndex()
 	{
+		$model = new YumMessage;
+
 		$this->render('index',array(
-					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
-							'pagination' => array(
-								'pageSize' => 20,
-								),
-							'criteria' => array(
-								'order' => 'timestamp DESC',
-								'condition' => 'to_user_id = '. Yii::app()->user->id)))));
+					'model'=> $model));
 	}
 
 	public function actionSent()
 	{
-		$this->render('sent',array(
-					'dataProvider'=>new CActiveDataProvider('YumMessage', array(
-							'pagination' => array(
-								'pageSize' => 20,
-								),
+		$model = new YumMessage;
 
-							'criteria' => array(
-								'condition' => 'from_user_id = '. Yii::app()->user->id)))));
+		$this->render('sent',array(
+					'model'=> $model));
 	}
 
 	public function actionSendDigest() {

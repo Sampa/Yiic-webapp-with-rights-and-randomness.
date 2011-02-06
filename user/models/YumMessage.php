@@ -35,29 +35,35 @@ class YumMessage extends YumActiveRecord
 		return parent::model($className);
 	}
 
-	public function beforeValidate() {
-		$this->timestamp = time();
 
-		$to_user = YumUser::model()->findByPk($this->to_user_id);
-		if($to_user && isset($to_user->privacy)) {
-			if(in_array($this->from_user->username, $to_user->privacy->getIgnoredUsers()))
-				$this->addError('to_user_id', Yum::t('One of the recipients ({username}) has ignored you. Message will not be sent!', array('{username}' => $to_user->username)));
+	public function beforeValidate() {
+		if(parent::beforeValidate()) {
+			$this->timestamp = time();
+
+			$to_user = YumUser::model()->findByPk($this->to_user_id);
+			if($to_user && isset($to_user->privacy)) {
+				if(in_array($this->from_user->username, $to_user->privacy->getIgnoredUsers()))
+					$this->addError('to_user_id', Yum::t('One of the recipients ({username}) has ignored you. Message will not be sent!', array('{username}' => $to_user->username)));
+			}
+			return true;
 		}
-		return parent::beforeValidate();
-	}
+		return false;
+	} 
 
 	public function afterSave() {
-		// If the user has activated email receiving, send a email
-		if(!$this->isNewRecord)
-			if($this->to_user->privacy && $this->to_user->privacy->message_new_message)
-				YumMailer::send($this->to_user->profile->email,
-						$this->title,
-						YumTextSettings::getText('text_message_new', array(
-								'{user}' => $this->from_user->username,
-								'{message}' => $this->message)));
-
-		return parent::afterSave();
-	} 
+		if(parent::afterSave()) {
+			// If the user has activated email receiving, send a email
+			if(!$this->isNewRecord)
+				if($this->to_user->privacy && $this->to_user->privacy->message_new_message)
+					YumMailer::send($this->to_user->profile->email,
+							$this->title,
+							YumTextSettings::getText('text_message_new', array(
+									'{user}' => $this->from_user->username,
+									'{message}' => $this->message)));
+			return true;
+		}
+		return false;
+	}  
 
 	public static function write($to, $from, $subject, $body, $mail = true) {
 		$message = new YumMessage();
@@ -82,6 +88,27 @@ class YumMessage extends YumActiveRecord
 		$message->title = $subject;
 		$message->message = $body;
 		return $message->save();
+	}
+
+	public function search($sent = false) {
+		$criteria = new CDbCriteria;
+
+		// FIXME: its not elegant to ask for $_GET in the model, but is there
+		// a better way to accomplish this?:
+		if(!isset($_GET['YumMessage_sort']))
+			$criteria->order = 'timestamp DESC';
+
+		if($sent)	
+			$criteria->addCondition('from_user_id = '. Yii::app()->user->id);
+		else
+			$criteria->addCondition('to_user_id = '. Yii::app()->user->id);
+
+		return new CActiveDataProvider('YumMessage', array(
+					'criteria' => $criteria,
+					'pagination' => array(
+						'pageSize' => Yum::module()->pageSize,
+						),
+					));
 	}
 
 	/**
@@ -144,6 +171,13 @@ class YumMessage extends YumActiveRecord
 		return $this;
 	}
 
+	// Always show the newest message at the top
+/*  public function defaultScope()
+	{
+		return array(
+				'order'=>'timestamp DESC'
+				);
+	} */
 	public function scopes() {
 		$id = Yii::app()->user->id;
 		return array(
@@ -194,6 +228,7 @@ class YumMessage extends YumActiveRecord
 				'to_user_id' => Yum::t('To'),
 				'title' => Yum::t('Title'),
 				'message' => Yum::t('Message'),
+				'timestamp' => Yum::t('Time sent'),
 				);
 	}
 
