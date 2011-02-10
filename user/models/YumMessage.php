@@ -65,6 +65,16 @@ class YumMessage extends YumActiveRecord
 		return false;
 	}  
 
+	// Small wrapper function to quickly send messages from inside the workflow
+	// $to - recipient of the message. either the uid, the username or an 
+	//			 YumUser object instance
+	// $from - Who wrote the message? Again, uid, username or YumUser object
+	// $subject - Subject
+	// $body - The message
+	// $mail - Should the mail also be send by email, defaults to true
+	//
+	// Example usage: YumMessage::write(1, 2, 'Hello', 'Body'); 
+	// Will write a message from admin to demo 
 	public static function write($to, $from, $subject, $body, $mail = true) {
 		$message = new YumMessage();
 
@@ -75,19 +85,39 @@ class YumMessage extends YumActiveRecord
 			$message->from_user_id = (int) $from->id;
 		else if(is_numeric($from))
 			$message->from_user_id = $from;
-		else 
+		else if(is_string($from) 
+				&& $user = YumUser::model()->find("username = '{$from}'"))
+			$message->from_user_id = $user->id;
+		else
 			return false;
 
 		if(is_object($to))
 			$message->to_user_id = (int) $to->id;
 		else if(is_numeric($to))
 			$message->to_user_id = $to;
+		else if(is_string($to) 
+				&& $user = YumUser::model()->find("username = '{$to}'"))
+			$message->to_user_id = $user->id;
 		else 
 			return false;
 
 		$message->title = $subject;
 		$message->message = $body;
 		return $message->save();
+	}
+
+	// How many messages have been written in month $month of year $year?
+	public static function countWritten($month = null, $year = null) {
+		$timestamp = mktime(0, 0, 0, $month, 1, $year);
+		$timestamp2 = mktime(0, 0, 0, $month + 1, 1, $year);
+		if($month === null) {
+			$timestamp = 0;
+			$timestamp2 = time();
+		}
+
+		$sql = "select count(*) from messages where timestamp > {$timestamp} and timestamp < {$timestamp2}";
+		$result = Yii::app()->db->createCommand($sql)->queryAll();
+		return $result[0]['count(*)'];
 	}
 
 	public function search($sent = false) {

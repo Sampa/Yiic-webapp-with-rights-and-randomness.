@@ -46,6 +46,21 @@ class YumFriendship extends YumActiveRecord {
 		return $this->save();
 	} 
 
+	// How many friendship requests have been made in month $month of year $year?
+	public static function countRequest($month = null, $year = null) {
+		$timestamp = mktime(0, 0, 0, $month, 1, $year);
+		$timestamp2 = mktime(0, 0, 0, $month + 1, 1, $year);
+		if($month === null) {
+			$timestamp = 0;
+			$timestamp2 = time();
+		}
+
+
+		$sql = "select count(*) from friendship where requesttime > {$timestamp} and requesttime < {$timestamp2}";
+		$result = Yii::app()->db->createCommand($sql)->queryAll();
+		return $result[0]['count(*)'];
+	}
+
 	public function acceptFriendship() {
 		$this->acknowledgetime = time();
 		$this->status = 2;

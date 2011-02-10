@@ -8,7 +8,7 @@ Management Module on a fresh created Yii Web Application.
 
 1.) Generate your Webapp:
 
-$ php yii-1.1.5/framework/yiic webapp testdrive
+$ php yii-1.1.6/framework/yiic webapp testdrive
 Create a Web application under '/var/www/testdrive'? [Yes|No] Yes
 
 [...]
@@ -170,45 +170,11 @@ else
 }
 
 
-Note, that you can assign several Roles to a user holding your CTRL key
-in the Listbox. This will be changed to a two-pane view (like in srbac)
-in a later Version.
-
 Please see the file docs/logging.txt for information on how to set up
 the logging functions of the Yii User Management module.
 
-available Application Configuration Parameters:
+Where to go from now on?
 
- Version number of the Module:
-$version = '0.8';
-
- Whether the Module is in Debug mode.
-$debug = false; 
-  
-  Table Names:
-$usersTable = "{{users}}";
-$messagesTable = "{{messages}}";
-$profileFieldsTable = "{{profile_fields}}";
-$profileTable = "{{profiles}}";
-$rolesTable = "{{roles}}";
-$userRoleTable = "{{user_has_role}}";
-  
-  Should there be installed the demo Data? :
-$installDemoData = true;
-  
-  The Layout used. This is the default Layout of the skeleton App.
-  Replace it with the used layout of your Web Application:
-$layout = 'column2';
-
-Since Version 0.4 you can define whether the user can login 
-with his username, his E-Mail address or both with the 'loginType' 
-attribute like this:
-
-   0: Allow login only by Username
-   1: Allow login only by E-Mail
-   2: Allow login by E-Mail or Username
-   3: Allow login only by OpenID 
-
-OpenID will be implemented in further Versions
-
-
+There are some examples on how to extend from the Yii User Management
+Module and how to implement project-specific stuff. See the files in 
+the docs/ directory for all this.

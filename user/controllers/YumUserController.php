@@ -351,11 +351,9 @@ class YumUserController extends YumController {
 
 			if(isset($_GET['YumUser']))
 				$model->attributes = $_GET['YumUser'];
+
 			$this->render('admin', array('model'=>$model));
-		} else {
-			$model = YumUser::model()->findByPk(Yii::app()->user->id);
-			$this->render('restricted_admin', array('users'=>$model->getAdministerableUsers()));
-		}
+		} 
 	}
 
 	/**

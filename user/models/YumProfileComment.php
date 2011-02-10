@@ -52,6 +52,21 @@ class YumProfileComment extends YumActiveRecord{
 		return parent::afterSave();
 	}
 
+	// How many profile comments have been written in month $month of year $year?
+	public static function countWritten($month = null, $year = null) {
+		$timestamp = mktime(0, 0, 0, $month, 1, $year);
+		$timestamp2 = mktime(0, 0, 0, $month + 1, 1, $year);
+		if($month === null) {
+			$timestamp = 0;
+			$timestamp2 = time();
+		}
+
+		$sql = "select count(*) from profile_comment where createtime > {$timestamp} and createtime < {$timestamp2}";
+		$result = Yii::app()->db->createCommand($sql)->queryAll();
+		return $result[0]['count(*)'];
+	}
+
+
 	public function attributeLabels()
 	{
 		return array(

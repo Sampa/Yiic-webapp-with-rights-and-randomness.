@@ -115,13 +115,6 @@ class Yum
 	{
 		if(Yii::app()->controller->module instanceof UserModule)
 			return Yii::app()->controller->module;
-		elseif(isset(Yii::app()->params['YumModuleAlias']))
-		{
-			$object = Yii::app();
-			foreach(explode('.',Yii::app()->params['YumModuleAlias']) as $subModule)
-				$object=$object->getModule($subModule);	
-			return $object;
-		}
 		elseif(Yii::app()->getModule('user') instanceof UserModule)
 			return Yii::app()->getModule('user');
 		else

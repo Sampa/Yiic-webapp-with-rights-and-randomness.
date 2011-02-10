@@ -62,7 +62,8 @@ class YumStatisticsController extends YumController {
 	public function loginsToday()
 	{
 		$day = $this->getStartOfDay(time());
-		return YumUser::model()->count('lastvisit > :begin and lastvisit < :end', array(
+		return YumUser::model()->count(
+				'lastvisit > :begin and lastvisit < :end', array(
 					':begin' => $day,
 					':end' => $day + 86400));
 	}
