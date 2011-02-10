@@ -361,7 +361,9 @@ class YumUser extends YumActiveRecord {
 
 		if(Yum::module()->enableRoles) 
 			$this->roles = YumRole::getAutoassignRoles(); 
-
+		if(isset($email)){
+			$this->email = $email;
+		}
 		return $this->save();
 	}
 
