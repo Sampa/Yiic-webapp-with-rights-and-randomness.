@@ -110,10 +110,12 @@ class Yum
 	}
 
 	// returns the yii user module. Mostly used for accessing options
-	// by calling Yum::module->option
+	// by calling Yum::module()->option
 	public static function module()
 	{
-		if(Yii::app()->controller->module instanceof UserModule)
+		if(isset(Yii::app()->controller)
+			&& isset(Yii::app()->controller->module)
+			&& Yii::app()->controller->module instanceof UserModule)
 			return Yii::app()->controller->module;
 		elseif(Yii::app()->getModule('user') instanceof UserModule)
 			return Yii::app()->getModule('user');

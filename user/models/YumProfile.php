@@ -221,8 +221,9 @@ class YumProfile extends YumActiveRecord
 			'allow_comments' => Yum::t('Allow profile comments'),
 		);
 
-		foreach (self::$fields as $field)
-			$labels[$field->varname] = Yum::t($field->title);
+		if(self::$fields)
+			foreach (self::$fields as $field)
+				$labels[$field->varname] = Yum::t($field->title);
 
 		return $labels;
 	}
