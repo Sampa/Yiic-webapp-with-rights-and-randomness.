@@ -280,8 +280,12 @@ class UserModule extends CWebModule {
 	public function beforeControllerAction($controller, $action) {
 		parent::beforeControllerAction($controller, $action);
 
+		// Do not enable Debug mode when in Production Mode
+		if(!defined('YII_DEBUG'))
+			$this->debug = false;
+
 		if(Yii::app()->user->isAdmin())
-			$controller->layout = Yii::app()->getModule('user')->adminLayout;
+			$controller->layout = Yum::module()->adminLayout;
 
 		// Assign options from settings table, if available
 		if(Yii::app()->controller->id != 'install' 

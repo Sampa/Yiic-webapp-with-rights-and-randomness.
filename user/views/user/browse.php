@@ -5,7 +5,6 @@ $this->breadcrumbs=array(Yum::t('Benutzer suchen'));
 Yum::register('js/tooltip.min.js');
 Yum::register('css/yum.css'); 
 ?>
-<h2>Benutzer suchen</h2>
 <div class="search_options">
 
 <?php echo CHtml::beginForm(); ?>
