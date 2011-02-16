@@ -10,12 +10,14 @@
 	<b><?php echo CHtml::encode($data->getAttributeLabel('description')); ?>:</b>
 	<?php echo CHtml::encode(substr($data->description, 0, 200)) . '... '; ?>
 	<br />
+	<br />
+	<br />
 
-	<?php echo CHtml::button(Yum::t('View Details'), array(
-				'submit' => array(
-					'//user/groups/view', 'id' => $data->id))); ?>
-				<?php echo CHtml::button(Yum::t('Join group'), array(
-							'submit' => array(
-								'//user/groups/join', 'id' => $data->id))); ?>
+	<?php echo CHtml::link(Yum::t('View Details'), array(
+					'//user/groups/view', 'id' => $data->id)); ?>
+	<?php 
+if(!(Yii::app()->user->data()->belongsToGroup($data->id)))
+	echo CHtml::link(Yum::t('Join group'), array(
+					'//user/groups/join', 'id' => $data->id)); ?>
 
 	</div>

@@ -1,10 +1,8 @@
 <?php
 $this->breadcrumbs = array(
-	'Usergroups',
-	Yii::t('app', 'Index'),
+	Yum::t('Usergroups'),
+	Yum::t('Browse'),
 );
-
-echo CHtml::Button(Yum::t('Create new Usergroup'), array('submit' => array('create'))); 
 
 ?>
 

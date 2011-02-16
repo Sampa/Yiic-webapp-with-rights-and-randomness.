@@ -1,7 +1,6 @@
 <?php
 $this->title = Yum::t('Users');
 $this->breadcrumbs=array(Yum::t("Users"));
-
 ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(

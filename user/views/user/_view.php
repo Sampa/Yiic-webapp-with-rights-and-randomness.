@@ -6,7 +6,7 @@
 
 <?php
 $online = '';
-if($data->privacy->show_online_status)
+if($data->privacy && $data->privacy->show_online_status)
 	if($data->isOnline()) {
 	$online .= CHtml::image(Yum::register('images/green_button.png'));
 }

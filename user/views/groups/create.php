@@ -1,16 +1,12 @@
 <?php
 $this->breadcrumbs=array(
-	'Usergroups'=>array(Yii::t('app', 'index')),
-	Yii::t('app', 'Create'),
+	Yum::t('Usergroups')=>array('index'),
+	Yum::t('Create'),
 );
 
-$this->menu=array(
-	array('label'=>Yii::t('app', 'List') . ' Usergroup', 'url'=>array('index')),
-	array('label'=>Yii::t('app', 'Manage') . ' Usergroup', 'url'=>array('admin')),
-);
 ?>
 
-<h1> Create Usergroup </h1>
+<?php $this->title = Yum::t('Create Usergroup'); ?> 
 <?php
 $this->renderPartial('_form', array(
 			'model' => $model,

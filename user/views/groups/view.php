@@ -1,12 +1,12 @@
 <?php
+Yum::register('css/yum.css');
+
 $this->breadcrumbs=array(
-		'Usergroups'=>array('index'),
+		Yum::t('Usergroups')=>array('index'),
 		$model->title,
 		);
 
-?>
-
-<h1> <?php echo $model->title; ?> </h1>
+$this->title = $model->title; ?> 
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -18,13 +18,7 @@ $this->widget('zii.widgets.CDetailView', array(
 				),
 			)); 
 
-printf('<h2>%s</h2>', Yum::t('Participants'));
-
-$participants = new CActiveDataProvider('YumGroupParticipation', array(
-			'criteria' => array(
-				'condition' => 'group_id = :group_id',
-				'join' => 'left join usergroup on group_id = usergroup.id',
-				'params' => array(':group_id' => $model->id))));
+printf('<h2> %s </h2>', Yum::t('Participants'));
 
 $this->widget('zii.widgets.CListView', array(
     'dataProvider'=>$participants,

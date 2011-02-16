@@ -21,19 +21,33 @@ class YumUsergroupController extends YumController {
 				);
 	}
 
-	public function actionJoin() {
-		if(isset($_GET['id'])) {
+	public function actionJoin($id = null) {
+		if($id !== null) {
 			$p = new YumGroupParticipation();
 			$p->user_id = Yii::app()->user->id;
-			$p->group_id = $_GET['id'];
-			if($p->save())
-				$this->redirect(array('//user/groups/view', 'id' => $_GET['id']));
+			$p->group_id = $id;
+			if($p->save()) {
+				Yum::log(Yum::t('User {username} joined group id {id}',
+							array('{username}' => Yii::app()->user->data()->username,
+								'{id}' => $p->group_id)));
+
+				$this->redirect(array('//user/groups/view', 'id' => $id));
+			}
 		}
 	}
 
 	public function actionView() {
+		$model = $this->loadModel();
+
+		$participants = new CActiveDataProvider('YumGroupParticipation', array(
+					'criteria' => array(
+						'condition' => 'group_id = :group_id',
+						'join' => 'left join usergroup on group_id = usergroup.id',
+						'params' => array(':group_id' => $model->id))));
+
 		$this->render('view',array(
-					'model' => $this->loadModel(),
+					'participants' => $participants,
+					'model' => $model,
 					));
 	}
 
@@ -117,13 +131,19 @@ class YumUsergroupController extends YumController {
 					Yii::t('app', 'Invalid request. Please do not repeat this request again.'));
 	}
 
-	public function actionIndex()
+	public function actionIndex($owner_id = null)
 	{
-		$dataProvider=new CActiveDataProvider('YumUsergroup', array(
-				'criteria' => array(
-					'condition' => 'owner_id = :owner_id',
-					'params' => array(':owner_id' => Yii::app()->user->id))));
+		$criteria = new CDbCriteria;
 
+		if($owner_id != null) {
+			$uid = Yii::app()->user->id;
+			$criteria->addCondition( array(
+						'condition' => "owner_id = {$uid}"));
+		}
+
+		$dataProvider=new CActiveDataProvider('YumUsergroup', array(
+					'criteria' => $criteria)
+				);
 
 		$this->render('index',array(
 					'dataProvider'=>$dataProvider,
