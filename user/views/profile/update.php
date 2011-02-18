@@ -25,10 +25,15 @@ $this->title = Yum::t('Edit profile');
 	$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>
 
 	<div class="row buttons">
-	<?php echo CHtml::button(Yum::t('Privacy settings'), array(
-				'submit' => array('/user/privacy/update'))); ?>
+	<?php
 
-	<?php echo CHtml::button(Yum::t('Upload avatar Image'), array(
+	if(Yum::module()->enablePrivacysetting)
+		echo CHtml::button(Yum::t('Privacy settings'), array(
+					'submit' => array('/user/privacy/update'))); ?>
+
+	<?php 
+		if(Yum::module()->enableAvatar)
+			echo CHtml::button(Yum::t('Upload avatar Image'), array(
 				'submit' => array('/user/avatar/editAvatar'))); ?>
 
 	<?php echo CHtml::submitButton($user->isNewRecord 

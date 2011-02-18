@@ -15,6 +15,13 @@ class YumPrivacysettingController extends YumController
 				);
 	}
 
+	public function beforeAction($action) {
+		if(!Yum::module()->enablePrivacysetting)
+			throw new CHttpException(404);
+
+		return parent::beforeAction($action);
+	}
+
 	public function actionUpdate() {
 		$model = YumPrivacySetting::model()->findByPk(Yii::app()->user->id);
 

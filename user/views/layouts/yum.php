@@ -23,8 +23,10 @@ if (Yum::module()->debug) {
 }
 ?>
 
-<?php printf('<h2> %s </h2>', $this->title);  ?>
-<?php echo $content;  ?>
+<?php 
+if($this->title)
+	printf('<h2> %s </h2>', $this->title);  ?>
+	<?php echo $content;  ?>
 </div>
 
 <?php $this->endContent(); ?>

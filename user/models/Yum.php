@@ -79,6 +79,7 @@ class Yum
 		controller */
 	public static function t($string, $params = array())
 	{
+		Yii::import('application.modules.user.UserModule');
 		$file = 'yum_'. Yii::app()->controller->id;
 		$lang = Yii::app()->language;
 		$path = Yii::getPathOfAlias("application.modules.user.messages.{$lang}.{$file}"). '.php';

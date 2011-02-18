@@ -1,7 +1,9 @@
 <div class="form">
-<?php echo CHtml::beginForm(array('/user/user/login')); 
+<?php echo CHtml::beginForm(array('/user/auth')); 
 
-$link = '//' . Yii::app()->controller->uniqueid .  '/' . Yii::app()->controller->action->id;
+$link = '//' .
+Yii::app()->controller->uniqueid .
+'/' . Yii::app()->controller->action->id;
 echo CHtml::hiddenField('quicklogin', $link);
 ?>
 
@@ -21,7 +23,7 @@ echo CHtml::hiddenField('quicklogin', $link);
 </div>
 	
 	<div class="row submit">
-		<?php echo CHtml::submitButton(Yii::t("user", "Login")); ?>
+		<?php echo CHtml::submitButton(Yum::t('Login')); ?>
 	</div>
 	
 <?php echo CHtml::endForm(); ?>

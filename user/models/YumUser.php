@@ -90,6 +90,9 @@ class YumUser extends YumActiveRecord {
 
 	// Which memberships are bought by the user
 	public function getActiveMemberships() {
+		if(!Yum::module()->enableMembership)
+			return array();
+
 		$roles = array();
 		foreach($this->memberships as $membership) {
 			if($membership->end_date > time())

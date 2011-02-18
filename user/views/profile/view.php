@@ -24,6 +24,6 @@ if($model->id == Yii::app()->user->id)
 <?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> 
 <br /> 
 <?php
- if(isset($model->profile))
+ if(Yum::module()->enableProfileComments && isset($model->profile))
 	$this->renderPartial('/profileComment/index', array('model' => $model->profile)); ?> 
 </div>

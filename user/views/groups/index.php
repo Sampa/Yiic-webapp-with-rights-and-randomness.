@@ -4,9 +4,7 @@ $this->breadcrumbs = array(
 	Yum::t('Browse'),
 );
 
-?>
-
-<h1> <?php echo Yum::t('Usergroups'); ?></h1>
+$this->title = Yum::t('Usergroups'); ?>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
