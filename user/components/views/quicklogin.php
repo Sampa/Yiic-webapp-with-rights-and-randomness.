@@ -24,6 +24,7 @@ echo CHtml::hiddenField('quicklogin', $link);
 	
 	<div class="row submit">
 		<?php echo CHtml::submitButton(Yum::t('Login')); ?>
+		<?php echo CHtml::link(Yum::t('Lost password?'), array('//user/registration/recovery')); ?>
 	</div>
 	
 <?php echo CHtml::endForm(); ?>

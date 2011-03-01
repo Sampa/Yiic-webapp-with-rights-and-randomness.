@@ -82,7 +82,8 @@ class Yum
 		Yii::import('application.modules.user.UserModule');
 		$file = 'yum_'. Yii::app()->controller->id;
 		$lang = Yii::app()->language;
-		$path = Yii::getPathOfAlias("application.modules.user.messages.{$lang}.{$file}"). '.php';
+		$path = Yii::getPathOfAlias(
+				"application.modules.user.messages.{$lang}.{$file}"). '.php';
 
 		if(is_file($path) && $messages = include($path))
 			if (array_key_exists($string, $messages) == true)
@@ -126,7 +127,6 @@ class Yum
 				if($parent instanceof UserModule)	
 					return $parent;
 		}
-		throw new CException(Yum::t('Yum Module cannot be found'));		
 	}
 
 

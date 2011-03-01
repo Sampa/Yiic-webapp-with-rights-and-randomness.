@@ -21,8 +21,8 @@ class YumAuthController extends YumController {
 	}
 
 	/**
-	* Handles user login via OpenLDAP
-	*/
+	 * Handles user login via OpenLDAP
+	 */
 	public function loginByLdap()
 	{
 		if (!Yum::module()->loginType & UserModule::LOGIN_BY_LDAP)
@@ -120,7 +120,7 @@ class YumAuthController extends YumController {
 					case YumUserIdentity::ERROR_NONE:
 						$duration = 3600*24*30; //30 days
 						Yii::app()->user->login($identity, $duration);
-							Yum::log('User ' . $user->username .' logged in via facebook');
+						Yum::log('User ' . $user->username .' logged in via facebook');
 						return $user;
 						break;
 					case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
@@ -142,7 +142,7 @@ class YumAuthController extends YumController {
 				 * approach to solve this issue is more than welcomed.
 				 */
 
-					Yum::log('Failed login attempt for ' . $user->username . ' via facebook', 'error');
+				Yum::log('Failed login attempt for ' . $user->username . ' via facebook', 'error');
 				return false;
 			}
 		}
@@ -158,7 +158,7 @@ class YumAuthController extends YumController {
 			$user = YumUser::model()->find('upper(username) = :username', array(
 						':username' => strtoupper($this->loginForm->username)));
 
-			if($user)
+		if($user)
 			return $this->authenticate($user);
 		else
 			$this->loginForm->addError('password',
@@ -170,32 +170,32 @@ class YumAuthController extends YumController {
 	public function authenticate($user) {
 		$identity = new YumUserIdentity($user->username, $this->loginForm->password);
 		$identity->authenticate();
-			switch($identity->errorCode) {
-				case YumUserIdentity::ERROR_NONE:
-					$duration = $this->loginForm->rememberMe ? 3600*24*30 : 0; // 30 days
-					Yii::app()->user->login($identity,$duration);
-					return $user;
-					break;
-				case YumUserIdentity::ERROR_EMAIL_INVALID:
+		switch($identity->errorCode) {
+			case YumUserIdentity::ERROR_NONE:
+				$duration = $this->loginForm->rememberMe ? 3600*24*30 : 0; // 30 days
+				Yii::app()->user->login($identity,$duration);
+				return $user;
+				break;
+			case YumUserIdentity::ERROR_EMAIL_INVALID:
+				$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
+				break;
+			case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
+				$this->loginForm->addError("status",Yum::t('This account is not activated.'));
+				break;
+			case YumUserIdentity::ERROR_STATUS_BANNED:
+				$this->loginForm->addError("status",Yum::t('This account is blocked.'));
+				break;
+			case YumUserIdentity::ERROR_STATUS_REMOVED:
+				$this->loginForm->addError('status', Yum::t('Your account has been deleted.'));
+				break;
+
+			case YumUserIdentity::ERROR_PASSWORD_INVALID:
+				Yum::log(Yum::t('Failed login attempt for {username}', array(
+								'{username}' => $this->loginForm->username)), 'error');
+
+				if(!$this->loginForm->hasErrors())
 					$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
-					break;
-				case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
-					$this->loginForm->addError("status",Yum::t('This account is not activated.'));
-					break;
-				case YumUserIdentity::ERROR_STATUS_BANNED:
-					$this->loginForm->addError("status",Yum::t('This account is blocked.'));
-					break;
-				case YumUserIdentity::ERROR_STATUS_REMOVED:
-					$this->loginForm->addError('status', Yum::t('Your account has been deleted.'));
-					break;
-
-				case YumUserIdentity::ERROR_PASSWORD_INVALID:
-					Yum::log(Yum::t('Failed login attempt for {username}', array(
-									'{username}' => $this->loginForm->username)), 'error');
-
-					if(!$this->loginForm->hasErrors())
-						$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
-					break;
+				break;
 				return false;
 		}
 	}
@@ -273,13 +273,13 @@ class YumAuthController extends YumController {
 		}
 		if (Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success) {
 			$success = $this->loginByFacebook();
-					if ($success)
-						$login_type = 'facebook';
+			if ($success)
+				$login_type = 'facebook';
 		}
 		if (Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success) {
 			$sucess = $this->loginByTwitter();
-					if ($success)
-						$login_type = 'twitter';
+			if ($success)
+				$login_type = 'twitter';
 		}
 		if ($success instanceof YumUser) {
 			//cookie with login type for later flow control in app
@@ -294,7 +294,7 @@ class YumAuthController extends YumController {
 		}
 
 		$this->render(Yum::module()->loginView, array(
-			'model' => $this->loginForm));
+					'model' => $this->loginForm));
 	}
 
 	public function redirectUser($user) {
@@ -327,34 +327,35 @@ class YumAuthController extends YumController {
 			Yii::app()->request->cookies['login_type'] = $cookie;
 		}
 
-		$user = YumUser::model()->findByPk(Yii::app()->user->id);
-		$username = $user->username;
-		$user->logout();
+		if($user = YumUser::model()->findByPk(Yii::app()->user->id)) {
+			$username = $user->username;
+			$user->logout();
 
-		if (Yii::app()->user->name == 'facebook') {
-			if (!Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK)
-				throw new Exception('actionLogout for Facebook was called, but is not activated in main.php');
+			if (Yii::app()->user->name == 'facebook') {
+				if (!Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK)
+					throw new Exception('actionLogout for Facebook was called, but is not activated in main.php');
 
-			Yii::import('application.modules.user.vendors.facebook.*');
-			require_once('Facebook.php');
-			$facebook = new Facebook(Yum::module()->facebookConfig);
-			$fb_cookie = 'fbs_'.Yum::module()->facebookConfig['appId'];
-			$cookie = Yii::app()->request->cookies[$fb_cookie];
-			if ($cookie) {
-				$cookie->expire = time() -1*(3600*72);
-				Yii::app()->request->cookies[$cookie->name] = $cookie;
-			}
-			$session = $facebook->getSession();
+				Yii::import('application.modules.user.vendors.facebook.*');
+				require_once('Facebook.php');
+				$facebook = new Facebook(Yum::module()->facebookConfig);
+				$fb_cookie = 'fbs_'.Yum::module()->facebookConfig['appId'];
+				$cookie = Yii::app()->request->cookies[$fb_cookie];
+				if ($cookie) {
+					$cookie->expire = time() -1*(3600*72);
+					Yii::app()->request->cookies[$cookie->name] = $cookie;
+				}
+				$session = $facebook->getSession();
 				Yum::log('Facebook logout from user '. $username);
-			Yii::app()->user->logout();
-			$this->redirect($facebook->getLogoutUrl(array('next' => $this->createAbsoluteUrl(Yum::module()->returnLogoutUrl), 'session_key' => $session['session_key'])));
-		}
-		else {
-			Yum::log(Yum::t('User {username} logged off', array(
-							'{username}' => $username)));
+				Yii::app()->user->logout();
+				$this->redirect($facebook->getLogoutUrl(array('next' => $this->createAbsoluteUrl(Yum::module()->returnLogoutUrl), 'session_key' => $session['session_key'])));
+			}
+			else {
+				Yum::log(Yum::t('User {username} logged off', array(
+								'{username}' => $username)));
 
-			Yii::app()->user->logout();
-			$this->redirect(Yum::module()->returnLogoutUrl);
+				Yii::app()->user->logout();
+			}
 		}
+		$this->redirect(Yum::module()->returnLogoutUrl);
 	}
 }
