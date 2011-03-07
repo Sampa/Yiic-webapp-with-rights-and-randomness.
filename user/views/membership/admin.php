@@ -30,6 +30,7 @@ $locale = CLocale::getInstance(Yii::app()->language);
 		'payment.title',
 		array(
 			'class'=>'CButtonColumn',
+			'template' => '{update}{delete}',
 		),
 	),
 )); ?>

@@ -94,10 +94,11 @@ class YumUser extends YumActiveRecord {
 			return array();
 
 		$roles = array();
-		foreach($this->memberships as $membership) {
-			if($membership->end_date > time())
-				$roles[] = $membership->role;
-		}
+		if($this->memberships)
+			foreach($this->memberships as $membership) {
+				if($membership->end_date > time())
+					$roles[] = $membership->role;
+			}
 
 		return $roles;
 	}

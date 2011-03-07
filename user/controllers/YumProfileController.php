@@ -92,6 +92,9 @@ class YumProfileController extends YumController {
 	}
 
 	public function updateVisitor($visitor_id, $visited_id) {
+		if(!Yum::module()->enableProfileVisitLogging)
+			return false;
+
 		// If the user does not want to log his profile visits, cancel here
 		if(isset(Yii::app()->user->data()->privacy) &&
 				!Yii::app()->user->data()->privacy->log_profile_visits)

@@ -26,15 +26,16 @@ class YumMembershipController extends YumController {
 		return false;
 	}
 
-	public function actionUpdate() {
-		if(isset($_GET['id']))
-			$model = YumMembership::model()->findByPk($_GET['id']);
+	public function actionUpdate($id = null) {
+		if($id !== null) 
+			$model = YumMembership::model()->findByPk($id);
 
 		if(isset($_POST['YumMembership'])) {
 			$model = YumMembership::model()->findByPk($_POST['YumMembership']['id']); 
 			$model->attributes = $_POST['YumMembership'];
+			if($model->payment_date == 0)
+				$model->end_date = $model->payment_date + ($model->role->duration * 30.5 * 86400);
 			$model->payment_date = time();
-			$model->end_date = $model->payment_date + ($model->role->duration * 30.5 * 86400);
 
 			if($model->save()) {
 				YumMessage::write($model->user, 1,

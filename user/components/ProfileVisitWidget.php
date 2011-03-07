@@ -7,6 +7,9 @@ class ProfileVisitWidget extends CPortlet
 	public $decorationCssClass = 'portlet-decoration profilevisits';
 
 	public function init() {
+		if(!Yum::module()->enableProfileVisitLogging)
+			return false;
+
 		$this->title=Yum::t('Profile visits');
 		if(Yii::app()->user->isGuest)
 			return false;
@@ -16,6 +19,9 @@ class ProfileVisitWidget extends CPortlet
 
 	protected function renderContent()
 	{
+		if(!Yum::module()->enableProfileVisitLogging)
+			return false;
+
 		parent::renderContent();
 		if(Yii::app()->user->isGuest)
 			return false;

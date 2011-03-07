@@ -1,4 +1,4 @@
-<?php if($model->allow_comments) { ?>
+<?php if(Yum::module()->enableProfileComments && $model->allow_comments) { ?>
 <h2> <?php echo Yum::t('Profile Comments'); ?> </h2>
 
 <?php 

@@ -1,3 +1,4 @@
+<?php if($profile->getPublicFields()) { ?>
 <table class="table_profile_fields">
 <?php foreach($profile->getPublicFields() as $field) { ?>
 
@@ -8,5 +9,6 @@
 
 <?php } ?>
 </table>
+<?php } ?>
 
 <div class="clear"></div>

@@ -51,6 +51,9 @@ class YumProfile extends YumActiveRecord
 	// All fields that the user has activated in his privacy settings will
 	// be obtained and returned for the use in the profile view
 	public function getPublicFields() {
+		if(!Yum::module()->enablePrivacysetting)
+			return false;
+
 		$fields = array();
 
 		if($privacy = @YumUser::model()->findByPk($this->user_id)->privacy->public_profile_fields) {

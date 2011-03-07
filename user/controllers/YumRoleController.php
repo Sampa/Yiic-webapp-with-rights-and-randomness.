@@ -22,9 +22,11 @@ class YumRoleController extends YumController {
 						'condition' => "role_id = {$model->id}",
 						'join' => 'left join user_has_role on t.id = user_has_role.user_id')));
 
-		$activeMemberships= new CActiveDataProvider('YumMembership', array(
-					'criteria' => array(
-						'condition' => "membership_id = {$model->id}")));
+		$activeMemberships = false;
+		if(Yum::module()->enableMembership)
+			$activeMemberships= new CActiveDataProvider('YumMembership', array(
+						'criteria' => array(
+							'condition' => "membership_id = {$model->id}")));
 
 		$this->render('view',array(
 					'assignedUsers' => $assignedUsers,

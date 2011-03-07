@@ -19,9 +19,13 @@ if($model->id == Yii::app()->user->id)
 <?php $this->renderPartial('/profile/public_fields', array(
 			'profile' => $model->profile)); ?>
 <br />
-<?php $this->renderPartial('/friendship/friends', array('model' => $model)); ?> 
-<br /> 
-<?php $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> 
+<?php
+if(Yum::module()->enableFriendship)
+	$this->renderPartial('/friendship/friends', array('model' => $model)); ?> 
+	<br /> 
+<?php
+if(Yum::module()->messageSystem != YumMessage::MSG_NONE)
+ $this->renderPartial('/messages/write_a_message', array('model' => $model)); ?> 
 <br /> 
 <?php
  if(Yum::module()->enableProfileComments && isset($model->profile))
