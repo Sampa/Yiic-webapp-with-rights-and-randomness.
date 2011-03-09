@@ -85,9 +85,9 @@ class YumInstallController extends YumController {
 
 					$sql = "CREATE TABLE IF NOT EXISTS `". $privacySettingTable . "` (
 						`user_id` int unsigned NOT NULL,
-						`message_new_friendship` tinyint(1) NOT NULL,
-						`message_new_message` tinyint(1) NOT NULL,
-						`message_new_profilecomment` tinyint(1) NOT NULL,
+						`message_new_friendship` tinyint(1) NOT NULL DEFAULT 1,
+						`message_new_message` tinyint(1) NOT NULL DEFAULT 1,
+						`message_new_profilecomment` tinyint(1) NOT NULL DEFAULT 1,
 						`appear_in_search` tinyint(1) NOT NULL DEFAULT 1,
 						`show_online_status` tinyint(1) NOT NULL DEFAULT 1,
 						`log_profile_visits` tinyint(1) NOT NULL DEFAULT 1,

@@ -178,3 +178,23 @@ Where to go from now on?
 There are some examples on how to extend from the Yii User Management
 Module and how to implement project-specific stuff. See the files in 
 the docs/ directory for all this.
+
+
+FAQ:
+
+I get the error Message: CWebUser does not have a method named "isAdmin":
+
+Please make sure that you have the following in your application configuration:
+
+	'components'=>array(
+		'user'=>array(
+			'class' => 'application.modules.user.components.YumWebUser',
+
+
+I get the error Message: the table "{{users}}" for active record class "YumUser" cannot be found in the database.
+
+Please make sure that you have the following in your application configuration:
+
+		'db'=>array(
+			'tablePrefix' => '',
+			[...]
