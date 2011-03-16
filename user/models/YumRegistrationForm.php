@@ -7,6 +7,8 @@
  * @package Yum.models
  */
 class YumRegistrationForm extends YumUser {
+	public $username;
+	public $password;
 	public $verifyPassword;
 	public $verifyCode; // Captcha
 
@@ -14,10 +16,11 @@ class YumRegistrationForm extends YumUser {
 	{
 		$rules = parent::rules();
 
-		if(!Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
-			$rules[] = array('username', 'required');
+		$rules[] = array('username', 'required');
 		$rules[] = array('password, verifyPassword', 'required');
-		$rules[] = array('password', 'compare', 'compareAttribute'=>'verifyPassword', 'message' => Yum::t("Retype password is incorrect."));
+		$rules[] = array('password', 'compare',
+				'compareAttribute'=>'verifyPassword',
+				'message' => Yum::t("Retype password is incorrect."));
 		$rules[] = array('verifyCode', 'captcha', 'allowEmpty'=>CCaptcha::checkRequirements() || !Yum::module()->enableCaptcha);
 
 		return $rules;

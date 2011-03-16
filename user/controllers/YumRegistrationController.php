@@ -19,7 +19,6 @@ class YumRegistrationController extends YumController {
 		return parent::beforeAction($action);
 	}
 
-
 	public function accessRules() {
 		return array(
 				array('allow',
@@ -45,7 +44,6 @@ class YumRegistrationController extends YumController {
 				);
 	}
 
-
 	/*
 	 * an Example implementation of an registration of an new User in the system.
 	 *
@@ -56,6 +54,8 @@ class YumRegistrationController extends YumController {
 		$form = new YumRegistrationForm;
 		$profile = new YumProfile;
 
+		$this->performAjaxValidation('YumRegistrationForm', $form);
+
 		if (isset($_POST['YumRegistrationForm'])) { 
 			$form->attributes = $_POST['YumRegistrationForm'];
 			$profile->attributes = $_POST['YumProfile'];
@@ -65,13 +65,13 @@ class YumRegistrationController extends YumController {
 
 			if(!$form->hasErrors() && !$profile->hasErrors()) {
 				$user = new YumUser;
-				if ($user->register($form->username, $form->password, $profile->email)) {
-					$profile->user_id = $user->id;
-					$profile->save();
+				$user->register($form->username, $form->password, $profile->email);
+				$profile->user_id = $user->id;
+				$profile->save();
 
-					if($this->sendRegistrationEmail($user))
-						Yum::setFlash('Thank you for your registration. Please check your email.');
-				} 
+				$this->sendRegistrationEmail($user);
+				Yum::setFlash('Thank you for your registration. Please check your email.');
+				$this->redirect(Yum::module()->loginUrl);
 			}
 		} 
 
@@ -176,9 +176,8 @@ class YumRegistrationController extends YumController {
 										'key' => $user->activationKey,
 										'email' => $user->profile->email));
 							if (Yum::module()->enableLogging == true)
-								YumActivityController::logActivity($user, 'recovery');
+								Yum::log(Yum::t('{username} requested a new password in the password recovery form', array('{username}' => $user->username)));
 
-							Yum::setFlash('Instructions have been sent to you. Please check your email.');
 
 							$content = YumTextSettings::model()->find('language = :lang', array('lang' => Yii::app()->language));
 							$sent = null;
@@ -191,6 +190,9 @@ class YumRegistrationController extends YumController {
 										'body' => strtr($content->text_email_recovery, array('{activation_url}' => $activation_url)),
 									);
 							$sent = YumMailer::send($mail);
+
+							Yum::setFlash('Instructions have been sent to you. Please check your email.');
+							$this->redirect(Yum::module()->loginUrl);
 						} else {
 							throw new CException(Yum::t('The messages for your application language are not defined.'));
 						}

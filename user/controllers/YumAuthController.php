@@ -87,7 +87,6 @@ class YumAuthController extends YumController {
 					$user->password = YumUser::encrypt(YumUserChangePassword::createRandomPassword());
 					$user->activationKey = YumUser::encrypt(microtime().$user->password);
 					$user->createtime = time();
-					$user->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
 					$user->superuser = 0;
 					if ($user->save()) {
 						$profile = new YumProfile;
@@ -107,8 +106,7 @@ class YumAuthController extends YumController {
 					$profile->facebook_id = $fb_uid;
 					$profile->save(false);
 					$user->username = 'fb_'.YumRegistrationForm::genRandomString(Yum::module()->usernameRequirements['maxLen'] - 3);
-					if ($user->status == YumUser::STATUS_NOTACTIVE)
-						$user->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
+
 					$user->superuser = 0;
 					$user->save();
 				}
@@ -288,8 +286,21 @@ class YumAuthController extends YumController {
 				$cookie->expire = time() + (3600*24*30);
 				Yii::app()->request->cookies['login_type'] = $cookie;
 			}
-			Yum::log(Yum::t('User {username} successfully logged in', array(
-							'{username}' => $success->username)));
+			if ($success->status == YumUser::STATUS_ACTIVATED) {
+				$success->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
+				$success->save('status', false);
+				Yum::log(
+						Yum::t(
+							'User {username} successfully logged in the first time', array(
+								'{username}' => $success->username)));
+
+			} else if ($success->status == YumUser::STATUS_ACTIVE_FIRST_VISIT) {
+				$success->status = YumUser::STATUS_ACTIVE;
+				$success->save('status', false);
+			} else 
+				Yum::log(Yum::t('User {username} successfully logged in', array(
+								'{username}' => $success->username)));
+
 			$this->redirectUser($success);
 		}
 

@@ -19,8 +19,6 @@ $this->breadcrumbs = array(Yum::t('Registration'));
 <?php
 echo $activeform->labelEx($form,'username');
 echo $activeform->textField($form,'username');
-echo $activeform->labelEx($profile,'email');
-echo $activeform->textField($form,'username');
 ?>
 </div>
 
@@ -28,11 +26,7 @@ echo $activeform->textField($form,'username');
 $profileFields = YumProfileField::model()->forRegistration()->sort()->findAll();
 
 if ($profileFields) {
-	if(!isset($profile))
-		$profile = new YumProfile();
-
-	foreach($profileFields as $field)
-	{
+	foreach($profileFields as $field) {
 ?>
 			<div class="row">
 <?php
@@ -42,25 +36,6 @@ if ($profileFields) {
 				echo $activeform->dropDownList($profile,
 					$field->varname,
 					YumProfile::range($field->range));
-		}
-		elseif ($field->varname == 'email')
-		{
-			//Paint it hidden or paint it like a text field, depending of the method of registration.
-			if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
-				echo CHtml::activeHiddenField ($profile, 'email');
-			else
-			{
-				echo CHtml::activeLabelEx($profile, $field->varname);
-				echo CHtml::activeTextArea($profile, $field->varname, array('rows'=>6, 'cols'=>50));
-			}
-
-			$tmp_profile=YumProfile::model()->find('email=\''.$form->email.'\'');
-			if ($tmp_profile !== null)
-			{
-				$user=$tmp_profile->user;
-				if ($user !== null && $user->status == YumUser::STATUS_NOTACTIVE)
-					echo $this->renderPartial('/user/_resend_activation_partial', array('user'=>$user, 'user'=>$user));
-			}
 		}
 		elseif ($field->field_type == "TEXT")
 		{

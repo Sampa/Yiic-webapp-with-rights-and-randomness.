@@ -22,6 +22,37 @@ $this->title = Yum::t('Privacy settings for {username}', array(
 echo $form->errorSummary($model);
 ?>
 
+<?php if(Yum::module()->enableProfiles) { ?>
+
+<div class="profile_field_selection">
+<?php
+echo '<h3>' . Yum::t('Profile field public options') . '</h3>';
+echo '<p>' . Yum::t('Select the fields that should be public') . ':</p>';
+$i = 1;
+
+$counter=0;
+
+foreach(YumProfileField::model()->findAll() as $field) {
+	$counter++;
+	if ($counter==1)echo '<div class="float-left" style="width: 175px;">';
+	
+	printf('<div>%s<label class="profilefieldlabel" for="privacy_for_field_%d">%s</label></div>',
+			CHtml::checkBox("privacy_for_field_{$i}",
+				$model->public_profile_fields & $i),
+			$i,
+			Yum::t($field->title)
+			
+			);
+	$i *= 2;
+	
+	if ($counter%4==0) echo '</div><div class="float-left" style="width: 175px;">';
+}
+if ($counter%4!=0) echo '</div>';
+echo '<div class="clear"></div>';
+?>
+</div>
+<?php } ?>
+
 <div class="row">
 <?php echo $form->labelEx($model,'message_new_friendship'); ?>
 <?php echo $form->dropDownList($model, 'message_new_friendship', array(
@@ -133,36 +164,7 @@ echo $form->errorSummary($model);
 </div>
 
 
-<?php if(Yum::module()->enableProfiles) { ?>
 
-<div class="profile_field_selection">
-<?php
-echo '<h3>' . Yum::t('Profile field public options') . '</h3>';
-echo '<p>' . Yum::t('Select the fields that should be public') . ':</p>';
-$i = 1;
-
-$counter=0;
-
-foreach(YumProfileField::model()->findAll() as $field) {
-	$counter++;
-	if ($counter==1)echo '<div class="float-left" style="width: 175px;">';
-	
-	printf('<div>%s<label class="profilefieldlabel" for="privacy_for_field_%d">%s</label></div>',
-			CHtml::checkBox("privacy_for_field_{$i}",
-				$model->public_profile_fields & $i),
-			$i,
-			Yum::t($field->title)
-			
-			);
-	$i *= 2;
-	
-	if ($counter%4==0) echo '</div><div class="float-left" style="width: 175px;">';
-}
-if ($counter%4!=0) echo '</div>';
-echo '<div class="clear"></div>';
-?>
-</div>
-<?php } ?>
 
 
 

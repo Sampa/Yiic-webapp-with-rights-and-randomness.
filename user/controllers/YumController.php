@@ -25,6 +25,7 @@ abstract class YumController extends CController {
 
 		return parent::beforeAction($action);
 	}
+
 	public function loadModel($model = false) {
 		if(!$model)
 			$model = str_replace('Controller', '', get_class($this));

@@ -126,13 +126,6 @@ class YumUser extends YumActiveRecord {
 		return true;
 	}
 
-	public function beforeSave() {
-		if ($this->password_changed)
-			$this->password = YumUser::encrypt($this->password);
-
-		return parent::beforeSave();
-	}
-
 	public function belongsToGroup($id) {
 		foreach($this->groups as $group)
 			if($group->id == $id)
@@ -142,7 +135,7 @@ class YumUser extends YumActiveRecord {
 
 	public function setPassword($password) {
 		if ($password != '') {
-			$this->password = $password;
+			$this->password = YumUser::encrypt($password);
 			$this->lastpasswordchange = time();
 			$this->password_changed = true;
 			return $this->save();
@@ -361,11 +354,6 @@ class YumUser extends YumActiveRecord {
 			$this->password = $this->encrypt($password);
 		}
 
-		foreach (YumProfile::model()->findAll() as $profile) {
-			if ($email == $profile->email)
-				return false;
-		}
-
 		$this->activationKey = $this->generateActivationKey(false, $password);
 		$this->createtime = time();
 		$this->superuser = 0;
@@ -375,9 +363,7 @@ class YumUser extends YumActiveRecord {
 
 		if(Yum::module()->enableRoles) 
 			$this->roles = YumRole::getAutoassignRoles(); 
-		if(isset($email)){
-			$this->email = $email;
-		}
+
 		return $this->save();
 	}
 

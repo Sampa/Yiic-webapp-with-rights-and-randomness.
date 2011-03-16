@@ -15,7 +15,7 @@ if($model->id == Yii::app()->user->id)
 	$this->renderPartial('/messages/new_messages');
 ?>
 
-<?php echo $model->getAvatar(); ?>"
+<?php echo $model->getAvatar(); ?>
 <?php $this->renderPartial('/profile/public_fields', array(
 			'profile' => $model->profile)); ?>
 <br />
