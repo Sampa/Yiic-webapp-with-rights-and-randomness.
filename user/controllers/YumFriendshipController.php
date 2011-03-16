@@ -65,7 +65,7 @@ class YumFriendshipController extends YumController {
 						$_POST['user_id'],
 						$_POST['message'])) {
 				Yum::setFlash('The friendship request has been sent');
-				$this->redirect(array(Yum::module()->profileView, 'id' => $user_id));
+				$this->redirect(array('//user/profile/view', 'id' => $user_id));
 			}
 		} 
 

@@ -50,7 +50,7 @@ class YumPrivacysettingController extends YumController
 				$profile->save();
 				$model->save();
 				Yum::setFlash('Your privacy settings have been saved');
-				$this->redirect(array(Yum::module()->privacysettingView));
+				$this->redirect(array('//user/profile/view', 'id' => $model->user_id));
 			}
 		}
 

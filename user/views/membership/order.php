@@ -1,6 +1,6 @@
 <?php $this->breadcrumbs = array('Mitgliedschaft');?>
 
-	<h2>Mitgliedschaft</h2>
+<?php $this->title = Yum::t('Membership'); ?>
 	
 	<div class="form">
 		<?php $form=$this->beginWidget('CActiveForm', array(
@@ -9,7 +9,6 @@
 			)); 
 			echo $form->errorSummary($model);
 		?>
-
 
 		<div class="row">
 		

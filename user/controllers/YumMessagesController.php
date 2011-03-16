@@ -62,8 +62,11 @@ class YumMessagesController extends YumController {
 
 	public function actionCompose($to_user_id = null) {
 		if(!Yii::app()->user->isAdmin() 
-				&& !Yii::app()->user->data()->can('writeMessages')) {
-			$this->render(Yum::module()->membershipExpiredView);
+				&& !Yii::app()->user->data()->can('message_write')) {
+			if(Yum::module()->enableMembership)
+				$this->render(Yum::module()->membershipExpiredView);
+			else
+				throw new CHttpException(403);
 			Yii::app()->end();
 		}
 

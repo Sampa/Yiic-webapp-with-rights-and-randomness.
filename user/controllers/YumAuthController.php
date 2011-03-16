@@ -309,6 +309,9 @@ class YumAuthController extends YumController {
 	}
 
 	public function redirectUser($user) {
+		if(isset(Yii::app()->user->returnUrl))
+			$this->redirect(Yii::app()->user->returnUrl);
+
 		if ($user->superuser) {
 			$this->redirect(Yum::module()->returnAdminUrl);
 		} else {

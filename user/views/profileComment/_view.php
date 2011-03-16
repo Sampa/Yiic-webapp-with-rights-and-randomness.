@@ -1,7 +1,8 @@
 <div class="guestbook">
 	<div class="guestbook-header">
 			<strong><?php echo CHtml::encode($data->getAttributeLabel('user_id')); ?>:</strong>
-			<?php echo CHtml::link(CHtml::encode($data->user->username), array('//user/user/view', 'id' => $data->user_id)); ?>
+			<?php echo CHtml::link(CHtml::encode($data->user->username), array(
+						'//user/profile/view', 'id' => $data->user_id)); ?>
 			|
 			<strong><?php echo CHtml::encode($data->getAttributeLabel('createtime')); ?>:</strong>
 			<?php $locale = CLocale::getInstance(Yii::app()->language);
