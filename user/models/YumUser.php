@@ -370,7 +370,17 @@ class YumUser extends YumActiveRecord {
 		if(Yum::module()->enableRoles) 
 			$this->roles = YumRole::getAutoassignRoles(); 
 
-		return $this->save();
+		if($this->save()) {
+			if(Yum::module()->enableProfiles) {
+				$profile = new YumProfile;
+				$profile->email = $email;
+				$profile->user_id = $this->id;
+				$profile->save(false); 
+			}
+			return true;
+		}
+
+		return false;
 	}
 
 	public function isPasswordExpired() {
