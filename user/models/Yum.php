@@ -92,23 +92,11 @@ class Yum
 	}
 
 	/**
-	 * Resolved table name into table name with prefix if needed
-	 * @param string $tablename, e.g {{tablename}}
-	 * @param CDbConnection $connection
-	 * @since 0.6
-	 * @return string resolved table name
+	 * this function is deprecated
 	 */
 	public static function resolveTableName($tablename, CDbConnection $connection=null)
 	{
-		$dbConnection = $connection instanceof CDbConnection ? $connection : Yii::app()->getModule('db');
-		if(isset($dbConnection->tablePrefix) && $dbConnection->tablePrefix != '') 
-		{
-			if(substr($dbConnection->tablePrefix, -1) == '_') 
-				$tablename = $dbConnection->tablePrefix . $tablename;	
-			else
-				$tablename = $dbConnection->tablePrefix . '_' . $tablename;	
-		}
-		return $dbConnection->createCommand($tablename)->getText();
+		return $tablename;
 	}
 
 	// returns the yii user module. Mostly used for accessing options
