@@ -93,7 +93,6 @@ class YumSettingsController extends YumController {
 			if($model->save())
 				$this->redirect(array('index'));
 		}
-	}
 
 		$this->render('/settings/update',array(
 			'model'=>$model,
