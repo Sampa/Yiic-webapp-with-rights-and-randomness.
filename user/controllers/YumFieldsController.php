@@ -76,7 +76,6 @@ class YumFieldsController extends YumController
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
-	}
 
 		$this->render('update',array(
 			'model'=>$model,
