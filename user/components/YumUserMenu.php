@@ -43,11 +43,11 @@ class YumUserMenu extends CPortlet {
 					),
 
 				array('label' => 'Social', 'items' => array(
-							array('label' => 'My friends', 'url' => array('/user/friendship/index')),
+							array('label' => 'My friends', 'url' => array('/user/friendship/index'), 'visible' => Yum::module()->enableFriendship),
 							array('label' => 'Browse users', 'url' => array('/user/user/browse')),
-							array('label' => 'My groups', 'url' => array('/user/groups/index')),
-							array('label' => 'Create new usergroup', 'url' => array('/user/groups/create')),
-							array('label' => 'Browse usergroups', 'url' => array('/user/groups/browse')),
+							array('label' => 'My groups', 'url' => array('/user/groups/index'), 'visible' => Yum::module()->enableUsergroups),
+							array('label' => 'Create new usergroup', 'url' => array('/user/groups/create'), 'visible' => Yum::module()->enableUsergroups),
+							array('label' => 'Browse usergroups', 'url' => array('/user/groups/browse'), 'visible' => Yum::module()->enableUsergroups),
 							)
 						),
 				array('label' => 'Misc', 'items' => array(
