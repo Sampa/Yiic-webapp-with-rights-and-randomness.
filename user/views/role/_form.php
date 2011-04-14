@@ -35,11 +35,13 @@ $this->widget('YumModule.components.Relation',
 ?>
 </div>
 
+<?php if(Yum::module()->enableRegistration) { ?>
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'selectable'); ?>
 <?php echo CHtml::activeCheckBox($model, 'selectable'); ?>
 <?php echo Yum::hint('When setting "selectable", the role can be choosen at the registration page'); ?>
 </div>
+<?php } ?>
 
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'searchable'); ?>
@@ -54,6 +56,7 @@ $this->widget('YumModule.components.Relation',
 </div>
 
 
+<?php if(Yum::module()->enableMembership) { ?>
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'is_membership_possible'); ?>
 <?php echo CHtml::activeCheckBox($model, 'is_membership_possible'); ?>
@@ -77,7 +80,9 @@ $this->widget('YumModule.components.Relation',
 <div class="hint"> 
 <?php echo Yum::t('How many days will the membership be valid after payment?'); ?>
 </div>
+
 </div>
+<?php } ?>
 
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord 

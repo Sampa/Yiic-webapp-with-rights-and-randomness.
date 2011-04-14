@@ -26,7 +26,6 @@ class YumAdminMenu extends CPortlet {
 						array('label'=> 'Statistics', 'url'=>array('//user/statistics/index')), 
 						array('label' => 'Administration', 'url' => array('//user/user/admin')),
 						array('label' => 'Create new user', 'url' => array('//user/user/create')),
-						array('label' => 'Browse user activities', 'url' => array('//user/activities/index')),
 						array('label' => 'Generate Demo Data', 'url' => array('//user/user/generateData'), 'visible' => Yum::module()->debug),
 						)
 					),

@@ -36,9 +36,13 @@ class YumRoleController extends YumController {
 
 	public function actionCreate() {
 		$this->layout = Yum::module()->adminLayout;
+
 		$model = new YumRole();
+
 		$this->performAjaxValidation($model, 'yum-role-form');
+
 		if(isset($_POST['YumRole'])) {
+			$model->attributes = $_POST['YumRole'];
 			$model->users = Relation::retrieveValues($_POST);
 
 			if($model->save()) {
@@ -61,6 +65,7 @@ class YumRoleController extends YumController {
 		$this->performAjaxValidation($model, 'yum-role-form');
 
 		if(isset($_POST['YumRole'])) {
+			$model->attributes = $_POST['YumRole'];
 			$model->users = $_POST['YumRole'];
 
 			$model->users = Relation::retrieveValues($_POST);

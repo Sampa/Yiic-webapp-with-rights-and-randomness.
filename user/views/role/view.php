@@ -8,8 +8,6 @@ $this->breadcrumbs=array(
 	$model->title
 );
 
-printf('<h2>%s</h2>', $model->title);
-echo '<br />';
 echo $model->description; ?>
 
 <br />
@@ -26,8 +24,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ));
 ?>
 <br />
-<?php echo Yum::p('This users have a ordered memberships of this role'); ?> 
+
 <?php
+if(Yum::module()->enableMembership) { 
+ echo Yum::p('This users have a ordered memberships of this role'); 
+
 if($activeMemberships)
 $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider'=>$activeMemberships,
@@ -48,6 +49,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 			),
 		));
+
+}
 
 if(Yii::app()->user->isAdmin())
 	echo CHtml::Button(Yum::t('Update role'), array('submit' => array('role/update', 'id' => $model->id)));
