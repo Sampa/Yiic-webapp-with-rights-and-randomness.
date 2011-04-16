@@ -11,26 +11,20 @@ class YumWebUser extends CWebUser
 			return new YumUser();
 	}
 
-	/**
-	 * Performs access check for this user.
-	 * @param string the name of the role that need access check.
-	 * @param array name-value pairs that would be passed to business rules associated
-	 * with the tasks and roles assigned to the user.
-	 * @param boolean whether to allow caching the result of access checki.
-	 * This parameter has been available since version 1.0.5. When this parameter
-	 * is true (default), if the access check of an operation was performed before,
-	 * its result will be directly returned when calling this method to check the same operation.
-	 * If this parameter is false, this method will always call {@link CAuthManager::checkAccess}
-	 * to obtain the up-to-date access result. Note that this caching is effective
-	 * only within the same request.
-	 * @return boolean whether the operations can be performed by this user.
-	 */
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
 		if(Yum::module()->useYiiCheckAccess) 
 			return parent::checkAccess();
 
-		return $this->hasRole($operation);	
+		return $this->can($operation);	
+	}
+
+	public function can($action) {
+		foreach ($this->data()->getPermissions() as $permission)
+			if ($permission == $action)
+				return true;
+
+		return false;
 	}
 
 	/**

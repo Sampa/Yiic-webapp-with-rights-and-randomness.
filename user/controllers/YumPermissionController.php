@@ -8,7 +8,7 @@ class YumPermissionController extends YumController
 	{
 		return array(
 				array('allow',
-					'actions'=>array('admin', 'create', 'index'),
+					'actions'=>array('admin', 'create', 'index', 'delete'),
 					'users'=>array('admin')
 					),
 				array('deny',  // deny all other users
@@ -21,6 +21,17 @@ class YumPermissionController extends YumController
 		$this->render('view', array(
 					'actions' => YumAction::model()->findAll()));
 	}
+
+	public function actionDelete() {
+		$permission = YumPermission::model()->findByPk($_GET['id']);
+		if($permission->delete())
+			Yum::setFlash(Yum::t('The permission has been removed'));
+		else
+			Yum::setFlash(Yum::t('Error while removing the permission'));
+	
+		$this->redirect(array('//user/permission/admin')); 
+	}
+
 
 	public function actionAdmin()
 	{
