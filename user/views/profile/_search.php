@@ -6,8 +6,8 @@
 )); ?>
 
 	<div class="row">
-		<?php echo $form->label($model,'profile_id'); ?>
-		<?php echo $form->textField($model,'profile_id',array('size'=>25,'maxlength'=>255)); ?>
+		<?php echo $form->label($model,'id'); ?>
+		<?php echo $form->textField($model,'id',array('size'=>25,'maxlength'=>255)); ?>
 	</div>
 
 	<div class="row">
