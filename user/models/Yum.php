@@ -109,8 +109,7 @@ class Yum
 			return Yii::app()->controller->module;
 		elseif(Yii::app()->getModule('user') instanceof UserModule)
 			return Yii::app()->getModule('user');
-		else
-		{
+		else {
 			while (($parent=$this->getParentModule())!==null)
 				if($parent instanceof UserModule)	
 					return $parent;
