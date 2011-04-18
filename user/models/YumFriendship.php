@@ -189,11 +189,11 @@ class YumFriendship extends YumActiveRecord {
 
 	public static function areFriends($uid1, $uid2) {
 		if(is_numeric($uid1) && is_numeric($uid2)) {
-			$friendship = YumFriendship::model()->find('status = 2 and inviter_id = '.$uid1);
+			$friendship = YumFriendship::model()->find('status = 2 and inviter_id = '.$uid1 . ' and friend_id = '.$uid2);
 			if($friendship)
 				return true;
 
-			$friendship = YumFriendship::model()->find('status = 2 and friend_id = '.$uid2);
+			$friendship = YumFriendship::model()->find('status = 2 and inviter_id = '.$uid2 . ' and friend_id = '.$uid1);
 			if($friendship)
 				return true;
 		} 
