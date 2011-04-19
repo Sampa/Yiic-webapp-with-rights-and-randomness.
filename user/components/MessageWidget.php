@@ -8,12 +8,18 @@ class MessageWidget extends CPortlet
 
 	public function init()
 	{
+		if(Yum::module()->messageSystem === false)
+			return false;
+
 		$this->title=Yum::t('New messages');
 		parent::init();
 	}
 
 	protected function renderContent()
 	{
+		if(Yum::module()->messageSystem === false)
+			return false;
+
 		if(!Yii::app()->user->isGuest) {
 			$messages = YumMessage::model()->unread()->limit(10)->findAll();
 

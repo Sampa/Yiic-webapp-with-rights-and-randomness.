@@ -11,7 +11,7 @@ Yum::renderFlash();
 <div id="profile">
 
 <?php 
-if($model->id == Yii::app()->user->id)
+if($model->id == Yii::app()->user->id && Yum::module()->messageSystem != false)
 	$this->renderPartial('/messages/new_messages');
 ?>
 

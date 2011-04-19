@@ -96,8 +96,9 @@ class YumProfileController extends YumController {
 			return false;
 
 		// If the user does not want to log his profile visits, cancel here
-		if(isset(Yii::app()->user->data()->privacy) &&
-				!Yii::app()->user->data()->privacy->log_profile_visits)
+		if(Yum::module()->enableProfileVisitLogging
+				&& isset(Yii::app()->user->data()->privacy) 
+				&& !Yii::app()->user->data()->privacy->log_profile_visits)
 			return false;
 			
 		// Visiting my own profile doesn't count as visit

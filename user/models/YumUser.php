@@ -149,11 +149,13 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function afterSave() {
-		$setting = YumPrivacySetting::model()->findByPk($this->id);
-		if (!$setting) {
-			$setting = new YumPrivacySetting();
-			$setting->user_id = $this->id;
-			$setting->save();
+		if(Yum::module()->enablePrivacysetting) {
+			$setting = YumPrivacySetting::model()->findByPk($this->id);
+			if (!$setting) {
+				$setting = new YumPrivacySetting();
+				$setting->user_id = $this->id;
+				$setting->save();
+			}
 		}
 		return parent::afterSave();
 	}
@@ -234,11 +236,13 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function getRoles() {
-		$roles = '';
-		foreach ($this->roles as $role)
-			$roles .= ' ' . $role->title;
+		if(Yum::module()->enableRoles) {
+			$roles = '';
+			foreach ($this->roles as $role)
+				$roles .= ' ' . $role->title;
 
-		return $roles;
+			return $roles;
+		}
 	}
 
 	public function getPermissions() {
