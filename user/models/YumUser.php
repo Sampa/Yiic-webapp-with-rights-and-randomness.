@@ -71,6 +71,15 @@ class YumUser extends YumActiveRecord {
 		}
 	}
 
+	public function active() {
+		if( $this->status == YumUser::STATUS_ACTIVE		
+				|| $this->status == YumUser::STATUS_ACTIVATED		
+				|| $this->status == YumUser::STATUS_ACTIVE_FIRST_VISIT)
+			return true;
+
+		return false;
+	}
+
 	// This function tries to generate a as human-readable password as possible
 	public static function generatePassword() { 
 		$consonants = array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z"); 
