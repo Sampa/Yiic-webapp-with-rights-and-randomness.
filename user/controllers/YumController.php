@@ -47,7 +47,6 @@ abstract class YumController extends CController {
 			$this->widget('YumUserMenu');
 	}
 
-
 	public function filters()
 	{
 		return array(

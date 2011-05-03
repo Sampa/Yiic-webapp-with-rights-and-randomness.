@@ -61,15 +61,6 @@ class YumMessagesController extends YumController {
 	}
 
 	public function actionCompose($to_user_id = null) {
-		if(!Yii::app()->user->isAdmin() 
-				&& !Yii::app()->user->data()->can('message_write')) {
-			if(Yum::module()->enableMembership)
-				$this->render(Yum::module()->membershipExpiredView);
-			else
-				throw new CHttpException(403);
-			Yii::app()->end();
-		}
-
 		$this->performAjaxValidation('YumMessage', 'yum-messages-form');
 		$model = new YumMessage;
 
@@ -126,7 +117,7 @@ class YumMessagesController extends YumController {
 		if(isset($_POST['sendDigest'])) {
 			foreach(YumMessage::model()->with('to_user')->findAll('not message_read') as $message) {
 				if((is_object($message->to_user) && $message->to_user->notifyType == 'Digest')
-						|| Yum::module()->notifyType == 'Digest') { 
+						|| Yum::module('messages')->notifyType == 'Digest') { 
 					$this->mailMessage($message);
 					$recipients[] = $message->to_user->profile->email;
 				}

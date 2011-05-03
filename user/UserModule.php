@@ -2,6 +2,7 @@
 Yii::setPathOfAlias('YumModule' , dirname(__FILE__));
 Yii::setPathOfAlias('YumComponents' , dirname(__FILE__) . '/components/');
 Yii::setPathOfAlias('YumAssets' , dirname(__FILE__) . '/assets/');
+
 Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
@@ -63,22 +64,10 @@ class UserModule extends CWebModule {
 	public $facebookConfig = false;
 	public $pageSize = 10;
 
-	// System-wide configuration option on how users should be notified about
-  // new internal messages by email. Available options:
-  // None, Digest, Instant, User, Treshhold
-	// 'User' means to use the user-specific option in the user table
-	public $notifyType = 'user';
-
-	// Send a message to the user if the email changing has been succeeded
-	public $notifyEmailChange = true;
-
 	// if you want the users to be able to edit their profile TEXTAREAs with an
 	// rich text Editor like CKEditor, set that here
   public $rtepath = false; // Don't use an Rich text Editor
   public $rteadapter = false; // Don't use an Adapter
-
-	// Messaging System can be MSG_NONE, MSG_PLAIN or MSG_DIALOG
-	public $messageSystem = YumMessage::MSG_DIALOG;
 
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
@@ -161,7 +150,6 @@ class UserModule extends CWebModule {
 		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),
 		'membership'=>array('class'=>'YumModule.controllers.YumMembershipController'),
 		'payment'=>array('class'=>'YumModule.controllers.YumPaymentController'),
-		'messages'=>array('class'=>'YumModule.controllers.YumMessagesController'),
 		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),
 		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),
 		'friendship'=>array('class'=>'YumModule.controllers.YumFriendshipController'),

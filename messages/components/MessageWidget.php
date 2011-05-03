@@ -8,7 +8,7 @@ class MessageWidget extends CPortlet
 
 	public function init()
 	{
-		if(Yum::module()->messageSystem === false)
+		if(Yum::module('messages')->messageSystem === false)
 			return false;
 
 		$this->title=Yum::t('New messages');
@@ -17,7 +17,7 @@ class MessageWidget extends CPortlet
 
 	protected function renderContent()
 	{
-		if(Yum::module()->messageSystem === false)
+		if(Yum::module('messages')->messageSystem === false)
 			return false;
 
 		if(!Yii::app()->user->isGuest) {

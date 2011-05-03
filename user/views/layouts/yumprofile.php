@@ -8,7 +8,12 @@ $this->beginContent($module->baseLayout); ?>
 
 <div id="usermenu">
 <?php Yum::renderFlash(); ?>
-<?php $this->widget('MessageWidget'); ?>
+<?php 
+if(Yum::hasModule('messages')) {
+	Yii::import('application.modules.messages.components.*');
+	$this->widget('MessageWidget');
+}
+ ?>
 <?php $this->widget('ProfileVisitWidget'); ?>
 <?php $this->renderMenu(); ?>
 </div>

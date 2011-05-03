@@ -40,9 +40,11 @@ class YumUserMenu extends CPortlet {
 						)
 					),
 
-				array('label' => 'Messages', 'items' => array ( 
-						array('label' => 'My inbox', 'url' => array('/user/messages/index')),
-						array('label' => 'Sent messages', 'url' => array('/user/messages/sent')),
+				array('label' => 'Messages',
+					'visible' => Yum::hasModule('messages'),
+					'items' => array ( 
+						array('label' => 'My inbox', 'url' => array('/messages/messages/index')),
+						array('label' => 'Sent messages', 'url' => array('/messages/messages/sent')),
 						),
 					),
 

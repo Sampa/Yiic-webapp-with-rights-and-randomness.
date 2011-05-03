@@ -1,20 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "{{messages}}".
+ * This is the model class for the Message subsystem of the Yii User 
+ * Management module
  *
- * The followings are the available columns in table '{{messages}}':
- * @property integer $id
- * @property integer $from_user_id
- * @property integer $to_user_id
- * @property string $title
- * @property string $message
- * @property integer $message_read
- * @property integer $draft
- * 
- * Relations:
- * @property YumUser $to_user
- * @property YumUser $from_user
  */
 class YumMessage extends YumActiveRecord
 {
