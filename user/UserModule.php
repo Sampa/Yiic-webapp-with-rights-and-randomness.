@@ -1,7 +1,4 @@
 <?php
-// This is the entry script of the Yii User Management Module
-// You can see all default configuration options defined here
-
 Yii::setPathOfAlias('YumModule' , dirname(__FILE__));
 Yii::setPathOfAlias('YumComponents' , dirname(__FILE__) . '/components/');
 Yii::setPathOfAlias('YumAssets' , dirname(__FILE__) . '/assets/');
@@ -9,7 +6,7 @@ Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
 class UserModule extends CWebModule {
-	public $version = '0.8-rc1';
+	public $version = '0.8-rc2';
 	public $debug = false;
 
 	//layout related control vars
@@ -19,7 +16,7 @@ class UserModule extends CWebModule {
 	public $adminLayout = 'yum';
 	public $profileLayout = 'yumprofile';
 
-	//configuration related control vars
+	// configuration related control vars
 
 	// set useYiiCheckAccess to true to disable Yums own checkAccess routines.
   // Use this when you implement your own access logic or use yum together with
@@ -35,6 +32,7 @@ class UserModule extends CWebModule {
 	public $enableFriendship = true;
 	public $enableLogging = true;
 	public $enablePrivacysetting = true;
+	public $enableUsergroups = true;
 
 	public $enableMembership = true;
 
@@ -51,22 +49,6 @@ class UserModule extends CWebModule {
 	// set to false to enable case insensitive users.
   // for example, demo and Demo would be the same user then
 	public $caseSensitiveUsers = true;
-
-	/* Avatar options */
-	// Enable the possibility for users to upload an avatar image. The
-	// image then gets displayed at his profile, his messages and his
-	// profile comments.
-	public $enableAvatar = true;
-	public $enableUsergroups = true;
-	// Where to save the avatar images? (Yii::app()->baseUrl . $avatarPath)	
-	public $avatarPath = 'images';
-
-	// Maximum width of avatar in pixels. Correct aspect ratio should be set up
-	// by CImageModifier automatically
-	// Set to 0 to disable image size check
-	public $avatarMaxWidth = 200;
-	public $avatarThumbnailWidth = 50; // For display in user browse, friend list
-	public $avatarDisplayWidth = 200;
 
 	public $password_expiration_time = 30; // days
 	public $activationPasswordSet = false;
@@ -95,9 +77,6 @@ class UserModule extends CWebModule {
   public $rtepath = false; // Don't use an Rich text Editor
   public $rteadapter = false; // Don't use an Adapter
 
-	// determines whether configuration by Database table is enabled or disabled
-	public $tableSettingsDisabled = false;
-
 	// Messaging System can be MSG_NONE, MSG_PLAIN or MSG_DIALOG
 	public $messageSystem = YumMessage::MSG_DIALOG;
 
@@ -109,6 +88,9 @@ class UserModule extends CWebModule {
 
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 	public $dateTimeFormat = 'm-d-Y G:i:s';  //"d.m.Y H:i:s"
+
+	// Use this to set dhcpOptions if using authentication over DHCP
+	public $dhcpOptions = array();
 
 	private $_urls=array(
 		'registration'=>array('//user/registration/registration'),
@@ -168,7 +150,6 @@ class UserModule extends CWebModule {
 		'action'=>array('class'=>'YumModule.controllers.YumActionController'),
 		'permission'=>array('class'=>'YumModule.controllers.YumPermissionController'),
 		'comments'=>array('class'=>'YumModule.controllers.YumProfileCommentController'),
-		'avatar'=>array('class'=>'YumModule.controllers.YumAvatarController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
@@ -191,7 +172,6 @@ class UserModule extends CWebModule {
 	private $_tables = array(
 			'users' => 'users',
 			'privacySetting' => 'privacysetting',
-			'settings' => 'yumsettings',
 			'textSettings' => 'yumtextsettings',
 			'messages' => 'messages',
 			'usergroup' => 'usergroup',
@@ -280,8 +260,6 @@ class UserModule extends CWebModule {
 	}
 
 	public function beforeControllerAction($controller, $action) {
-		parent::beforeControllerAction($controller, $action);
-
 		// Do not enable Debug mode when in Production Mode
 		if(!defined('YII_DEBUG'))
 			$this->debug = false;
@@ -289,39 +267,7 @@ class UserModule extends CWebModule {
 		if(Yii::app()->user->isAdmin())
 			$controller->layout = Yum::module()->adminLayout;
 
-		// Assign options from settings table, if available
-		if(Yii::app()->controller->id != 'install' 
-				&& !Yum::module()->tableSettingsDisabled)
-			try {
-				$settings = YumSettings::model()->find('is_active');
-
-				$options = array('preserveProfiles', 'registrationType', 'enableRecovery',
-						'readOnlyProfiles', 'enableProfileHistory' ,'messageSystem',
-						'loginType', 'enableAvatar', 'notifyType',
-						'password_expiration_time', 'enableCaptcha');
-				foreach($options as $option)
-					$this->$option = $settings->$option;
-			} catch (CDbException $e) {
-				$this->tableSettingsDisabled = true;
-			}
-		return true;
-	}
-
-	/**
-	 * Configures the module with the specified configuration.
-	 * Override base class implementation to allow static variables.
-	 * @param array the configuration array
-	 */
-	public function configure($config)
-	{
-		if(is_array($config)) {
-			foreach($config as $key=>$value) {
-				if(isset(UserModule::${$key})) {
-					UserModule::${$key} = $value;
-				} else
-					$this->$key=$value;
-			}
-		}
+		return parent::beforeControllerAction($controller, $action);
 	}
 
 }

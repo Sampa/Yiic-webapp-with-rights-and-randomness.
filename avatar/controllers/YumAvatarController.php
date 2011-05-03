@@ -3,22 +3,21 @@
 // This controller handles the upload and the deletion of an Avatar
 // image for the user profile.
 
+Yii::import('application.modules.user.controllers.YumController');
+
 class YumAvatarController extends YumController {
 	public function actionRemoveAvatar() {
 		$model = YumUser::model()->findByPk(Yii::app()->user->id);
 		$model->avatar = '';
 		$model->save();
-		$this->redirect(array('user/profile/view', 'id' => $model->id));	
+		$this->redirect(array(
+					'//user/profile/view', 'id' => $model->id));	
 	}
 
 	public function beforeAction($action) {
 		// Disallow guests
 		if(Yii::app()->user->isGuest)
 			$this->redirect(Yum::module()->loginUrl);
-
-		// Stop action if Avatars are disabled in the module configuration
-		if(!Yum::module()->enableAvatar)
-			return false;
 
 		return parent::beforeAction($action);
 	}
@@ -30,7 +29,7 @@ class YumAvatarController extends YumController {
 			$model->attributes = $_POST['YumUser'];
 			$model->setScenario('avatarUpload');
 
-			if(Yum::module()->avatarMaxWidth != 0)
+			if(Yum::module('avatar')->avatarMaxWidth != 0)
 				$model->setScenario('avatarSizeCheck');
 
 			$model->avatar = CUploadedFile::getInstanceByName('YumUser[avatar]');
@@ -38,7 +37,7 @@ class YumAvatarController extends YumController {
 				if ($model->avatar instanceof CUploadedFile) {
 
 					// Prepend the id of the user to avoid filename conflicts
-					$filename = Yum::module()->avatarPath .'/'.  $model->id . '_' . $_FILES['YumUser']['name']['avatar'];
+					$filename = Yum::module('avatar')->avatarPath .'/'.  $model->id . '_' . $_FILES['YumUser']['name']['avatar'];
 					$model->avatar->saveAs($filename);
 					$model->avatar = $filename;
 					if($model->save()) {
@@ -46,7 +45,7 @@ class YumAvatarController extends YumController {
 						Yum::log(Yum::t('User {username} uploaded avatar image {filename}', array(
 										'{username}' => $model->username,
 										'{filename}' => $model->avatar)));
-						$this->redirect(array('user/profile'));	
+						$this->redirect(array('//user/user/profile'));	
 					}
 				}
 			}

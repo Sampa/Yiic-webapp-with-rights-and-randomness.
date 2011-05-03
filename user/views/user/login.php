@@ -8,37 +8,25 @@ $this->pageTitle = Yii::app()->name . ' - '.Yum::t('Login');
 $this->title = Yum::t('Login');
 $this->breadcrumbs=array(Yum::t('Login'));
 
-if(Yii::app()->user->hasFlash('loginMessage')): ?>
-
-<div class="success">
-	<?php echo Yii::app()->user->getFlash('loginMessage'); ?>
-</div>
-
-<?php endif; ?>
-<?php
-if($module->tableSettingsDisabled != true) {
-	$settings = YumTextSettings::model()->find("language = :language", array(
-				':language' => Yii::app()->language));
-
-	if($settings) 
-		printf('%s<br /><br />', $settings->text_login_header);
-}
+Yum::renderFlash();
 ?>
 
 <p>
 <?php 
-echo Yum::t("Please fill out the following form with your login credentials:"); ?></p>
+echo Yum::t(
+		'Please fill out the following form with your login credentials:'); ?>
+</p>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<?php echo Yum::requiredFieldNote(); ?>
-	<?php echo CHtml::errorSummary($model); ?>
+<?php echo CHtml::errorSummary($model); ?>
 	
 	<div class="row">
 		<?php 
-		if($module->loginType & UserModule::LOGIN_BY_USERNAME || $module->loginType & UserModule::LOGIN_BY_LDAP)
-			echo CHtml::activeLabelEx($model,'username'); 
+		if($module->loginType & UserModule::LOGIN_BY_USERNAME 
+				|| $module->loginType & UserModule::LOGIN_BY_LDAP)
+		echo CHtml::activeLabelEx($model,'username'); 
 		if($module->loginType & UserModule::LOGIN_BY_EMAIL)
 			printf ('<label for="YumUserLogin_username">%s <span class="required">*</span></label>', Yum::t('E-Mail address')); 
 		if($module->loginType & UserModule::LOGIN_BY_OPENID)
@@ -61,11 +49,11 @@ echo Yum::t("Please fill out the following form with your login credentials:"); 
 	<?php 
 if($module->enableRegistration)
 	echo CHtml::link(Yum::t("Registration"), $this->module->registrationUrl);
-	if($module->enableRecovery) {
-		echo ' | ';
-		echo CHtml::link(Yum::t("Lost password?"), $this->module->recoveryUrl);
-	}
-?>
+if($module->enableRegistration && $module->enableRecovery)
+	echo ' | ';
+if($module->enableRecovery) 
+	echo CHtml::link(Yum::t("Lost password?"), $this->module->recoveryUrl);
+	?>
 	</p>
 	</div>
 
@@ -73,15 +61,9 @@ if($module->enableRegistration)
 <?php echo CHtml::activeCheckBox($model,'rememberMe', array('style' => 'display: inline;')); ?>
 <?php echo CHtml::activeLabelEx($model,'rememberMe', array('style' => 'display: inline;')); ?>
 </div>
-<?php
-	if($this->module->tableSettingsDisabled != true) {
-		if($settings) 
-			printf('%s<br /><br />', $settings->text_login_footer);
-	}
-?>
 
 <div class="row submit">
-<?php echo CHtml::submitButton(Yii::t("UserModule.user", "Login")); ?>
+<?php echo CHtml::submitButton(Yum::t('Login')); ?>
 </div>
 
 <?php echo CHtml::endForm(); ?>

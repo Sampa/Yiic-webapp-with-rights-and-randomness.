@@ -1,5 +1,13 @@
 Changelog for Yii User Management Module (Yum) 
 
+
+
+New in 0.8-rc2:
+- removed the yumsettings table and functionality completely. All options need to be configured in the application configuration now. This really is better.  Note that yumTextSettings are kept. Because they make sense. Yumsettings dont. 
+- started to make the module clean. The avatar module now is a own submodule.
+See docs/avatar.txt on how to use it now. I will do this for all other
+submodules step-by-step, too. 
+
 New in 0.8:
 - BUGFIX: Dont show if the message has been read by the recipient in my sent
   messages anymore

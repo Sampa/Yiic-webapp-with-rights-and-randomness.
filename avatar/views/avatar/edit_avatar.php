@@ -2,7 +2,9 @@
 <?php
 $this->title = Yum::t('Upload avatar');
 
-$this->breadcrumbs = array(Yum::t('Profile'), Yum::t('Upload avatar'));
+$this->breadcrumbs = array(
+		Yum::t('Profile') => array('//user/user/profile'),
+		Yum::t('Upload avatar'));
 
 if($model->avatar) {
 	echo '<h2>';
@@ -15,12 +17,13 @@ else
 
 	echo '<br />';
 
-if(Yum::module()->avatarMaxWidth != 0)
+if(Yum::module('avatar')->avatarMaxWidth != 0)
 	echo '<p>' . Yum::t('The image should have at least 50px and a maximum of 200px in width and height. Supported filetypes are .jpg, .gif and .png') . '</p>';
 
 	echo CHtml::errorSummary($model);
-	echo CHtml::beginForm(array('//user/avatar/editAvatar'), 'POST', array(
-				'enctype' => 'multipart/form-data'));
+	echo CHtml::beginForm(array(
+				'//avatar/avatar/editAvatar'), 'POST', array(
+	'enctype' => 'multipart/form-data'));
 	echo '<div class="row">';
 	echo CHtml::activeLabelEx($model, 'avatar');
 	echo CHtml::activeFileField($model, 'avatar');

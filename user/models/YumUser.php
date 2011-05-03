@@ -219,7 +219,7 @@ class YumUser extends YumActiveRecord {
 		$rules[] = array('password', 'required', 'on' => array('insert'));
 		$rules[] = array('createtime, lastvisit, lastaction, superuser, status', 'numerical', 'integerOnly' => true);
 
-		if (Yum::module()->enableAvatar) {
+		if (Yum::hasModule('avatar')) {
 			// require an avatar image in the avatar upload screen
 			$rules[] = array('avatar', 'required', 'on' => 'avatarUpload');
 
@@ -227,8 +227,8 @@ class YumUser extends YumActiveRecord {
 			$rules[] = array('avatar', 'EPhotoValidator',
 					'allowEmpty' => true,
 					'mimeType' => array('image/jpeg', 'image/png', 'image/gif'),
-					'maxWidth' => Yum::module()->avatarMaxWidth,
-					'maxHeight' => Yum::module()->avatarMaxWidth,
+					'maxWidth' => Yum::module('avatar')->avatarMaxWidth,
+					'maxHeight' => Yum::module('avatar')->avatarMaxWidth,
 					'minWidth' => 50,
 					'minHeight' => 50, 
 					'on' => 'avatarSizeCheck'); 
@@ -539,14 +539,14 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function getAvatar($thumb = false) {
-		if (Yum::module()->enableAvatar && $this->profile) {
+		if (Yum::hasModule('avatar') && $this->profile) {
 			$return = '<div class="avatar">';
 
 			$options = array();
 			if ($thumb)
 				$options = array('style' => 'width: 50px; height:50px;');
 			else
-				$options = array('style' => 'width: '.Yum::module()->avatarDisplayWidth.'px;');
+				$options = array('style' => 'width: '.Yum::module('avatar')->avatarDisplayWidth.'px;');
 
 			if (isset($this->avatar) && $this->avatar)
 				$return .= CHtml::image(Yii::app()->baseUrl . '/'
