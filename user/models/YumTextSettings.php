@@ -21,18 +21,12 @@ class YumTextSettings extends YumActiveRecord
 				array('
 					text_friendship_new,
 					text_profilecomment_new,
-					text_registration_header,
-					text_registration_footer,
-					text_login_header,
-					text_login_footer,
 					text_email_registration,
 					subject_email_confirmation,
 					text_email_recovery,
 					text_email_activation,
 					text_membership_ordered,
-					text_payment_arrived,
-					text_membership_header,
-					text_membership_footer', 'safe'),
+					text_payment_arrived', 'safe'),
 				array('language', 'length', 'max'=>5),
 				);
 	}
@@ -62,10 +56,6 @@ class YumTextSettings extends YumActiveRecord
 		return array(
 			'id' => Yum::t( 'ID'),
 			'language' => Yum::t( 'Language'),
-			'text_registration_header' => Yum::t( 'Text Registration Header'),
-			'text_registration_footer' => Yum::t( 'Text Registration Footer'),
-			'text_login_header' => Yum::t( 'Text Login Header'),
-			'text_login_footer' => Yum::t( 'Text Login Footer'),
 			'text_email_registration' => Yum::t( 'Text Email Registration'),
 			'subject_email_registration' => Yum::t( 'Subject of Email Registration'),
 			'text_email_recovery' => Yum::t( 'Text Email Recovery'),
@@ -82,10 +72,6 @@ class YumTextSettings extends YumActiveRecord
 		$criteria->compare('id',$this->id);
 
 		$criteria->compare('language',$this->language,true);
-		$criteria->compare('text_registration_header',$this->text_registration_header,true);
-		$criteria->compare('text_registration_footer',$this->text_registration_footer,true);
-		$criteria->compare('text_login_header',$this->text_login_header,true);
-		$criteria->compare('text_login_footer',$this->text_login_footer,true);
 		$criteria->compare('text_email_registration',$this->text_email_registration,true);
 		$criteria->compare('text_email_recovery',$this->text_email_recovery,true);
 		$criteria->compare('text_email_activation',$this->text_email_activation,true);

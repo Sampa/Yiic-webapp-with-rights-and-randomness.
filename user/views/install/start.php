@@ -187,10 +187,6 @@ your Yii Web Application </p>
 	<div id="settings">
 		<table>
 			<tr>
-				<td> Table for User Management Settings </td>
-				<td> <?php echo CHtml::textField('settingsTable', $settingsTable); ?> </td>
-			</tr>
-			<tr>
 				<td> Table for User Management Text Settings </td>
 				<td> <?php echo CHtml::textField('textSettingsTable', $textSettingsTable); ?> </td>
 			</tr>

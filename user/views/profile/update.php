@@ -32,7 +32,7 @@ $this->title = Yum::t('Edit profile');
 					'submit' => array('/user/privacy/update'))); ?>
 
 	<?php 
-		if(Yum::module()->enableAvatar)
+		if(Yum::hasModule('avatar'))
 			echo CHtml::button(Yum::t('Upload avatar Image'), array(
 				'submit' => array('/user/avatar/editAvatar'))); ?>
 

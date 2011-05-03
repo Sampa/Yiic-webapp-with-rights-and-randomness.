@@ -20,30 +20,6 @@
 </div>
 
 		<div class="row">
-<?php echo $form->labelEx($model,'text_registration_header'); ?>
-<?php echo $form->textArea($model,'text_registration_header',array('rows'=>6, 'cols'=>50)); ?>
-<?php echo $form->error($model,'text_registration_header'); ?>
-</div>
-
-		<div class="row">
-<?php echo $form->labelEx($model,'text_registration_footer'); ?>
-<?php echo $form->textArea($model,'text_registration_footer',array('rows'=>6, 'cols'=>50)); ?>
-<?php echo $form->error($model,'text_registration_footer'); ?>
-</div>
-
-		<div class="row">
-<?php echo $form->labelEx($model,'text_login_header'); ?>
-<?php echo $form->textArea($model,'text_login_header',array('rows'=>6, 'cols'=>50)); ?>
-<?php echo $form->error($model,'text_login_header'); ?>
-</div>
-
-		<div class="row">
-<?php echo $form->labelEx($model,'text_login_footer'); ?>
-<?php echo $form->textArea($model,'text_login_footer',array('rows'=>6, 'cols'=>50)); ?>
-<?php echo $form->error($model,'text_login_footer'); ?>
-</div>
-
-		<div class="row">
 <?php echo $form->labelEx($model,'text_email_registration'); ?>
 <?php echo $form->textArea($model,'text_email_registration',array('rows'=>6, 'cols'=>50)); ?>
 <?php echo $form->error($model,'text_email_registration'); ?>
@@ -95,16 +71,4 @@
 <?php echo $form->error($model,'text_payment_arrived'); ?>
 </div>
 	<div class="row">
-<?php echo $form->labelEx($model,'text_membership_header'); ?>
-<?php echo $form->textArea($model,'text_membership_header',array('rows'=>6, 'cols'=>50)); ?>
-<?php echo $form->error($model,'text_membership_header'); ?>
-</div>
-	<div class="row">
-<?php echo $form->labelEx($model,'text_membership_footer'); ?>
-<?php echo $form->textArea($model,'text_membership_footer',array('rows'=>6, 'cols'=>50)); ?>
-<?php echo $form->error($model,'text_membership_footer'); ?>
-</div>
-
-
-
 

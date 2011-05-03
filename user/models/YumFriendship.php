@@ -64,8 +64,10 @@ class YumFriendship extends YumActiveRecord {
 	public function acceptFriendship() {
 		$this->acknowledgetime = time();
 		$this->status = 2;
-		if(isset($this->inviter->privacy) 
+		if(Yum::hasModule('messages') 
+				&& isset($this->inviter->privacy) 
 				&& $this->inviter->privacy->message_new_friendship) {
+			Yii::import('application.modules.messages.models.YumMessage');
 			YumMessage::write($this->inviter, $this->invited,
 					Yum::t('Your friendship request has been accepted'),
 					YumTextSettings::getText('text_friendship_confirmed', array(
@@ -156,7 +158,10 @@ class YumFriendship extends YumActiveRecord {
 		// If the user has activated email receiving, send a email
 		if($this->isNewRecord)
 			if($user = YumUser::model()->findByPk($this->friend_id))  {
-				if($user->privacy && $user->privacy->message_new_friendship) {
+				if(Yum::hasModule('messages')
+						&& $user->privacy 
+						&& $user->privacy->message_new_friendship) {
+					Yii::import('application.modules.messages.models.YumMessage');
 					YumMessage::write($user, $this->inviter,
 							Yum::t('New friendship request from {username}', array(
 									'{username}' => $this->inviter->username)),

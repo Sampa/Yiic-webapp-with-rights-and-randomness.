@@ -25,7 +25,7 @@ if (Yum::module()->enableRoles)
 		printf($f, Yum::t('Profile fields'), $profile_fields);
 		printf($f, Yum::t('Profile field groups'), $profile_field_groups);
 	}
-printf($f, Yum::t('Messages'), $messages);
+//printf($f, Yum::t('Messages'), $messages);
 printf($f, Yum::t('Different users logged in today'), $logins_today);
 echo '</table>';
 ?>

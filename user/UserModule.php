@@ -78,8 +78,16 @@ class UserModule extends CWebModule {
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 	public $dateTimeFormat = 'm-d-Y G:i:s';  //"d.m.Y H:i:s"
 
-	// Use this to set dhcpOptions if using authentication over DHCP
-	public $dhcpOptions = array();
+	// Use this to set dhcpOptions if using authentication over LDAP
+	public $ldapOptions = array(
+			'ldap_host' => '', 
+			'ldap_port' => '', 
+			'ldap_basedn' => '',
+			'ldap_protocol' => '',
+			'ldap_autocreate' => '',
+			'ldap_tls' => '',
+			'ldap_transfer_attr' => '',
+			'ldap_transfer_pw' => '');
 
 	private $_urls=array(
 		'registration'=>array('//user/registration/registration'),

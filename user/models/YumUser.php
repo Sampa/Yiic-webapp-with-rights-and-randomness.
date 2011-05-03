@@ -71,7 +71,7 @@ class YumUser extends YumActiveRecord {
 		}
 	}
 
-	public function active() {
+	public function isActive() {
 		if( $this->status == YumUser::STATUS_ACTIVE		
 				|| $this->status == YumUser::STATUS_ACTIVATED		
 				|| $this->status == YumUser::STATUS_ACTIVE_FIRST_VISIT)
@@ -481,6 +481,14 @@ class YumUser extends YumActiveRecord {
 
 		return $hashFunc($string);
 	}
+
+	public function limit($limit = 10)
+	{
+		$this->getDbCriteria()->mergeWith(array(
+					'limit'=>$limit,
+					));
+		return $this;
+	}	
 
 	public function scopes() {
 		return array(

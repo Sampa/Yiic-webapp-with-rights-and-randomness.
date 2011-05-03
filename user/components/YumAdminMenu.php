@@ -44,29 +44,27 @@ class YumAdminMenu extends CPortlet {
 						array('label' => 'Create new payment type', 'url' => array('//user/payment/create')),
 						)
 					),
-				array('label'=>'Profiles', 'visible' => Yum::module()->enableProfiles, 'items' => array(
-						array('label' => 'Manage profiles', 'url' => array('//user/profile/admin')),
-						array('label' => 'Show profile visits', 'url' => array('//user/profile/visits')),
-						array('label' => 'Manage profile fields', 'url' => array('//user/fields/admin')),
-						array('label' => 'Create profile field', 'url' => array('//user/fields/create')),
-						array('label' => 'Manage field groups', 'url' => array('//user/fieldsgroup/admin')),
-						array('label' => 'Create new field group', 'url' => array('//user/fieldsgroup/create')),
-						)
-					),
-				array('label' => 'Messages', 'visible' => Yum::module()->messageSystem != 'None', 'items' => array ( 
-							array('label' => 'Admin inbox', 'url' => array('/user/messages/index')),
-							array('label' => 'Sent messages', 'url' => array('/user/messages/sent')),
-							array('label' => 'Write a message', 'url' => array('/user/messages/compose')),
-							array('label' => 'Send message notifier emails', 'url' => array('/user/messages/sendDigest')),
-							),
-						),
-				array('label'=>'Module settings', 'items' => array(
-							array('label' => 'User module settings', 'url' => array('//user/yumSettings/update')),
-							array('label' => 'New settings profile', 'url' => array('//user/yumSettings/create')),
-							array('label' => 'Module text settings', 'url' => array('//user/yumTextSettings/admin')),
-							array('label' => 'Settings profiles', 'url' => array('//user/yumTextSettings/index')),
+				array('label'=>'Profiles',
+						'visible' => Yum::module()->enableProfiles,
+						'items' => array(
+							array('label' => 'Manage profiles', 'url' => array('//user/profile/admin')),
+							array('label' => 'Show profile visits', 'url' => array('//user/profile/visits')),
+							array('label' => 'Manage profile fields', 'url' => array('//user/fields/admin')),
+							array('label' => 'Create profile field', 'url' => array('//user/fields/create')),
+							array('label' => 'Manage field groups', 'url' => array('//user/fieldsgroup/admin')),
+							array('label' => 'Create new field group', 'url' => array('//user/fieldsgroup/create')),
 							)
 						),
+				array('label' => 'Messages',
+						'visible' => Yum::hasModule('messages'),
+						'items' => array ( 
+							array('label' => 'Admin inbox', 'url' => array('/messages/messages/index')),
+							array('label' => 'Sent messages', 'url' => array('/messages/messages/sent')),
+							array('label' => 'Write a message', 'url' => array('/messages/messages/compose')),
+							array('label' => 'Send message notifier emails', 'url' => array('/messages/messages/sendDigest')),
+							),
+						),
+				array('label' => 'Module text settings', 'url' => array('//user/yumTextSettings/admin')),
 				array('label' => 'Misc', 'items' => array(
 							array('label' => 'Upload avatar for admin', 'url' => array('//user/avatar/editAvatar')),
 							array('label' => 'Change admin Password', 'url' => array('//user/user/changePassword')),

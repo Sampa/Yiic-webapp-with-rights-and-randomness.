@@ -6,10 +6,12 @@ $messages = YumMessage::model()->findAll(
 
 if(count($messages) > 0) {
 	if(Yum::module('messages')->messageSystem == YumMessage::MSG_PLAIN) 
-		$this->renderPartial('/messages/new_messages_plain', array(
+		$this->renderPartial(
+				'application.modules.messages.views.messages.new_messages_plain', array(
 					'messages' => $messages));
 	else if(Yum::module('messages')->messageSystem == YumMessage::MSG_DIALOG)
-		$this->renderPartial('/messages/new_messages_dialog', array(
+		$this->renderPartial(
+				'application.modules.messages.views.messages.new_messages_dialog', array(
 					'messages' => $messages));
 }
 ?>

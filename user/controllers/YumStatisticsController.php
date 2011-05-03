@@ -34,7 +34,7 @@ class YumStatisticsController extends YumController {
 					'profile_fields' => YumProfileField::model()->count(),
 					'profile_field_groups' => YumProfileFieldsGroup::model()->count(),
 					'profile_views' => YumProfileVisit::model() !== false ? YumProfileVisit::model()->count() : null,
-					'messages' => YumMessage::model()->count(),
+		//			'messages' => YumMessage::model()->count(),
 					'logins_today' => $this->loginsToday(),
 					));
 	}

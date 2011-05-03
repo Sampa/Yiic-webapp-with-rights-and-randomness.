@@ -49,7 +49,6 @@ class YumInstallController extends YumController {
 							'friendshipTable',
 							'actionTable',
 							'usergroupTable',
-							'settingsTable',
 							'textSettingsTable');
 
 					foreach($tables as $table) {
@@ -162,65 +161,10 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 					}
 					if(isset($_POST['installSettingsTable'])) {  
-						// Create settings table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $settingsTable . "` (
-							`id` int(11) NOT NULL AUTO_INCREMENT,
-							`title` varchar(255) NOT NULL,
-							`is_active` tinyint(1) NOT NULL DEFAULT '0',
-							`preserveProfiles` tinyint(1) NOT NULL DEFAULT '1',
-							`enableAvatar` tinyint(1) NOT NULL DEFAULT '1',
-							`registrationType` tinyint(1) NOT NULL DEFAULT '4',
-							`enableRecovery` tinyint(1) NOT NULL DEFAULT '1',
-							`enableProfileHistory` tinyint(1) NOT NULL DEFAULT '1',
-							`messageSystem` enum('None', 'Plain', 'Dialog') NOT NULL DEFAULT 'Dialog',
-							`notifyType` enum('None', 'Digest', 'Instant', 'User', 'Treshhold') NOT NULL DEFAULT 'User',
-							`password_expiration_time` INT,
-							`readOnlyProfiles` tinyint(1) NOT NULL DEFAULT '0',
-							`loginType` int(11) not null,
-							`notifyemailchange` enum('oldemail','newemail'),
-							`enableCaptcha` tinyint(1) NOT NULL DEFAULT '1',
-							`ldap_host` varchar(255) NULL,
-							`ldap_port` int(5) NULL,
-							`ldap_basedn` varchar(255) NULL,
-							`ldap_protocol` enum('2', '3') NOT NULL Default '3',
-							`ldap_autocreate` tinyint(1) NOT NULL DEFAULT '1',
-							`ldap_tls` tinyint(1) NOT NULL DEFAULT '0',
-							`ldap_transfer_attr` tinyint(1) NOT NULL DEFAULT '1',
-							`ldap_transfer_pw` tinyint(1) NOT NULL DEFAULT '0',
-							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
-						$db->createCommand($sql)->execute();
-
-						$sql = "INSERT INTO `".$settingsTable."` (`id`,
-							`title`,
-							`is_active`,
-							`preserveProfiles`,
-							`registrationType`,
-							`enableRecovery`,
-							`enableProfileHistory`,
-							`readOnlyProfiles`,
-							`loginType`,
-							`notifyType`,
-							`password_expiration_time`,
-							`enableCaptcha`) VALUES ('1',
-								'Yum factory Default',
-								'1',
-								'1',
-								'4',
-								'1',
-								'1',
-								'0',
-								'3',
-								'Instant', '30', '1');";
-						$db->createCommand($sql)->execute();
-
 						// Create Text settings table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $textSettingsTable . "` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`language` enum('en_us','de','fr','pl','ru','es') NOT NULL DEFAULT 'en_us',
-							`text_registration_header` text,
-							`text_registration_footer` text,
-							`text_login_header` text,
-							`text_login_footer` text,
 							`text_email_registration` text,
 							`subject_email_registration` text,
 							`text_email_recovery` text,
@@ -231,8 +175,6 @@ class YumInstallController extends YumController {
 							`text_message_new` text,
 							`text_membership_ordered` text,
 							`text_payment_arrived` text,
-							`text_membership_header` text,
-							`text_membership_footer` text,
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 						$db->createCommand($sql)->execute();
@@ -240,10 +182,6 @@ class YumInstallController extends YumController {
 						$sql = "
 							INSERT INTO `".$textSettingsTable."` (`id`,
 									`language`,
-									`text_registration_header`,
-									`text_registration_footer`,
-									`text_login_header`,
-									`text_login_footer`,
 									`text_email_registration`,
 									`subject_email_registration`,
 									`text_email_recovery`,
@@ -253,14 +191,9 @@ class YumInstallController extends YumController {
 									`text_profilecomment_new`,
 									`text_message_new`,
 									`text_membership_ordered`,
-									`text_payment_arrived`,
-									`text_membership_header`, 
-									`text_membership_footer` 
+									`text_payment_arrived`
 									) VALUES ('1',
 										'en_us',
-										'Welcome at the registration System', 'When registering at this System, you automatically accept our terms.',
-										'Welcome!',
-										'',
 										'You have registered for this Application. To confirm your E-Mail address, please visit {activation_url}',
 										'You have registered for an application',
 										'You have requested a new Password. To set your new Password,
@@ -271,16 +204,10 @@ class YumInstallController extends YumController {
 										'You have a new profile comment from {username}: {message} visit your profile: {link_profile}',
 										'You have received a new message from {username}: {message}',
 'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
-'Your payment has been received on {payment_date} and your Membership {id} is now active',
-'Please select a Membership of your choice',
-'Your advantages: <br /> Premium: Everything is better <br /> Business: Everything is much better '
+'Your payment has been received on {payment_date} and your Membership {id} is now active'
 ),
 							('2',
 							 'de',
-							 'Willkommen zum System.',
-							 'Mit der Anmeldung bestätigen Sie unsere allgemeinen Bedingungen.',
-							 'Willkommen!',
-							 '',
 							 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
 							 'Sie haben sich für eine Applikation registriert.',
 							 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
@@ -299,15 +226,8 @@ class YumInstallController extends YumController {
 							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
 								 'Sie haben eine neue Nachricht von {username} bekommen: {message}',
 'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
-'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.',
-'Bitte wählen Sie ein Paket ihrer Wahl:',
-'Ihre Vorteile: '
-),
+'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'),
 								 ('3',
-									'es',
-									'Bienvenido al sistema de registro',
-									'Al registrarse en este sistema, usted está aceptando nuestros términos.',
-									'¡Bienvenido!',
 									'',
 									'Te has registrado en esta aplicación. Para confirmar tu dirección de correo electrónico, por favor, visita {activation_url}.',
 									'Te has registrado en esta aplicación.',
@@ -318,10 +238,7 @@ class YumInstallController extends YumController {
 									'Please translatore thisse hiere toh tha espagnola langsch {username}',
 									'Has recibido un mensaje de {username}: {message}',
 									'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
-									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa',
-									'Por favor, selecciona un tipo de Membresía',
-									'Las ventajas: <br /> Premium: Todo es mejor <br /> Business: Todo es aún mucho mejor '
-); ";
+									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'); ";
 
 						$db->createCommand($sql)->execute();
 					}
@@ -544,7 +461,6 @@ class YumInstallController extends YumController {
 				$this->render('start', array(
 							'usersTable' => Yum::resolveTableName($this->module->usersTable,Yii::app()->db),
 							'privacySettingTable' => Yum::resolveTableName($this->module->privacySettingTable,Yii::app()->db),
-							'settingsTable' => Yum::resolveTableName($this->module->settingsTable, Yii::app()->db),
 							'textSettingsTable' => Yum::resolveTableName($this->module->textSettingsTable,Yii::app()->db),
 							'rolesTable' => Yum::resolveTableName($this->module->rolesTable,Yii::app()->db),
 							'membershipTable' => Yum::resolveTableName($this->module->membershipTable,Yii::app()->db),
