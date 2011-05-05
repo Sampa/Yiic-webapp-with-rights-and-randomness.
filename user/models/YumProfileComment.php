@@ -8,7 +8,7 @@ class YumProfileComment extends YumActiveRecord{
 
 	public function tableName()
 	{
-		return 'profile_comment';
+		return '{{profile_comment}}';
 	}
 
 	public function rules()

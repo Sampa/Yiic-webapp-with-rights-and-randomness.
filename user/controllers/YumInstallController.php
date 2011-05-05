@@ -29,6 +29,9 @@ class YumInstallController extends YumController {
 		if($this->module->debug === true) {
 			if(Yii::app()->request->isPostRequest) {
 				if($db = Yii::app()->db) {
+					$sql = 'set FOREIGN_KEY_CHECKS = 0;';
+					$db->createCommand($sql)->execute();
+
 					$transaction = $db->beginTransaction();
 
 					$tables = array(
@@ -60,6 +63,7 @@ class YumInstallController extends YumController {
 										${$table}))->execute();
 						}
 					}
+
 
 					// Create User Table
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $usersTable . "` (

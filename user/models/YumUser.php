@@ -338,6 +338,7 @@ class YumUser extends YumActiveRecord {
 			$condition = 'inviter_id = :uid and status = 2';
 
 		$friends = array();
+		Yii::import('application.modules.friendship.models.YumFriendship');
 		$friendships = YumFriendship::model()->findAll($condition, array(
 					':uid' => $this->id));
 		if ($friendships != NULL && !is_array($friendships))

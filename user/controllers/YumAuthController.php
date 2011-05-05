@@ -227,6 +227,7 @@ class YumAuthController extends YumController {
 		if (!Yii::app()->user->isGuest)
 			$this->redirect(Yum::module()->returnUrl);
 
+		Yii::app()->layoutPath = Yum::module()->layoutPath;
 		$this->layout = Yum::module()->loginLayout;
 		$this->loginForm = new YumUserLogin('login');
 

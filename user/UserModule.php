@@ -11,6 +11,7 @@ class UserModule extends CWebModule {
 	public $debug = false;
 
 	//layout related control vars
+	public $layoutPath = 'protected/views/layouts/';
 	public $baseLayout = 'application.views.layouts.main';
 	public $layout = 'yum';
 	public $loginLayout = 'yum';
@@ -92,6 +93,7 @@ class UserModule extends CWebModule {
 		'registration'=>array('//user/registration/registration'),
 		'recovery'=>array('//user/registration/recovery'),
 		'login'=>array('//user/user'),
+		'profile'=>array('//user/profile'),
 		'return'=>array('//user/profile/view'),
 		'firstVisit'=>array('//user/privacy/update'),
 		// Page to go after admin logs in
@@ -261,7 +263,7 @@ class UserModule extends CWebModule {
 
 		if(Yii::app()->user->isAdmin())
 			$controller->layout = Yum::module()->adminLayout;
-
+		
 		return parent::beforeControllerAction($controller, $action);
 	}
 

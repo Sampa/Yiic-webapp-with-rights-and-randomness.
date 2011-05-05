@@ -17,7 +17,7 @@ echo ': ' . $model->title; ?>
 <hr />
 <?php
 echo CHtml::link(Yum::t('Back to inbox'), array(
-			'//user/messages/index')) . '<br />';
+			'//messages/messages/index')) . '<br />';
 
 if(Yii::app()->user->id != $model->from_user_id) {
 	echo CHtml::link(Yum::t('Reply to message'), '', array(

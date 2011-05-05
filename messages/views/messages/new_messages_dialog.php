@@ -24,9 +24,9 @@ echo '<table>';
 				printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
 					CHtml::link($message->from_user->username, array('//user/profile/view', 'id' => $message->from_user_id)),
 					date(Yum::module()->dateTimeFormat, $message->timestamp),
-					CHtml::link($message->title, array('//user/messages/view', 'id' => $message->id)),
-					CHtml::link(Yum::t('View'), array('//user/messages/view', 'id' => $message->id)),
-					CHtml::link(Yum::t('Reply'), array('//user/messages/compose', 'to_user_id' => $message->from_user_id)));
+					CHtml::link($message->title, array('//messages/messages/view', 'id' => $message->id)),
+					CHtml::link(Yum::t('View'), array('//messages/messages/view', 'id' => $message->id)),
+					CHtml::link(Yum::t('Reply'), array('//messages/messages/compose', 'to_user_id' => $message->from_user_id)));
 
 
 				}
