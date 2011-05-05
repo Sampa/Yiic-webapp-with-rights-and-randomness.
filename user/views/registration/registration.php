@@ -82,7 +82,6 @@ if ($profileFields) {
 	<?php echo $activeform->passwordField($form,'verifyPassword'); ?>
 	</div>
 
-	
 	<?php if(extension_loaded('gd') && Yum::module()->enableCaptcha): ?>
 	<div class="row">
 		<?php echo CHtml::activeLabelEx($form,'verifyCode'); ?>
