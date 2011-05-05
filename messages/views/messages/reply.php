@@ -2,7 +2,7 @@
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 			'id'=>'yum-messages-form',
-			'action' => array('//user/messages/compose'),
+			'action' => array('//messages/messages/compose'),
 			'enableAjaxValidation'=>true,
 			)); ?>
 

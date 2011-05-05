@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	'Friendships'=>array('index'),
+	Yum::t('Friendships'=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
 	'Update',
 );

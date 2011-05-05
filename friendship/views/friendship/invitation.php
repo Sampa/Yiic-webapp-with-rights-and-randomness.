@@ -1,6 +1,9 @@
 <?php
-$this->title = Yum::t('Request friendship for user {username}', array('{username}' => $invited->username));
-$this->breadcrumbs = array(Yum::t('Friendship'), Yum::t('Invitation'), $invited->username);
+$this->title = Yum::t('Request friendship for user {username}', array(
+			'{username}' => $invited->username));
+$this->breadcrumbs = array(
+		Yum::t('Friendship'),
+		Yum::t('Invitation'), $invited->username);
 
 $friendship_status = $invited->isFriendOf(Yii::app()->user->id);
 	if($friendship_status !== false)  {

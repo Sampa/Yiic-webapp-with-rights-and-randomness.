@@ -10,8 +10,9 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->label($model,'inviter_id'); ?>
-		<?php echo $form->textField($model->inviter,'username',array('size'=>20,'maxlength'=>25,'readonly'=>'readonly')); ?>
+	<?php echo $form->label($model,'inviter_id'); ?>
+	<?php echo $form->textField($model->inviter,'username',array(
+				'size'=>20,'maxlength'=>25,'readonly'=>'readonly')); ?>
 		<?php echo $form->error($model,'inviter_id'); ?>
 	</div>
 
@@ -28,7 +29,8 @@
 
 	<div class="row">
 		<?php echo $form->label($model,'friend_id'); ?>
-		<?php echo $form->textField($model->invited,'username',array('size'=>20,'maxlength'=>25,'readonly'=>'readonly')); ?>
+		<?php echo $form->textField($model->invited,'username',array(
+					'size'=>20,'maxlength'=>25,'readonly'=>'readonly')); ?>
 		<?php echo $form->error($model,'friend_id'); ?>
 	</div>
 

@@ -10,7 +10,7 @@ if($user->friendship_requests) {
 				CHtml::link($friendship->inviter->username, array(
 						'//user/profile/view', 'id' => $friendship->inviter->id)));
 	}
-	echo CHtml::link(Yum::t('Manage friends'), array('/user/friendship'));
+	echo CHtml::link(Yum::t('Manage friends'), array('//friendship/friendship/admin'));
 	$this->endWidget();
 }
 ?>

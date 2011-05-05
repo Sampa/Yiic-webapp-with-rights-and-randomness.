@@ -30,7 +30,6 @@ class UserModule extends CWebModule {
 	public $enableProfiles = true;
 	public $enableProfileComments = true;
 	public $enableProfileVisitLogging = true;
-	public $enableFriendship = true;
 	public $enableLogging = true;
 	public $enablePrivacysetting = true;
 	public $enableUsergroups = true;

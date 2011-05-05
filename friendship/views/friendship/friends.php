@@ -31,5 +31,7 @@ if($profile->show_friends == 2) {
 		}
 echo '</div><!-- friends -->';
 }
+Yii::import(
+		'application.modules.friendship.controllers.YumFriendshipController');
 echo YumFriendshipController::invitationLink(Yii::app()->user->id, $model->id);
 ?>

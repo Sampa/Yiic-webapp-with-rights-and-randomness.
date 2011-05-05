@@ -24,9 +24,11 @@ if($model->id == Yii::app()->user->id
 			'profile' => $model->profile)); ?>
 <br />
 <?php
-if(Yum::module()->enableFriendship)
-	$this->renderPartial('/friendship/friends', array('model' => $model)); ?> 
-	<br /> 
+if(Yum::hasModule('friendship'))
+$this->renderPartial(
+		'application.modules.friendship.views.friendship.friends', array(
+			'model' => $model)); ?> 
+<br /> 
 <?php
 if(@Yum::module('messages')->messageSystem != 0)
 $this->renderPartial('/messages/write_a_message', array(
