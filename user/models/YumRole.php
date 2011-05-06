@@ -70,6 +70,7 @@ class YumRole extends YumActiveRecord {
 	public function relations()
 	{
 		return array(
+				'activeusers'=>array(self::MANY_MANY, 'YumUser', Yum::module()->userRoleTable . '(role_id, user_id)', 'condition' => 'status = 3'),
 				'users'=>array(self::MANY_MANY, 'YumUser', Yum::module()->userRoleTable . '(role_id, user_id)'),
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 				'memberships' => array(self::HAS_MANY, 'YumMembership', 'membership_id'),
