@@ -23,20 +23,24 @@ class YumUserMenu extends CPortlet {
 	public function getMenuItems() {
 		return array( 
 				array('label' => 'Profile', 'items' => array(
-						array('label' => 'My profile', 'url' => array('/user/profile/view')),
-						array('label' => 'Edit personal data', 'url' => array('/user/profile/update')),
+						array('label' => 'My profile', 'url' => array(
+								'//profile/profile/view')),
+						array('label' => 'Edit personal data', 'url' => array(
+								'//profile/profile/update')),
 						array(
 							'label' => 'Upload avatar image',
 							'url' => array('/avatar/avatar/editAvatar'),
 							'visible' => Yum::hasModule('avatar'),
 							),
-						array('label' => 'Privacy settings', 'url' => array('/user/privacy/update')),
+						array('label' => 'Privacy settings', 'url' => array('/profile/privacy/update')),
 						)
 					),
 
-				array('label' => 'Membership', 'visible' => Yum::module()->enableMembership, 'items' => array(
-						array('label' => 'My memberships', 'url' => array('/user/membership/index')),
-						array('label' => 'Browse memberships', 'url' => array('/user/membership/order')),
+				array('label' => 'Membership',
+					'visible' => Yum::hasModule('membership')
+					,'items' => array(
+						array('label' => 'My memberships', 'url' => array('/membership/membership/index')),
+						array('label' => 'Browse memberships', 'url' => array('/membership/membership/order')),
 						)
 					),
 
@@ -54,10 +58,16 @@ class YumUserMenu extends CPortlet {
 								'url' => array('/friendship/friendship/index'),
 								'visible' => Yum::hasModule('friendship')),
 							array('label' => 'Browse users', 'url' => array('/user/user/browse')),
-							array('label' => 'My groups', 'url' => array('/user/groups/index'), 'visible' => Yum::module()->enableUsergroups),
-							array('label' => 'Create new usergroup', 'url' => array('/user/groups/create'), 'visible' => Yum::module()->enableUsergroups),
-							array('label' => 'Browse usergroups', 'url' => array('/user/groups/browse'), 'visible' => Yum::module()->enableUsergroups),
-							)
+							array('label' => 'My groups', 'url' => array(
+									'/usergroup/groups/index'),
+								'visible' => Yum::hasModule('usergroup')),
+								array('label' => 'Create new usergroup', 'url' => array(
+										'/usergroup/groups/create'),
+									'visible' => Yum::hasModule('usergroup')),
+								array('label' => 'Browse usergroups', 'url' => array(
+										'/usergroup/groups/browse'),
+									'visible' => Yum::hasModule('usergroup')),
+								),
 						),
 				array('label' => 'Misc', 'items' => array(
 							array('label' => 'Change password', 'url' => array('//user/user/changePassword')),

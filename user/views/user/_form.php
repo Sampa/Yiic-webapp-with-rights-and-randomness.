@@ -25,7 +25,7 @@ echo $form->error($model, 'superuser'); ?>
 echo $form->dropDownList($model,'status',YumUser::itemAlias('UserStatus'));
 echo $form->error($model,'status'); ?>
 </div>
-<?php if(Yum::module()->enableRoles) { ?>
+<?php if(Yum::hasModule('role')) { ?>
 <div class="row roles">
 <p> <?php echo Yum::t('User belongs to these roles'); ?> </p>
 
@@ -55,8 +55,9 @@ echo $form->error($model, 'username'); ?>
 <?php $this->renderPartial('/user/passwordfields', array(
 			'form'=>$passwordform)); ?>
 </div>
-<?php if(isset($profile)) 
-		$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>
+<?php if(Yum::hasModule('profile')) 
+$this->renderPartial('application.modules.profile.views.profile.view', array(
+			'model' => $model)); ?>
 
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord

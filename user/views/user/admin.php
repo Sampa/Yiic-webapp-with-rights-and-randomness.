@@ -1,4 +1,5 @@
 <?php
+
 $this->title = Yum::t('Manage users');
 
 $this->breadcrumbs = array(
@@ -50,6 +51,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			array(
 				'name'=>Yum::t('Roles'),
 				'type' => 'raw',
+				'visible' => Yum::hasModule('role'),
 				'filter' => false,
 				'value'=>'$data->getRoles()',
 			),

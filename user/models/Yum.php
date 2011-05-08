@@ -30,22 +30,19 @@ class Yum
 	/* set a flash message to display after the request is done */
 	public static function setFlash($message) 
 	{
-		$_SESSION['yumflash'] = Yum::t($message);
+		Yii::app()->user->setFlash('yum_message', Yum::t($message));
 	}
 
 	public static function hasFlash() 
 	{
-		return(isset($_SESSION['yumflash']));
+		return Yii::app()->user->hasFlash('yum_message');
 	}
 
 
 	/* retrieve the flash message again */
 	public static function getFlash() {
-		if(isset($_SESSION['yumflash'])) {
-			$message = $_SESSION['yumflash'];
-			unset($_SESSION['yumflash']);
-			return $message;
-		}
+		if(Yum::hasFlash())
+			return Yii::app()->user->getFlash('yum_message');
 	}
 
 	/* A wrapper for the Yii::log function. If no category is given, we

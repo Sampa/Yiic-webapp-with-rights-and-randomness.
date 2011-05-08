@@ -199,6 +199,7 @@ class YumAuthController extends YumController {
 	}
 
 	public function loginByEmail() {
+		Yii::import('application.modules.profile.models.*');
 		$profile = YumProfile::model()->find('email = :email', array(
 					':email' => $this->loginForm->username));
 		if($profile && $profile->user)
@@ -227,7 +228,6 @@ class YumAuthController extends YumController {
 		if (!Yii::app()->user->isGuest)
 			$this->redirect(Yum::module()->returnUrl);
 
-		Yii::app()->layoutPath = Yum::module()->layoutPath;
 		$this->layout = Yum::module()->loginLayout;
 		$this->loginForm = new YumUserLogin('login');
 
@@ -269,40 +269,42 @@ class YumAuthController extends YumController {
 					$login_type = 'ldap';
 				}
 			}
-		}
-		if (Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success) {
-			$success = $this->loginByFacebook();
-			if ($success)
-				$login_type = 'facebook';
-		}
-		if (Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success) {
-			$sucess = $this->loginByTwitter();
-			if ($success)
-				$login_type = 'twitter';
-		}
-		if ($success instanceof YumUser) {
-			//cookie with login type for later flow control in app
-			if ($login_type) {
-				$cookie = new CHttpCookie('login_type', serialize($login_type));
-				$cookie->expire = time() + (3600*24*30);
-				Yii::app()->request->cookies['login_type'] = $cookie;
+			if (Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success) {
+				$success = $this->loginByFacebook();
+				if ($success)
+					$login_type = 'facebook';
 			}
-			if ($success->status == YumUser::STATUS_ACTIVATED) {
-				$success->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
-				$success->save('status', false);
-				Yum::log(
-						Yum::t(
-							'User {username} successfully logged in the first time', array(
-								'{username}' => $success->username)));
+			if (Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success) {
+				$sucess = $this->loginByTwitter();
+				if ($success)
+					$login_type = 'twitter';
+			}
+			if ($success instanceof YumUser) {
+				//cookie with login type for later flow control in app
+				if ($login_type) {
+					$cookie = new CHttpCookie('login_type', serialize($login_type));
+					$cookie->expire = time() + (3600*24*30);
+					Yii::app()->request->cookies['login_type'] = $cookie;
+				}
+				if ($success->status == YumUser::STATUS_ACTIVATED) {
+					$success->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
+					$success->save('status', false);
+					Yum::log(
+							Yum::t(
+								'User {username} successfully logged in the first time', array(
+									'{username}' => $success->username)));
 
-			} else if ($success->status == YumUser::STATUS_ACTIVE_FIRST_VISIT) {
-				$success->status = YumUser::STATUS_ACTIVE;
-				$success->save('status', false);
-			} else 
-				Yum::log(Yum::t('User {username} successfully logged in', array(
-								'{username}' => $success->username)));
+				} else if ($success->status == YumUser::STATUS_ACTIVE_FIRST_VISIT) {
+					$success->status = YumUser::STATUS_ACTIVE;
+					$success->save('status', false);
+				} else 
+					Yum::log(Yum::t('User {username} successfully logged in', array(
+									'{username}' => $success->username)));
 
-			$this->redirectUser($success);
+				$this->redirectUser($success);
+			} else
+				$this->loginForm->addError('username',
+						Yum::t('Login is not possible with the given credentials'));
 		}
 
 		$this->render(Yum::module()->loginView, array(

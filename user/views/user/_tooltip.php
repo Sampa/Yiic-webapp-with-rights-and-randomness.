@@ -18,7 +18,7 @@ if($data->privacy && $data->privacy->show_online_status)
 				'//messages/messages/compose', 'to_user_id' => $data->id)) . '<br />';
 
 	echo CHtml::link(Yum::t('Visit profile'), array(
-				'//user/profile/view', 'id' => $data->id));
+				'//profile/profile/view', 'id' => $data->id));
 
 
 

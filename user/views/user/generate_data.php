@@ -22,8 +22,9 @@ printf('Generate %s %s users <br />
 				'-1' => Yum::t('banned'),
 				'0' => Yum::t('inactive'),
 				'1' => Yum::t('active'))),
+		Yum::hasModule('role') ? 
 		CHtml::dropDownList('role', '', CHtml::listData(
-				YumRole::model()->findAll(), 'id', 'title')),
+				YumRole::model()->findAll(), 'id', 'title')) : ' - ',
 		CHtml::textField('password', 'Demopassword123')
 		);
 

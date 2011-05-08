@@ -17,7 +17,7 @@ if($data->privacy && $data->privacy->show_online_status)
 
 <?php echo CHtml::link($data->getAvatar(true),
 		array(
-			'//user/profile/view', 'id' => $data->id)); ?>
+			'//profile/profile/view', 'id' => $data->id)); ?>
 </div>
 
 <?php

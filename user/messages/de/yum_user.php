@@ -54,6 +54,7 @@ return array(
 		'Browse user activities' => 'Tätigkeitenhistorie',
 		'Payment types' => 'Zahlungsarten',
 		'Access control' => 'Zugangskontrolle',
+		'Roles / Access control' => 'Rollen / Zugangskontrolle',
 		'Ordered memberships' => 'Bestellungen',
 		'Create new payment type' => 'Neue Zahlungsart hinzufügen',	
 		'Separate usernames with comma to ignore specified users' => 'Benutzernamen mit Komma trennen, um sie zu ignorieren',

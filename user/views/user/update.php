@@ -2,7 +2,7 @@
 
 if(empty($tabularIdx))
 {
-	$this->title=Yii::t("UserModule.user", 'Update user')." ".$model->id;
+	$this->title=Yum::t('Update user')." ".$model->id;
 
 	$this->breadcrumbs = array(
 			Yum::t('Users')=>array('index'),

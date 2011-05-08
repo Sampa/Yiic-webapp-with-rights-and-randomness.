@@ -11,32 +11,16 @@ class UserModule extends CWebModule {
 	public $debug = false;
 
 	//layout related control vars
-	public $layoutPath = 'protected/views/layouts/';
 	public $baseLayout = 'application.views.layouts.main';
-	public $layout = 'yum';
-	public $loginLayout = 'yum';
-	public $adminLayout = 'yum';
-	public $profileLayout = 'yumprofile';
+	public $layout = 'application.modules.user.views.layouts.yum';
+	public $loginLayout = 'application.modules.user.views.layouts.yum';
+	public $adminLayout = 'application.modules.user.views.layouts.yum';
 
 	// configuration related control vars
 
-	// set useYiiCheckAccess to true to disable Yums own checkAccess routines.
-  // Use this when you implement your own access logic or use yum together with
-  // SrBAC
-	public $useYiiCheckAccess = false;
-
 	public $enableRegistration = true;
 	public $enableRecovery = true;
-	public $enableRoles = true;
-	public $enableProfiles = true;
-	public $enableProfileComments = true;
-	public $enableProfileVisitLogging = true;
 	public $enableLogging = true;
-	public $enablePrivacysetting = true;
-	public $enableUsergroups = true;
-
-	public $enableMembership = true;
-
 	public $enableOnlineStatus = true; 
 	
 	// After how much seconds without an action does a user gets indicated as 
@@ -93,8 +77,8 @@ class UserModule extends CWebModule {
 		'registration'=>array('//user/registration/registration'),
 		'recovery'=>array('//user/registration/recovery'),
 		'login'=>array('//user/user'),
-		'profile'=>array('//user/profile'),
-		'return'=>array('//user/profile/view'),
+		'profile'=>array('//profile/profile'),
+		'return'=>array('//profile/profile/view'),
 		'firstVisit'=>array('//user/privacy/update'),
 		// Page to go after admin logs in
 		'returnAdmin'=>array('//user/statistics/index'),
@@ -103,10 +87,6 @@ class UserModule extends CWebModule {
 
 	private $_views = array(
 			'login' => '/user/login',
-			'profile' => '/profile/view',
-			'profileComment' => '/profileComment/_view',
-			'profileEdit' => '/profile/update',
-			'privacysetting' => '/privacy/update',
 			'menu' => '/user/menu',
 			'registration' => '/registration/registration',
 			'activate' => '/user/resend_activation',
@@ -116,10 +96,7 @@ class UserModule extends CWebModule {
 			'activationSuccess' => '/registration/activation_success',
 			'activationFailure' => '/registration/activation_failure',
 			'recoveryChangePassword' =>'/user/changepassword',
-			'messageCompose' =>'application.modules.user.views.messages.compose',
-			'membershipExpired' =>'/membership/membership_expired');
-
-	public $profilesViewableByGuests = false;
+			'messageCompose' =>'application.modules.user.views.messages.compose');
 
 	// LoginType :
 	const LOGIN_BY_USERNAME		= 1;
@@ -145,24 +122,13 @@ class UserModule extends CWebModule {
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'auth'=>array('class'=>'YumModule.controllers.YumAuthController'),
-		'action'=>array('class'=>'YumModule.controllers.YumActionController'),
-		'permission'=>array('class'=>'YumModule.controllers.YumPermissionController'),
-		'comments'=>array('class'=>'YumModule.controllers.YumProfileCommentController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),
-		'privacy'=>array('class'=>'YumModule.controllers.YumPrivacysettingController'),
 		'groups'=>array('class'=>'YumModule.controllers.YumUsergroupController'),
 		// workaround to allow the url application/user/login:
-		'login'=>array('class'=>'YumModule.controllers.YumUserController'),
-		'role'=>array('class'=>'YumModule.controllers.YumRoleController'),
-		'membership'=>array('class'=>'YumModule.controllers.YumMembershipController'),
-		'payment'=>array('class'=>'YumModule.controllers.YumPaymentController'),
-		'profile'=>array('class'=>'YumModule.controllers.YumProfileController'),
-		'fields'=>array('class'=>'YumModule.controllers.YumFieldsController'),
-		'friendship'=>array('class'=>'YumModule.controllers.YumFriendshipController'),
-		'fieldsgroup'=>array('class'=>'YumModule.controllers.YumFieldsGroupController'),
+		'login'=>array('class'=>'YumModule.controllers.YumUserController')
 	);
 
 	// Table names

@@ -2,7 +2,6 @@
 
 <?php echo CHtml::beginForm(array('install')); ?>
 
-<div class="span-12">
 	<h2> Information: </h2>
 	<hr />
 	<p> You are about to install the Yii User management Module version
@@ -32,10 +31,6 @@ in this directory when you want to use the Role Manager of yii-user. </p>
 
 	<p> To set the language of this Module, set the 'language' config param of
 your Yii Web Application </p>
-
-</div>
-
-<div class="span-11 last">
 
 	<h2> Configuration: </h2>
 	<hr />
@@ -84,9 +79,6 @@ your Yii Web Application </p>
 			</tr>
 
 				</table>
-	</div>
-
-
 
 	<div style="clear:both;"> </div>
 
@@ -117,7 +109,6 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('messagesTable', $messagesTable); ?> </td> 
 			</tr>
 		</table>
-	</div>
 
 	<div style="clear:both;"> </div>
 
@@ -134,9 +125,6 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('userUsergroupTable', $userUsergroupTable); ?> </td> 
 			</tr>
 		</table>
-	</div>
-
-	<div style="clear:both;"> </div>
 
 	<label for="installMessages"> Install Friendship submodule </label>
 	<?php echo CHtml::checkBox('installFriendship', true); ?>

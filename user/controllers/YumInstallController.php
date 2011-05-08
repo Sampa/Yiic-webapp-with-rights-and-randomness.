@@ -232,7 +232,7 @@ class YumInstallController extends YumController {
 'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
 'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'),
 								 ('3',
-									'',
+									'es',
 									'Te has registrado en esta aplicación. Para confirmar tu dirección de correo electrónico, por favor, visita {activation_url}.',
 									'Te has registrado en esta aplicación.',
 									'Has solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor ve a {activation_url}',
@@ -242,7 +242,7 @@ class YumInstallController extends YumController {
 									'Please translatore thisse hiere toh tha espagnola langsch {username}',
 									'Has recibido un mensaje de {username}: {message}',
 									'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
-									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'); ";
+									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'), ('4', 'fr', '', '', '', '', '', '', '', '', '', ''); ";
 
 						$db->createCommand($sql)->execute();
 					}
@@ -351,8 +351,6 @@ class YumInstallController extends YumController {
 							`id` INT unsigned NOT NULL AUTO_INCREMENT ,
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL,
-							`selectable` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Selectable on Registration?',
-							`searchable` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'Can be searched',
 							`autoassign` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Autoassign on new users',
 							`is_membership_possible` tinyint(1) NOT NULL DEFAULT 0,
 							`price` double COMMENT 'Price (when using membership module)',
@@ -421,12 +419,12 @@ class YumInstallController extends YumController {
 
 
 
-							$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`, `searchable`) VALUES
-								('UserCreator', 'This users can create new Users', 0, 0, 0),
-								('UserRemover', 'This users can remove other Users', 0, 0, 0),
-								('Demo', 'Users having the demo role', 0, 0, 1),
-								('Business', 'Example Business account', 9.99, 7, 0),
-								('Premium', 'Example Premium account', 19.99, 28, 0) ";
+							$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`) VALUES
+								('UserCreator', 'This users can create new Users', 0, 0),
+								('UserRemover', 'This users can remove other Users', 0, 0),
+								('Demo', 'Users having the demo role', 0, 0),
+								('Business', 'Example Business account', 9.99, 7),
+								('Premium', 'Example Premium account', 19.99, 28) ";
 							$db->createCommand($sql)->execute();
 
 							$sql = "INSERT INTO `".$userRoleTable."` (`user_id`, `role_id`) VALUES

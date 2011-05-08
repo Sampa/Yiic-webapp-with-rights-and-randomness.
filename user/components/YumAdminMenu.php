@@ -29,30 +29,30 @@ class YumAdminMenu extends CPortlet {
 						array('label' => 'Generate Demo Data', 'url' => array('//user/user/generateData'), 'visible' => Yum::module()->debug),
 						)
 					),
-				array('label'=>'Access control', 'visible' => Yum::module()->enableRoles, 'items' => array(
-						array('label' => 'Roles', 'url' => array('//user/role/admin')),
-						array('label' => 'Create new role', 'url' => array('//user/role/create')),
-						array('label' => 'Permissions', 'url' => array('//user/permission/admin')),
-						array('label' => 'Grant permission', 'url' => array('//user/permission/create')),
-						array('label' => 'Actions', 'url' => array('//user/action/admin')),
-						array('label' => 'Create new action', 'url' => array('//user/action/create')),
+				array('label'=>'Roles / Access control', 'visible' => Yum::hasModule('role'), 'items' => array(
+						array('label' => 'Roles', 'url' => array('//role/role/admin')),
+						array('label' => 'Create new role', 'url' => array('//role/role/create')),
+						array('label' => 'Permissions', 'url' => array('//role/permission/admin')),
+						array('label' => 'Grant permission', 'url' => array('//role/permission/create')),
+						array('label' => 'Actions', 'url' => array('//role/action/admin')),
+						array('label' => 'Create new action', 'url' => array('//role/action/create')),
 						)
 					),
-				array('label'=>'Membership', 'visible' => Yum::module()->enableMembership, 'items' => array(
-						array('label' => 'Ordered memberships', 'url' => array('//user/membership/admin')),
-						array('label' => 'Payment types', 'url' => array('//user/payment/admin')),
-						array('label' => 'Create new payment type', 'url' => array('//user/payment/create')),
+				array('label'=>'Membership', 'visible' => Yum::hasModule('membership'), 'items' => array(
+						array('label' => 'Ordered memberships', 'url' => array('//membership/membership/admin')),
+						array('label' => 'Payment types', 'url' => array('//membership/payment/admin')),
+						array('label' => 'Create new payment type', 'url' => array('//membership/payment/create')),
 						)
 					),
 				array('label'=>'Profiles',
-						'visible' => Yum::module()->enableProfiles,
+						'visible' => Yum::hasModule('profile'),
 						'items' => array(
-							array('label' => 'Manage profiles', 'url' => array('//user/profile/admin')),
-							array('label' => 'Show profile visits', 'url' => array('//user/profile/visits')),
-							array('label' => 'Manage profile fields', 'url' => array('//user/fields/admin')),
-							array('label' => 'Create profile field', 'url' => array('//user/fields/create')),
-							array('label' => 'Manage field groups', 'url' => array('//user/fieldsgroup/admin')),
-							array('label' => 'Create new field group', 'url' => array('//user/fieldsgroup/create')),
+							array('label' => 'Manage profiles', 'url' => array('//profile/profile/admin')),
+							array('label' => 'Show profile visits', 'url' => array('//profile/profile/visits')),
+							array('label' => 'Manage profile fields', 'url' => array('//profile/fields/admin')),
+							array('label' => 'Create profile field', 'url' => array('//profile/fields/create')),
+							array('label' => 'Manage field groups', 'url' => array('//profile/fieldsgroup/admin')),
+							array('label' => 'Create new field group', 'url' => array('//profile/fieldsgroup/create')),
 							)
 						),
 				array('label' => 'Messages',

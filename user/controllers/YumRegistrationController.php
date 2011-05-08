@@ -51,6 +51,7 @@ class YumRegistrationController extends YumController {
 	 * extend from this class and implement your own registration logic 
 	 */
 	public function actionRegistration() {
+		Yii::import('application.modules.profile.models.*');
 		$form = new YumRegistrationForm;
 		$profile = new YumProfile;
 

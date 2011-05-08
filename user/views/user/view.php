@@ -1,5 +1,5 @@
 <?php
-$profiles = Yum::module()->enableProfiles;
+$profiles = Yum::hasModule('profiles');
 
 if(Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL)
 $this->title = Yum::t('View user "{email}"',array(
@@ -103,7 +103,8 @@ if(Yii::app()->user->isAdmin()) {
 }
 
 
-if(Yii::app()->user->isAdmin()) {
+if(Yum::hasModule('role') && Yii::app()->user->isAdmin()) {
+	Yii::import('application.modules.role.models.*');
 	echo '<h2>'.Yum::t('This user belongs to these roles:') .'</h2>';
 
 	if($model->roles) {
@@ -125,7 +126,7 @@ if(Yii::app()->user->isAdmin())
 
 	echo CHtml::Button(
 			Yum::t('Visit profile'), array(
-				'submit' => array('profile/view', 'id' => $model->id)));
+				'submit' => array('//profile/profile/view', 'id' => $model->id)));
 
 
 	?>

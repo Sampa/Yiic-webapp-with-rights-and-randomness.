@@ -42,6 +42,8 @@ class YumUserController extends YumController {
 	}
 
 	public function actionGenerateData() {
+		if(Yum::hasModule('role'))
+			Yii::import('application.modules.role.models.*');
 		if(isset($_POST['user_amount'])) {
 			for($i = 0; $i < $_POST['user_amount']; $i++) {
 				$user = new YumUser();
@@ -52,14 +54,14 @@ class YumUserController extends YumController {
 				$user->status = $_POST['status'];
 
 				if($user->save()) {
-					if(Yum::module()->enableProfiles) {
+					if(Yum::hasModule('profile')) {
 						$profile = new YumProfile();
 						$profile->user_id = $user->id;
 						$profile->timestamp = time();
 						$profile->privacy = 'protected';
 						$profile->email = 'e@mail.de';
 						$profile->save();
-						if(Yum::module()->enableLogging == true)
+						if(Yum::module()->enableLogging)
 						{
 							$model= $this->loadUser(Yii::app()->user->id);
 							YumActivityController::logActivity($model, 'user_generated');
@@ -215,10 +217,13 @@ class YumUserController extends YumController {
 	}
 
 	public function actionUpdate() {
+		if(Yum::hasModule('role'))
+			Yii::import('application.modules.role.models.*');
+
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
-		if(Yum::module()->enableProfiles)
+		if(Yum::hasModule('profile'))
 			$profile = $model->profile;
 
 		if(isset($_POST['YumUser'])) {
@@ -344,6 +349,9 @@ class YumUserController extends YumController {
 
 	public function actionAdmin()
 	{
+		if(Yum::hasModule('role'))
+			Yii::import('application.modules.role.models.*');
+
 		$this->layout = Yum::module()->adminLayout;
 
 		if(Yii::app()->user->isAdmin()) {

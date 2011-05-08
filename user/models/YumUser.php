@@ -99,7 +99,7 @@ class YumUser extends YumActiveRecord {
 
 	// Which memberships are bought by the user
 	public function getActiveMemberships() {
-		if(!Yum::module()->enableMembership)
+		if(!Yum::hasModule('membership'))
 			return array();
 
 		$roles = array();
@@ -158,7 +158,7 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function afterSave() {
-		if(Yum::module()->enablePrivacysetting) {
+		if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacysetting) {
 			$setting = YumPrivacySetting::model()->findByPk($this->id);
 			if (!$setting) {
 				$setting = new YumPrivacySetting();
@@ -237,6 +237,9 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function hasRole($role_title) {
+		if(!Yum::hasModule('role'))
+			return false;
+
 		foreach ($this->roles as $role)
 			if ($role->id == $role_title || $role->title == $role_title)
 				return true;
@@ -245,7 +248,7 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function getRoles() {
-		if(Yum::module()->enableRoles) {
+		if(Yum::hasModule('role')) {
 			$roles = '';
 			foreach ($this->roles as $role)
 				$roles .= ' ' . $role->title;
@@ -255,18 +258,22 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function getPermissions() {
-		$roles = $this->roles;
-		$roles = array_merge($roles, $this->getActiveMemberships());
+		if(!Yum::hasModule('role')) 
+			return array();
 
-		$permissions = array();
-		foreach($roles as $role) {
-			$sql = "select id, action.title from permission left join action on action.id = permission.action where type = 'role' and principal_id = {$role->id}";
-			foreach(Yii::app()->db->createCommand($sql)->query()->readAll() as $permission) 
-				$permissions[$permission['id']] = $permission['title'];
+			$roles = $this->roles;
+			if(Yum::hasModule('membership'))
+				$roles = array_merge($roles, $this->getActiveMemberships());
+
+			$permissions = array();
+			foreach($roles as $role) {
+				$sql = "select id, action.title from permission left join action on action.id = permission.action where type = 'role' and principal_id = {$role->id}";
+				foreach(Yii::app()->db->createCommand($sql)->query()->readAll() as $permission) 
+					$permissions[$permission['id']] = $permission['title'];
+			}
+
+			return $permissions;
 		}
-
-		return $permissions;
-	}
 
 	public function can($action) {
 		foreach ($this->getPermissions() as $permission)
@@ -277,24 +284,8 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function relations() {
-		if (isset(Yum::module()->userRoleTable))
-			$this->_userRoleTable = Yum::module()->userRoleTable;
-		elseif (isset(Yii::app()->modules['user']['userRoleTable']))
-			$this->_tableName = Yii::app()->modules['user']['userRoleTable'];
-		else
-			$this->_userRoleTable = '{{user_has_role}}';
-
-		if (isset(Yum::module()->friendshipTable))
-			$this->_friendshipTable = Yum::module()->friendshipTable;
-		elseif (isset(Yii::app()->modules['user']['friendshipTable']))
-			$this->_tableName = Yii::app()->modules['user']['friendshipTable'];
-		else
-			$this->_friendshipTable = '{{friendship}}';
-
-		// resolve table names to use them in relations definition
-		$relationUHRTableName = Yum::resolveTableName($this->_userRoleTable, $this->getDbConnection());
-		$relationFRSPTableName = Yum::resolveTableName($this->_friendshipTable, $this->getDbConnection());
-
+		if(Yum::hasModule('profile'))
+			Yii::import('application.modules.profile.models.*');
 		return array(
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
@@ -307,7 +298,7 @@ class YumUser extends YumActiveRecord {
 				'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 				'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 				'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
-				'roles' => array(self::MANY_MANY, 'YumRole', $relationUHRTableName . '(user_id, role_id)'),
+				'roles' => array(self::MANY_MANY, 'YumRole', 'user_has_role(user_id, role_id)'),
 				'memberships' => array(self::HAS_MANY, 'YumMembership', 'user_id'),
 				'privacy' => array(self::HAS_ONE, 'YumPrivacySetting', 'user_id'),
 				);
@@ -381,11 +372,11 @@ class YumUser extends YumActiveRecord {
 		// Users stay banned until they confirm their email address.
 		$this->status = YumUser::STATUS_NOTACTIVE;
 
-		if(Yum::module()->enableRoles) 
+		if(Yum::hasModule('role')) 
 			$this->roles = YumRole::getAutoassignRoles(); 
 
 		if($this->save()) {
-			if(Yum::module()->enableProfiles) {
+			if(Yum::hasModule('profile')) {
 				$profile = new YumProfile;
 				$profile->email = $email;
 				$profile->user_id = $this->id;
