@@ -88,9 +88,6 @@ class Yum
 		return Yii::t('UserModule.yum_user', $string, $params);
 	}
 
-	/**
-	 * this function is deprecated
-	 */
 	public static function resolveTableName($tablename, CDbConnection $connection=null)
 	{
 		return $tablename;

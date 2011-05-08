@@ -168,7 +168,7 @@ class YumInstallController extends YumController {
 						// Create Text settings table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $textSettingsTable . "` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
-							`language` enum('en_us','de','fr','pl','ru','es') NOT NULL DEFAULT 'en_us',
+							`language` enum('en_us','de','fr','pl','ru','es','ro') NOT NULL DEFAULT 'en_us',
 							`text_email_registration` text,
 							`subject_email_registration` text,
 							`text_email_recovery` text,
@@ -242,7 +242,8 @@ class YumInstallController extends YumController {
 									'Please translatore thisse hiere toh tha espagnola langsch {username}',
 									'Has recibido un mensaje de {username}: {message}',
 									'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
-									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'), ('4', 'fr', '', '', '', '', '', '', '', '', '', ''); ";
+									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'), 
+('4', 'fr', '', '', '', '', '', '', '', '', '', ''), ('5', 'ro', '', '', '', '', '', '', '', '', '', '') ; ";
 
 						$db->createCommand($sql)->execute();
 					}

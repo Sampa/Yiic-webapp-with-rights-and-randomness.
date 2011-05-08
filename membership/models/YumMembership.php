@@ -6,7 +6,7 @@ class YumMembership extends YumActiveRecord{
 	}
 
 	public function tableName() {
-		return 'membership';
+		return '{{membership}}';
 	}
 
 	public function activate() {

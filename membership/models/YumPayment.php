@@ -12,7 +12,7 @@ class YumPayment extends YumActiveRecord{
 
 	public function tableName()
 	{
-		return 'payment';
+		return '{{payment}}';
 	}
 
 	public function rules()
