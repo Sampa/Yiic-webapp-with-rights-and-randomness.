@@ -29,7 +29,9 @@ echo $form->error($model, 'superuser'); ?>
 echo $form->dropDownList($model,'status',YumUser::itemAlias('UserStatus'));
 echo $form->error($model,'status'); ?>
 </div>
-<?php if(Yum::hasModule('role')) { ?>
+<?php if(Yum::hasModule('role')) { 
+	Yii::import('application.modules.role.models.*');
+?>
 <div class="row roles">
 <p> <?php echo Yum::t('User belongs to these roles'); ?> </p>
 
