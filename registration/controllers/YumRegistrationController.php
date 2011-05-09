@@ -7,6 +7,8 @@
  * Project, then you can feel lucky already! */
 
 Yii::import('application.modules.user.controllers.YumController');
+Yii::import('application.modules.user.models.*');
+Yii::import('application.modules.registration.models.*');
 
 class YumRegistrationController extends YumController {
 	public $defaultAction = 'registration';
@@ -14,7 +16,7 @@ class YumRegistrationController extends YumController {
 	// Only allow the registration if the user is not already logged in and
 	// the function is activated in the Module Configuration
 	public function beforeAction($action) {
-		if (!Yum::module()->enableRegistration || !Yii::app()->user->isGuest) 
+		if (!Yii::app()->user->isGuest) 
 			$this->redirect(Yii::app()->user->returnUrl);
 		return parent::beforeAction($action);
 	}
@@ -88,11 +90,12 @@ class YumRegistrationController extends YumController {
 			if (!isset($user->profile->email)) {
 				throw new CException(Yum::t('Email is not set when trying to send Registration Email'));
 			}
-			$activation_url = $this->createAbsoluteUrl('registration/activation', array(
+			$activation_url = $this->createAbsoluteUrl('//registration/registration/activation', array(
 						'key' => $user->activationKey,
 						'email' => $user->profile->email)
 					);
 
+			// get the text to sent from the yumtextsettings table
 			$content = YumTextSettings::model()->find('language = :lang', array(
 						'lang' => Yii::app()->language));
 			$sent = null;
@@ -103,7 +106,7 @@ class YumRegistrationController extends YumController {
 								'{activation_url}' => $activation_url));
 
 				$mail = array(
-						'from' => Yum::module()->registrationEmail,
+						'from' => Yum::module('registration')->registrationEmail,
 						'to' => $user->profile->email,
 						'subject' => strtr($content->subject_email_registration, array(
 								'{username}' => $user->username)),
@@ -176,8 +179,10 @@ class YumRegistrationController extends YumController {
 							$activation_url = $this->createAbsoluteUrl('registration/recovery', array(
 										'key' => $user->activationKey,
 										'email' => $user->profile->email));
-							if (Yum::module()->enableLogging == true)
-								Yum::log(Yum::t('{username} requested a new password in the password recovery form', array('{username}' => $user->username)));
+							if (Yum::module()->enableLogging)
+								Yum::log(Yum::t(
+											'{username} requested a new password in the password recovery form', array(
+												'{username}' => $user->username)));
 
 
 							$content = YumTextSettings::model()->find('language = :lang', array('lang' => Yii::app()->language));

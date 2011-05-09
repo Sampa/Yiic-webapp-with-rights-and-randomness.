@@ -47,14 +47,18 @@ echo Yum::t(
 	<div class="row">
 	<p class="hint">
 	<?php 
-if($module->enableRegistration)
-	echo CHtml::link(Yum::t("Registration"), $this->module->registrationUrl);
-if($module->enableRegistration && $module->enableRecovery)
+	if(Yum::hasModule('registration'))
+	echo CHtml::link(Yum::t("Registration"),
+			Yum::module('registration')->registrationUrl);
+	if(Yum::hasModule('registration') 
+			&& Yum::module('registration')->enableRecovery)
 	echo ' | ';
-if($module->enableRecovery) 
-	echo CHtml::link(Yum::t("Lost password?"), $this->module->recoveryUrl);
+	if(Yum::hasModule('registration') 
+			&& Yum::module('registration')->enableRecovery) 
+	echo CHtml::link(Yum::t("Lost password?"),
+			Yum::module('registration')->recoveryUrl);
 	?>
-	</p>
+</p>
 	</div>
 
 <div class="row rememberMe">

@@ -18,8 +18,6 @@ class UserModule extends CWebModule {
 
 	// configuration related control vars
 
-	public $enableRegistration = true;
-	public $enableRecovery = true;
 	public $enableLogging = true;
 	public $enableOnlineStatus = true; 
 	
@@ -27,9 +25,6 @@ class UserModule extends CWebModule {
 	// offline? Note that, of course, clicking the Logout button will indicate
 	// him as offline instantly anyway.
 	public $offlineIndicationTime = 3600; // 5 Minutes
-
-	// Whether to confirm the activation of an user by email
-	public $enableActivationConfirmation = true; 
 
 	// set to false to enable case insensitive users.
   // for example, demo and Demo would be the same user then
@@ -43,8 +38,6 @@ class UserModule extends CWebModule {
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer or PHPMailer to use PHPMailer as emailing lib.
 	public $phpmailer = null; // PHPMailer array options.
 
-	public $registrationEmail='register@website.com';
-	public $recoveryEmail='restore@website.com';
 	public $facebookConfig = false;
 	public $pageSize = 10;
 
@@ -74,16 +67,13 @@ class UserModule extends CWebModule {
 			'ldap_transfer_pw' => '');
 
 	private $_urls=array(
-		'registration'=>array('//user/registration/registration'),
-		'recovery'=>array('//user/registration/recovery'),
-		'login'=>array('//user/user'),
-		'profile'=>array('//profile/profile'),
-		'return'=>array('//profile/profile/view'),
-		'firstVisit'=>array('//user/privacy/update'),
-		// Page to go after admin logs in
-		'returnAdmin'=>array('//user/statistics/index'),
-		// Page to go to after logout
-		'returnLogout'=>array('//user/user/login'));
+			'login'=>array('//user/user'),
+			'return'=>array('//profile/profile/view'),
+			'firstVisit'=>array('//user/privacy/update'),
+			// Page to go after admin logs in
+			'returnAdmin'=>array('//user/statistics/index'),
+			// Page to go to after logout
+			'returnLogout'=>array('//user/user/login'));
 
 	private $_views = array(
 			'login' => '/user/login',
@@ -109,12 +99,6 @@ class UserModule extends CWebModule {
 	public $loginType = 3;
 
 	/**
-	 * Whether to use captcha e.g. in registration process
-	 * @var boolean
-	 */
-	public $enableCaptcha = true;
-
-	/**
 	 * Defines all Controllers of the User Management Module and maps them to
 	 * shorter terms for using in the url
 	 * @var array
@@ -123,10 +107,8 @@ class UserModule extends CWebModule {
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'auth'=>array('class'=>'YumModule.controllers.YumAuthController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
-		'registration'=>array('class'=>'YumModule.controllers.YumRegistrationController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),
 		'user'=>array('class'=>'YumModule.controllers.YumUserController'),
-		'groups'=>array('class'=>'YumModule.controllers.YumUsergroupController'),
 		// workaround to allow the url application/user/login:
 		'login'=>array('class'=>'YumModule.controllers.YumUserController')
 	);
