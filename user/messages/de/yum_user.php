@@ -1,6 +1,7 @@
 <?php
 
 return array(
+		'Your current password is not correct' => 'Ihr aktuelles Passwort ist nicht korrekt',
 		'Your friendship request has been accepted' => 'Ihre Kontaktanfrage wurde akzeptiert.',
 		'City' => 'Stadt',
 		'Only your friends are shown here' => 'Nur ihre Kontakte werden hier angezeigt',

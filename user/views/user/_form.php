@@ -8,10 +8,14 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <div class="note">
 <?php echo Yum::requiredFieldNote(); ?>
-<?php echo CHtml::errorSummary(array($model,
- $passwordform,
- isset($profile) ? $profile : null )); ?>
-</div>
+
+<?php
+$models = array($model, $passwordform);
+if($profile !== false)
+	$models[] = $profile;
+	echo CHtml::errorSummary($models);
+	?>
+	</div>
 
 <div style="float: right; margin: 10px;">
 <div class="row">

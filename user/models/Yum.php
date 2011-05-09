@@ -30,19 +30,18 @@ class Yum
 	/* set a flash message to display after the request is done */
 	public static function setFlash($message) 
 	{
-		Yii::app()->user->setFlash('yum_message', Yum::t($message));
+		$_SESSION['yum_message'] = Yum::t($message);
 	}
 
 	public static function hasFlash() 
 	{
-		return Yii::app()->user->hasFlash('yum_message');
+		return isset($_SESSION['yum_message']);
 	}
 
 
 	/* retrieve the flash message again */
 	public static function getFlash() {
-		if(Yum::hasFlash())
-			return Yii::app()->user->getFlash('yum_message');
+		return $_SESSION['yum_message'];
 	}
 
 	/* A wrapper for the Yii::log function. If no category is given, we
@@ -57,14 +56,13 @@ class Yum
 
 	public static function renderFlash()
 	{
-		if(isset($_SESSION['yumflash'])) {
+		if(Yum::hasFlash()) {
 			echo '<div class="info">';
 			echo Yum::getFlash();
 			echo '</div>';
-		Yii::app()->clientScript->registerScript('fade',"
-		setTimeout(function() { $('.info').fadeOut('slow'); }, 5000);	
-"); 
-
+			Yii::app()->clientScript->registerScript('fade',"
+					setTimeout(function() { $('.info').fadeOut('slow'); }, 5000);	
+					"); 
 		}
 	}
 

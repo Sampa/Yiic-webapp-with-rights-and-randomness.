@@ -19,8 +19,11 @@
         </div>
         
         <div class="row" style="font-size:10px;">
-			<?php echo CHtml::link(Yum::t('Lost password?'), array('//user/registration/recovery')); ?>
-		</div>
+			<?php
+			if(Yum::hasModule('registration') 
+					&& Yum::module('registration')->enableRecovery)
+			echo CHtml::link(Yum::t('Lost password?'), array('//user/registration/recovery')); ?>
+			</div>
         
         <div class="row submit">
             <?php echo CHtml::submitButton(Yum::t('Login')); ?>

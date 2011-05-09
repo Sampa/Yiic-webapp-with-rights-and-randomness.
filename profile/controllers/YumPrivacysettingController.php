@@ -20,7 +20,7 @@ class YumPrivacysettingController extends YumController
 	}
 
 	public function beforeAction($action) {
-		if(!Yum::module()->enablePrivacysetting)
+		if(!Yum::module('profile')->enablePrivacysetting)
 			throw new CHttpException(404);
 
 		return parent::beforeAction($action);

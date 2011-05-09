@@ -13,13 +13,14 @@ class YumWebUser extends CWebUser
 
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
-		if(Yum::module()->useYiiCheckAccess) 
+		if(!Yum::hasModule('role') ||	Yum::module('role')->useYiiCheckAccess )
 			return parent::checkAccess();
 
 		return $this->can($operation);	
 	}
 
 	public function can($action) {
+		Yii::import('application.modules.role.models.*');
 		foreach ($this->data()->getPermissions() as $permission)
 			if ($permission == $action)
 				return true;
@@ -90,24 +91,30 @@ class YumWebUser extends CWebUser
 	 * @return bool Return value tells if the User has access or hasn't access.
 	 */
 	public static function hasRole($role, $uid = 0) {
-		if($uid == 0)
-			$uid = Yii::app()->user->id;
+		if(Yum::hasModule('role')) {
+			Yii::import('application.modules.role.models.*');
 
-		if(!is_array($role))
-			$role = array ($role);
+			if($uid == 0)
+				$uid = Yii::app()->user->id;
 
-		if($user = YumUser::model()->findByPk($uid)) {
-			// Check if a user has a active membership and, if so, add this
-			// to the roles
-			$roles = array_merge($user->roles, $user->getActiveMemberships());
+			if(!is_array($role))
+				$role = array ($role);
 
-			if(isset($roles)) 
-				foreach($roles as $roleobj) {
-					if(in_array($roleobj->title, $role) ||
-							in_array($roleobj->id, $role))
-						return true;
-				}
+			if($user = YumUser::model()->findByPk($uid)) {
+				// Check if a user has a active membership and, if so, add this
+				// to the roles
+				$roles = $user->roles;
+				if(Yum::hasModule('membership'))
+					$roles = array_merge($roles, $user->getActiveMemberships());
 
+				if(isset($roles)) 
+					foreach($roles as $roleobj) {
+						if(in_array($roleobj->title, $role) ||
+								in_array($roleobj->id, $role))
+							return true;
+					}
+
+			}
 		}
 
 		return false;

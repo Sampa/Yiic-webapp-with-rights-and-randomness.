@@ -124,24 +124,36 @@ class YumUserController extends YumController {
 			$uid = $_GET['id'];
 
 		$form = new YumUserChangePassword;
+		$form->scenario = 'user_request';
 
 		if(isset($_POST['YumUserChangePassword'])) {
 			$form->attributes = $_POST['YumUserChangePassword'];
 			$form->validate();
 
 			if(YumUser::encrypt($form->currentPassword) != YumUser::model()->findByPk($uid)->password)
-				$form->addError('currentPassword', 'Your actual password is not correct');
+				$form->addError('currentPassword',
+						Yum::t('Your current password is not correct'));
 
 			if(!$form->hasErrors()) {
-				if(YumUser::model()->findByPk($uid)->setPassword($form->password)) 
+				if(YumUser::model()->findByPk($uid)->setPassword($form->password)) {
 					Yum::setFlash('The new password has been saved');
-				else 
+					Yum::log(Yum::t('User {username} has changed his password', array(
+									'{username}' => Yii::app()->user->name)));
+				}
+				else  {
 					Yum::setFlash('There was an error saving the password');
+					Yum::log(
+							Yum::t(
+								'User {username} tried to change his password, but an error occured', array(
+									'{username}' => Yii::app()->user->name)), 'error');
+				}
 
-				$this->redirect(array('//user/user/profile'));
+				$this->redirect(Yum::module()->returnUrl);
 			}
 		}
-		$this->render('changepassword', array('form'=>$form, 'expired' => $expired));
+		$this->render('changepassword', array(
+					'form'=>$form,
+					'expired' => $expired));
 	}
 
 	public function actionProfile() {
@@ -217,24 +229,27 @@ class YumUserController extends YumController {
 	}
 
 	public function actionUpdate() {
-		if(Yum::hasModule('role'))
-			Yii::import('application.modules.role.models.*');
+
 
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
-		if(Yum::hasModule('profile'))
-			$profile = $model->profile;
-
 		if(isset($_POST['YumUser'])) {
 			$model->attributes = $_POST['YumUser'];
+			if(Yum::hasModule('role')) {
+				// Assign the roles and belonging Users to the model
+				$model->roles = Relation::retrieveValues($_POST);
+				Yii::import('application.modules.role.models.*');
+			}
 
-			// Assign the roles and belonging Users to the model
-			$model->roles = Relation::retrieveValues($_POST);
+			if(Yum::hasModule('profile')) {
+				$profile = $model->profile;
 
-			if(isset($_POST['YumProfile']) )
-				$profile->attributes = $_POST['YumProfile'];
+				if(isset($_POST['YumProfile']) )
+					$profile->attributes = $_POST['YumProfile'];
+			}
 
+			// Password change is requested ?
 			if(isset($_POST['YumUserChangePassword'])
 					&& $_POST['YumUserChangePassword']['password'] != '') {
 				$passwordform->attributes = $_POST['YumUserChangePassword'];

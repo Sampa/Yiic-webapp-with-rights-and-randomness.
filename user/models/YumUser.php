@@ -115,18 +115,19 @@ class YumUser extends YumActiveRecord {
 	public function search() {
 		$criteria = new CDbCriteria;
 
+		if(Yum::hasModule('profile')) {
+			$criteria->with = array('profile');
+			$criteria->compare('profile.email', $this->profile->email, true);
+			$criteria->addSearchCondition('profile.email',$this->email,true);
+		}
+
 		$criteria->together = true;
-		$criteria->with = array('profile');
 		$criteria->compare('t.id', $this->id, true);
 		$criteria->compare('t.username', $this->username, true);
-		if ($this->profile)
-			$criteria->compare('profile.email', $this->profile->email, true);
 		$criteria->compare('t.status', $this->status);
 		$criteria->compare('t.superuser', $this->superuser);
 		$criteria->compare('t.createtime', $this->createtime, true);
 		$criteria->compare('t.lastvisit', $this->lastvisit, true);
-		if (strlen($this->email))
-			$criteria->addSearchCondition('profile.email',$this->email,true);
 
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
@@ -249,6 +250,7 @@ class YumUser extends YumActiveRecord {
 
 	public function getRoles() {
 		if(Yum::hasModule('role')) {
+			Yii::import('application.modules.role.models.*');
 			$roles = '';
 			foreach ($this->roles as $role)
 				$roles .= ' ' . $role->title;

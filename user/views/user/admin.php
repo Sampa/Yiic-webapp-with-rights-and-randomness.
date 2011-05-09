@@ -6,9 +6,7 @@ $this->breadcrumbs = array(
 	Yum::t('Users') => array('index'),
 	Yum::t('Manage'));
 
-if(Yii::app()->user->hasFlash('adminMessage'))
-printf('<div class="errorSummary">%s</div>',
-		Yii::app()->user->getFlash('adminMessage'));
+echo Yum::renderFlash();
 
 $this->widget('zii.widgets.grid.CGridView', array(
 	'dataProvider'=>$model->search(),
@@ -18,19 +16,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'name'=>'id',
 				'filter' => false,
 				'type'=>'raw',
-				'value'=>'CHtml::link(CHtml::encode($data->id),
-				array(Yum::route("{user}/update"),"id"=>$data->id))',
-			),
+				'value'=>'CHtml::link($data->id,
+				array("//user/user/update","id"=>$data->id))',
+				),
 			array(
 				'name'=>'username',
-				'visible' => Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME,
 				'type'=>'raw',
 				'value'=>'CHtml::link(CHtml::encode($data->username),
-				array(Yum::route("{user}/view"),"id"=>$data->id))',
+				array("//user/user/view","id"=>$data->id))',
 			),
 			array(
 				'name'=>'email',
-				'visible' => Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL,
+				'visible' => Yum::hasModule('profile'), 
 				'value'=> 'isset($data->profile) ? $data->profile->email : "No email set"',
 			),
 			array(

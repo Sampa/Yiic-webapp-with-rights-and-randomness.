@@ -22,8 +22,6 @@ $this->title = Yum::t('Privacy settings for {username}', array(
 echo $form->errorSummary($model);
 ?>
 
-<?php if(Yum::module()->enableProfiles) { ?>
-
 <div class="profile_field_selection">
 <?php
 echo '<h3>' . Yum::t('Profile field public options') . '</h3>';
@@ -51,8 +49,9 @@ if ($counter%4!=0) echo '</div>';
 echo '<div class="clear"></div>';
 ?>
 </div>
-<?php } ?>
 
+
+<?php if(Yum::hasModule('friendship')) { ?>
 <div class="row">
 <?php echo $form->labelEx($model,'message_new_friendship'); ?>
 <?php echo $form->dropDownList($model, 'message_new_friendship', array(
@@ -60,6 +59,7 @@ echo '<div class="clear"></div>';
 			1 => Yum::t('Yes'))); ?>
 <?php echo $form->error($model,'message_new_friendship'); ?>
 </div>
+<?php } ?>
 
 <div class="row">
 <?php echo $form->labelEx($model,'message_new_message'); ?>
@@ -70,9 +70,7 @@ echo '<div class="clear"></div>';
 <?php echo $form->error($model,'message_new_message'); ?>
 </div>
 
-	<?php if(Yum::module()->enableProfiles) { ?>
-
-		<?php if(Yum::module()->enableProfileComments) { ?>
+		<?php if(Yum::module('profile')->enableProfileComments) { ?>
 
 				<div class="row">
 				<?php 
@@ -96,7 +94,6 @@ echo '<div class="clear"></div>';
 
 				<?php } ?>
 
-				<?php } ?>
 
 <?php if(Yum::hasModule('friendship')) { ?>
 	<div class="row">
@@ -138,7 +135,7 @@ echo '<div class="clear"></div>';
 	?>
 	</div>
 
-<?php if(Yum::module()->enableRoles) { ?>
+<?php if(Yum::hasModule('role')) { ?>
 	<div class="row">
 	<?php 
 	echo CHtml::activeLabelEx($model, 'appear_in_search'); 
@@ -161,15 +158,9 @@ echo '<div class="clear"></div>';
 </div>
 </div>
 
-
-
-
-
-
-
 <?php
 echo CHtml::Button(Yum::t( 'Cancel'), array(
-			'submit' => array('//user/profile/view')));
+			'submit' => array('//profile/profile/view')));
 echo CHtml::submitButton(Yum::t('Save')); 
 $this->endWidget(); ?>
 </div> <!-- form -->

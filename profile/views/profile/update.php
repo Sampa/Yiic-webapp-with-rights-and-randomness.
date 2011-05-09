@@ -27,7 +27,7 @@ $this->title = Yum::t('Edit profile');
 	<div class="row buttons">
 	<?php
 
-	if(Yum::module()->enablePrivacysetting)
+	if(Yum::module('profile')->enablePrivacysetting)
 		echo CHtml::button(Yum::t('Privacy settings'), array(
 					'submit' => array('/user/privacy/update'))); ?>
 
