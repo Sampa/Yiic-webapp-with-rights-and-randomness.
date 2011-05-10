@@ -17,8 +17,6 @@ $this->breadcrumbs=array(
 			'value'=> 'CHtml::link(CHtml::encode($data->title),
 				array(Yum::route("role/view"),"id"=>$data->id))',
 		),
-		'selectable',
-		'searchable',
 		'autoassign',
 		'is_membership_possible',
 		array(
