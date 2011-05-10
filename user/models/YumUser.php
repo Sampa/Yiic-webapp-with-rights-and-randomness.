@@ -156,7 +156,10 @@ class YumUser extends YumActiveRecord {
 			$this->password = YumUser::encrypt($password);
 			$this->lastpasswordchange = time();
 			$this->password_changed = true;
-			return $this->save();
+			if(!$this->isNewRecord)
+				return $this->save();
+			else
+				return $this;
 		}
 	}
 

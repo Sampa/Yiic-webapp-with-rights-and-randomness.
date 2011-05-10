@@ -1,6 +1,7 @@
 <?php
 
 return array(
+		'Create new User' => 'Neuen Benutzer anlegen',
 		'Your current password is not correct' => 'Ihr aktuelles Passwort ist nicht korrekt',
 		'Your friendship request has been accepted' => 'Ihre Kontaktanfrage wurde akzeptiert.',
 		'City' => 'Stadt',
@@ -97,7 +98,7 @@ return array(
 		'Manage user Groups' => 'Benutzergruppen verwalten',
 		'My groups' => 'Meine Gruppen',
 		'Browse usergroups' => 'Gruppen durchsuchen',
-		'Retyped password is incorrect' => 'Wiederholtes Password ist nicht identisch',
+		'Retyped password is incorrect' => 'Wiederholtes Passwort ist nicht identisch',
 				'Username or Password is incorrect' => 'Benutzername oder Passwort ist falsch',
 		'No friendship requested' => 'Keine Freundschaft angefragt',
 		'New friendship requests' => 'Neue Freundschaftsanfragen',

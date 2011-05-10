@@ -3,7 +3,7 @@
 class YumProfileVisit extends YumActiveRecord {
 
 	public static function model($className=__CLASS__) {
-		if(!Yum::module()->enableProfileVisitLogging)
+		if(!Yum::module('profile')->enableProfileVisitLogging)
 			return false;
 		return parent::model($className);
 	}

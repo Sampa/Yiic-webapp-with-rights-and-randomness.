@@ -16,25 +16,16 @@ class YumUserController extends YumController {
 					),
 				array('allow',
 					'actions'=>array('admin','delete','create','update', 'list', 'assign', 'generateData'),
-					'users'=>array(Yii::app()->user->name ),
 					'expression' => 'Yii::app()->user->isAdmin()'
 					),
 				array('allow',
-					'actions' => array('admin'),
-					'expression' => "Yii::app()->user->hasUsers()",
+					'actions'=>array('create'),
+					'expression' => 'Yii::app()->user->can("user_create")'
 					),
 				array('allow',
-					'actions' => array('admin'),
-					'expression' => "Yii::app()->user->hasRoles()",
+					'actions'=>array('admin'),
+					'expression' => 'Yii::app()->user->can("user_admin")'
 					),
-				array('allow',
-						'actions' => array('update'),
-						'expression' => 'Yii::app()->user->hasUser($_GET[\'id\'])',
-						),
-				array('allow',
-						'actions' => array('update'),
-						'expression' => 'Yii::app()->user->hasRoleOfUser($_GET[\'id\'])',
-						),
 				array('deny',  // deny all other users
 						'users'=>array('*'),
 						),
@@ -184,7 +175,7 @@ class YumUserController extends YumController {
 		// When opening a empty user creation mask, we most probably want to
 		// insert an _active_ user
 		if(!isset($model->status))
-			$model->status = 1;
+			$model->status = 3;
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
@@ -216,7 +207,7 @@ class YumUserController extends YumController {
 					&& !$passwordform->hasErrors()) {
 				$model->save();
 				$profile->user_id = $model->id;
-				$profile->save();
+				$profile->save(array('user_id'), false);
 				$this->redirect(array('view', 'id'=>$model->id));
 			}
 		}
@@ -369,14 +360,12 @@ class YumUserController extends YumController {
 
 		$this->layout = Yum::module()->adminLayout;
 
-		if(Yii::app()->user->isAdmin()) {
 			$model = new YumUser('search');
 
 			if(isset($_GET['YumUser']))
 				$model->attributes = $_GET['YumUser'];
 
 			$this->render('admin', array('model'=>$model));
-		} 
 	}
 
 	/**

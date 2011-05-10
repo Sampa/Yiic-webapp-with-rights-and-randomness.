@@ -57,13 +57,15 @@ echo $form->error($model, 'username'); ?>
 
 <div class="row">
 <p> Leave password <em> empty </em> to 
-<?php echo $model->isNewRecord ? 'generate a random Password' : 'keep it <em> unchanged </em>'; ?> </p>
+<?php echo $model->isNewRecord 
+? 'generate a random Password' 
+: 'keep it <em> unchanged </em>'; ?> </p>
 <?php $this->renderPartial('/user/passwordfields', array(
 			'form'=>$passwordform)); ?>
 </div>
 <?php if(Yum::hasModule('profile')) 
-$this->renderPartial('application.modules.profile.views.profile.view', array(
-			'model' => $model)); ?>
+$this->renderPartial('application.modules.profile.views.profile._form', array(
+			'profile' => $profile)); ?>
 
 <div class="row buttons">
 <?php echo CHtml::submitButton($model->isNewRecord

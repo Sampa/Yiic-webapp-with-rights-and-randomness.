@@ -56,3 +56,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'class'=>'CButtonColumn',
 			),
 ))); ?>
+
+<?php echo CHtml::link(Yum::t('Create new User'), array(
+			'//user/user/create')); ?>

@@ -407,22 +407,31 @@ class YumInstallController extends YumController {
 
 						if(isset($_POST['installRole']))
 						{
-							$sql = "INSERT INTO `".$actionTable ."` (`title`) VALUES ('message_write'), ('message_receive'), ('view_profile_visits')";
+							$sql = "INSERT INTO `".$actionTable ."` (`title`) VALUES 
+								('message_write'),
+								('message_receive'),
+								('user_create'),
+								('user_update'),
+								('user_remove'),
+								('user_admin')";
 
 							$db->createCommand($sql)->execute();
 
 							$sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `template`, `comment`) VALUES
-								(3, 0, 'role', 1, 0, 'Users can write messagse'),
-								(3, 0, 'role', 2, 0, 'Users can receive messagse'),
-								(3, 0, 'role', 3, 0, 'Users are able to view visits of his profile');";
+								(2, 0, 'role', 1, 0, 'Users can write messagse'),
+								(2, 0, 'role', 2, 0, 'Users can receive messagse'),
+								(2, 0, 'role', 3, 0, 'Users are able to view visits of his profile'),
+								(1, 0, 'role', 4, 0, ''),
+								(1, 0, 'role', 5, 0, ''),
+								(1, 0, 'role', 6, 0, ''),
+								(1, 0, 'role', 7, 0, '');";
 
 							$db->createCommand($sql)->execute();
 
 
 
 							$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`) VALUES
-								('UserCreator', 'This users can create new Users', 0, 0),
-								('UserRemover', 'This users can remove other Users', 0, 0),
+								('UserManager', 'This users can manage Users', 0, 0),
 								('Demo', 'Users having the demo role', 0, 0),
 								('Business', 'Example Business account', 9.99, 7),
 								('Premium', 'Example Premium account', 19.99, 28) ";
