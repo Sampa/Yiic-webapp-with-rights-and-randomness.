@@ -322,8 +322,10 @@ class YumUserController extends YumController {
 
 		$criteria = new CDbCriteria;
 
-		$criteria->join = 'LEFT JOIN privacysetting on t.id = privacysetting.user_id';
-		$criteria->addCondition('appear_in_search = 1');
+/*		if(Yum::hasModule('profile')) {
+			$criteria->join = 'LEFT JOIN '.Yum::module('profile')->privacysettingTable .' on t.id = privacysetting.user_id';
+			$criteria->addCondition('appear_in_search = 1'); 
+		} */
 
 		$criteria->addCondition('status = 1 or status = 2 or status = 3');
 		if($search) 

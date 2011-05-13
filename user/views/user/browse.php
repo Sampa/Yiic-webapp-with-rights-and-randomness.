@@ -21,12 +21,6 @@ echo CHtml::submitButton(Yum::t('Search'));
 </div>
 
 <?php
-echo CHtml::label(Yum::t('Having'), 'search_role') . '<br />';
-echo CHtml::dropDownList('search_role', isset($role) ? $role : '',
-		CHtml::listData(YumRole::model()->searchable()->findAll(), 'id', 'description'), array(
-			'submit' => array('//user/user/browse'),
-			'empty' => ' - ',
-			));
 echo CHtml::endForm();
 
 $this->widget('zii.widgets.CListView', array(

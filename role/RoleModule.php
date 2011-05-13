@@ -7,6 +7,9 @@ class RoleModule extends CWebModule {
 	// SrBAC
 	public $useYiiCheckAccess = false;
 
+	public $roleTable = '{{roles}}';
+	public $userHasRoleTable = '{{user_has_role}}';
+
 	public $controllerMap=array(
 			'action'=>array(
 				'class'=>'RoleModule.controllers.YumActionController'),

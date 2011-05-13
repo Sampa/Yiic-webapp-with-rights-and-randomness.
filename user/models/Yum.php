@@ -41,7 +41,9 @@ class Yum
 
 	/* retrieve the flash message again */
 	public static function getFlash() {
-		return $_SESSION['yum_message'];
+		$message = $_SESSION['yum_message'];
+		unset($_SESSION['yum_message']);
+		return $message;
 	}
 
 	/* A wrapper for the Yii::log function. If no category is given, we

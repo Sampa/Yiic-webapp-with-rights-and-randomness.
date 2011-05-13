@@ -53,6 +53,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 }
 
 if(Yii::app()->user->isAdmin())
-	echo CHtml::Button(Yum::t('Update role'), array('submit' => array('role/update', 'id' => $model->id)));
+	echo CHtml::Button(Yum::t('Update role'), array(
+				'submit' => array(
+					'role/update', 'id' => $model->id)));
 
 ?>

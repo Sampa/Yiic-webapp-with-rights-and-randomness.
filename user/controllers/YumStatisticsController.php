@@ -21,6 +21,7 @@ class YumStatisticsController extends YumController {
 
 	public function actionIndex()
 	{
+		$this->layout = Yum::module()->baseLayout;
 		$this->render('statistics', array(
 					'total_users' => YumUser::model()->count(),
 					'active_users' => YumUser::model()->count('status = '.YumUser::STATUS_ACTIVE),
@@ -29,11 +30,11 @@ class YumStatisticsController extends YumController {
 					'inactive_users' => YumUser::model()->count('status = '.YumUser::STATUS_NOTACTIVE),
 					'banned_users' => YumUser::model()->count('status = '.YumUser::STATUS_BANNED),
 					'admin_users' => YumUser::model()->count('superuser = 1'),
-					'roles' => YumRole::model()->count(),
-					'profiles' => YumProfile::model()->count(),
-					'profile_fields' => YumProfileField::model()->count(),
-					'profile_field_groups' => YumProfileFieldsGroup::model()->count(),
-					'profile_views' => YumProfileVisit::model() !== false ? YumProfileVisit::model()->count() : null,
+//					'roles' => YumRole::model()->count(),
+//					'profiles' => YumProfile::model()->count(),
+//					'profile_fields' => YumProfileField::model()->count(),
+//					'profile_field_groups' => YumProfileFieldsGroup::model()->count(),
+//					'profile_views' => YumProfileVisit::model() !== false ? YumProfileVisit::model()->count() : null,
 		//			'messages' => YumMessage::model()->count(),
 					'logins_today' => $this->loginsToday(),
 					));

@@ -17,7 +17,7 @@ $this->breadcrumbs=array(
 					'name' => 'type',
 					'value' => '$data->type',
 					'filter' => array(
-						'type' => Yum::t('Type'),
+						'type' => Yum::t('User'),
 						'role' => Yum::t('Role'),
 						)
 					),

@@ -60,22 +60,23 @@ class YumUsergroupController extends YumController {
 		}
 	}
 
-	public function actionView() {
-		$model = $this->loadModel();
+	public function actionView($id) {
+		$model = $this->loadModel($id);
 
 		$this->render('view',array(
 					'model' => $model,
 					));
 	}
 
-	public function loadModel($uid = 0)
+	public function loadModel($id)
 	{
 		if($this->_model === null)
 		{
-			if($uid != 0)
-				$this->_model = YumUsergroup::model()->findByPk($uid);
-			elseif(isset($_GET['id']))
-				$this->_model = YumUsergroup::model()->findByPk($_GET['id']);
+			if(is_numeric($id))	
+				$this->_model = YumUsergroup::model()->findByPk($id);
+			else if(is_string($id))	
+				$this->_model = YumUsergroup::model()->find('title = :title', array(
+							':title' => $id));
 			if($this->_model === null)
 				throw new CHttpException(404,'The requested Usergroup does not exist.');
 		}

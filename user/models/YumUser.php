@@ -144,13 +144,6 @@ class YumUser extends YumActiveRecord {
 		return true;
 	}
 
-	public function belongsToGroup($id) {
-		foreach($this->groups as $group)
-			if($group->id == $id)
-				return true;
-		return false;
-	}
-
 	public function setPassword($password) {
 		if ($password != '') {
 			$this->password = YumUser::encrypt($password);
@@ -301,7 +294,6 @@ class YumUser extends YumActiveRecord {
 				'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id'),
 				'visited' => array(self::HAS_MANY, 'YumProfileVisit', 'visitor_id'),
 				'profile' => array(self::HAS_ONE, 'YumProfile', 'user_id' ),
-				'groups' => array(self::MANY_MANY, 'YumUsergroup', 'user_has_usergroup(user_id, group_id)'),
 				'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 				'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 				'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST

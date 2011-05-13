@@ -29,12 +29,12 @@ $this->title = Yum::t('Edit profile');
 
 	if(Yum::module('profile')->enablePrivacysetting)
 		echo CHtml::button(Yum::t('Privacy settings'), array(
-					'submit' => array('/user/privacy/update'))); ?>
+					'submit' => array('/profile/privacy/update'))); ?>
 
 	<?php 
 		if(Yum::hasModule('avatar'))
 			echo CHtml::button(Yum::t('Upload avatar Image'), array(
-				'submit' => array('/user/avatar/editAvatar'))); ?>
+				'submit' => array('/avatar/avatar/editAvatar'))); ?>
 
 	<?php echo CHtml::submitButton($user->isNewRecord 
 			? Yum::t('Create my profile') 

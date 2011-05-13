@@ -32,8 +32,8 @@ class YumUsergroup extends YumActiveRecord{
 	{
 		return array(
 			'owner' => array(self::BELONGS_TO, 'YumUser', 'owner_id'),
-			'messages' => array(self::HAS_MANY, 'YumUsergroupMessages', 'group_id'),
-			'messagesCount' => array(self::STAT, 'YumUsergroupMessages', 'group_id')
+			'messages' => array(self::HAS_MANY, 'YumUsergroupMessage', 'group_id'),
+			'messagesCount' => array(self::STAT, 'YumUsergroupMessage', 'group_id')
 		);
 	}
 
@@ -56,10 +56,11 @@ class YumUsergroup extends YumActiveRecord{
 	}
 
 	public function getMessageDataProvider() {
+		Yii::import('application.modules.usergroup.models.*');
 		$criteria = new CDbCriteria;
-		$criteria->addCondition('group_id', $this->id);
+		$criteria->compare('group_id', $this->id);
 	
-		return new CActiveDataProvider('YumUsergroupMessages', array(
+		return new CActiveDataProvider('YumUsergroupMessage', array(
 					'criteria' => $criteria));
 	}
 
