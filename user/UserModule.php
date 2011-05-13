@@ -120,7 +120,7 @@ class UserModule extends CWebModule {
 			'textSettings' => 'yumtextsettings',
 			'messages' => 'messages',
 			'usergroup' => 'usergroup',
-			'userUsergroup' => 'user_has_usergroup',
+			'usergroupMessages' => 'usergroup_messages',
 			'profileFields' => 'profile_fields',
 			'profileFieldsGroup' => 'profile_fields_group',
 			'profile' => 'profiles',

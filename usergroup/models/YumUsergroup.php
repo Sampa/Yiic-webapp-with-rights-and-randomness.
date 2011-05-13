@@ -6,15 +6,15 @@ class YumUsergroup extends YumActiveRecord{
 		return parent::model($className);
 	}
 
+	public function behaviors() {
+		return array('CSerializeBehavior' => array(
+					'class' => 'application.modules.user.components.CSerializeBehavior',
+					'serialAttributes' => array('participants')));
+	}
+
 	public function tableName()
 	{
-		if(isset(Yum::module()->usergroupTable))
-			$this->_tableName = Yum::module()->usergroupTable;
-		elseif(isset(Yii::app()->modules['user']['usergroupTable']))
-			$this->_tableName = Yii::app()->modules['user']['usergroupTable'];
-		else
-			$this->_tableName = '{{usergroup}}'; // fallback if nothing is set
-		return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
+		return '{{usergroup}}';
 	}
 
 	public function rules()
@@ -23,6 +23,7 @@ class YumUsergroup extends YumActiveRecord{
 			array('title, description', 'required'),
 			array('id, owner_id', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
+			array('participants', 'safe'),
 			array('id, title, description', 'safe', 'on'=>'search'),
 		);
 	}
@@ -30,7 +31,9 @@ class YumUsergroup extends YumActiveRecord{
 	public function relations()
 	{
 		return array(
-			'owner' => array(self::BELONGS_TO, 'YumUser', 'owner_id')
+			'owner' => array(self::BELONGS_TO, 'YumUser', 'owner_id'),
+			'messages' => array(self::HAS_MANY, 'YumUsergroupMessages', 'group_id'),
+			'messagesCount' => array(self::STAT, 'YumUsergroupMessages', 'group_id')
 		);
 	}
 
@@ -40,9 +43,27 @@ class YumUsergroup extends YumActiveRecord{
 			'id' => Yum::t('group id'),
 			'title' => Yum::t('Group title'),
 			'description' => Yum::t('Description'),
+			'participants' => Yum::t('Participants'),
 			'owner_id' => Yum::t('Group owner'),
 		);
 	}
+
+	public function getParticipantDataProvider() {
+		$criteria = new CDbCriteria;
+		$criteria->addInCondition('id', $this->participants);
+	
+		return new CActiveDataProvider('YumUser', array('criteria' => $criteria));
+	}
+
+	public function getMessageDataProvider() {
+		$criteria = new CDbCriteria;
+		$criteria->addCondition('group_id', $this->id);
+	
+		return new CActiveDataProvider('YumUsergroupMessages', array(
+					'criteria' => $criteria));
+	}
+
+
 
 
 	public function search()

@@ -121,9 +121,10 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('usergroupTable', $usergroupTable); ?> </td> 
 			</tr>
 			<tr>
-				<td> Table for User to group belonging </td>
-				<td> <?php echo CHtml::textField('userUsergroupTable', $userUsergroupTable); ?> </td> 
-			</tr>
+				<td> Table for User group messages</td>
+				<td> <?php echo CHtml::textField('usergroupMessagesTable',
+						$usergroupMessagesTable); ?> </td> 
+				</tr>
 		</table>
 
 	<label for="installMessages"> Install Friendship submodule </label>

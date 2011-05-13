@@ -16,5 +16,15 @@ class AvatarModule extends CWebModule {
 		'avatar'=>array('class'=>'AvatarModule.controllers.YumAvatarController'),
 	);
 
+	public function init() {
+		$this->setImport(array(
+					'application.modules.user.controllers.*',
+					'application.modules.user.models.*',
+					'application.modules.avatar.controllers.*',
+					'application.modules.avatar.models.*',
+					));
+	}
+
+
 
 }

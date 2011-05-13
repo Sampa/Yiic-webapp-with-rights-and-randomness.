@@ -39,7 +39,7 @@ class YumPermissionController extends YumController
 
 	public function actionAdmin()
 	{
-		$this->layout = Yum::module()->adminLayout;
+		$this->layout = Yum::module('role')->layout;
 		$model=new YumPermission('search');
 		$model->unsetAttributes();  
 

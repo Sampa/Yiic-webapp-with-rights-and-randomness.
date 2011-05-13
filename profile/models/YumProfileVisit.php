@@ -22,14 +22,7 @@ class YumProfileVisit extends YumActiveRecord {
 	}
 
 	public function tableName() {
-		if (isset(Yum::module()->profileVisitTable))
-			$this->_tableName = Yum::module()->profileVisitTable;
-		elseif (isset(Yii::app()->modules['user']['profileVisitTable']))
-			$this->_tableName = Yii::app()->modules['user']['profileVisitTable'];
-		else
-			$this->_tableName = '{{profile_visit}}';
-
-		return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
+		return '{{profile_visit}}';
 	}
 
 	public function rules() {

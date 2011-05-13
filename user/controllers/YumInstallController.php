@@ -47,11 +47,11 @@ class YumInstallController extends YumController {
 							'messagesTable',
 							'rolesTable',
 							'userRoleTable',
-							'userUsergroupTable',
 							'permissionTable',
 							'friendshipTable',
 							'actionTable',
 							'usergroupTable',
+							'usergroupMessagesTable',
 							'textSettingsTable');
 
 					foreach($tables as $table) {
@@ -105,6 +105,7 @@ class YumInstallController extends YumController {
 						$sql = "CREATE TABLE IF NOT EXISTS `".$usergroupTable."` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`owner_id` int(11) NOT NULL,
+							`participants` text NULL,
 							`title` varchar(255) NOT NULL,
 							`description` text NOT NULL,
 							PRIMARY KEY (`id`)
@@ -112,11 +113,14 @@ class YumInstallController extends YumController {
 
 						$db->createCommand($sql)->execute();
 
-						$sql = "CREATE TABLE IF NOT EXISTS `user_has_usergroup` (
-							`user_id` int(10) unsigned NOT NULL,
-							`group_id` int(10) unsigned NOT NULL,
-							`jointime` int(11) NOT NULL,
-							PRIMARY KEY (`user_id`,`group_id`)
+						$sql = "CREATE TABLE IF NOT EXISTS `".$usergroupMessagesTable."` (
+							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+							`author_id` int(11) unsigned NOT NULL,
+							`group_id` int(11) unsigned NOT NULL,
+							`createtime` int(11) unsigned NOT NULL,
+							`title` varchar(255) NOT NULL,
+							`message` text NOT NULL,
+							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 						$db->createCommand($sql)->execute();
@@ -484,8 +488,8 @@ class YumInstallController extends YumController {
 							'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable,Yii::app()->db),
 							'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable,Yii::app()->db),
 							'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable,Yii::app()->db),
-							'userUsergroupTable' => Yum::resolveTableName($this->module->userUsergroupTable,Yii::app()->db),
 							'usergroupTable' => Yum::resolveTableName($this->module->usergroupTable,Yii::app()->db),
+							'usergroupMessagesTable' => Yum::resolveTableName($this->module->usergroupMessagesTable,Yii::app()->db),
 							'permissionTable' => Yum::resolveTableName($this->module->permissionTable,Yii::app()->db),
 							'friendshipTable' => Yum::resolveTableName($this->module->friendshipTable,Yii::app()->db),
 							'actionTable' => Yum::resolveTableName($this->module->actionTable,Yii::app()->db),

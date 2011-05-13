@@ -11,7 +11,7 @@ class YumAvatarController extends YumController {
 		$model->avatar = '';
 		$model->save();
 		$this->redirect(array(
-					'//user/profile/view', 'id' => $model->id));	
+					'//profile/profile/view', 'id' => $model->id));	
 	}
 
 	public function beforeAction($action) {
@@ -45,7 +45,7 @@ class YumAvatarController extends YumController {
 						Yum::log(Yum::t('User {username} uploaded avatar image {filename}', array(
 										'{username}' => $model->username,
 										'{filename}' => $model->avatar)));
-						$this->redirect(array('//user/user/profile'));	
+						$this->redirect(array('//profile/profile/view'));	
 					}
 				}
 			}
