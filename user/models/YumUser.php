@@ -372,11 +372,6 @@ class YumUser extends YumActiveRecord {
 		// Users stay banned until they confirm their email address.
 		$this->status = YumUser::STATUS_NOTACTIVE;
 
-		if(Yum::hasModule('role')) {
-			Yii::import('application.modules.role.models.*');
-			$this->roles = YumRole::getAutoassignRoles(); 
-		}
-
 		if($this->save()) {
 			if(Yum::hasModule('profile')) {
 				if(!($profile instanceof YumProfile)) {

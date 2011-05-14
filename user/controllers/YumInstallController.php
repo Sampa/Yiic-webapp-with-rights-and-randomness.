@@ -356,7 +356,6 @@ class YumInstallController extends YumController {
 							`id` INT unsigned NOT NULL AUTO_INCREMENT ,
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL,
-							`autoassign` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Autoassign on new users',
 							`is_membership_possible` tinyint(1) NOT NULL DEFAULT 0,
 							`price` double COMMENT 'Price (when using membership module)',
 							`duration` int COMMENT 'How long a membership is valid',

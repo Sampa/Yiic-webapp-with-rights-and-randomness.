@@ -35,13 +35,6 @@ $this->widget('YumModule.components.Relation',
 ?>
 </div>
 
-<div class="row">
-<?php echo CHtml::activeLabelEx($model,'autoassign'); ?>
-<?php echo CHtml::activeCheckBox($model, 'autoassign'); ?>
-<?php echo Yum::hint('When selecting autoassign, this role will be assigned to new users automatically'); ?>
-</div>
-
-
 <?php if(Yum::hasModule('membership')) { ?>
 <div class="row">
 <?php echo CHtml::activeLabelEx($model,'is_membership_possible'); ?>

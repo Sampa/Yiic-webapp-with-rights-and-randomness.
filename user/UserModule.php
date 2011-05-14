@@ -30,6 +30,8 @@ class UserModule extends CWebModule {
   // for example, demo and Demo would be the same user then
 	public $caseSensitiveUsers = true;
 
+	public $enableRESTapi = true;
+
 	public $password_expiration_time = 30; // days
 	public $activationPasswordSet = false;
 	public $autoLogin = false;
@@ -105,6 +107,7 @@ class UserModule extends CWebModule {
 	 */
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
+		'rest'=>array('class'=>'YumModule.controllers.YumRestController'),
 		'auth'=>array('class'=>'YumModule.controllers.YumAuthController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),

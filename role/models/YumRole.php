@@ -19,15 +19,6 @@ class YumRole extends YumActiveRecord {
 		return parent::model($className);
 	}
 
-	public static function getAutoassignRoles() {
-		$roles = array();
-		foreach(YumRole::model()->autoassign()->findAll() as $role) {
-			$roles[] = (int) $role->id;
-		}
-
-		return $roles;
-	}
-
 	/**
 	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
 	 * Following algorith of searching valid table name is implemented:
@@ -38,20 +29,14 @@ class YumRole extends YumActiveRecord {
 	 */		
 	public function tableName()
 	{
-		if (isset(Yum::module()->rolesTable))
-			$this->_tableName = Yum::module()->rolesTable;
-		elseif (isset(Yii::app()->modules['user']['rolesTable'])) 
-			$this->_tableName = Yii::app()->modules['user']['rolesTable'];
-		else
 			$this->_tableName = '{{roles}}'; // fallback if nothing is set
-		return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
 	}
 
 	public function rules()
 	{
 		return array(
 				array('title', 'required'),
-				array('selectable, searchable, autoassign, is_membership_possible', 'numerical'),
+				array('selectable, searchable, is_membership_possible', 'numerical'),
 				array('price', 'numerical'),
 				array('duration', 'numerical'),
 				array('title, description', 'length', 'max' => '255'),
@@ -60,9 +45,6 @@ class YumRole extends YumActiveRecord {
 
 	public function scopes() {
 		return array(
-				'selectable' => array('condition' => 'selectable = 1'),
-				'searchable' => array('condition' => 'searchable = 1'),
-				'autoassign' => array('condition' => 'autoassign = 1'),
 				'possible_memberships' => array('condition' => 'is_membership_possible = 1'),
 				);
 	}
@@ -96,7 +78,6 @@ class YumRole extends YumActiveRecord {
 				'description'=>Yum::t("Description"),
 				'selectable'=>Yum::t("Selectable on registration"),
 				'searchable'=>Yum::t("Searchable"),
-				'autoassign'=>Yum::t("Assign this role to new users automatically"),
 				'price'=>Yum::t("Price"),
 				'duration'=>Yum::t("Duration in days"),
 				);
