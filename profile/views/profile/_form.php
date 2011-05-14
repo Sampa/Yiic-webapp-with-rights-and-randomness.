@@ -4,6 +4,7 @@ Yii::app()->clientScript-> registerScriptFile(Yii::app()->getModule('user')->rte
 if(Yum::module()->rteadapter != false)
 Yii::app()->clientScript-> registerScriptFile(Yii::app()->getModule('user')->rteadapter); 
 
+if($profile)
 foreach($profile->loadProfileFields() as $field) {
 	echo CHtml::openTag('div',array('class'=>'row'));
 

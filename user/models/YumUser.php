@@ -357,7 +357,8 @@ class YumUser extends YumActiveRecord {
 		return $friends;
 	}
 
-	public function register($username=null, $password=null, $email=null) {
+	// Registers a user 
+	public function register($username=null, $password=null, $profile=null) {
 		if ($username !== null && $password !== null) {
 			// Password equality is checked in Registration Form
 			$this->username = $username;
@@ -378,10 +379,14 @@ class YumUser extends YumActiveRecord {
 
 		if($this->save()) {
 			if(Yum::hasModule('profile')) {
-				$profile = new YumProfile;
-				$profile->email = $email;
+				if(!($profile instanceof YumProfile)) {
+					$email = $profile;
+					$profile = new YumProfile;
+					$profile->timestamp = time();
+					$profile->email = $email;
+				}
 				$profile->user_id = $this->id;
-				$profile->save(false); 
+				$profile->save(); 
 			}
 			return true;
 		}

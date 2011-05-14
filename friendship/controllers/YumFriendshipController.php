@@ -1,9 +1,10 @@
 <?php
 Yii::import('application.modules.user.controllers.YumController');
+Yii::import('application.modules.friendship.models.*');
 class YumFriendshipController extends YumController {
 	// make sure that friendship is enabled in the configuration
 	public function beforeAction($action) {
-		if(!Yum::module()->enableFriendship) 
+		if(!Yum::hasModule('friendship')) 
 			return false;
 		return(parent::beforeAction($action));
 	}
