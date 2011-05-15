@@ -30,6 +30,8 @@ class UserModule extends CWebModule {
   // for example, demo and Demo would be the same user then
 	public $caseSensitiveUsers = true;
 
+	// set this to false if you do not want to access data through a REST
+	// api
 	public $enableRESTapi = true;
 
 	public $password_expiration_time = 30; // days

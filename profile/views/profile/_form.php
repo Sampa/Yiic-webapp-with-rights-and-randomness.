@@ -1,8 +1,8 @@
 <?php
 if(Yum::module()->rtepath != false)
-Yii::app()->clientScript-> registerScriptFile(Yii::app()->getModule('user')->rtepath);                                                                         
+Yii::app()->clientScript-> registerScriptFile(Yum::module()->rtepath);                                                                         
 if(Yum::module()->rteadapter != false)
-Yii::app()->clientScript-> registerScriptFile(Yii::app()->getModule('user')->rteadapter); 
+Yii::app()->clientScript-> registerScriptFile(Yum::module()->rteadapter); 
 
 if($profile)
 foreach($profile->loadProfileFields() as $field) {

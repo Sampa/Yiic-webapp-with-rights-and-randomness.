@@ -1,8 +1,9 @@
 <div id="profile">
 <?php
-$this->pageTitle=Yii::app()->name . ' - ' . Yii::t("UserModule.user", "Profile");
-$this->breadcrumbs=array(Yii::t("UserModule.user", "Profile"));
-$this->title = Yii::t("UserModule.user", 'Your profile');
+$this->pageTitle=Yii::app()->name . ' - ' . Yum::t('Profile');
+$this->breadcrumbs=array(Yum::t('Profile'));
+$this->title = Yum::t('Your profile');
+if(Yum::hasModule('messages'))
 $this->renderPartial('/messages/new_messages');?>
 
 
@@ -21,7 +22,7 @@ $this->renderPartial('/messages/new_messages');?>
 <?php 
 }
 		$profileFields = YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
-		if ($profileFields && Yii::app()->getModule('user')->enableProfiles) {
+		if ($profileFields && Yum::hasModule('profile')) {
 	foreach($profileFields as $field) {
 		if($field->field_type == 'DROPDOWNLIST') {
 			?>
@@ -50,7 +51,8 @@ $this->renderPartial('/messages/new_messages');?>
 <tr>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('password')); ?>
 </th>
-    <td><?php echo CHtml::link(Yii::t("UserModule.user", "Change password"),array(Yum::route('{user}/changepassword'))); ?>
+<td><?php echo CHtml::link(Yum::t('Change password'),array(
+			'//user/user/changepassword'))); ?>
 </td>
 </tr>
 <tr>
@@ -77,7 +79,7 @@ $this->renderPartial('/messages/new_messages');?>
 <div id="friends">
 <h2> <?php echo Yum::t('My friends'); ?> </h2>
 <?php
-if($model->friends)
+if(Yum::hasModule('friendship') && $model->friends)
 {
 foreach($friends as $friend) {
 ?>
@@ -88,7 +90,9 @@ $model->renderAvatar($friend);
 ?>
 <div id='user'>
 <?php 
-echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile/view',array('id'=>$friend->id)));
+echo CHtml::link(ucwords($friend->username),
+		Yii::app()->createUrl('profile/profile/view',array(
+				'id'=>$friend->id)));
 ?>
 </div>
 </div>
@@ -105,7 +109,7 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 <h2> <?php echo Yum::t('This users have visited my profile'); ?> </h2>
 <?php
 	if($model->visits) {
-		$format = Yii::app()->getModule('user')->dateTimeFormat;
+		$format = Yum::module()->dateTimeFormat;
 		echo '<table>';
 		printf('<th>%s</th><th>%s</th><th>%s</th><th>%s</th><th>%s</th>',
 			Yum::t('Visitor'),
@@ -119,13 +123,16 @@ echo CHtml::link(ucwords($friend->username), Yii::app()->createUrl('user/profile
 			if(isset($visit->visitor))  //we need this in case a user quits
 			{
 			printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-					CHtml::link($visit->visitor->username, array('user/view', 'id' => $visit->visitor_id)),
+					CHtml::link($visit->visitor->username, array(
+							'//profile/profile/view', 'id' => $visit->visitor_id)),
 					date($format, $visit->timestamp_first_visit),
 					date($format, $visit->timestamp_last_visit),
 					$visit->num_of_visits,
-					CHtml::link(Yum::t('Write a message'), array('messages/compose', 'to_user_id' => $visit->visitor_id))
+					CHtml::link(Yum::t('Write a message'), array(
+							'//messages/messages/compose',
+							'to_user_id' => $visit->visitor_id))
 					);
-		}
+			}
 	}
 		echo '</table>';
 	} else {

@@ -1,15 +1,4 @@
 <?php
-/**
- * This is the model class for table "{{roles}}".
- *
- * The followings are the available columns in table '{{roles}}':
- * @property integer $id
- * @property string $title
- * @property string $description
- * 
- * Relations
- * @property array $users array of YumUser
- */
 class YumRole extends YumActiveRecord {
 	private $_userRoleTable;
 	private $_roleRoleTable;
@@ -19,17 +8,9 @@ class YumRole extends YumActiveRecord {
 		return parent::model($className);
 	}
 
-	/**
-	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
-	 * Following algorith of searching valid table name is implemented:
-	 *  - try to find out table name stored in currently used module
-	 *  - if not found try to get table name from UserModule configuration
-	 *  - if not found user default {{roles}} table name
-	 * @return string
-	 */		
 	public function tableName()
 	{
-			$this->_tableName = '{{roles}}'; // fallback if nothing is set
+			return $this->_tableName = '{{roles}}'; // fallback if nothing is set
 	}
 
 	public function rules()

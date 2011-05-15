@@ -63,7 +63,8 @@ URI in your Application configuration, like this:
 	   ),
 
 Please note that it can be important to set the tablePrefix to '' even if 
-you don't use an prefix cause yii seems to behave awkward without that setting.
+you don't use an prefix cause yum uses the {{table}} syntax extensively and
+yii seems to behave awkward without that setting.
     
 $ mysql -u root localhost    
 > CREATE DATABASE `testdrive` ;
