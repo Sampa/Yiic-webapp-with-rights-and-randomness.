@@ -178,6 +178,8 @@ class YumProfile extends YumActiveRecord
 				array(implode(',',$safe), 'safe'));
 
 		$rules[] = array('allow_comments, show_friends', 'numerical');
+		$rules[] = array('email', 'unique');
+		$rules[] = array('email', 'CEmailValidator');
 		$rules[] = array('privacy', 'safe');
 
 		return $rules;

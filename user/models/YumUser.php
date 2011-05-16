@@ -419,6 +419,7 @@ class YumUser extends YumActiveRecord {
 	 * Error Codes:
 	 * -1 : User is not inactive, it can not be activated
 	 * -2 : Wrong activation key
+	 * -3 : Profile found, but no user - database inconsistency?
 	 */
 	public static function activate($email, $key) {
 		Yii::import('application.modules.profile.models.*');
@@ -448,7 +449,7 @@ class YumUser extends YumActiveRecord {
 						return $user;
 					}
 				} else return -2; 
-			}
+			} else return -3;
 		}
 		return false;
 	}
