@@ -376,17 +376,32 @@ class YumUser extends YumActiveRecord {
 			if(Yum::hasModule('profile')) {
 				if(!($profile instanceof YumProfile)) {
 					$email = $profile;
-					$profile = new YumProfile;
-					$profile->timestamp = time();
-					$profile->email = $email;
+					$this->profile = new YumProfile;
+					$this->profile->timestamp = time();
+					$this->profile->email = $email;
 				}
-				$profile->user_id = $this->id;
-				$profile->save(); 
+				$this->profile->user_id = $this->id;
+				$this->profile->save(); 
 			}
+			Yum::log(Yum::t('User {username} registered. Generated activation Url is {activation_url} and has been sent to {email}', array(
+							'{username}' => $this->username,
+							'{email}' => $this->profile->email,
+							'{activation_url}' => $this->getActivationUrl())));
+
 			return true;
 		}
 
 		return false;
+	}
+
+	public function getActivationUrl() {
+			$activationUrl = Yum::module('registration')->activationUrl;
+			if(is_array($activationUrl))
+				$activationUrl = $activationUrl[0];
+			$params['key'] = $this->activationKey;
+			$params['email'] = $this->profile->email;
+
+		return Yii::app()->controller->createAbsoluteUrl($activationUrl, $params);
 	}
 
 	public function isPasswordExpired() {
@@ -401,31 +416,38 @@ class YumUser extends YumActiveRecord {
 	 * NOTACTIVE and the given activationKey is identical to the one in the
 	 * database then generate a new Activation key to avoid double activation, 
 	 * set the status to ACTIVATED and save the data
+	 * Error Codes:
+	 * -1 : User is not inactive, it can not be activated
+	 * -2 : Wrong activation key
 	 */
-	public function activate($email=null, $key=null) {
+	public static function activate($email, $key) {
 		Yii::import('application.modules.profile.models.*');
-		if ($email != null && $key != null) {
-			if($profile = YumProfile::model()->find("email = '{$email}'")) {
-				if($user = $profile->user) {	
-					if ($user->status != self::STATUS_NOTACTIVE)
-						return false;
-					if ($user->activationKey == $key) {
-						$user->activationKey = $user->generateActivationKey(true);
-						$user->status = self::STATUS_ACTIVATED;
-						if($user->save(false, array('activationKey', 'status'))) {
-							if(Yum::module()->enableActivationConfirmation) {
-								YumMessage::write($user, 1,
-										Yum::t('Your activation succeeded'),
-										YumTextSettings::getText('text_email_activation', array(
-												'{username}' => $user->username,
-												'{link_login}' =>
-												Yii::app()->controller->createUrl('//user/user/login'))));
-							}
 
-							return $user;
+		if($profile = YumProfile::model()->find("email = :email", array(
+						':email' => $email))) {
+			if ($user = $profile->user) {	
+				if ($user->status != self::STATUS_NOTACTIVE)
+					return -1;
+				if ($user->activationKey == $key) {
+					$user->activationKey = $user->generateActivationKey(true);
+					$user->status = self::STATUS_ACTIVATED;
+					if($user->save(false, array('activationKey', 'status'))) {
+						Yum::log(Yum::t('User {username} has been activated', array(
+										'{username}' => $user->username)));
+						if(Yum::hasModule('messages') 
+								&& Yum::module('registration')->enableActivationConfirmation) {
+							Yii::import('application.modules.messages.models.YumMessage');
+							YumMessage::write($user, 1,
+									Yum::t('Your activation succeeded'),
+									YumTextSettings::getText('text_email_activation', array(
+											'{username}' => $user->username,
+											'{link_login}' =>
+											Yii::app()->controller->createUrl('//user/user/login'))));
 						}
-					} 
-				}
+
+						return $user;
+					}
+				} else return -2; 
 			}
 		}
 		return false;

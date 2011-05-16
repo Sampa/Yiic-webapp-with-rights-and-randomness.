@@ -87,8 +87,6 @@ class UserModule extends CWebModule {
 			'message' => '/user/message',
 			'recovery' => '/registration/recovery',
 			'passwordForm' => '/user/_activation_passwordform',
-			'activationSuccess' => '/registration/activation_success',
-			'activationFailure' => '/registration/activation_failure',
 			'recoveryChangePassword' =>'/user/changepassword',
 			'messageCompose' =>'application.modules.user.views.messages.compose');
 

@@ -5,7 +5,12 @@ class RegistrationModule extends CWebModule {
 	public $enableRecovery = true;
 
 	public $registrationUrl = array('//registration/registration/registration');
+	public $activationUrl = array('//registration/registration/activation');
 	public $recoveryUrl = array('//registration/registration/recovery');
+
+	public $activationSuccessView = '/registration/activation_success';
+	public $activationFailureView = '/registration/activation_failure';
+
 
 	// Whether to confirm the activation of an user by email
 	public $enableActivationConfirmation = true; 

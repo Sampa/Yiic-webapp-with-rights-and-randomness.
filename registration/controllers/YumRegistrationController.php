@@ -8,6 +8,7 @@
 
 Yii::import('application.modules.user.controllers.YumController');
 Yii::import('application.modules.user.models.*');
+Yii::import('application.modules.profile.models.*');
 Yii::import('application.modules.registration.models.*');
 
 class YumRegistrationController extends YumController {
@@ -90,10 +91,7 @@ class YumRegistrationController extends YumController {
 			if (!isset($user->profile->email)) {
 				throw new CException(Yum::t('Email is not set when trying to send Registration Email'));
 			}
-			$activation_url = $this->createAbsoluteUrl('//registration/registration/activation', array(
-						'key' => $user->activationKey,
-						'email' => $user->profile->email)
-					);
+			$activation_url = $user->getActivationUrl();
 
 			// get the text to sent from the yumtextsettings table
 			$content = YumTextSettings::model()->find('language = :lang', array(
@@ -128,19 +126,20 @@ class YumRegistrationController extends YumController {
 		 * can see, which accounts have been activated, but not yet logged in 
 		 * (more than once)
 		 */
-		public function actionActivation($email=null, $key=null) {
+		public function actionActivation($email, $key) {
 			// If already logged in, we dont activate anymore
 			if (!Yii::app()->user->isGuest)
 				$this->redirect(Yii::app()->user->returnUrl);
 
 			// If everything is set properly, let the model handle the Validation
 			// and do the Activation
-			if ($email != null && $key != null) {
-				if (YumUser::activate($email, $key) != false) 
-					$this->render(Yum::module()->activationSuccessView);
+				$status = YumUser::activate($email, $key);
+
+				if($status instanceof YumUser)
+					$this->render(Yum::module('registration')->activationSuccessView);
 				else
-					$this->render(Yum::module()->activationFailureView);
-			}
+					$this->render(Yum::module('registration')->activationFailureView, array(
+								'error' => $status));
 		}
 
 		/**
