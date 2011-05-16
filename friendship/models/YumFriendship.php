@@ -167,8 +167,8 @@ class YumFriendship extends YumActiveRecord {
 									'{username}' => $this->inviter->username)),
 							YumTextSettings::getText('text_friendship_new', array(
 									'{username}' => $this->inviter->username,
-									'{link_friends}' => Yii::app()->controller->createUrl('//user/friendship/index'),
-									'{link_profile}' => Yii::app()->controller->createUrl('//user/profile/view'),
+									'{link_friends}' => Yii::app()->controller->createUrl('//friendship/friendship/index'),
+									'{link_profile}' => Yii::app()->controller->createUrl('//profile/profile/view'),
 									'{message}' => $this->message)));
 				}
 			}

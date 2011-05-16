@@ -10,7 +10,7 @@ $this->breadcrumbs=array(Yum::t("Users"));
 			'name' => 'username',
 			'type'=>'raw',
 			'value' => 'CHtml::link(CHtml::encode($data->username),
-				array("//user/profile/view","id"=>$data->id))',
+				array("//profile/profile/view","id"=>$data->id))',
 			),
 		array(
 			'name' => 'createtime',

@@ -403,6 +403,7 @@ class YumUser extends YumActiveRecord {
 	 * set the status to ACTIVATED and save the data
 	 */
 	public function activate($email=null, $key=null) {
+		Yii::import('application.modules.profile.models.*');
 		if ($email != null && $key != null) {
 			if($profile = YumProfile::model()->find("email = '{$email}'")) {
 				if($user = $profile->user) {	

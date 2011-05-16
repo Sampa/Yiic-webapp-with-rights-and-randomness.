@@ -17,7 +17,7 @@ if($profile->show_friends == 2) {
 					<div class="username">
 					<?php 
 					echo CHtml::link(ucwords($friend->username),
-							Yii::app()->createUrl('user/profile/view',array(
+							Yii::app()->createUrl('//profile/profile/view',array(
 									'id'=>$friend->id)));
 				?>
 					</div>

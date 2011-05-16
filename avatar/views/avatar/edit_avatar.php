@@ -3,7 +3,7 @@
 $this->title = Yum::t('Upload avatar');
 
 $this->breadcrumbs = array(
-		Yum::t('Profile') => array('//user/user/profile'),
+		Yum::t('Profile') => array('//profile/profile/view'),
 		Yum::t('Upload avatar'));
 
 if($model->avatar) {

@@ -34,7 +34,8 @@ class YumMessagesController extends YumController {
 		Yum::setFlash(Yum::t('Message "{message}" was marked as read', array(
 					'{message}' => $model->title
 					)));
-		$this->redirect(array('//user/profile/view', 'id' => $model->from_user_id));
+		$this->redirect(array(
+					'//profile/profile/view', 'id' => $model->from_user_id));
 	}
 
 	public function actionView() {

@@ -43,10 +43,10 @@ $form=$this->beginWidget('CActiveForm', array(
 			printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td class="text-right">%s</td></tr>',
 					$label->getAvatar(true),
 					CHtml::link($label->username, array(
-							'//user/profile/view', 'id'=>$label->id)),
+							'//profile/profile/view', 'id'=>$label->id)),
 					$friend->getStatus(), 
 					CHtml::link(Yum::t('Write a message'), array(
-							'//user/messages/compose', 'to_user_id'=>$label->id)),
+							'//messages/messages/compose', 'to_user_id'=>$label->id)),
 							$friend->status != 3 ? $options : ''
 							
 							);

@@ -49,7 +49,7 @@ class YumProfileComment extends YumActiveRecord{
 								'{username}' => $this->user->username,
 								'{message}' => $this->comment,
 								'{link_profile}' =>
-								Yii::app()->controller->createUrl('//user/profile/view'))));
+								Yii::app()->controller->createUrl('//profile/profile/view'))));
 			}
 		}
 		return parent::afterSave();

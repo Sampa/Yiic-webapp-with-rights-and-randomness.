@@ -147,9 +147,11 @@ class YumUserController extends YumController {
 					'expired' => $expired));
 	}
 
-	public function actionProfile() {
-		$this->redirect(array('//user/profile/view',
-					'id' => isset($_GET['id']) ? $_GET['id'] : Yii::app()->user->id));
+	// Redirects the user to the specified profile
+	// if no profile is specified, redirect to the own profile
+	public function actionProfile($id = null) {
+		$this->redirect(array('//profile/profile/view',
+					'id' => $id ? $id : Yii::app()->user->id));
 	}
 
 

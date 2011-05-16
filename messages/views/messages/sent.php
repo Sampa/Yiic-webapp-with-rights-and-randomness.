@@ -12,7 +12,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		array(
 			'name' => 'to_user_id',
 			'type' => 'raw',
-			'value' => 'isset($data->to_user) ? CHtml::link($data->to_user->username, array("//user/profile/view", "id" => $data->to_user->username)) : ""',
+			'value' => 'isset($data->to_user) ? CHtml::link($data->to_user->username, array("//profile/profile/view", "id" => $data->to_user->username)) : ""',
 			),
 		array(
 			'type' => 'raw',

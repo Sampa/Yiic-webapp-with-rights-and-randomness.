@@ -8,9 +8,10 @@ if($user->friendship_requests) {
 		printf('<li> %s: %s </li>',
 				date(Yum::module()->dateTimeFormat, $friendship->requesttime),
 				CHtml::link($friendship->inviter->username, array(
-						'//user/profile/view', 'id' => $friendship->inviter->id)));
+						'//profile/profile/view', 'id' => $friendship->inviter->id)));
 	}
-	echo CHtml::link(Yum::t('Manage friends'), array('//friendship/friendship/admin'));
+	echo CHtml::link(Yum::t('Manage friends'), array(
+				'//friendship/friendship/admin'));
 	$this->endWidget();
 }
 ?>
