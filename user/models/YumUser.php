@@ -27,9 +27,7 @@
  */
 class YumUser extends YumActiveRecord {
 	const STATUS_NOTACTIVE = 0;
-	const STATUS_ACTIVATED = 1;
-	const STATUS_ACTIVE_FIRST_VISIT = 2;
-	const STATUS_ACTIVE = 3;
+	const STATUS_ACTIVE = 1;
 	const STATUS_BANNED = -1;
 	const STATUS_REMOVED = -2;
 
@@ -45,12 +43,31 @@ class YumUser extends YumActiveRecord {
 		return parent::model($className);
 	}
 
+	public function delete() {
+		if(Yum::module()->trulyDelete)
+			return parent::delete();
+		else {
+			$this->status = self::STATUS_REMOVED;
+			return $this->save(false, array('status'));
+		}
+	}
+
+	public function afterDelete() {
+		if(Yum::hasModule('profiles') && $this->profile !== null)
+			$this->profile->delete();
+
+		Yum::log(Yum::t('User {username} (id: {id}) has been deleted', array(
+						'{username}' => $this->username,
+						'{id}' => $this->id)));
+		return parent::afterDelete();
+	}
+
 	public function isOnline() {
 		return $this->lastaction > time() - Yum::module()->offlineIndicationTime;
 	}
 
 	// If Online status is enabled, we need to set the timestamp of the
-  // last action when a user does something
+	// last action when a user does something
 	public function setLastAction() {
 		if(Yii::app()->user->isGuest) {
 			$this->lastaction = time();
@@ -72,12 +89,7 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function isActive() {
-		if( $this->status == YumUser::STATUS_ACTIVE		
-				|| $this->status == YumUser::STATUS_ACTIVATED		
-				|| $this->status == YumUser::STATUS_ACTIVE_FIRST_VISIT)
-			return true;
-
-		return false;
+		return $this->status == YumUser::STATUS_ACTIVE;
 	}
 
 	// This function tries to generate a as human-readable password as possible
@@ -119,7 +131,7 @@ class YumUser extends YumActiveRecord {
 			$criteria->with = array('profile');
 			if($this->profile)
 				$criteria->compare('profile.email', $this->profile->email, true);
-			
+
 			$criteria->addSearchCondition('profile.email',$this->email,true);
 		}
 
@@ -132,9 +144,9 @@ class YumUser extends YumActiveRecord {
 		$criteria->compare('t.lastvisit', $this->lastvisit, true);
 
 		return new CActiveDataProvider(get_class($this), array(
-			'criteria' => $criteria,
-			'pagination' => array('pageSize' => 20),
-		));
+					'criteria' => $criteria,
+					'pagination' => array('pageSize' => 20),
+					));
 	}
 
 	public function beforeValidate() {
@@ -158,14 +170,22 @@ class YumUser extends YumActiveRecord {
 
 	public function afterSave() {
 		if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacysetting) {
+			// create a new privacy setting, if not already available
 			$setting = YumPrivacySetting::model()->findByPk($this->id);
 			if (!$setting) {
 				$setting = new YumPrivacySetting();
 				$setting->user_id = $this->id;
 				$setting->save();
 			}
+
+			if($this->isNewRecord) {
+				Yum::log( Yum::t( 'A user has been generated: user: {user}', array(
+								'{user}' => json_encode($this->attributes))));
+
+
+			}
+			return parent::afterSave();
 		}
-		return parent::afterSave();
 	}
 
 	/**
@@ -261,19 +281,19 @@ class YumUser extends YumActiveRecord {
 		if(!Yum::hasModule('role')) 
 			return array();
 
-			$roles = $this->roles;
-			if(Yum::hasModule('membership'))
-				$roles = array_merge($roles, $this->getActiveMemberships());
+		$roles = $this->roles;
+		if(Yum::hasModule('membership'))
+			$roles = array_merge($roles, $this->getActiveMemberships());
 
-			$permissions = array();
-			foreach($roles as $role) {
-				$sql = "select id, action.title from permission left join action on action.id = permission.action where type = 'role' and principal_id = {$role->id}";
-				foreach(Yii::app()->db->createCommand($sql)->query()->readAll() as $permission) 
-					$permissions[$permission['id']] = $permission['title'];
-			}
-
-			return $permissions;
+		$permissions = array();
+		foreach($roles as $role) {
+			$sql = "select id, action.title from permission left join action on action.id = permission.action where type = 'role' and principal_id = {$role->id}";
+			foreach(Yii::app()->db->createCommand($sql)->query()->readAll() as $permission) 
+				$permissions[$permission['id']] = $permission['title'];
 		}
+
+		return $permissions;
+	}
 
 	public function can($action) {
 		foreach ($this->getPermissions() as $permission)
@@ -315,7 +335,7 @@ class YumUser extends YumActiveRecord {
 	public function getFriendships() {
 		$condition = 'inviter_id = :uid or friend_id = :uid';
 		return YumFriendship::model()->findAll($condition, array(
-			':uid' => $this->id));
+					':uid' => $this->id));
 	}
 
 	// Friends can not be retrieve via the relations() method because a friend
@@ -395,11 +415,11 @@ class YumUser extends YumActiveRecord {
 	}
 
 	public function getActivationUrl() {
-			$activationUrl = Yum::module('registration')->activationUrl;
-			if(is_array($activationUrl))
-				$activationUrl = $activationUrl[0];
-			$params['key'] = $this->activationKey;
-			$params['email'] = $this->profile->email;
+		$activationUrl = Yum::module('registration')->activationUrl;
+		if(is_array($activationUrl))
+			$activationUrl = $activationUrl[0];
+		$params['key'] = $this->activationKey;
+		$params['email'] = $this->profile->email;
 
 		return Yii::app()->controller->createAbsoluteUrl($activationUrl, $params);
 	}
@@ -431,7 +451,7 @@ class YumUser extends YumActiveRecord {
 					return -1;
 				if ($user->activationKey == $key) {
 					$user->activationKey = $user->generateActivationKey(true);
-					$user->status = self::STATUS_ACTIVATED;
+					$user->status = self::STATUS_ACTIVE;
 					if($user->save(false, array('activationKey', 'status'))) {
 						Yum::log(Yum::t('User {username} has been activated', array(
 										'{username}' => $user->username)));
@@ -509,32 +529,29 @@ class YumUser extends YumActiveRecord {
 
 	public function scopes() {
 		return array(
-			'active' => array('condition' => 'status=' . self::STATUS_ACTIVE,),
-			'activefirstvisit' => array('condition' => 'status=' . self::STATUS_ACTIVE_FIRST_VISIT,),
-			'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
-			'banned' => array('condition' => 'status=' . self::STATUS_BANNED,),
-			'superuser' => array('condition' => 'superuser=1',),
-			'public' => array(
-			'join' => 'LEFT JOIN privacysetting on t.id = privacysetting.user_id',
+				'active' => array('condition' => 'status=' . self::STATUS_ACTIVE,),
+				'notactive' => array('condition' => 'status=' . self::STATUS_NOTACTIVE,),
+				'banned' => array('condition' => 'status=' . self::STATUS_BANNED,),
+				'superuser' => array('condition' => 'superuser = 1',),
+				'public' => array(
+					'join' => 'LEFT JOIN privacysetting on t.id = privacysetting.user_id',
 					'condition' => 'appear_in_search = 1',),
-		);
+				);
 	}
 
 	public static function itemAlias($type, $code=NULL) {
 		$_items = array(
-			'UserStatus' => array(
-				'0' => Yum::t('Not active'),
-				'1' => Yum::t('Activated, not yet logged in once'),
-				'2' => Yum::t('Active - first visit'),
-				'3' => Yum::t('Active'),
-				'-1' => Yum::t('Banned'),
-				'-2' => Yum::t('Deleted'),
-			),
-			'AdminStatus' => array(
-				'0' => Yum::t('No'),
-				'1' => Yum::t('Yes'),
-			),
-		);
+				'UserStatus' => array(
+					'0' => Yum::t('Not active'),
+					'1' => Yum::t('Active'),
+					'-1' => Yum::t('Banned'),
+					'-2' => Yum::t('Deleted'),
+					),
+				'AdminStatus' => array(
+					'0' => Yum::t('No'),
+					'1' => Yum::t('Yes'),
+					),
+				);
 		if (isset($code))
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
 		else

@@ -33,7 +33,7 @@ class YumPermissionController extends YumController
 		else
 			Yum::setFlash(Yum::t('Error while removing the permission'));
 	
-		$this->redirect(array('//user/permission/admin')); 
+		$this->redirect(array('//role/permission/admin')); 
 	}
 
 

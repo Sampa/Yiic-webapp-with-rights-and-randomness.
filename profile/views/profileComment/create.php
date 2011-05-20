@@ -24,7 +24,7 @@ Yii::app()->clientScript->registerScript("write_comment", "
 		$('#write_comment').unbind('click');
 		$('#write_comment').click(function(){
 			jQuery.ajax({'type':'POST',
-				'url':'".$this->createUrl('//user/comments/create')."',
+				'url':'".$this->createUrl('//profile/comments/create')."',
 				'cache':false,
 				'data':jQuery(this).parents('form').serialize(),
 				'success':function(html){

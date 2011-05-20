@@ -286,21 +286,8 @@ class YumAuthController extends YumController {
 					$cookie->expire = time() + (3600*24*30);
 					Yii::app()->request->cookies['login_type'] = $cookie;
 				}
-				if ($success->status == YumUser::STATUS_ACTIVATED) {
-					$success->status = YumUser::STATUS_ACTIVE_FIRST_VISIT;
-					$success->save('status', false);
-					Yum::log(
-							Yum::t(
-								'User {username} successfully logged in the first time', array(
-									'{username}' => $success->username)));
-
-				} else if ($success->status == YumUser::STATUS_ACTIVE_FIRST_VISIT) {
-					$success->status = YumUser::STATUS_ACTIVE;
-					$success->save('status', false);
-				} else 
-					Yum::log(Yum::t('User {username} successfully logged in', array(
-									'{username}' => $success->username)));
-
+				Yum::log(Yum::t('User {username} successfully logged in', array(
+								'{username}' => $success->username)));
 				$this->redirectUser($success);
 			} else
 				$this->loginForm->addError('username',

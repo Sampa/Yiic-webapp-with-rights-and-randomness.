@@ -66,7 +66,8 @@ class YumFieldsController extends YumController
 	public function actionUpdate()
 	{
 		$this->layout = Yum::module()->adminLayout;
-		$model=$this->loadModel('YumProfileField');
+
+		$model = $this->loadModel('YumProfileField');
 		if(isset($_POST['YumProfileField']))
 		{
 			$model->attributes=$_POST['YumProfileField'];

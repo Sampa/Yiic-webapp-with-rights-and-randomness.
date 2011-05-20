@@ -4,6 +4,14 @@ Yii::setPathOfAlias('MembershipModule' , dirname(__FILE__));
 class MembershipModule extends CWebModule {
 	public $membershipExpiredView = '/membership/membership_expired';
 
+	// set this to false if you do not want to send a confirmation 
+	// message to the user that just ordered a membership
+	public $confirmOrders = true;
+
+	// override this with your custom layout, if available
+	public $layout = 'application.modules.user.views.layouts.yum';
+
+
 	public $controllerMap=array(
 			'payment'=>array(
 				'class'=>'MembershipModule.controllers.YumPaymentController'),

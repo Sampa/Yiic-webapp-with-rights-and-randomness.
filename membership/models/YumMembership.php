@@ -30,7 +30,10 @@ class YumMembership extends YumActiveRecord{
 	}
 
 	public function afterSave() {
-		if($this->isNewRecord) 
+		if($this->isNewRecord 
+				&& Yum::module('membership')->confirmOrders
+				&& Yum::hasModule('messages')) {
+			Yii::import('application.modules.messages.models.YumMessage');
 			YumMessage::write($this->user, 1,
 					Yum::t('Order confirmed'),
 					YumTextSettings::getText('text_membership_ordered', array(
@@ -39,6 +42,7 @@ class YumMembership extends YumActiveRecord{
 							'{order_date}' => date(Yum::module()->dateTimeFormat, $this->order_date),
 							'{id}' => $this->id,
 							)));
+		}
 
 		return parent::afterSave();
 	}

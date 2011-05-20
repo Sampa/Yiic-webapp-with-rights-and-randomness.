@@ -4,6 +4,9 @@ Yii::setPathOfAlias('AvatarModule' , dirname(__FILE__));
 class AvatarModule extends CWebModule {
 	public $defaultController = 'avatar';
 
+	// override this with your custom layout, if available
+	public $layout = 'application.modules.user.views.layouts.yum';
+
 	public $avatarPath = 'images';
 
 	// Set avatarMaxWidth to a value other than 0 to enable image size check

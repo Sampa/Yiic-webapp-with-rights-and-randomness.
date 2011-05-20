@@ -16,7 +16,7 @@ class YumProfile extends YumActiveRecord
 	public function init()
 	{
 		parent::init();
- // load profile fields only once
+		// load profile fields only once
 		$this->loadProfileFields();
 	}
 
@@ -24,6 +24,14 @@ class YumProfile extends YumActiveRecord
 		return array_merge(parent::behaviors(), array(
 					'Compare' => array(
 						'class' => 'Compare')));
+	}
+
+	public function afterSave() {
+		if($this->isNewRecord) 
+			Yii::log( Yum::t( 'A profile been created: {profile}', array(
+							'{profile}' => json_encode($this->attributes))));
+
+		return parent::afterSave();
 	}
 
 	public function recentComments($count = 3) {
@@ -76,17 +84,17 @@ class YumProfile extends YumActiveRecord
 	 *  - if not found user default {{profiles}} table name
 	 * @return string
 	 */
-  	public function tableName()
-  	{
-    	if (isset(Yum::module('profile')->profileTable))
-      		$this->_tableName = Yum::module()->profileTable;
-    	elseif (isset(Yii::app()->modules['user']['profileTable']))
-      		$this->_tableName = Yii::app()->modules['user']['profileTable'];
-    	else
-      		$this->_tableName = '{{profiles}}'; // fallback if nothing is set
+	public function tableName()
+	{
+		if (isset(Yum::module('profile')->profileTable))
+			$this->_tableName = Yum::module()->profileTable;
+		elseif (isset(Yii::app()->modules['user']['profileTable']))
+			$this->_tableName = Yii::app()->modules['user']['profileTable'];
+		else
+			$this->_tableName = '{{profiles}}'; // fallback if nothing is set
 
-    	return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
-  	}
+		return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
+	}
 
 	public function rules()
 	{
@@ -188,9 +196,9 @@ class YumProfile extends YumActiveRecord
 	public function relations()
 	{
 		$relations = array(
-			'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
-			'comments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
-		);
+				'user' => array(self::BELONGS_TO, 'YumUser', 'user_id'),
+				'comments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
+				);
 
 		$fields = Yii::app()->db->createCommand(
 				"select * from ".YumProfileField::model()->tableName()." where field_type = 'DROPDOWNLIST'")->queryAll();
@@ -219,12 +227,12 @@ class YumProfile extends YumActiveRecord
 	public function attributeLabels()
 	{
 		$labels = array(
-			'id' => Yum::t('Profile ID'),
-			'user_id' => Yum::t('User ID'),
-			'privacy' => Yum::t('Privacy'),
-			'show_friends' => Yum::t('Show friends'),
-			'allow_comments' => Yum::t('Allow profile comments'),
-		);
+				'id' => Yum::t('Profile ID'),
+				'user_id' => Yum::t('User ID'),
+				'privacy' => Yum::t('Privacy'),
+				'show_friends' => Yum::t('Show friends'),
+				'allow_comments' => Yum::t('Allow profile comments'),
+				);
 
 		if(self::$fields)
 			foreach (self::$fields as $field)
@@ -233,40 +241,21 @@ class YumProfile extends YumActiveRecord
 		return $labels;
 	}
 
-    /**
-    * Load profile fields.
-    * Overwrite this method to get another set of fields
-    * @since 0.6
-    * @return array of YumProfileFields or empty array
-    */
-    public function loadProfileFields()
-    {
-        if(self::$fields===null)
-        {
-            self::$fields=YumProfileField::model()->findAll();
-            if(self::$fields==null)
-                self::$fields=array();
-        }
-        return self::$fields;
-    }
-
 	/**
-	 * Returns formatted name
-	 * With default fomatting it returns firstname and lastname
-	 * concatenated and separated with space.
-	 * As placeholders in template you can use all profile properties
-	 * @param string $template
+	 * Load profile fields.
+	 * Overwrite this method to get another set of fields
 	 * @since 0.6
-	 * @return string
-	 * FIXME: Should be in extended class
+	 * @return array of YumProfileFields or empty array
 	 */
-/*	public function getFormattedName($template='{firstname} {lastname}')
+	public function loadProfileFields()
 	{
-		foreach($this->getAttributes() as $key=>$attribute)
-			$tr["{{$key}}"]=$attribute;
-		return strtr($template,$tr);
+		if(self::$fields===null)
+		{
+			self::$fields=YumProfileField::model()->findAll();
+			if(self::$fields==null)
+				self::$fields=array();
+		}
+		return self::$fields;
 	}
-*/
 
 }
-

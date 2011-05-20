@@ -35,7 +35,7 @@ class YumProfileCommentController extends YumController
 			}
 
 		if(isset($model->profile->user) && $user = $model->profile->user)
-			$this->renderPartial(Yum::module()->profileView, array(
+			$this->renderPartial(Yum::module('profile')->profileView, array(
 						'model'=>$user
 						), false, true);
 	}

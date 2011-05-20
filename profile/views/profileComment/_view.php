@@ -24,7 +24,7 @@
 						|| $data->profile_id == Yii::app()->user->id) {
 					echo CHtml::Button(Yum::t('Remove comment'), array(
 								'confirm' => Yum::t('Are you sure to remove this comment from your profile?'),
-								'submit' => array( '//user/comments/delete', 'id' => $data->id)));
+								'submit' => array( '//profile/comments/delete', 'id' => $data->id)));
 				}		
 			?>
 	</div>

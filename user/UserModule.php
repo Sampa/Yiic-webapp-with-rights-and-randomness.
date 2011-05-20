@@ -54,6 +54,10 @@ class UserModule extends CWebModule {
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';
 
+	// Set this to true to really remove users instead of setting the status
+	// to -2 (YumUser::REMOVED)
+	public $trulyDelete = false;
+
 	public $yumBaseRoute = '/user';
 
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
@@ -125,7 +129,6 @@ class UserModule extends CWebModule {
 			'usergroup' => 'usergroup',
 			'usergroupMessages' => 'usergroup_messages',
 			'profileFields' => 'profile_fields',
-			'profileFieldsGroup' => 'profile_fields_group',
 			'profile' => 'profiles',
 			'profileComment' => 'profile_comment',
 			'profileVisit' => 'profile_visit',
