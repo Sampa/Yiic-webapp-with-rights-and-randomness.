@@ -45,7 +45,7 @@
 					'field_type',
 					YumProfileField::itemAlias('field_type'))); ?>
 		<?php echo CHtml::error($model,'field_type'); ?>
-		<p class="hint"><?php echo Yum::t('Column field type in the database. See documentation for the DROPDOWNLIST type.'); ?></p>
+		<p class="hint"><?php echo Yum::t('Column field type in the database'); ?></p>
 	</div>
 
 	<div class="row">
@@ -87,7 +87,7 @@
 		<?php echo CHtml::activeLabelEx($model,'error_message'); ?>
 		<?php echo CHtml::activeTextField($model,'error_message',array('size'=>60,'maxlength'=>255)); ?>
 		<?php echo CHtml::error($model,'error_message'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'Error message when validation fails.'); ?></p>
+		<p class="hint"><?php echo Yum::t('Error message when validation fails.'); ?></p>
 	</div>
 
 	<div class="row">
@@ -100,7 +100,7 @@
 		<?php echo CHtml::activeLabelEx($model,'default'); ?>
 		<?php echo CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255,$model->id!==null?'readonly':''));?>
 		<?php echo CHtml::error($model,'default'); ?>
-		<p class="hint"><?php echo Yii::t("UserModule.user",'The value of the default field (database).'); ?></p>
+		<p class="hint"><?php echo Yum::t('The value of the default field (database).'); ?></p>
 	</div>
 
 	<div class="row">

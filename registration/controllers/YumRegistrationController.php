@@ -51,7 +51,8 @@ class YumRegistrationController extends YumController {
 	 * an Example implementation of an registration of an new User in the system.
 	 *
 	 * please see the documentation of yii-user-management for examples on how to
-	 * extend from this class and implement your own registration logic 
+	 * extend from this class and implement your own registration logic in
+	 * user/docs/registration.txt
 	 */
 	public function actionRegistration() {
 		Yii::import('application.modules.profile.models.*');

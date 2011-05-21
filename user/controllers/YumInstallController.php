@@ -85,21 +85,6 @@ class YumInstallController extends YumController {
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 					$db->createCommand($sql)->execute();
 
-					$sql = "CREATE TABLE IF NOT EXISTS `". $privacySettingTable . "` (
-						`user_id` int unsigned NOT NULL,
-						`message_new_friendship` tinyint(1) NOT NULL DEFAULT 1,
-						`message_new_message` tinyint(1) NOT NULL DEFAULT 1,
-						`message_new_profilecomment` tinyint(1) NOT NULL DEFAULT 1,
-						`appear_in_search` tinyint(1) NOT NULL DEFAULT 1,
-						`show_online_status` tinyint(1) NOT NULL DEFAULT 1,
-						`log_profile_visits` tinyint(1) NOT NULL DEFAULT 1,
-						`ignore_users` varchar(255),
-						`public_profile_fields` bigint(15) unsigned,
-						PRIMARY KEY (`user_id`)
-							) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-					";
-					$db->createCommand($sql)->execute();
-
 					if(isset($_POST['installUsergroup'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$usergroupTable."` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -210,9 +195,9 @@ class YumInstallController extends YumController {
 										'The User {username} has accepted your friendship request',
 										'You have a new profile comment from {username}: {message} visit your profile: {link_profile}',
 										'You have received a new message from {username}: {message}',
-'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
-'Your payment has been received on {payment_date} and your Membership {id} is now active'
-),
+										'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
+										'Your payment has been received on {payment_date} and your Membership {id} is now active'
+										),
 							('2',
 							 'de',
 							 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
@@ -224,29 +209,29 @@ class YumInstallController extends YumController {
 							 Nachricht: {message}
 
 							 Klicken sie <a href=\"{link_friends}\">hier</a>, um diese Anfrage zu bestätigen oder zu ignorieren. Alternativ können sie <a href=\"{link_profile}\">hier</a> auf ihre Profilseite zugreifen.',
-							'Der Benutzer {username} hat ihre Freundschaftsanfrage bestätigt.',
+							 'Der Benutzer {username} hat ihre Freundschaftsanfrage bestätigt.',
 							 '
 							 Benutzer {username} hat Ihnen eine Nachricht auf Ihrer Pinnwand hinterlassen: 
 
 							 {message}
 
 							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
-								 'Sie haben eine neue Nachricht von {username} bekommen: {message}',
-'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
-'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'),
-								 ('3',
-									'es',
-									'Te has registrado en esta aplicación. Para confirmar tu dirección de correo electrónico, por favor, visita {activation_url}.',
-									'Te has registrado en esta aplicación.',
-									'Has solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor ve a {activation_url}',
-									'Tu cuenta ha sido activada. Gracias por registrarte.',
-									'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link}',
-									'Tienes un nuevo comentario en tu perfil de {username}: {message} visita tu perfil: {link}',
-									'Please translatore thisse hiere toh tha espagnola langsch {username}',
-									'Has recibido un mensaje de {username}: {message}',
-									'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
-									'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'), 
-('4', 'fr', '', '', '', '', '', '', '', '', '', ''), ('5', 'ro', '', '', '', '', '', '', '', '', '', '') ; ";
+							 'Sie haben eine neue Nachricht von {username} bekommen: {message}',
+							 'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
+							 'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'),
+							 ('3',
+								'es',
+								'Te has registrado en esta aplicación. Para confirmar tu dirección de correo electrónico, por favor, visita {activation_url}.',
+								'Te has registrado en esta aplicación.',
+								'Has solicitado una nueva contraseña. Para establecer una nueva contraseña, por favor ve a {activation_url}',
+								'Tu cuenta ha sido activada. Gracias por registrarte.',
+								'Has recibido una nueva solicitud de amistad de {user_from}: {message} Ve a tus contactos: {link}',
+								'Tienes un nuevo comentario en tu perfil de {username}: {message} visita tu perfil: {link}',
+								'Please translatore thisse hiere toh tha espagnola langsch {username}',
+								'Has recibido un mensaje de {username}: {message}',
+								'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
+								'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'), 
+							 ('4', 'fr', '', '', '', '', '', '', '', '', '', ''), ('5', 'ro', '', '', '', '', '', '', '', '', '', '') ; ";
 
 						$db->createCommand($sql)->execute();
 					}
@@ -269,10 +254,25 @@ class YumInstallController extends YumController {
 
 					if(isset($_POST['installProfiles']))  
 					{
+						$sql = "CREATE TABLE IF NOT EXISTS `". $privacySettingTable . "` (
+							`user_id` int unsigned NOT NULL,
+							`message_new_friendship` tinyint(1) NOT NULL DEFAULT 1,
+							`message_new_message` tinyint(1) NOT NULL DEFAULT 1,
+							`message_new_profilecomment` tinyint(1) NOT NULL DEFAULT 1,
+							`appear_in_search` tinyint(1) NOT NULL DEFAULT 1,
+							`show_online_status` tinyint(1) NOT NULL DEFAULT 1,
+							`log_profile_visits` tinyint(1) NOT NULL DEFAULT 1,
+							`ignore_users` varchar(255),
+							`public_profile_fields` bigint(15) unsigned,
+							PRIMARY KEY (`user_id`)
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+						";
+						$db->createCommand($sql)->execute();
+
+
 						// Create Profile Fields Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
 							`id` int unsigned NOT NULL auto_increment,
-							`field_group_id` int unsigned NOT NULL default '0',
 							`varname` varchar(50) NOT NULL DEFAULT '',
 							`title` varchar(255) NOT NULL DEFAULT '',
 							`hint` text NOT NULL DEFAULT '',
@@ -287,7 +287,6 @@ class YumInstallController extends YumController {
 							`default` varchar(255) NOT NULL DEFAULT '',
 							`position` int(3) NOT NULL default '0',
 							`visible` int(1) NOT NULL default '0',
-							`related_field_name` varchar(255) DEFAULT NULL,
 							PRIMARY KEY  (`id`),
 							KEY `varname` (`varname`,`visible`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";

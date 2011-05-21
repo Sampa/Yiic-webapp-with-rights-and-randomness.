@@ -28,12 +28,11 @@
  * @method YumProfileField forAll
  * @method YumProfileField forUser
  * @method YumProfileField forOwner
- * @method YumProfileField forRegistration
  * @method YumProfileField sort
  */
 class YumProfileField extends YumActiveRecord
 {
-	const VISIBLE_NO=0;
+	const VISIBLE_HIDDEN=0;
 	const VISIBLE_ONLY_OWNER=1;
 	const VISIBLE_REGISTER_USER=2;
 	const VISIBLE_USER_DECISION=3;
@@ -141,9 +140,6 @@ class YumProfileField extends YumActiveRecord
             'forOwner'=>array(
                 'condition'=>'visible>='.self::VISIBLE_ONLY_OWNER,
             ),
-            'forRegistration'=>array(
-                'condition'=>'required>0',
-            ),
             'sort'=>array(
                 'order'=>'field_group_id ASC, t.position ASC',
             ),
@@ -168,15 +164,14 @@ class YumProfileField extends YumActiveRecord
 			),
 			'required' => array(
 				'0' => Yum::t('No'),
-				'2' => Yum::t('No, but show on registration form'),
-				'1' => Yum::t('Yes and show on registration form'),
+				'1' => Yum::t('Yes'),
 			),
 			'visible' => array(
 				self::VISIBLE_USER_DECISION => Yum::t('Let the user choose in privacy settings'),
 				self::VISIBLE_ALL => Yum::t('For all'),
 				self::VISIBLE_REGISTER_USER => Yum::t('Registered users'),
 				self::VISIBLE_ONLY_OWNER => Yum::t('Only owner'),
-				'0' => Yum::t('Hidden'),
+				self::VISIBLE_HIDDEN => Yum::t('Hidden'),
 			),
 		);
 		if (isset($code))

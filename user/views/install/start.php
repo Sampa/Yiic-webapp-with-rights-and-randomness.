@@ -34,15 +34,11 @@ your Yii Web Application </p>
 
 	<h2> Configuration: </h2>
 	<hr />
-	<p> the Yii User Manager will generate the following Tables: </p>
+	<p> Yii User Management will generate the following Tables: </p>
 	<table>
 		<tr>
 			<td> Table for Users </td>
 			<td> <?php echo CHtml::textField('usersTable', $usersTable); ?> </td>
-		</tr>
-		<tr>
-			<td> Table for Privacy settings</td>
-			<td> <?php echo CHtml::textField('privacySettingTable', $privacySettingTable); ?> </td>
 		</tr>
 	</table>
 
@@ -64,6 +60,8 @@ your Yii Web Application </p>
 				</table>
 	</div>
 
+	<div style="clear:both;"> </div>
+
 	<label for="installMembership"> Install Membership Management submodule </label>
 	<?php echo CHtml::checkBox('installMembership', true); ?>
 
@@ -77,8 +75,9 @@ your Yii Web Application </p>
 				<td> Table for the Payment types </td>
 				<td> <?php echo CHtml::textField('paymentTable', $paymentTable); ?> </td> 
 			</tr>
-
 				</table>
+
+	</div>
 
 	<div style="clear:both;"> </div>
 
@@ -109,6 +108,7 @@ your Yii Web Application </p>
 				<td> <?php echo CHtml::textField('messagesTable', $messagesTable); ?> </td> 
 			</tr>
 		</table>
+	</div>
 
 	<div style="clear:both;"> </div>
 
@@ -127,6 +127,10 @@ your Yii Web Application </p>
 				</tr>
 		</table>
 
+	</div>
+
+	<div style="clear:both;"> </div>
+
 	<label for="installMessages"> Install Friendship submodule </label>
 	<?php echo CHtml::checkBox('installFriendship', true); ?>
 	<div id="friendship">
@@ -137,7 +141,6 @@ your Yii Web Application </p>
 			</tr>
 		</table>
 	</div>
-
 
 	<div style="clear:both;"> </div>
 
@@ -162,6 +165,10 @@ your Yii Web Application </p>
 				<td> Table for the Profiles </td>
 				<td> <?php echo CHtml::textField('profileTable', $profileTable); ?> </td> 
 			</tr>
+		<tr>
+			<td> Table for Privacy settings</td>
+			<td> <?php echo CHtml::textField('privacySettingTable', $privacySettingTable); ?> </td>
+		</tr>
 		</table>
 	</div>
 
