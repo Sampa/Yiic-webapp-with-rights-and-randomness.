@@ -166,7 +166,8 @@ class YumUserController extends YumController {
 	 */
 	public function actionCreate() {
 		$model = new YumUser;
-		$profile = new YumProfile;
+		if(Yum::hasModule('profile'))
+			$profile = new YumProfile;
 		$passwordform = new YumUserChangePassword;
 
 		// When opening a empty user creation mask, we most probably want to
@@ -177,16 +178,18 @@ class YumUserController extends YumController {
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];
 
-			$model->roles = Relation::retrieveValues($_POST);
+			if(Yum::hasModule('role'))
+				$model->roles = Relation::retrieveValues($_POST);
 
-			if(isset($_POST['YumProfile']) )
+			if(Yum::hasModule('profile') && isset($_POST['YumProfile']) )
 				$profile->attributes = $_POST['YumProfile'];
 
 			if(isset($_POST['YumUserChangePassword'])) {
 				if($_POST['YumUserChangePassword']['password'] == '') {
 					$password = YumUser::generatePassword();
 					$model->setPassword($password);
-					Yum::setFlash(Yum::t('The generated Password is {password}', array('{password}' => $password)));
+					Yum::setFlash(Yum::t('The generated Password is {password}', array(
+									'{password}' => $password)));
 				} else {
 					$passwordform->attributes = $_POST['YumUserChangePassword'];
 
@@ -198,13 +201,17 @@ class YumUserController extends YumController {
 			$model->activationKey = YumUser::encrypt(microtime() . $model->password);
 
 			$model->validate();
-			$profile->validate();
+
+			if(isset($profile))
+				$profile->validate();
+
 			if(!$model->hasErrors()
-					&& !$profile->hasErrors()
 					&& !$passwordform->hasErrors()) {
 				$model->save();
-				$profile->user_id = $model->id;
-				$profile->save(array('user_id'), false);
+				if(isset($profile)) {
+					$profile->user_id = $model->id;
+					$profile->save(array('user_id'), false);
+				}
 				$this->redirect(array('view', 'id'=>$model->id));
 			}
 		}
@@ -212,7 +219,7 @@ class YumUserController extends YumController {
 		$this->render('create',array(
 					'model' => $model,
 					'passwordform' => $passwordform,
-					'profile' => $profile,
+					'profile' => isset($profile) ? $profile : null,
 					));
 	}
 

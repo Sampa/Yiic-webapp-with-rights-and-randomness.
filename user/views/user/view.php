@@ -123,6 +123,7 @@ if(Yii::app()->user->isAdmin())
 			Yum::t('Update User'), array(
 				'submit' => array('user/update', 'id' => $model->id)));
 
+	if(Yum::hasModule('profile'))
 	echo CHtml::Button(
 			Yum::t('Visit profile'), array(
 				'submit' => array('//profile/profile/view', 'id' => $model->id)));

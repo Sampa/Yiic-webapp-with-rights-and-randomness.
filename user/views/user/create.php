@@ -7,4 +7,4 @@ $this->breadcrumbs = array(
 echo $this->renderPartial('_form', array(
 			'model'=>$model,
 			'passwordform'=>$passwordform,
-			'profile'=>$profile)); ?>
+			'profile'=>isset($profile) ? $profile : null)); ?>

@@ -11,7 +11,7 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <?php
 $models = array($model, $passwordform);
-if($profile !== false)
+if(isset($profile) && $profile !== false)
 	$models[] = $profile;
 	echo CHtml::errorSummary($models);
 	?>
