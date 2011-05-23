@@ -120,6 +120,12 @@ class YumWebUser extends CWebUser
 		return false;
 	}
 
+	public function loggedInAs() {
+		if($this->isGuest)
+			return Yum::t('Guest');
+		else
+			return $this->data()->username;
+	}
 	/**
 	 * Return admin status.
 	 * @return boolean

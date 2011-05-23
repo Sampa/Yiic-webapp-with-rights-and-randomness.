@@ -9,6 +9,9 @@
 class YumRegistrationForm extends YumUser {
 	public $username;
 	public $password;
+	public $street;
+	public $city;
+	public $telephone;
 	public $verifyPassword;
 	public $verifyCode; // Captcha
 

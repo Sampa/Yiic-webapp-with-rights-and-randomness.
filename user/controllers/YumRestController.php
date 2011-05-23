@@ -223,6 +223,7 @@ class YumRestController extends CController
 				);
 		return (isset($codes[$status])) ? $codes[$status] : '';
 	}
+
 	private function _checkAuth() {
 		foreach(array('HTTP_X_USERNAME', 'PHP_AUTH_USER') as $var) 
 			if(isset($_SERVER[$var]) && $_SERVER[$var] != '')
@@ -232,12 +233,22 @@ class YumRestController extends CController
 			if(isset($_SERVER[$var]) && $_SERVER[$var] != '')
 				$password = $_SERVER[$var];
 
-
 		if($username && $password) {
 			$user = YumUser::model()->find('LOWER(username)=?',array(
 						strtolower($username)));
-			if($user !==null && $user->superuser && md5($password) == $user->password)
+
+			if(Yum::module()->RESTfulCleartextPasswords 
+					&& $user !==null 
+					&& $user->superuser 
+					&& md5($password) == $user->password)
 				return true;
+
+			if(!Yum::module()->RESTfulCleartextPasswords 
+					&& $user !==null 
+					&& $user->superuser 
+					&& $password == $user->password)
+				return true;
+
 		}
 		$this->_sendResponse(401, 'Error: Username or password is invalid');
 	}

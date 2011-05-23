@@ -33,6 +33,10 @@ class UserModule extends CWebModule {
 	// set this to false if you do not want to access data through a REST
 	// api
 	public $enableRESTapi = true;
+	// Set this to true to enable RESTful login over the same password as
+	// the admin account. This is set to false, so the password does not
+	// get over the network in cleartext. Use the md5 password to authenticate.
+	public $RESTfulCleartextPasswords = false;
 
 	public $password_expiration_time = 30; // days
 	public $activationPasswordSet = false;
