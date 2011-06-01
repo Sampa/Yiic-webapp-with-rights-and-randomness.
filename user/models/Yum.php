@@ -28,16 +28,16 @@ class Yum
 	}
 
 	/* set a flash message to display after the request is done */
-	public static function setFlash($message) 
+	public static function setFlash($message, $delay = 5000) 
 	{
 		$_SESSION['yum_message'] = Yum::t($message);
+		$_SESSION['yum_delay'] = $delay;
 	}
 
 	public static function hasFlash() 
 	{
 		return isset($_SESSION['yum_message']);
 	}
-
 
 	/* retrieve the flash message again */
 	public static function getFlash() {
@@ -65,7 +65,8 @@ class Yum
 			echo Yum::getFlash();
 			echo '</div>';
 			Yii::app()->clientScript->registerScript('fade',"
-					setTimeout(function() { $('.info').fadeOut('slow'); }, 5000);	
+					setTimeout(function() { $('.info').fadeOut('slow'); },
+						{$_SESSION['yum_delay']});	
 					"); 
 		}
 	}
