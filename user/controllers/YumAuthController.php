@@ -199,11 +199,13 @@ class YumAuthController extends YumController {
 	}
 
 	public function loginByEmail() {
-		Yii::import('application.modules.profile.models.*');
-		$profile = YumProfile::model()->find('email = :email', array(
-					':email' => $this->loginForm->username));
-		if($profile && $profile->user)
-			return $this->authenticate($profile->user);
+		if(Yum::hasModule('profile'))  {
+			Yii::import('application.modules.profile.models.*');
+			$profile = YumProfile::model()->find('email = :email', array(
+						':email' => $this->loginForm->username));
+			if($profile && $profile->user)
+				return $this->authenticate($profile->user);
+		}
 
 		return false;
 	}

@@ -9,6 +9,7 @@ class YumUserIdentity extends CUserIdentity {
 	const ERROR_STATUS_NOTACTIVE=4;
 	const ERROR_STATUS_BANNED=5;
 	const ERROR_STATUS_REMOVED=6;
+	const ERROR_STATUS_USER_DOES_NOT_EXIST=7;
 
 	public function authenticateFacebook() {
 		$fbconfig = Yum::module()->facebookConfig;
@@ -113,6 +114,16 @@ class YumUserIdentity extends CUserIdentity {
 		$user = YumUser::model()->find('username = :username', array(
 					':username' => $this->username));
 
+		// try to authenticate via email
+		if(!$user && (Yum::module()->loginType & 2) && Yum::hasModule('profile')) {
+			if($profile = YumProfile::model()->find('email = :email', array(
+						':email' => $this->username)))
+				if($profile->user)
+					$user = $profile->user;
+		}
+
+		if(!$user)
+			return self::ERROR_STATUS_USER_DOES_NOT_EXIST;
 		if(YumUser::encrypt($this->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else if($user->status == YumUser::STATUS_NOTACTIVE)

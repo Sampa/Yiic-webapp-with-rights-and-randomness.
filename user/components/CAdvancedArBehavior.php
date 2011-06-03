@@ -4,7 +4,7 @@
  *
  * @author Herbert Maschke <thyseus@gmail.com>
  * @link http://www.yiiframework.com/
- * @version yum
+ * @version 0.3
  */
 
 /* The CAdvancedArBehavior extension adds up some functionality to the default
@@ -77,20 +77,21 @@
 
 class CAdvancedArbehavior extends CActiveRecordBehavior
 {
-	// if $syncdb is set, this behavior will automatically insert new added
-	// database fields to the Database
-	public $syncdb = false;
-	public $freeze = false;
-
-	// Trace syncing 
+	// Set this to false to disable tracing of changes
 	public $trace = true;
+
+	// If you want to ignore some relations, set them here.
+	public $ignoreRelations = array();
 
 	// After the save process of the model this behavior is attached to 
 	// is finished, we begin saving our MANY_MANY related data 
 	public function afterSave($event) 
 	{
-		parent::afterSave($event);
+		if(!is_array($this->ignoreRelations))
+			throw new CException('ignoreRelations of CAdvancedArBehavior needs to be an array');
+
 		$this->writeManyManyTables();
+		parent::afterSave($event);
 		return true;
 	}
 
@@ -107,6 +108,13 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 		}
 	}
 
+	/* A relation will have the following format:
+	 $relation['m2mTable'] = the tablename of the foreign object
+	 $relation['m2mThisField'] = the column in the many2many table that represents the primary Key of the object that this behavior is attached to
+	 $relation['m2mForeignField'] = the column in the many2many table that represents the foreign object. 
+
+  Written in Yii relation syntax, it would be like this
+		'relationname' => array('foreignobject', 'column', 'm2mTable(m2mThisField, m2mForeignField) */
 	protected function getRelations()
 	{
 		$relations = array();
@@ -114,6 +122,7 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 		foreach ($this->owner->relations() as $key => $relation) 
 		{
 			if ($relation[0] == CActiveRecord::MANY_MANY && 
+					!in_array($key, $this->ignoreRelations) &&
 					$this->owner->hasRelated($key) && 
 					$this->owner->$key != -1)
 			{
@@ -146,19 +155,16 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 		$key = $relation['key'];
 
 		// Only an object or primary key id is given
-		if(is_object($this->owner->$key)) 		
-		{
+		if(!is_array($this->owner->$key) && $this->owner->$key != array()) 		
 			$this->owner->$key = array($this->owner->$key);
-		}
 
 		// An array of objects is given
-		foreach($this->owner->$key as $foreignobject)
+		foreach((array)$this->owner->$key as $foreignobject)
 		{
 			if(!is_numeric($foreignobject) && is_object($foreignobject))
-			{
 				$foreignobject = $foreignobject->{$foreignobject->$relation['m2mForeignField']};
-			}
-			$this->execute($this->makeManyManyInsertCommand($relation, $foreignobject));
+			$this->execute(
+					$this->makeManyManyInsertCommand($relation, $foreignobject));
 		}
 	}
 
@@ -169,8 +175,9 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 		$this->execute($this->makeManyManyDeleteCommand($relation));	
 	}
 
+	// A wrapper function for execution of SQL queries
 	public function execute($query) {
-		Yii::app()->db->createCommand($query)->execute();
+		return Yii::app()->db->createCommand($query)->execute();
 	}
 
 	public function makeManyManyInsertCommand($relation, $value) {
@@ -188,102 +195,5 @@ class CAdvancedArbehavior extends CActiveRecordBehavior
 				$relation['m2mThisField'],
 				$this->owner->{$this->owner->tableSchema->primaryKey}
 				);
-	}
-
-	public function __set($name,$value)
-	{
-		if($this->syncdb === true) {
-			if($this->setAttribute($name,$value)===false)
-			{
-				if(isset($this->getMetaData()->relations[$name]))
-					$this->_related[$name]=$value;
-				else
-				{
-					if ($this->freeze===false)
-					{
-						$command=$this->getDbConnection()->createCommand('ALTER TABLE `'.$this->tableName().'` ADD `'.$name.'` '.self::getDbType($value).' NOT NULL');
-						$command->execute();
-						$this->getDbConnection()->getSchema()->refresh();
-						$this->refreshMetaData();
-					}
-					$this->__set($name, $value);
-				}
-			}
-			elseif ($this->freeze === false)
-			{
-				$cols = $this->getDbConnection()->getSchema()->getTable($this->tableName())->columns;
-				if ($name != 'id' && strcasecmp($cols[$name]->dbType, self::getDbType($value)) != 0)
-				{
-					//prevent TEXT from being downgraded to VARCHAR
-					if (!(strcasecmp($cols[$name]->dbType,'TEXT')==0 && strcasecmp(self::getDbType($value),'VARCHAR(255)')==0))
-					{
-						$command=$this->getDbConnection()->createCommand('ALTER TABLE  `'.$this->tableName().'` CHANGE  `'.$name.'`  `'.$name.'` '.self::getDbType($value));
-						$command->execute();
-						$this->getDbConnection()->getSchema()->refresh();
-						$this->refreshMetaData();
-						$this->setAttribute($name,$value);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Returns a columns datatype based on the value passed.
-	 * @param mixed property value
-	 */
-	public static function getDbType($value)
-	{
-		if (is_numeric($value) && floor($value)==$value)
-			return 'INT(11)';
-
-			if (is_numeric($value))
-				return 'DOUBLE';
-
-			if (strlen($value) <= 255)
-				return 'VARCHAR(255)';
-
-			return 'TEXT';
-	}
-
-		/**
-		 * Returns the static model of the specified AR class.
-		 * The model returned is a static instance of the AR class.
-		 * It is provided for invoking class-level methods (something similar to 
-     * static class methods.)
-		 *
-		 * EVERY derived AR class must override this method as follows,
-		 * <pre>
-		 * public static function model($className=__CLASS__)
-		 * {
-		 *     return parent::model($className);
-		 * }
-		 * </pre>
-		 *
-		 * @param string active record class name.
-		 * @return CActiveRecord active record model instance.
-		 */
-	public static function model($className=__CLASS__)
-	{
-		if(isset(self::$_models[$className]))
-			return self::$_models[$className];
-		else
-		{
-			$model=self::$_models[$className]=new $className(null);
-			$model->attachbehaviors($model->behaviors());
-			$model->_md=new ExtendedActiveRecordMetaData($model);
-			return $model;
-		}
-	}
-
-	/**
-	 * @return CActiveRecordMetaData the meta for this AR class.
-	 */
-	public function getMetaData()
-	{
-		if($this->_md!==null)
-			return $this->_md;
-		else
-			return $this->_md=self::model(get_class($this))->_md;
 	}
 }

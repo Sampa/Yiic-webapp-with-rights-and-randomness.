@@ -33,11 +33,14 @@ class YumUser extends YumActiveRecord {
 
 	public $username;
 	public $password;
-	public $email;
 	public $activationKey;
 	public $password_changed = false;
-	private $_userRoleTable;
-	private $_friendshipTable;
+
+	public function behaviors() {
+		return array(
+				'CAdvancedArBehavior' => array(
+					'class' => 'application.modules.user.components.CAdvancedArBehavior')); 
+	} 
 
 	public static function model($className=__CLASS__) {
 		return parent::model($className);
@@ -114,6 +117,8 @@ class YumUser extends YumActiveRecord {
 		if(!Yum::hasModule('membership'))
 			return array();
 
+		Yii::import('application.modules.membership.models.*');
+
 		$roles = array();
 		if($this->memberships)
 			foreach($this->memberships as $membership) {
@@ -179,14 +184,14 @@ class YumUser extends YumActiveRecord {
 			}
 
 			if($this->isNewRecord) {
-				Yum::log( Yum::t( 'A user has been generated: user: {user}', array(
+				Yum::log( Yum::t( 'A user has been created: user: {user}', array(
 								'{user}' => json_encode($this->attributes))));
 
 
 			}
-			return parent::afterSave();
 		}
-	}
+		return parent::afterSave();
+	} 
 
 	/**
 	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
@@ -281,6 +286,7 @@ class YumUser extends YumActiveRecord {
 		if(!Yum::hasModule('role')) 
 			return array();
 
+		Yii::import('application.modules.role.models.*');
 		$roles = $this->roles;
 		if(Yum::hasModule('membership'))
 			$roles = array_merge($roles, $this->getActiveMemberships());
@@ -384,7 +390,6 @@ class YumUser extends YumActiveRecord {
 			$this->username = $username;
 			$this->password = $this->encrypt($password);
 		}
-
 		$this->activationKey = $this->generateActivationKey(false, $password);
 		$this->createtime = time();
 		$this->superuser = 0;

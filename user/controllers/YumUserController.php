@@ -224,17 +224,15 @@ class YumUserController extends YumController {
 	}
 
 	public function actionUpdate() {
-
-
 		$model = $this->loadUser();
 		$passwordform = new YumUserChangePassword();
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes = $_POST['YumUser'];
 			if(Yum::hasModule('role')) {
+				Yii::import('application.modules.role.models.*');
 				// Assign the roles and belonging Users to the model
 				$model->roles = Relation::retrieveValues($_POST);
-				Yii::import('application.modules.role.models.*');
 			}
 
 			if(Yum::hasModule('profile')) {
@@ -253,11 +251,10 @@ class YumUserController extends YumController {
 			}
 
 			if(!$passwordform->hasErrors() && $model->save()) {
-				if(isset($profile)) {
-					if($profile->save())
-						$this->redirect(array('view','id'=>$model->id));
-				} else
-					$this->redirect(array('view','id'=>$model->id));
+				if(isset($profile)) 
+					$profile->save();
+
+				$this->redirect(array('//user/user/view', 'id' => $model->id));
 			}
 		}
 

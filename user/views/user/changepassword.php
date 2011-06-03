@@ -22,8 +22,10 @@ if(isset($expired) && $expired)
 		echo '</div>';
 	} ?>
 
-	<?php $this->renderPartial('/user/passwordfields', array('form'=>$form)); ?>
-	
+<?php $this->renderPartial(
+		'application.modules.user.views.user.passwordfields', array(
+			'form'=>$form)); ?>
+
 	<div class="row submit">
 	<?php echo CHtml::submitButton(Yum::t("Save")); ?>
 	</div>

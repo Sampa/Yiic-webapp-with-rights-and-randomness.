@@ -166,7 +166,9 @@ class YumRegistrationController extends YumController {
 										$this->redirect(Yum::module()->loginUrl);
 									}
 							}
-							$this->render(Yum::module()->recoveryChangePasswordView, array('form' => $passwordform));
+							$this->render(
+									Yum::module('registration')->recoverPasswordView, array(
+										'form' => $passwordform));
 						}
 				}
 			} else {

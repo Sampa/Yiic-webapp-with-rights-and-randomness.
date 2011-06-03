@@ -32,10 +32,15 @@ abstract class YumController extends CController {
 
 		if($this->_model === null) {
 			if(isset($_GET['id']))
-				$this->_model = CActiveRecord::model($model)->findbyPk($_GET['id']);
+				$this->_model = CActiveRecord::model($model)->findByPk($_GET['id']);
+
+			if($this->_model===null && !is_numeric($_GET['id']))
+				@$this->_model = CActiveRecord::model($model)->find(
+						'name = :name', array(':name' => $_GET['id']));
 
 			if($this->_model===null)
-				throw new CHttpException(404, Yii::t('app', 'The requested page does not exist.'));
+				throw new CHttpException(404,
+						Yii::t('app', 'The requested page does not exist.'));
 		}
 		return $this->_model;
 	}
