@@ -5,6 +5,7 @@ if(!isset($model))
 $module = Yum::module();
 
 $this->pageTitle = Yii::app()->name . ' - '.Yum::t('Login');
+if(isset($this->title))
 $this->title = Yum::t('Login');
 $this->breadcrumbs=array(Yum::t('Login'));
 
