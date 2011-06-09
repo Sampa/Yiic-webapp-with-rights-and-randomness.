@@ -24,8 +24,9 @@
 	<?php echo CHtml::link(Yum::t('View Details'), array(
 					'//usergroup/groups/view', 'id' => $data->id)); ?>
 	<?php 
+	if(is_array($data->participants))
 if(!(in_array(Yii::app()->user->id, $data->participants)))
 	echo CHtml::link(Yum::t('Join group'), array(
-					'//usergroup/groups/join', 'id' => $data->id)); ?>
+				'//usergroup/groups/join', 'id' => $data->id)); ?>
 
 	</div>

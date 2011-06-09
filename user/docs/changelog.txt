@@ -1,6 +1,7 @@
 Changelog for Yii User Management Module (Yum) 
 
 
+- Added italian translation (thanks goes to marco@customsoft.it )
 
 New in 0.8-rc2:
 - Changed available YumUser::status values

@@ -18,6 +18,7 @@ class RegistrationModule extends CWebModule {
 	public $registrationEmail='register@website.com';
 	public $recoveryEmail='restore@website.com';
 
+	public $registrationView = '/registration/registration';
 	public $recoverPasswordView = 'application.modules.user.views.user.changepassword';
 
 	/**

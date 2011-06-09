@@ -68,7 +68,7 @@ class YumUsergroupController extends YumController {
 					));
 	}
 
-	public function loadModel($id)
+	public function loadModel($id = false)
 	{
 		if($this->_model === null)
 		{

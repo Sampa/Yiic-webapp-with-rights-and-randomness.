@@ -26,11 +26,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array("//user/user/view","id"=>$data->id))',
 			),
 			array(
-				'name'=>'email',
-				'visible' => Yum::hasModule('profile'), 
-				'value'=> 'isset($data->profile) ? $data->profile->email : "No email set"',
-			),
-			array(
 				'name'=>'createtime',
 				'filter' => false,
 				'value'=>'date(UserModule::$dateFormat,$data->createtime)',

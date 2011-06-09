@@ -137,7 +137,8 @@ class YumUser extends YumActiveRecord {
 			if($this->profile)
 				$criteria->compare('profile.email', $this->profile->email, true);
 
-			$criteria->addSearchCondition('profile.email',$this->email,true);
+			if(isset($this->email))
+				$criteria->addSearchCondition('profile.email',$this->email,true);
 		}
 
 		$criteria->together = true;
