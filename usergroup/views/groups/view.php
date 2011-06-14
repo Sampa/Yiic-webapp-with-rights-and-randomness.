@@ -12,10 +12,11 @@ $this->breadcrumbs=array(
 
 <?php
 
-printf('%s: %s',
-		Yum::t('Owner'),
-		CHtml::link($model->owner->username, array(
-				'//profile/profile/view', 'id' => $model->owner_id)));
+if($model->owner)
+	printf('%s: %s',
+			Yum::t('Owner'),
+			CHtml::link($model->owner->username, array(
+					'//profile/profile/view', 'id' => $model->owner_id)));
 
 printf('<h4> %s </h4>', Yum::t('Participants'));
 
