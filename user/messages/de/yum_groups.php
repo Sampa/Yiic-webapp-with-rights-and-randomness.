@@ -1,5 +1,6 @@
 <?php
 return array(
+	'Browse' => 'Durchsuchen',
 	'You have joined this group' => 'Sie sind dieser Gruppe beigetreten',
 	'Create new Usergroup' => 'Neue Gruppe erstellen',
 	'Write message' => 'Nachricht schreiben',

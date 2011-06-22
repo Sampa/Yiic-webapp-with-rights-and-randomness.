@@ -19,7 +19,12 @@ echo Yum::t(
 </p>
 
 <div class="form">
-<?php echo CHtml::beginForm(); ?>
+<?php echo CHtml::beginForm();  ?>
+
+<?php
+if(isset($_GET['action']))
+	echo CHtml::hiddenField('returnUrl', urldecode($_GET['action']));
+?>
 
 <?php echo CHtml::errorSummary($model); ?>
 	

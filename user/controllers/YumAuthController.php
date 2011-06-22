@@ -301,6 +301,9 @@ class YumAuthController extends YumController {
 	}
 
 	public function redirectUser($user) {
+		if(isset($_POST) && isset($_POST['returnUrl']))
+			$this->redirect(array($_POST['returnUrl']));
+
 		if(isset(Yii::app()->user->returnUrl))
 			$this->redirect(Yii::app()->user->returnUrl);
 
