@@ -28,11 +28,7 @@ $this->breadcrumbs=array(
 		//'error_message',
 		'other_validator',
 		//'default',
-		array(
-			'name'=>'field_group_id',
-			'value'=>'$data->group instanceof YumProfileFieldsGroup ? Yii::t("UserModule.user",$data->group->title) : Yii::t("UserModule.user","Not assigned")'
-		),
-		//'position',
+		'position',
 		array(
 			'name'=>'visible',
 			'value'=>'YumProfileField::itemAlias("visible",$data->visible)',

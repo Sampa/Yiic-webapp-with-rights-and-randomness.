@@ -28,13 +28,6 @@
 	</div>	
 	
 	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'field_group_id'); ?>
-		<?php echo CHtml::activeDropDownList($model,'field_group_id',CHtml::listData(YumProfileFieldsGroup::model()->findAll(),'id','title')); ?>
-		<?php echo CHtml::error($model,'field_group_id'); ?>
-		<p class="hint"><?php echo Yum::t('Select group where field belongs to or leave empty.'); ?></p>
-	</div>
-	
-	<div class="row">
 		<?php echo CHtml::activeLabelEx($model,'field_type'); ?>
 		<?php echo (($model->id)
 				? CHtml::activeTextField($model,'field_type',array(

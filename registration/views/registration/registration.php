@@ -1,7 +1,4 @@
-<h2> Yii User Management example registration Page </h2>
-<p> This is an example how your registration page could look. </p>
-<p> To override this example registration page with your
-project-specific, read modules/user/docs/registration.txt </p>
+<h2> <?php echo Yum::t('Registration'); ?> </h2>
 
 <?php $this->breadcrumbs = array(Yum::t('Registration')); ?>
 

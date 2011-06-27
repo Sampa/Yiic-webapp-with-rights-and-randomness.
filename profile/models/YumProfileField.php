@@ -5,7 +5,6 @@
  * The followings are the available columns in table '{{profile_fields}}':
  * Fields:
  * @property integer $id
- * @property integer $field_group_id
  * @property string $varname
  * @property string $title
  * @property string $hint
@@ -22,7 +21,6 @@
  * @property integer $visible
  * 
  * Relations
- * @property YumProfileFieldsGroup $group
  * 
  * Scopes:
  * @method YumProfileField forAll
@@ -91,7 +89,7 @@ class YumProfileField extends YumActiveRecord
 			array('varname', 'match', 'pattern' => '/^[a-z_0-9]+$/u','message' => Yii::t("UserModule.user", "Incorrect symbol's. (a-z)")),
 			array('varname', 'unique', 'message' => Yii::t("UserModule.user", "This field already exists.")),
 			array('varname, field_type', 'length', 'max'=>50),
-			array('field_group_id, field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
+			array('field_size, field_size_min, required, position, visible', 'numerical', 'integerOnly'=>true),
 			array('hint','safe'),
 			array('related_field_name, title, match, range, error_message, other_validator, default', 'length', 'max'=>255),
 		);
@@ -99,18 +97,13 @@ class YumProfileField extends YumActiveRecord
 
 	public function relations()
 	{
-		$relations = array(
-			'group'=>array(self::BELONGS_TO, 'YumProfileFieldsGroup', 'field_group_id')
-		);
-
-		return $relations;
+		return array();
 	}
 
 	public function attributeLabels()
 	{
 		return array(
 			'id' => Yum::t('#'),
-			'field_group_id' => Yum::t('Field group'),
 			'varname' => Yum::t('Variable name'),
 			'title' => Yum::t('Title'),
 			'hint' => Yum::t('Hint'),
@@ -140,10 +133,6 @@ class YumProfileField extends YumActiveRecord
             'forOwner'=>array(
                 'condition'=>'visible>='.self::VISIBLE_ONLY_OWNER,
             ),
-            'sort'=>array(
-                'order'=>'field_group_id ASC, t.position ASC',
-            ),
-            
         );
     }
 

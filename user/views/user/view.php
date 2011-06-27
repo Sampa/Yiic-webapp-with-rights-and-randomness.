@@ -21,7 +21,7 @@ if(Yii::app()->user->isAdmin()) {
 		$attributes[] = 'username';
 
 	if($profiles) {
-		$profileFields = YumProfileField::model()->forOwner()->sort()->findAll();
+		$profileFields = YumProfileField::model()->forOwner()->findAll();
 		if ($profileFields && $model->profile) {
 			foreach($profileFields as $field) {
 				array_push($attributes, array(

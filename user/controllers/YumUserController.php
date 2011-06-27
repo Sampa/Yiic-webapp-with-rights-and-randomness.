@@ -277,7 +277,7 @@ class YumUserController extends YumController {
 
 		if(Yii::app()->user->isAdmin()) {
 			//This is necesary for handling human stupidity.
-			if($user->id == Yii::app()->user->id) {
+			if($user && ($user->id == Yii::app()->user->id)) {
 				Yum::setFlash('You can not delete your own admin account');
 				$this->redirect(array('//user/user/admin'));
 			}

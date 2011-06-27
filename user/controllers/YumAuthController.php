@@ -301,6 +301,10 @@ class YumAuthController extends YumController {
 	}
 
 	public function redirectUser($user) {
+		$user->lastvisit = time();
+		$user->save(true, array('lastvisit'));
+
+		Yii::app()->user->setState('first_login', true);
 		if(isset($_POST) && isset($_POST['returnUrl']))
 			$this->redirect(array($_POST['returnUrl']));
 
@@ -312,16 +316,14 @@ class YumAuthController extends YumController {
 		} else {
 			if ($user->isPasswordExpired())
 				$this->redirect(array('passwordexpired'));
-			else if($user->lastvisit == 0) {
-				$user->lastvisit = time();
-				$user->save(true, array('lastvisit'));
-				$this->redirect(Yum::module()->firstVisitUrl);
-			}
-			else if (Yum::module()->returnUrl !== '')
+
+						if (Yum::module()->returnUrl !== '')
 				$this->redirect(Yum::module()->returnUrl);
 			else
 				$this->redirect(Yii::app()->user->returnUrl);
 		}
+
+		$this->redirect(Yum::module()->firstVisitUrl);
 	}
 
 	public function actionLogout() {

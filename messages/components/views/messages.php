@@ -5,7 +5,7 @@ if($messages) {
 			Yum::t('From'),
 			Yum::t('Subject'));
 	foreach($messages as $message) {
-		printf('<tr><td class="first-row">%s</td><td class="last-row">%s</td></tr>',
+		printf('<tr><td class="first-row">%s</td><td style="padding-left: 10px;" class="last-row">%s</td></tr>',
 				substr($message->from_user->username, 0, 10),
 				CHtml::link(substr($message->title, 0, 40), array
 					('//messages/messages/view', 'id' => $message->id)));
