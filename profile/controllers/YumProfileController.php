@@ -48,10 +48,16 @@ class YumProfileController extends YumController {
 			}
 		}
 
-		$this->render(Yum::module('profile')->profileEditView,array(
-					'user'=>$user,
-					'profile'=>$profile,
-					));
+		if(Yii::app()->request->isAjaxRequest)
+			$this->renderPartial(Yum::module('profile')->profileEditView,array(
+						'user'=>$user,
+						'profile'=>$profile,
+						));
+		else
+			$this->render(Yum::module('profile')->profileEditView,array(
+						'user'=>$user,
+						'profile'=>$profile,
+						));
 	}
 
 	public function actionVisits() {

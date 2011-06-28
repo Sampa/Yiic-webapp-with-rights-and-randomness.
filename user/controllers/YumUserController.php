@@ -137,9 +137,15 @@ class YumUserController extends YumController {
 				$this->redirect(Yum::module()->returnUrl);
 			}
 		}
-		$this->render('changepassword', array(
-					'form'=>$form,
-					'expired' => $expired));
+
+		if(Yii::app()->request->isAjaxRequest)
+			$this->renderPartial('changepassword', array(
+						'form'=>$form,
+						'expired' => $expired));
+		else
+			$this->render('changepassword', array(
+						'form'=>$form,
+						'expired' => $expired));
 	}
 
 	// Redirects the user to the specified profile

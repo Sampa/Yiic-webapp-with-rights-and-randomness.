@@ -19,7 +19,7 @@ echo Yum::t(
 </p>
 
 <div class="form">
-<?php echo CHtml::beginForm();  ?>
+<?php echo CHtml::beginForm(array('//user/auth/login'));  ?>
 
 <?php
 if(isset($_GET['action']))

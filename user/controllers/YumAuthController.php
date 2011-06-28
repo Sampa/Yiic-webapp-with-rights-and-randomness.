@@ -308,65 +308,63 @@ class YumAuthController extends YumController {
 		if(isset($_POST) && isset($_POST['returnUrl']))
 			$this->redirect(array($_POST['returnUrl']));
 
+		if ($user->superuser && Yum::module()->returnAdminUrl) 
+			$this->redirect(Yum::module()->returnAdminUrl);
+
 		if(isset(Yii::app()->user->returnUrl))
 			$this->redirect(Yii::app()->user->returnUrl);
 
-		if ($user->superuser) {
-			$this->redirect(Yum::module()->returnAdminUrl);
-		} else {
-			if ($user->isPasswordExpired())
-				$this->redirect(array('passwordexpired'));
+		if ($user->isPasswordExpired())
+			$this->redirect(array('passwordexpired'));
 
-						if (Yum::module()->returnUrl !== '')
-				$this->redirect(Yum::module()->returnUrl);
-			else
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
-
+		if (Yum::module()->returnUrl !== '')
+			$this->redirect(Yum::module()->returnUrl);
+		else
+			$this->redirect(Yii::app()->user->returnUrl);
 		$this->redirect(Yum::module()->firstVisitUrl);
 	}
 
-	public function actionLogout() {
-		// If the user is already logged out send them to returnLogoutUrl
-		if (Yii::app()->user->isGuest)
-			$this->redirect(Yum::module()->returnLogoutUrl);
-
-		//let's delete the login_type cookie
-		$cookie=Yii::app()->request->cookies['login_type'];
-		if ($cookie) {
-			$cookie->expire = time() - (3600*72);
-			Yii::app()->request->cookies['login_type'] = $cookie;
-		}
-
-		if($user = YumUser::model()->findByPk(Yii::app()->user->id)) {
-			$username = $user->username;
-			$user->logout();
-
-			if (Yii::app()->user->name == 'facebook') {
-				if (!Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK)
-					throw new Exception('actionLogout for Facebook was called, but is not activated in main.php');
-
-				Yii::import('application.modules.user.vendors.facebook.*');
-				require_once('Facebook.php');
-				$facebook = new Facebook(Yum::module()->facebookConfig);
-				$fb_cookie = 'fbs_'.Yum::module()->facebookConfig['appId'];
-				$cookie = Yii::app()->request->cookies[$fb_cookie];
-				if ($cookie) {
-					$cookie->expire = time() -1*(3600*72);
-					Yii::app()->request->cookies[$cookie->name] = $cookie;
-				}
-				$session = $facebook->getSession();
-				Yum::log('Facebook logout from user '. $username);
-				Yii::app()->user->logout();
-				$this->redirect($facebook->getLogoutUrl(array('next' => $this->createAbsoluteUrl(Yum::module()->returnLogoutUrl), 'session_key' => $session['session_key'])));
-			}
-			else {
-				Yum::log(Yum::t('User {username} logged off', array(
-								'{username}' => $username)));
-
-				Yii::app()->user->logout();
-			}
-		}
+public function actionLogout() {
+	// If the user is already logged out send them to returnLogoutUrl
+	if (Yii::app()->user->isGuest)
 		$this->redirect(Yum::module()->returnLogoutUrl);
+
+	//let's delete the login_type cookie
+	$cookie=Yii::app()->request->cookies['login_type'];
+	if ($cookie) {
+		$cookie->expire = time() - (3600*72);
+		Yii::app()->request->cookies['login_type'] = $cookie;
 	}
+
+	if($user = YumUser::model()->findByPk(Yii::app()->user->id)) {
+		$username = $user->username;
+		$user->logout();
+
+		if (Yii::app()->user->name == 'facebook') {
+			if (!Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK)
+				throw new Exception('actionLogout for Facebook was called, but is not activated in main.php');
+
+			Yii::import('application.modules.user.vendors.facebook.*');
+			require_once('Facebook.php');
+			$facebook = new Facebook(Yum::module()->facebookConfig);
+			$fb_cookie = 'fbs_'.Yum::module()->facebookConfig['appId'];
+			$cookie = Yii::app()->request->cookies[$fb_cookie];
+			if ($cookie) {
+				$cookie->expire = time() -1*(3600*72);
+				Yii::app()->request->cookies[$cookie->name] = $cookie;
+			}
+			$session = $facebook->getSession();
+			Yum::log('Facebook logout from user '. $username);
+			Yii::app()->user->logout();
+			$this->redirect($facebook->getLogoutUrl(array('next' => $this->createAbsoluteUrl(Yum::module()->returnLogoutUrl), 'session_key' => $session['session_key'])));
+		}
+		else {
+			Yum::log(Yum::t('User {username} logged off', array(
+							'{username}' => $username)));
+
+			Yii::app()->user->logout();
+		}
+	}
+	$this->redirect(Yum::module()->returnLogoutUrl);
+}
 }
