@@ -6,9 +6,12 @@
 
 <?php
 $online = '';
-if($data->privacy && $data->privacy->show_online_status)
-	if($data->isOnline()) {
-	$online .= CHtml::image(Yum::register('images/green_button.png'));
+if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacysetting) {
+	if($data->privacy && $data->privacy->show_online_status) {
+		if($data->isOnline()) {
+			$online .= CHtml::image(Yum::register('images/green_button.png'));
+		}
+	}
 }
 
 ?>
