@@ -84,7 +84,8 @@ class YumInstallController extends YumController {
 						KEY `superuser` (`superuser`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 					$db->createCommand($sql)->execute();
-
+					
+					// Install Usergroups submodule
 					if(isset($_POST['installUsergroup'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$usergroupTable."` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -110,6 +111,7 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 					}
 
+					// Install Membership Management submodule 
 					if(isset($_POST['installMembership'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `{$membershipTable}` (
 							`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -131,6 +133,8 @@ class YumInstallController extends YumController {
 								) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 						$db->createCommand($sql)->execute();
 					}
+					
+					// Install permission Submodule
 					if(isset($_POST['installPermission'])) {  
 						$sql = "CREATE TABLE IF NOT EXISTS `".$actionTable."` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -152,6 +156,8 @@ class YumInstallController extends YumController {
 
 						$db->createCommand($sql)->execute();
 					}
+					
+					// Enable Module settings Configuration by Database Table
 					if(isset($_POST['installSettingsTable'])) {  
 						// Create Text settings table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $textSettingsTable . "` (
@@ -236,6 +242,7 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 					}
 
+					// Install Friendship submodule
 					if(isset($_POST['installFriendship']))  
 					{
 						$sql = "CREATE TABLE  `".$friendshipTable."` (
@@ -252,6 +259,7 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 					}
 
+					// Install Profiles submodule
 					if(isset($_POST['installProfiles']))  
 					{
 						$sql = "CREATE TABLE IF NOT EXISTS `". $privacySettingTable . "` (
@@ -268,7 +276,6 @@ class YumInstallController extends YumController {
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 						";
 						$db->createCommand($sql)->execute();
-
 
 						// Create Profile Fields Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
@@ -335,6 +342,7 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 					}
 
+					// Install Role Management submodule 
 					if(isset($_POST['installRole']))  
 					{
 						// Create Roles Table
@@ -351,7 +359,6 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 
 						// Create User_has_role Table
-
 						$sql = "CREATE TABLE IF NOT EXISTS `".$userRoleTable."` (
 							`user_id` int unsigned NOT NULL,
 							`role_id` int unsigned NOT NULL,
@@ -359,99 +366,98 @@ class YumInstallController extends YumController {
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
+						
+					}
 
-						if(isset($_POST['installMessages'])) 
-						{
-							// Create Messages Table
-							$sql = "
-								CREATE TABLE IF NOT EXISTS `" . $messagesTable . "` (
-										`id` int unsigned NOT NULL auto_increment,
-										`timestamp` int unsigned NOT NULL,
-										`from_user_id` int unsigned NOT NULL,
-										`to_user_id` int unsigned NOT NULL,
-										`title` varchar(255) NOT NULL,
-										`message` text,
-										`message_read` tinyint(1) NOT NULL,
-										`answered` tinyint(1) NOT NULL,
-										`draft` tinyint(1) default NULL,
-										PRIMARY KEY  (`id`)
-										) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"; 
+					// Install Messages submodule
+					if(isset($_POST['installMessages'])) 
+					{
+						// Create Messages Table
+						$sql = "
+							CREATE TABLE IF NOT EXISTS `" . $messagesTable . "` (
+									`id` int unsigned NOT NULL auto_increment,
+									`timestamp` int unsigned NOT NULL,
+									`from_user_id` int unsigned NOT NULL,
+									`to_user_id` int unsigned NOT NULL,
+									`title` varchar(255) NOT NULL,
+									`message` text,
+									`message_read` tinyint(1) NOT NULL,
+									`answered` tinyint(1) NOT NULL,
+									`draft` tinyint(1) default NULL,
+									PRIMARY KEY  (`id`)
+									) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"; 
 
-								$db->createCommand($sql)->execute();
-						}
+							$db->createCommand($sql)->execute();
+					}
+					
+					// Generate demo data
+					
+					$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
+						(1, 'admin', '".YumUser::encrypt('admin')."', '', ".time().", 0, 1, 1),
+						(2, 'demo', '".YumUser::encrypt('demo')."', '', ".time().", 0, 0, 1)";
+					$db->createCommand($sql)->execute();
 
+					if(isset($_POST['installMembership'])) {
+						$sql = "insert into `{$paymentTable}` (`title`) values ('Prepayment'), ('Paypal')";
+
+						$db->createCommand($sql)->execute();
+					}
+
+					if(isset($_POST['installRole']) && isset($_POST['installPermission']))
+					{
+						$sql = "INSERT INTO `".$actionTable ."` (`title`) VALUES 
+							('message_write'),
+							('message_receive'),
+							('user_create'),
+							('user_update'),
+							('user_remove'),
+							('user_admin')";
+
+						$db->createCommand($sql)->execute();
+
+						$sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `template`, `comment`) VALUES
+							(2, 0, 'role', 1, 0, 'Users can write messagse'),
+							(2, 0, 'role', 2, 0, 'Users can receive messagse'),
+							(2, 0, 'role', 3, 0, 'Users are able to view visits of his profile'),
+							(1, 0, 'role', 4, 0, ''),
+							(1, 0, 'role', 5, 0, ''),
+							(1, 0, 'role', 6, 0, ''),
+							(1, 0, 'role', 7, 0, '');";
+
+						$db->createCommand($sql)->execute();
+
+						$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`) VALUES
+							('UserManager', 'This users can manage Users', 0, 0),
+							('Demo', 'Users having the demo role', 0, 0),
+							('Business', 'Example Business account', 9.99, 7),
+							('Premium', 'Example Premium account', 19.99, 28) ";
+						$db->createCommand($sql)->execute();
+
+						$sql = "INSERT INTO `".$userRoleTable."` (`user_id`, `role_id`) VALUES
+							(2, 3)";
+						$db->createCommand($sql)->execute();
+					}
+					
+					if(isset($_POST['installProfiles']))
+					{
 						$sql = "INSERT INTO `".$privacySettingTable."` (`user_id`) values (2)";
 						$db->createCommand($sql)->execute();
-
-						$sql = "INSERT INTO `".$usersTable."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES
-							(1, 'admin', '".YumUser::encrypt('admin')."', '', ".time().", 0, 1, 1),
-							(2, 'demo', '".YumUser::encrypt('demo')."', '', ".time().", 0, 0, 1)";
+						
+						$sql = "INSERT INTO `".$profileTable."` (`id`, `user_id`, `lastname`, `firstname`, `email`) VALUES
+							(1, 1, 'admin','admin','webmaster@example.com'),
+							(2, 2, 'demo','demo','demo@example.com')";
 						$db->createCommand($sql)->execute();
 
-						if(isset($_POST['installMembership'])) {
-							$sql = "insert into `{$paymentTable}` (`title`) values ('Prepayment'), ('Paypal')";
+						$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 3, 'CEmailValidator'), ('firstname', 'First name', 'VARCHAR', 255, 1, 3, ''), ('lastname', 'Last name', 'VARCHAR', 255, 1, 3, ''), ('street','Street', 'VARCHAR', 255, 0, 3, ''), ('city','City', 'VARCHAR', 255, 0, 3, ''), ('about', 'About', 'TEXT', 255, 0, 3, '')";
+						$db->createCommand($sql)->execute();
 
-							$db->createCommand($sql)->execute();
-						}
-
-						if(isset($_POST['installRole']))
-						{
-							$sql = "INSERT INTO `".$actionTable ."` (`title`) VALUES 
-								('message_write'),
-								('message_receive'),
-								('user_create'),
-								('user_update'),
-								('user_remove'),
-								('user_admin')";
-
-							$db->createCommand($sql)->execute();
-
-							$sql = "INSERT INTO `{$permissionTable}` (`principal_id`, `subordinate_id`, `type`, `action`, `template`, `comment`) VALUES
-								(2, 0, 'role', 1, 0, 'Users can write messagse'),
-								(2, 0, 'role', 2, 0, 'Users can receive messagse'),
-								(2, 0, 'role', 3, 0, 'Users are able to view visits of his profile'),
-								(1, 0, 'role', 4, 0, ''),
-								(1, 0, 'role', 5, 0, ''),
-								(1, 0, 'role', 6, 0, ''),
-								(1, 0, 'role', 7, 0, '');";
-
-							$db->createCommand($sql)->execute();
-
-
-
-							$sql = "INSERT INTO `".$rolesTable."` (`title`,`description`, `price`, `duration`) VALUES
-								('UserManager', 'This users can manage Users', 0, 0),
-								('Demo', 'Users having the demo role', 0, 0),
-								('Business', 'Example Business account', 9.99, 7),
-								('Premium', 'Example Premium account', 19.99, 28) ";
-							$db->createCommand($sql)->execute();
-
-							$sql = "INSERT INTO `".$userRoleTable."` (`user_id`, `role_id`) VALUES
-								(2, 3)";
-							$db->createCommand($sql)->execute();
-
-
-						}
-						if(isset($_POST['installProfiles']))
-						{
-							$sql = "INSERT INTO `".$profileTable."` (`id`, `user_id`, `lastname`, `firstname`, `email`) VALUES
-								(1, 1, 'admin','admin','webmaster@example.com'),
-								(2, 2, 'demo','demo','demo@example.com')";
-							$db->createCommand($sql)->execute();
-
-							$sql = "INSERT INTO `".$profileFieldsTable."` (`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES ('email', 'E-Mail', 'VARCHAR', 255, 1, 3, 'CEmailValidator'), ('firstname', 'First name', 'VARCHAR', 255, 1, 3, ''), ('lastname', 'Last name', 'VARCHAR', 255, 1, 3, ''), ('street','Street', 'VARCHAR', 255, 0, 3, ''), ('city','City', 'VARCHAR', 255, 0, 3, ''), ('about', 'About', 'TEXT', 255, 0, 3, '')";
-							$db->createCommand($sql)->execute();
-
-						}
-
-
-
-						// Do it
-						$transaction->commit();
-
-						// Victory
-						$this->render('success');
 					}
+
+					// Do it
+					$transaction->commit();
+
+					// Victory
+					$this->render('success');
 				}
 				else 
 				{
