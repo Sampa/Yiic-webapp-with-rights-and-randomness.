@@ -451,11 +451,11 @@ class YumInstallController extends YumController {
 
 						// Victory
 						$this->render('success');
-					} 
-					else 
-					{
-						throw new CException(Yum::t('Database connection is not working'));	
 					}
+				}
+				else 
+				{
+					throw new CException(Yum::t('Database connection is not working'));	
 				}
 			}
 			else {
