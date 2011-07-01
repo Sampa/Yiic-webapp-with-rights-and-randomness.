@@ -221,6 +221,11 @@ class UserModule extends CWebModule {
 
 		if(Yii::app()->user->isAdmin())
 			$controller->layout = Yum::module()->adminLayout;
+			
+		// If the submodule profile is not installed, we can't connect by using E-Mail
+		if(!Yum::hasModule('profile')){
+			$this->loginType &= ~UserModule::LOGIN_BY_EMAIL;
+		}
 		
 		return parent::beforeControllerAction($controller, $action);
 	}
