@@ -1,6 +1,6 @@
 <?php
-$this->title = Yum::t('Benutzer suchen');
-$this->breadcrumbs=array(Yum::t('Benutzer suchen'));
+$this->title = Yum::t('Browse users');
+$this->breadcrumbs=array(Yum::t('Browse users'));
 
 Yum::register('js/tooltip.min.js');
 Yum::register('css/yum.css'); 

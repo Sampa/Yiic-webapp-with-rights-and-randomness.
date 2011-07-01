@@ -46,7 +46,7 @@ return array(
 		'Nobody has visited your profile yet' => 'Aucune visite récente de votre profil',
 		'You have no messages yet' => 'Aucun message récent',
 		'Jump to profile' => 'Consulter le profil',
-		'Search for username' => 'Recherche par nom d utilisateur',
+		'Search for username' => 'Recherche par nom d\'utilisateur',
 		'Privacy settings' => 'Vos données personnelles',
 		'Browse memberships' => 'Mitgliedschaften kaufen ??',
 		'Membership' => 'Devenir membre',

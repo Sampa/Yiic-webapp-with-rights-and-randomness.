@@ -187,8 +187,6 @@ your Yii Web Application </p>
 
 	<div style="clear:both;"> </div>
 
-</div>
-
 	<?php 
 	$js = "
 	$('#installSettingsTable').click(function() {

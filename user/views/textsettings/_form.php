@@ -70,5 +70,4 @@
 <?php echo $form->textArea($model,'text_payment_arrived',array('rows'=>6, 'cols'=>50)); ?>
 <?php echo $form->error($model,'text_payment_arrived'); ?>
 </div>
-	<div class="row">
 
