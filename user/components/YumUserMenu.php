@@ -22,7 +22,7 @@ class YumUserMenu extends CPortlet {
 
 	public function getMenuItems() {
 		return array( 
-				array('label' => 'Profile', 'items' => array(
+				array('label' => 'Profile', 'visible' => Yum::hasModule('profile'), 'items' => array(
 						array('label' => 'My profile', 'url' => array(
 								'//profile/profile/view')),
 						array('label' => 'Edit personal data', 'url' => array(
