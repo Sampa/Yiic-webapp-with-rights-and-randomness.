@@ -14,7 +14,7 @@ class YumWebUser extends CWebUser
 	public function checkAccess($operation, $params=array(), $allowCaching=true)
 	{
 		if(!Yum::hasModule('role') ||	Yum::module('role')->useYiiCheckAccess )
-			return parent::checkAccess();
+			return parent::checkAccess($operation, $params, $allowCaching);
 
 		return $this->can($operation);	
 	}
