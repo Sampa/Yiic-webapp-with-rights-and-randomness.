@@ -16,8 +16,8 @@ $this->widget('zii.widgets.CDetailView', array(
 		'text_profilecomment_new',
 		'text_membership_ordered',
 		'text_payment_arrived',
-		'text_membership_header',
-		'text_membership_footer',
+		//'text_membership_header',
+		//'text_membership_footer',
 	),
 )); 
 

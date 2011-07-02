@@ -1,7 +1,7 @@
 <?php
 $this->title = Yii::t('UserModule.user', 'Text settings');
 $this->breadcrumbs = array(
-	Yii::t('UserModule.user','User administration panel')=>array('//user/user/adminpanel'),
+	Yii::t('UserModule.user','User administration panel')=>array('//user/user/admin'),
 	Yii::t('UserModule.user', 'Yum Text Settings'),
 	Yii::t('UserModule.user', 'Index'),
 );

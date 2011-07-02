@@ -7,7 +7,7 @@ class YumTextSettingsController extends YumController {
 		return array(
 				array('allow', 
 					'actions'=>array('admin','delete', 'create', 'update', 'view','index'),
-					'users'=>array('admin'),
+					'expression' => 'Yii::app()->user->isAdmin()'
 					),
 				array('deny', 
 					'users'=>array('*'),
