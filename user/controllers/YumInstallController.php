@@ -178,54 +178,57 @@ class YumInstallController extends YumController {
 						$db->createCommand($sql)->execute();
 
 						$sql = "
-							INSERT INTO `".$textSettingsTable."` (`id`,
-									`language`,
-									`text_email_registration`,
-									`subject_email_registration`,
-									`text_email_recovery`,
-									`text_email_activation`,
-									`text_friendship_new`,
-									`text_friendship_confirmed`,
-									`text_profilecomment_new`,
-									`text_message_new`,
-									`text_membership_ordered`,
-									`text_payment_arrived`
-									) VALUES ('1',
-										'en_us',
-										'You have registered for this Application. To confirm your E-Mail address, please visit {activation_url}',
-										'You have registered for an application',
-										'You have requested a new Password. To set your new Password,
-										please go to {activation_url}',
-										'Your account has been activated. Thank you for your registration.',
-										'New friendship Request from {username}: {message}. To accept or ignore this request, go to your friendship page: {link_friends} or go to your profile: {link_profile}',
-										'The User {username} has accepted your friendship request',
-										'You have a new profile comment from {username}: {message} visit your profile: {link_profile}',
-										'You have received a new message from {username}: {message}',
-										'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
-										'Your payment has been received on {payment_date} and your Membership {id} is now active'
-										),
-							('2',
-							 'de',
-							 'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
-							 'Sie haben sich für eine Applikation registriert.',
-							 'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
-							 'Ihr Konto wurde freigeschaltet.',
-							 'Der Benutzer {username} hat Ihnen eine Freundschaftsanfrage gesendet. 
-
-							 Nachricht: {message}
-
-							 Klicken sie <a href=\"{link_friends}\">hier</a>, um diese Anfrage zu bestätigen oder zu ignorieren. Alternativ können sie <a href=\"{link_profile}\">hier</a> auf ihre Profilseite zugreifen.',
-							 'Der Benutzer {username} hat ihre Freundschaftsanfrage bestätigt.',
-							 '
-							 Benutzer {username} hat Ihnen eine Nachricht auf Ihrer Pinnwand hinterlassen: 
-
-							 {message}
-
-							 <a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
-							 'Sie haben eine neue Nachricht von {username} bekommen: {message}',
-							 'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
-							 'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'),
-							 ('3',
+							INSERT INTO `".$textSettingsTable."` (
+								`id`,
+								`language`,
+								`text_email_registration`,
+								`subject_email_registration`,
+								`text_email_recovery`,
+								`text_email_activation`,
+								`text_friendship_new`,
+								`text_friendship_confirmed`,
+								`text_profilecomment_new`,
+								`text_message_new`,
+								`text_membership_ordered`,
+								`text_payment_arrived`
+							) VALUES (
+								'1',
+								'en_us',
+								'You have registered for this Application. To confirm your E-Mail address, please visit {activation_url}',
+								'You have registered for an application',
+								'You have requested a new Password. To set your new Password,
+								please go to {activation_url}',
+								'Your account has been activated. Thank you for your registration.',
+								'New friendship Request from {username}: {message}. To accept or ignore this request, go to your friendship page: {link_friends} or go to your profile: {link_profile}',
+								'The User {username} has accepted your friendship request',
+								'You have a new profile comment from {username}: {message} visit your profile: {link_profile}',
+								'You have received a new message from {username}: {message}',
+								'Your order of membership {membership} on {order_date} has been taken. Your order Number is {id}. You have choosen the payment style {payment}.',
+								'Your payment has been received on {payment_date} and your Membership {id} is now active'
+							),(
+								'2',
+								'de',
+								'Sie haben sich für unsere Applikation registriert. Bitte bestätigen Sie ihre E-Mail adresse mit diesem Link: {activation_url}',
+								'Sie haben sich für eine Applikation registriert.',
+								'Sie haben ein neues Passwort angefordert. Bitte klicken Sie diesen link: {activation_url}',
+								'Ihr Konto wurde freigeschaltet.',
+								'Der Benutzer {username} hat Ihnen eine Freundschaftsanfrage gesendet. 
+								
+								Nachricht: {message}
+								
+								Klicken sie <a href=\"{link_friends}\">hier</a>, um diese Anfrage zu bestätigen oder zu ignorieren. Alternativ können sie <a href=\"{link_profile}\">hier</a> auf ihre Profilseite zugreifen.',
+								'Der Benutzer {username} hat ihre Freundschaftsanfrage bestätigt.',
+								'
+								Benutzer {username} hat Ihnen eine Nachricht auf Ihrer Pinnwand hinterlassen: 
+								
+								{message}
+								
+								<a href=\"{link}\">hier</a> geht es direkt zu Ihrer Pinnwand!',
+								'Sie haben eine neue Nachricht von {username} bekommen: {message}',
+								'Ihre Bestellung der Mitgliedschaft {membership} wurde am {order_date} entgegen genommen. Die gewählte Zahlungsart ist {payment}. Die Auftragsnummer lautet {id}.',
+								'Ihre Zahlung wurde am {payment_date} entgegen genommen. Ihre Mitgliedschaft mit der Nummer {id} ist nun Aktiv.'
+							),(
+								'3',
 								'es',
 								'Te has registrado en esta aplicación. Para confirmar tu dirección de correo electrónico, por favor, visita {activation_url}.',
 								'Te has registrado en esta aplicación.',
@@ -236,9 +239,24 @@ class YumInstallController extends YumController {
 								'Please translatore thisse hiere toh tha espagnola langsch {username}',
 								'Has recibido un mensaje de {username}: {message}',
 								'Tu orden de membresía {membership} de fecha {order_date} fué tomada. Tu número de orden es {id}. Escogiste como modo de pago {payment}.',
-								'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'), 
-							 ('4', 'fr', '', '', '', '', '', '', '', '', '', ''), ('5', 'ro', '', '', '', '', '', '', '', '', '', '') ; ";
-
+								'Tu pago fué recibido en fecha {payment_date}. Ahora tu Membresía {id} ya está activa'
+							),(
+								'4',
+								'fr',
+								'Vous venez de vous enregistrer pour cette application. Pour confirmer votre adresse E-Mail, merci de vous rendre sur le lien suivant : {activation_url}',
+								'Vous venez de vous enregistrer pour une application',
+								'Vous avez demandé un nouveau mot de passe. Pour activer votre nouveau mot de passe, merci de vous rendre sur le lien suivant : {activation_url}',
+								'Votre compte a été activé. Merci pour votre inscription.',
+								'Nouvelle demande d\'amitité de la part de {username}: {message}. Pour accepter ou ignorer cette demande, rendez vous sur la page : {link_friends} ou rendez vous dans votre profil: {link_profile}',
+								'L\'utilisateur {username} a accepté votre demande d\'amitié',
+								'Vous avez un nouveau commentaire de {username}: {message} visitez votre profil: {link_profile}',
+								'Vous avez reçu un message de {username}: {message}',
+								'Votre demande d\'adhésion {membership} du {order_date} a été prise en compte. Le numéro de votre commande est {id}. Vous avez choisi le moyen de paiement {payment}',
+								'Votre paiement a bien été reçu le {payment_date} et votre numero d\'adhésion {id} est maintenant actif'
+							),(
+								'5', 'ro', '', '', '', '', '', '', '', '', '', ''
+							) ; ";
+						
 						$db->createCommand($sql)->execute();
 					}
 
