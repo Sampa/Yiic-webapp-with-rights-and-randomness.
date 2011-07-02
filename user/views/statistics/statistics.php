@@ -12,7 +12,7 @@ echo '<table class="statistics" cellspacing=0 cellpadding=0>';
 $f = '<tr><td>%s</td><td>%s</td></tr>';
 printf($f, Yum::t('Total users'), $total_users);
 printf($f, Yum::t('Active users'), $active_users);
-printf($f, Yum::t('Active first visit users'), $active_first_visit_users);
+//printf($f, Yum::t('Active first visit users'), $active_first_visit_users);
 printf($f, Yum::t('New users registered today'), $todays_registered_users);
 printf($f, Yum::t('Inactive users'), $inactive_users);
 printf($f, Yum::t('Banned users'), $banned_users);
