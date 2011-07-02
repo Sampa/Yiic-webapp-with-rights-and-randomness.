@@ -52,7 +52,7 @@ $this->renderPartial('/messages/new_messages');?>
 	<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('password')); ?>
 </th>
 <td><?php echo CHtml::link(Yum::t('Change password'),array(
-			'//user/user/changepassword'))); ?>
+			'//user/user/changepassword')); ?>
 </td>
 </tr>
 <tr>
@@ -139,5 +139,4 @@ echo CHtml::link(ucwords($friend->username),
 		echo Yum::t('Nobody has visited your profile yet');
 	}
 ?>
-</div>
 </div>

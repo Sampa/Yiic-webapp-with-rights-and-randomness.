@@ -2,7 +2,7 @@
 
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo Yum::requiredFieldNote(); ?>
+	<p class="note"><?php echo Yum::requiredFieldNote(); ?></p>
 
 	<?php echo CHtml::errorSummary($model); ?>
 	

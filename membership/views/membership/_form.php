@@ -12,8 +12,7 @@
 	<div class="row">
 <?php echo $form->labelEx($model,'type'); ?>
 <?php echo CHtml::activeRadioButtonList($model, 'type', CHtml::listData(
-YumRole::model()->findAll('price != 0'), 'id', 'title'));
-)); ?>
+YumRole::model()->findAll('price != 0'), 'id', 'title')); ?>
 <?php echo $form->error($model,'type'); ?>
 </div>
 
