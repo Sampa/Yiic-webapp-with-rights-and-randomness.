@@ -105,8 +105,8 @@ class UserModule extends CWebModule {
 	const LOGIN_BY_FACEBOOK		= 8;
 	const LOGIN_BY_TWITTER		= 16;
 	const LOGIN_BY_LDAP			= 32;
-	// Allow username and email login by default
-	public $loginType = 3;
+	// Allow login only by username by default.
+	public $loginType = 1;
 
 	/**
 	 * Defines all Controllers of the User Management Module and maps them to
@@ -222,11 +222,6 @@ class UserModule extends CWebModule {
 		if(Yii::app()->user->isAdmin())
 			$controller->layout = Yum::module()->adminLayout;
 			
-		// If the submodule profile is not installed, we can't connect by using E-Mail
-		if(!Yum::hasModule('profile')){
-			$this->loginType &= ~UserModule::LOGIN_BY_EMAIL;
-		}
-		
 		return parent::beforeControllerAction($controller, $action);
 	}
 

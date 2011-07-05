@@ -398,22 +398,20 @@ class YumUser extends YumActiveRecord {
 		// Users stay banned until they confirm their email address.
 		$this->status = YumUser::STATUS_NOTACTIVE;
 
+		if(!($profile instanceof YumProfile)) {
+			$email = $profile;
+			$this->profile = new YumProfile;
+			$this->profile->email = $email;
+			$profile = $this->profile;
+		}
+
 		if($this->save()) {
-			if(Yum::hasModule('profile')) {
-				if(!($profile instanceof YumProfile)) {
-					$email = $profile;
-					$this->profile = new YumProfile;
-					$this->profile->timestamp = time();
-					$this->profile->email = $email;
-					$profile = $this->profile;
-				}
-				$profile->user_id = $this->id;
-				$profile->save(); 
-				$this->profile = $profile;
-			}
+			$profile->user_id = $this->id;
+			$profile->save(); 
+			$this->profile = $profile;
 			Yum::log(Yum::t('User {username} registered. Generated activation Url is {activation_url} and has been sent to {email}', array(
 							'{username}' => $this->username,
-							'{email}' => $this->profile->email,
+							'{email}' => $profile->email,
 							'{activation_url}' => $this->getActivationUrl())));
 
 			return $this;

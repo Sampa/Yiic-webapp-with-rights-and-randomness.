@@ -43,7 +43,8 @@ class YumProfile extends YumActiveRecord
 	}
 
 	public function beforeValidate() {
-		$this->timestamp = time();
+		if($this->isNewRecord)
+			$this->timestamp = time();
 		return parent::beforeValidate();
 	}
 

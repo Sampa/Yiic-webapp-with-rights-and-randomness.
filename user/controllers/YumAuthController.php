@@ -199,15 +199,14 @@ class YumAuthController extends YumController {
 	}
 
 	public function loginByEmail() {
-		if(Yum::hasModule('profile'))  {
+		if(Yum::hasModule('profile')) {
 			Yii::import('application.modules.profile.models.*');
 			$profile = YumProfile::model()->find('email = :email', array(
 						':email' => $this->loginForm->username));
 			if($profile && $profile->user)
 				return $this->authenticate($profile->user);
-		}
-
-		return false;
+		} else
+			throw new CException('The profile submodule must be enabled to allow login by Email');
 	}
 
 	public function loginByOpenid() {
