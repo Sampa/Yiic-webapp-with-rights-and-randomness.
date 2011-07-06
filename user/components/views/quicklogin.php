@@ -22,7 +22,8 @@
 			<?php
 			if(Yum::hasModule('registration') 
 					&& Yum::module('registration')->enableRecovery)
-			echo CHtml::link(Yum::t('Lost password?'), array('//user/registration/recovery')); ?>
+			echo CHtml::link(Yum::t('Lost password?'), 
+				Yum::module('registration')->recoveryUrl); ?>
 			</div>
         
         <div class="row submit">

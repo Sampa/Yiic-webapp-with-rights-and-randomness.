@@ -87,129 +87,146 @@ class YumRegistrationController extends YumController {
 				);  
 	}
 
-		// Send the Email to the given user object. $user->email needs to be set.
-		public function sendRegistrationEmail($user) {
-			if (!isset($user->profile->email)) {
-				throw new CException(Yum::t('Email is not set when trying to send Registration Email'));
-			}
-			$activation_url = $user->getActivationUrl();
+	// Send the Email to the given user object. $user->email needs to be set.
+	public function sendRegistrationEmail($user) {
+		if (!isset($user->profile->email)) {
+			throw new CException(Yum::t('Email is not set when trying to send Registration Email'));
+		}
+		$activation_url = $user->getActivationUrl();
 
-			// get the text to sent from the yumtextsettings table
-			$content = YumTextSettings::model()->find('language = :lang', array(
-						'lang' => Yii::app()->language));
-			$sent = null;
+		// get the text to sent from the yumtextsettings table
+		$content = YumTextSettings::model()->find('language = :lang', array(
+					'lang' => Yii::app()->language));
+		$sent = null;
 
-			if (is_object($content)) {
-					$body = strtr($content->text_email_registration, array(
-								'{username}' => $user->username,
-								'{activation_url}' => $activation_url));
+		if (is_object($content)) {
+			$body = strtr($content->text_email_registration, array(
+						'{username}' => $user->username,
+						'{activation_url}' => $activation_url));
 
-				$mail = array(
-						'from' => Yum::module('registration')->registrationEmail,
-						'to' => $user->profile->email,
-						'subject' => strtr($content->subject_email_registration, array(
-								'{username}' => $user->username)),
-						'body' => $body,
-						);
-				$sent = YumMailer::send($mail);
-			}
-			else {
-				throw new CException(Yum::t('The messages for your application language are not defined.'));
-			}
-
-			return $sent;
+			$mail = array(
+					'from' => Yum::module('registration')->registrationEmail,
+					'to' => $user->profile->email,
+					'subject' => strtr($content->subject_email_registration, array(
+							'{username}' => $user->username)),
+					'body' => $body,
+					);
+			$sent = YumMailer::send($mail);
+		}
+		else {
+			throw new CException(Yum::t('The messages for your application language are not defined.'));
 		}
 
-		/**
-		 * Activation of an user account. The Email and the Activation key send
-		 * by email needs to correct in order to continue. The Status will
-		 * be initially set to 1 (active - first Visit) so the administrator
-		 * can see, which accounts have been activated, but not yet logged in 
-		 * (more than once)
-		 */
-		public function actionActivation($email, $key) {
-			// If already logged in, we dont activate anymore
-			if (!Yii::app()->user->isGuest)
-				$this->redirect(Yii::app()->user->returnUrl);
+		return $sent;
+	}
 
-			// If everything is set properly, let the model handle the Validation
-			// and do the Activation
-				$status = YumUser::activate($email, $key);
+	/**
+	 * Activation of an user account. The Email and the Activation key send
+	 * by email needs to correct in order to continue. The Status will
+	 * be initially set to 1 (active - first Visit) so the administrator
+	 * can see, which accounts have been activated, but not yet logged in 
+	 * (more than once)
+	 */
+	public function actionActivation($email, $key) {
+		// If already logged in, we dont activate anymore
+		if (!Yii::app()->user->isGuest)
+			$this->redirect(Yii::app()->user->returnUrl);
 
-				if($status instanceof YumUser)
-					$this->render(Yum::module('registration')->activationSuccessView);
-				else
-					$this->render(Yum::module('registration')->activationFailureView, array(
-								'error' => $status));
-		}
+		// If everything is set properly, let the model handle the Validation
+		// and do the Activation
+		$status = YumUser::activate($email, $key);
 
-		/**
-		 * Password recovery routine. The User will receive an email with an
-		 * activation link. If clicked, he will be prompted to enter his new
-		 * password.
-		 */
-		public function actionRecovery($email = null, $key = null) {
-			$form = new YumUserRecoveryForm;
+		if($status instanceof YumUser)
+			$this->render(Yum::module('registration')->activationSuccessView);
+		else
+			$this->render(Yum::module('registration')->activationFailureView, array(
+						'error' => $status));
+	}
 
-			if ($email != null && $key != null) {
-				if($profile = YumProfile::model()->find("email = '{$email}'")) {
-						$user = $profile->user;
-						if($user->activationKey == $key) {
-							$passwordform = new YumUserChangePassword;
-							if (isset($_POST['YumUserChangePassword'])) {
-								$passwordform->attributes = $_POST['YumUserChangePassword'];
-									if ($passwordform->validate()) {
-										$user->password = YumUser::encrypt($passwordform->password);
-										$user->activationKey = YumUser::encrypt(microtime() . $passwordform->password);
-										$user->save();
-										Yum::setFlash('Your new password has been saved.');
-										$this->redirect(Yum::module()->loginUrl);
-									}
-							}
-							$this->render(
-									Yum::module('registration')->recoverPasswordView, array(
-										'form' => $passwordform));
+	/**
+	 * Password recovery routine. The User will receive an email with an
+	 * activation link. If clicked, he will be prompted to enter his new
+	 * password.
+	 */
+	public function actionRecovery($email = null, $key = null) {
+		$form = new YumPasswordRecoveryForm;
+
+		if ($email != null && $key != null) {
+			if($profile = YumProfile::model()->find('email = :email', array(
+							'email' =>  $email))) {
+				$user = $profile->user;
+				if($user->activationKey == $key) {
+					$passwordform = new YumUserChangePassword;
+					if (isset($_POST['YumUserChangePassword'])) {
+						$passwordform->attributes = $_POST['YumUserChangePassword'];
+						if ($passwordform->validate()) {
+							$user->password = YumUser::encrypt($passwordform->password);
+							$user->activationKey = YumUser::encrypt(microtime() . $passwordform->password);
+							$user->save();
+							Yum::setFlash('Your new password has been saved.');
+							$this->redirect(Yum::module()->loginUrl);
 						}
+					}
+					$this->render(
+							Yum::module('registration')->changePasswordView, array(
+								'form' => $passwordform));
+					Yii::app()->end();
+				} else {
+					$form->addError('login_or_email', Yum::t('Invalid recovery key'));
+					Yum::log(Yum::t(
+								'Someone tried to recover a password, but entered a wrong recovery key. Email is {email}, associated user is {username} (id: {uid})', array(
+									'{email}' => $email,
+									'{uid}' => $user->id,
+									'{username}' => $user->username)));
 				}
-			} else {
-				if (isset($_POST['YumUserRecoveryForm'])) {
-						$form->attributes = $_POST['YumUserRecoveryForm'];
+			}
+		} else {
+			if (isset($_POST['YumPasswordRecoveryForm'])) {
+				$form->attributes = $_POST['YumPasswordRecoveryForm'];
 
-						if ($form->validate()) {
-							$user = YumUser::model()->findbyPk($form->user_id);
+				if ($form->validate()) {
+					Yum::setFlash(
+							'Instructions have been sent to you. Please check your email.');
 
-							$activation_url = $this->createAbsoluteUrl(
-									Yum::getModule('registration')->recoveryUrl[0], array(
-										'key' => $user->activationKey,
-										'email' => $user->profile->email));
+					if($form->user instanceof YumUser) {
+						$form->user->generateActivationKey();
+						$recovery_url = $this->createAbsoluteUrl(
+								Yum::module('registration')->recoveryUrl[0], array(
+									'key' => $form->user->activationKey,
+									'email' => $form->user->profile->email));
 
-								Yum::log(Yum::t(
-											'{username} requested a new password in the password recovery form', array(
-												'{username}' => $user->username)));
+						Yum::log(Yum::t(
+									'{username} successfully requested a new password in the password recovery form. A email with the password recovery url {recovery_url} has been sent to {email}', array(
+										'{email}' => $form->user->profile->email,
+										'{recovery_url}' => $recovery_url,
+										'{username}' => $form->user->username)));
 
+						$content = YumTextSettings::model()->find(
+								'language = :lang', array('lang' => Yii::app()->language));
+						$sent = null;
 
-							$content = YumTextSettings::model()->find(
-									'language = :lang', array('lang' => Yii::app()->language));
-							$sent = null;
-
-							if (is_object($content)) {
-								$mail = array(
-										'from' => Yii::app()->params['adminEmail'],
-										'to' => $user->profile->email,
-										'subject' => $content->subject_email_registration,
-										'body' => strtr($content->text_email_recovery, array('{activation_url}' => $activation_url)),
+						if (is_object($content)) {
+							$mail = array(
+									'from' => Yii::app()->params['adminEmail'],
+									'to' => $form->user->profile->email,
+									'subject' => $content->subject_email_registration,
+									'body' => strtr($content->text_email_recovery, array(
+											'{recovery_url}' => $recovery_url)),
 									);
 							$sent = YumMailer::send($mail);
-
-							Yum::setFlash('Instructions have been sent to you. Please check your email.');
-							$this->redirect(Yum::module()->loginUrl);
 						} else {
 							throw new CException(Yum::t('The messages for your application language are not defined.'));
 						}
-					}
+					} else
+						Yum::log(Yum::t(
+									'A password has been requested, but no associated user was found in the database. Requested user/email is: {username}', array(
+										'{username}' => $form->login_or_email)));
+					$this->redirect(Yum::module()->loginUrl);
 				}
-				$this->render(Yum::module('registration')->recoverPasswordView, array(
-							'form' => $form));
 			}
 		}
+		$this->render(Yum::module('registration')->recoverPasswordView, array(
+					'form' => $form));
+
 	}
+}

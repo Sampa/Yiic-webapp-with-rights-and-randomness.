@@ -20,7 +20,10 @@ class RegistrationModule extends CWebModule {
 	public $recoveryEmail='restore@website.com';
 
 	public $registrationView = '/registration/registration';
-	public $recoverPasswordView = 'application.modules.user.views.user.changepassword';
+	public $changePasswordView = 
+		'application.modules.user.views.user.changepassword';
+	public $recoverPasswordView = 
+		'application.modules.registration.views.registration.recovery';
 
 	/**
 	 * Whether to use captcha in registration process

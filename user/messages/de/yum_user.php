@@ -1,6 +1,9 @@
 <?php
 
 return array(
+		'Invalid recovery key' => 'Fehlerhafter Wiederherstellungsschlüssel',
+		'Instructions have been sent to you. Please check your email.' => 'Weitere Anweisungen wurden an ihr E-Mail Postfach geschickt. Bitte prüfen Sie ihre E-Mails',
+		'Password recovery' => 'Passwort wiederherstellen',
 		'Create new User' => 'Neuen Benutzer anlegen',
 		'Your current password is not correct' => 'Ihr aktuelles Passwort ist nicht korrekt',
 		'Your friendship request has been accepted' => 'Ihre Kontaktanfrage wurde akzeptiert.',
@@ -99,7 +102,7 @@ return array(
 		'My groups' => 'Meine Gruppen',
 		'Browse usergroups' => 'Gruppen durchsuchen',
 		'Retyped password is incorrect' => 'Wiederholtes Passwort ist nicht identisch',
-				'Username or Password is incorrect' => 'Benutzername oder Passwort ist falsch',
+		'Username or Password is incorrect' => 'Benutzername oder Passwort ist falsch',
 		'No friendship requested' => 'Keine Freundschaft angefragt',
 		'New friendship requests' => 'Neue Freundschaftsanfragen',
 		'This message will be sent to {username}' => 'Diese Nachricht wird an {username} versandt',

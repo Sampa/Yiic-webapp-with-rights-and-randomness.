@@ -1,19 +1,18 @@
 <?php 
-$this->pageTitle = Yum::t('Restore');
+$this->pageTitle = Yum::t('Password recovery');
 
 $this->breadcrumbs=array(
-	Yum::t("Login") => array(Yum::route('{user}/login')),
-	Yum::t("Restore"));
+	Yum::t('Login') => Yum::module()->loginUrl,
+	Yum::t('Restore'));
 
-$this->title = Yum::t("Restore"); 
 ?>
 <?php if(Yum::hasFlash()) {
 echo '<div class="success">';
 echo Yum::getFlash(); 
 echo '</div>';
 } else {
+echo '<h2>'.Yum::t('Password recovery').'</h2>';
 ?>
-
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>

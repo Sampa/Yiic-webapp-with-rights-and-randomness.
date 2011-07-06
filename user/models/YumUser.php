@@ -489,8 +489,13 @@ class YumUser extends YumActiveRecord {
 	 * When user is activating, activation key becomes micortime()
 	 * @return string
 	 */
-	public function generateActivationKey($activate=false, $password='', array $params=array()) {
-		return $activate ? YumUser::encrypt(microtime()) : YumUser::encrypt(microtime() . $this->password);
+	public function generateActivationKey($activate=false) {
+		$this->activationKey = $activate 
+			? YumUser::encrypt(microtime()) 
+			: YumUser::encrypt(microtime() . $this->password);
+
+		$this->save(false, array('activationKey'));
+		return $this->activationKey;
 	}
 
 	public function attributeLabels() {
