@@ -178,16 +178,18 @@ class YumRegistrationController extends YumController {
 						if ($form->validate()) {
 							$user = YumUser::model()->findbyPk($form->user_id);
 
-							$activation_url = $this->createAbsoluteUrl('registration/recovery', array(
+							$activation_url = $this->createAbsoluteUrl(
+									Yum::getModule('registration')->recoveryUrl[0], array(
 										'key' => $user->activationKey,
 										'email' => $user->profile->email));
-							if (Yum::module()->enableLogging)
+
 								Yum::log(Yum::t(
 											'{username} requested a new password in the password recovery form', array(
 												'{username}' => $user->username)));
 
 
-							$content = YumTextSettings::model()->find('language = :lang', array('lang' => Yii::app()->language));
+							$content = YumTextSettings::model()->find(
+									'language = :lang', array('lang' => Yii::app()->language));
 							$sent = null;
 
 							if (is_object($content)) {
@@ -206,7 +208,8 @@ class YumRegistrationController extends YumController {
 						}
 					}
 				}
-				$this->render(Yum::module()->recoveryView, array('form' => $form));
+				$this->render(Yum::module('registration')->recoverPasswordView, array(
+							'form' => $form));
 			}
 		}
 	}

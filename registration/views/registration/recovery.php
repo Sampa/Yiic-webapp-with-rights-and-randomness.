@@ -1,5 +1,5 @@
 <?php 
-$this->pageTitle=Yii::app()->name . ' - '.Yum::t("Restore");
+$this->pageTitle = Yum::t('Restore');
 
 $this->breadcrumbs=array(
 	Yum::t("Login") => array(Yum::route('{user}/login')),

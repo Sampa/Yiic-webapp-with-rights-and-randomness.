@@ -41,8 +41,6 @@ class UserModule extends CWebModule {
 	public $password_expiration_time = 30; // days
 	public $activationPasswordSet = false;
 	public $autoLogin = false;
-	public $activateFromWeb = true;
-	public $recoveryFromWeb = false;
 	public $mailer = 'yum'; // set to swift to active emailing by swiftMailer or PHPMailer to use PHPMailer as emailing lib.
 	public $phpmailer = null; // PHPMailer array options.
 
@@ -93,9 +91,7 @@ class UserModule extends CWebModule {
 			'registration' => '/registration/registration',
 			'activate' => '/user/resend_activation',
 			'message' => '/user/message',
-			'recovery' => '/registration/recovery',
 			'passwordForm' => '/user/_activation_passwordform',
-			'recoveryChangePassword' =>'/user/changepassword',
 			'messageCompose' =>'application.modules.user.views.messages.compose');
 
 	// LoginType :

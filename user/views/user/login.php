@@ -4,7 +4,7 @@ if(!isset($model))
 
 $module = Yum::module();
 
-$this->pageTitle = Yii::app()->name . ' - '.Yum::t('Login');
+$this->pageTitle = Yum::t('Login');
 if(isset($this->title))
 $this->title = Yum::t('Login');
 $this->breadcrumbs=array(Yum::t('Login'));
@@ -53,10 +53,11 @@ if(isset($_GET['action']))
 	<div class="row">
 	<p class="hint">
 	<?php 
-	if(Yum::hasModule('registration'))
+	if(Yum::hasModule('registration') && Yum::module('registration')->enableRegistration)
 	echo CHtml::link(Yum::t("Registration"),
 			Yum::module('registration')->registrationUrl);
 	if(Yum::hasModule('registration') 
+			&& Yum::module('registration')->enableRegistration
 			&& Yum::module('registration')->enableRecovery)
 	echo ' | ';
 	if(Yum::hasModule('registration') 

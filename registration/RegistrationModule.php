@@ -2,6 +2,8 @@
 Yii::setPathOfAlias('RegistrationModule' , dirname(__FILE__));
 
 class RegistrationModule extends CWebModule {
+	// why enableRegistration ? - in case you only want a recovery ! 
+	public $enableRegistration = true;
 	public $enableRecovery = true;
 
 	public $registrationUrl = array('//registration/registration/registration');
@@ -10,7 +12,6 @@ class RegistrationModule extends CWebModule {
 
 	public $activationSuccessView = '/registration/activation_success';
 	public $activationFailureView = '/registration/activation_failure';
-
 
 	// Whether to confirm the activation of an user by email
 	public $enableActivationConfirmation = true; 
