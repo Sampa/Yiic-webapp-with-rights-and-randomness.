@@ -122,6 +122,11 @@ Change the Password to something more safe than 'admin'. Click Save.
 so your new data doesn't get overwritten accidentally by the installation
 process.
 
+11.) Add a caching component to your application ! Since yii-user-management
+version 0.8 translation strings are not stored in php files, but in the
+translation database table! To avoid executing a SQL query on every request,
+please activate a caching component. See http://www.yiiframework.com/doc/guide/1.1/en/caching.overview how to do this.
+
 Configuration of your freshly installed User Management Module:
 
 Language:

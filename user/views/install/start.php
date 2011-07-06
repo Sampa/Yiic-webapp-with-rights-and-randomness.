@@ -1,4 +1,4 @@
-<H1> Yii User Management Module Installation </h1>
+<h1> Yii User Management Module Installation </h1>
 
 <?php echo CHtml::beginForm(array('install')); ?>
 
@@ -40,7 +40,13 @@ your Yii Web Application </p>
 			<td> Table for Users </td>
 			<td> <?php echo CHtml::textField('usersTable', $usersTable); ?> </td>
 		</tr>
-	</table>
+			<tr>
+				<td> Table for message translation Table (required) </td>
+				<td> <?php echo CHtml::textField('translationTable', $translationTable); ?> </td>
+			</tr>
+		</table>
+
+
 
 	<div style="clear:both;"> </div>
 
@@ -174,24 +180,8 @@ your Yii Web Application </p>
 
 	<div style="clear:both;"> </div>
 
-	<label for="installSettingsTable"> Enable Module settings Configuration by Database Table </label>
-	<?php echo CHtml::checkBox('installSettingsTable', true); ?>
-	<div id="settings">
-		<table>
-			<tr>
-				<td> Table for User Management Text Settings </td>
-				<td> <?php echo CHtml::textField('textSettingsTable', $textSettingsTable); ?> </td>
-			</tr>
-		</table>
-	</div>
-
-	<div style="clear:both;"> </div>
-
 	<?php 
 	$js = "
-	$('#installSettingsTable').click(function() {
-	$('#settings').toggle();
-	});
 	$('#installUsergroup').click(function() {
 	$('#usergroup').toggle();
 	});
@@ -217,6 +207,6 @@ your Yii Web Application </p>
 	";
 Yii::app()->clientScript->registerScript('install', $js); ?>
 
-<?php echo CHtml::submitButton(Yum::t('Install module')); ?>
+<?php echo CHtml::submitButton('Install module'); ?>
 <?php echo CHtml::endForm(); ?>
 

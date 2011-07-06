@@ -75,20 +75,37 @@ class Yum
 		return '<p>' . Yum::t($string, $params) . '</p>';
 	}
 
-	/** Associate the right translation file depending on the
-		controller */
-	public static function t($string, $params = array())
+	/** Fetch the translation string from db and cache when necessary */
+	public static function t($string, $params = array(), $category = 'yum')
 	{
-		Yii::import('application.modules.user.UserModule');
-		$file = 'yum_'. Yii::app()->controller->id;
-		$lang = Yii::app()->language;
-		$path = Yii::getPathOfAlias(
-				"application.modules.user.messages.{$lang}.{$file}"). '.php';
+		$language = Yii::app()->language;
 
-		if(is_file($path) && $messages = include($path))
-			if (array_key_exists($string, $messages) == true)
-				return Yii::t('UserModule.'.$file, $string, $params);
-		return Yii::t('UserModule.yum_user', $string, $params);
+		$cache_id = sprintf('yum_translations_%s_%s', $language, $category);
+
+		$messages = false;
+		if(Yii::app()->cache)
+			$messages = Yii::app()->cache->get($cache_id);
+
+		if($messages===false) {
+			$translationTable = Yum::module()->translationTable;
+			$sql = "select message, translation from {$translationTable} where language = :language and category = :category";
+
+			$command=Yii::app()->db->createCommand($sql);
+			$command->bindValue(':category',$category);
+			$command->bindValue(':language',$language);
+
+			$messages=array();
+			foreach($command->queryAll() as $row)
+				$messages[$row['message']]=$row['translation'];
+
+			if(Yii::app()->cache)
+				Yii::app()->cache->set($cache_id, $messages);
+		}
+
+		if(isset($messages[$string]))
+			return strtr($messages[$string], $params);
+		else 
+			return $string;
 	}
 
 	public static function resolveTableName($tablename, CDbConnection $connection=null)
