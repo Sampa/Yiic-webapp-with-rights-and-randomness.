@@ -3,6 +3,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
+
+('Create new Translation', 'Neue Übersetzung erstellen', 'de', 'yum'),
+('Translations have been saved', 'Die Übersetzungen wurden gespeichert', 'de', 'yum'),
+('Category', 'Kategorie', 'de', 'yum'),
+('Translation', 'Übersetzung', 'de', 'yum'),
+('New translation', 'Neue Übersetzung', 'de', 'yum'),
+('Text translations', 'Übersetzungstexte', 'de', 'yum'),
 ('About', 'Über', 'de', 'yum'),
 ('About', 'Acerca', 'es', 'yum'),
 ('About', 'me concernant ??', 'fr', 'yum'),

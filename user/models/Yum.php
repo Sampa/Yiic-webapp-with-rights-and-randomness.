@@ -27,6 +27,29 @@ class Yum
 		return '<div class="hint">' . Yum::t($message) . '</div>'; 
 	}
 
+	public static function getAvailableLanguages () {
+		$cache_id = 'yum_available_languages';
+
+		$languages = false;
+		if(Yii::app()->cache)
+			$languages = Yii::app()->cache->get($cache_id);
+
+		if($languages===false) {
+			$translationTable = Yum::module()->translationTable;
+			$sql = "select language from {$translationTable} group by language";
+
+			$command=Yii::app()->db->createCommand($sql);
+
+			$languages=array();
+			foreach($command->queryAll() as $row)
+				$languages[$row['language']]=$row['language'];
+
+			if(Yii::app()->cache)
+				Yii::app()->cache->set($cache_id, $languages);
+		}
+
+		return $languages;
+	}
 	/* set a flash message to display after the request is done */
 	public static function setFlash($message, $delay = 5000) 
 	{

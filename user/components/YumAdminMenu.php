@@ -64,7 +64,7 @@ class YumAdminMenu extends CPortlet {
 							array('label' => 'Send message notifier emails', 'url' => array('/messages/messages/sendDigest')),
 							),
 						),
-				array('label' => 'Module text settings', 'url' => array('//user/yumTextSettings/admin')),
+				array('label' => 'Text translations', 'url' => array('//user/translation/admin')),
 				array('label' => 'Misc', 'items' => array(
 							array('label' => 'Upload avatar for admin', 'url' => array('//avatar/avatar/editAvatar'),
 								'visible' => Yum::hasModule('avatar')),
