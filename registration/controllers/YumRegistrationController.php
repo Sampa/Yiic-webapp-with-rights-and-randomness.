@@ -129,8 +129,10 @@ class YumRegistrationController extends YumController {
 	 */
 	public function actionActivation($email, $key) {
 		// If already logged in, we dont activate anymore
-		if (!Yii::app()->user->isGuest)
+		if (!Yii::app()->user->isGuest) {
+			Yum::setFlash('You are already logged in, please log out to activate your account');
 			$this->redirect(Yii::app()->user->returnUrl);
+		}
 
 		// If everything is set properly, let the model handle the Validation
 		// and do the Activation

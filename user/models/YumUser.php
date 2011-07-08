@@ -422,12 +422,14 @@ class YumUser extends YumActiveRecord {
 
 	public function getActivationUrl() {
 		$activationUrl = Yum::module('registration')->activationUrl;
-		if(is_array($activationUrl))
+		if(is_array($activationUrl) && isset($this->profile)) {
 			$activationUrl = $activationUrl[0];
-		$params['key'] = $this->activationKey;
-		$params['email'] = $this->profile->email;
+			$params['key'] = $this->activationKey;
+			$params['email'] = $this->profile->email;
 
-		return Yii::app()->controller->createAbsoluteUrl($activationUrl, $params);
+			return Yii::app()->controller->createAbsoluteUrl($activationUrl, $params);
+		}
+			return Yum::t('Activation Url can not be retrieved');
 	}
 
 	public function isPasswordExpired() {

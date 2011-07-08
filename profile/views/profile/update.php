@@ -14,12 +14,14 @@ $this->title = Yum::t('Edit profile');
 
 <?php echo CHtml::errorSummary(array($user, $profile)); ?>
 
+<?php if(Yum::module()->loginType & 1) { ?>
 <div class="row">
 <?php echo CHtml::activeLabelEx($user,'username'); ?>
 <?php echo CHtml::activeTextField($user,'username',array(
 			'size'=>20,'maxlength'=>20)); ?>
 <?php echo CHtml::error($user,'username'); ?>
 </div>
+<?php } ?> 
 
 <?php if(isset($profile) && is_object($profile)) 
 	$this->renderPartial('/profile/_form', array('profile' => $profile)); ?>

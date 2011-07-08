@@ -55,7 +55,10 @@ if(Yii::app()->user->isAdmin()) {
 			'value' => YumUser::itemAlias("AdminStatus",$model->superuser),
 			),
 		array(
-			'name' => 'status',
+			'name' => Yum::t('Activation link'),
+			'value' =>$model->getActivationUrl()),
+		array(
+				'name' => 'status',
 			'value' => YumUser::itemAlias("UserStatus",$model->status),
 			)
 		);
