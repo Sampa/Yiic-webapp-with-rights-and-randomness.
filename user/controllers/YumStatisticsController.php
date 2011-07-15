@@ -21,7 +21,8 @@ class YumStatisticsController extends YumController {
 
 	public function actionIndex()
 	{
-		$this->layout = Yum::module()->baseLayout;
+	$this->layout = Yum::module()->adminLayout;
+		//$this->layout = Yum::module()->baseLayout;
 		$this->render('statistics', array(
 					'total_users' => YumUser::model()->count(),
 					'active_users' => YumUser::model()->count('status = '.YumUser::STATUS_ACTIVE),
