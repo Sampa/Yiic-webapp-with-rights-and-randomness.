@@ -3,7 +3,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
-
+  ('Fields with <span class=\"required\">*</span> are required.', 'Felder mit <span class=\"required\">*</span> sind Pflichtfelder.', 'de', 'yum'),
 ('Create new Translation', 'Neue Übersetzung erstellen', 'de', 'yum'),
 ('Translations have been saved', 'Die Übersetzungen wurden gespeichert', 'de', 'yum'),
 ('Category', 'Kategorie', 'de', 'yum'),

@@ -52,6 +52,8 @@ class UserModule extends CWebModule {
   public $rtepath = false; // Don't use an Rich text Editor
   public $rteadapter = false; // Don't use an Adapter
 
+	public $customCsvExportCriteria = '1';
+
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';
@@ -112,6 +114,7 @@ class UserModule extends CWebModule {
 	public $controllerMap=array(
 		'default'=>array('class'=>'YumModule.controllers.YumDefaultController'),
 		'rest'=>array('class'=>'YumModule.controllers.YumRestController'),
+		'csv'=>array('class'=>'YumModule.controllers.YumCsvController'),
 		'auth'=>array('class'=>'YumModule.controllers.YumAuthController'),
 		'install'=>array('class'=>'YumModule.controllers.YumInstallController'),
 		'statistics'=>array('class'=>'YumModule.controllers.YumStatisticsController'),

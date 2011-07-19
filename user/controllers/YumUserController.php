@@ -15,7 +15,7 @@ class YumUserController extends YumController {
 					'users'=>array('@'),
 					),
 				array('allow',
-					'actions'=>array('admin','delete','create','update', 'list', 'assign', 'generateData'),
+					'actions'=>array('admin','delete','create','update', 'list', 'assign', 'generateData', 'csv'),
 					'expression' => 'Yii::app()->user->isAdmin()'
 					),
 				array('allow',
@@ -73,7 +73,6 @@ class YumUserController extends YumController {
 		$this->redirect($this->createUrl('/user/statistics/index'));
 	}
 
-
 	public function actionPasswordExpired()
 	{
 		$this->actionChangePassword($expired = true);
@@ -98,8 +97,6 @@ class YumUserController extends YumController {
 			$this->layout = Yum::module()->layout;
 		return parent::beforeAction($event);
 	}
-
-
 
 	/**
 	 * Change password

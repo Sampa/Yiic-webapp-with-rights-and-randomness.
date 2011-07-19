@@ -8,7 +8,7 @@ $this->breadcrumbs = array(
 
 echo Yum::renderFlash();
 
-$this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('application.modules.user.components.CsvGridView', array(
 	'dataProvider'=>$model->search(),
 	'filter' => $model,
 		'columns'=>array(
@@ -54,3 +54,4 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 <?php echo CHtml::link(Yum::t('Create new User'), array(
 			'//user/user/create')); ?>
+

@@ -225,6 +225,15 @@ class YumProfile extends YumActiveRecord
 		return $commentators;
 	}
 
+public function getProfileFields() {
+	$fields = array();
+	foreach($this->attributes as $varname => $attribute) {
+		$fields[$varname] = Yum::t($varname);
+	}
+	return $fields;
+}
+
+
 	public function attributeLabels()
 	{
 		$labels = array(

@@ -95,6 +95,7 @@ class YumProfileField extends YumActiveRecord
 		);
 	}
 
+
 	public function relations()
 	{
 		return array();
