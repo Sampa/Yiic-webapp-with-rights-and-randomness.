@@ -4,6 +4,17 @@
  **/
 class YumCsvController extends YumController
 {
+	public function accessRules() {
+		return array(
+				array('allow',
+					'actions'=>array('select', 'export'),
+					'expression' => 'Yii::app()->user->isAdmin()'
+					),
+				array('deny',  // deny all other users
+						'users'=>array('*'),
+						),
+				);
+	}
 
 	public function actionExport() {
 		if(isset($_POST['profile_fields'])) {
