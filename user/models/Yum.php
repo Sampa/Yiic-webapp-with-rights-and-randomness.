@@ -128,7 +128,7 @@ class Yum
 		if(isset($messages[$string]))
 			return strtr($messages[$string], $params);
 		else 
-			return $string;
+			return strtr($string, $params);
 	}
 
 	public static function resolveTableName($tablename, CDbConnection $connection=null)

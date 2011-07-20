@@ -12,7 +12,10 @@ foreach($profile->loadProfileFields() as $field) {
 		echo CHtml::tag('div',array('class'=>'hint'),$field->hint,true);
 
 	echo CHtml::activeLabelEx($profile, $field->varname);
-	if ($field->field_type=="TEXT") {
+	if ($field->field_type=='BOOLEAN') {
+		echo CHtml::activeCheckBox($profile, $field->varname);
+	} else
+		if ($field->field_type=="TEXT") {
 		echo CHtml::activeTextArea($profile,
 				$field->varname,
 				array('rows'=>6, 'cols'=>50));

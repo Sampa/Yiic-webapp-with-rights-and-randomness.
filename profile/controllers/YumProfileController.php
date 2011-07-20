@@ -32,10 +32,11 @@ class YumProfileController extends YumController {
 		$user = $this->loadModel($id);
 		$profile = $user->profile;
 
-		if(isset($_POST['YumUser']) && isset($_POST['YumProfile'])) {
-			$user->attributes=$_POST['YumUser'];
-			$profile->attributes = $_POST['YumProfile'];
+		if(isset($_POST['YumUser']) || isset($_POST['YumProfile'])) {
+			$user->attributes=@$_POST['YumUser'];
+			$profile->attributes = @$_POST['YumProfile'];
 			$profile->user_id = $user->id;
+
 
 			$profile->validate();
 			$user->validate();
@@ -43,7 +44,7 @@ class YumProfileController extends YumController {
 			if(!$user->hasErrors() && !$profile->hasErrors()) {
 				if($user->save() && $profile->save()) {
 					Yum::setFlash('Your changes have been saved');
-					$this->redirect(array('/profile/profile/view', 'id'=>$user->id));
+					$this->redirect(array('//profile/profile/view', 'id'=>$user->id));
 				}
 			}
 		}

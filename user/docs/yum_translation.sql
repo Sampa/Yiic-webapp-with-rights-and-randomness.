@@ -2,7 +2,7 @@ SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
+INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
   ('Fields with <span class=\"required\">*</span> are required.', 'Felder mit <span class=\"required\">*</span> sind Pflichtfelder.', 'de', 'yum'),
 ('Create new Translation', 'Neue Übersetzung erstellen', 'de', 'yum'),
 ('Translations have been saved', 'Die Übersetzungen wurden gespeichert', 'de', 'yum'),
@@ -149,9 +149,6 @@ INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VAL
 ('Back to my Profile', 'Volver a mi Perfil', 'es', 'yum'),
 ('Back to my Profile', 'Retour Ã  mon profil', 'fr', 'yum'),
 ('Back to my Profile', 'Torna al mio profilo', 'it', 'yum'),
-('Back to my profile', 'Zurück zu meinem Profil', 'de', 'yum'),
-('Back to my profile', 'Volver a mi perfil', 'es', 'yum'),
-('Back to my profile', 'ZRetour Ã  mon profil', 'fr', 'yum'),
 ('Back to profile', 'Zurück zum Profil', 'de', 'yum'),
 ('Back to profile', 'Volver a perfil', 'es', 'yum'),
 ('Back to profile', 'Retour au profil', 'fr', 'yum'),
@@ -215,7 +212,6 @@ INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VAL
 ('Change password', 'Modification du mot de ', 'fr', 'yum'),
 ('Change password', 'Cambia password', 'it', 'yum'),
 ('Change password', 'Passwort Ã¤ndern', 'pl', 'yum'),
-('Change password', 'Ð˜Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð¿Ð°Ñ€Ð¾Ð»ÑŒ', 'ru', 'yum'),
 ('Changes', 'Änderungen', 'de', 'yum'),
 ('Changes', 'Cambios', 'es', 'yum'),
 ('Changes', 'Modification', 'fr', 'yum'),
@@ -329,7 +325,6 @@ INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VAL
 ('Create new settings profile', 'crÃ©er une nouvelle configuration de profil.', 'fr', 'yum'),
 ('Create new settings profile', 'Nuova opzion profilo', 'it', 'yum'),
 ('Create new settings profile', 'Dodaj nowe ustawienia profilu', 'pl', 'yum'),
-('Create new user', 'Neuen Benutzer anlegen', 'de', 'yum'),
 ('Create new user', 'Crear usuario nuevo', 'es', 'yum'),
 ('Create new user', 'CrÃ©er un nouveau membre', 'fr', 'yum'),
 ('Create new user', 'Nuovo utente', 'it', 'yum'),
@@ -753,7 +748,7 @@ INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VAL
 ('Letters are not case-sensitive.', 'Aucune importance ne sera apportÃ©e aux minuscules ou majuscules.', 'fr', 'yum'),
 ('Letters are not case-sensitive.', 'La ricerca non Ã¨ case sensitive.', 'it', 'yum'),
 ('Letters are not case-sensitive.', 'Zwischen GroÃŸ-und Kleinschreibung wird nicht unterschieden.', 'pl', 'yum');
-INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
+INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
 ('Letters are not case-sensitive.', 'Ð ÐµÐ³Ð¸ÑÑ‚Ñ€ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð½Ðµ Ð¸Ð¼ÐµÐµÑ‚.', 'ru', 'yum'),
 ('List Profile Field', 'Lista campi Profilo', 'it', 'yum'),
 ('List Profile Field', 'Ð¡Ð¿Ð¸ÑÐ¾Ðº', 'ru', 'yum'),
@@ -1477,7 +1472,7 @@ INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VAL
 ('Send', 'Invia', 'it', 'yum'),
 ('Send', 'Senden', 'pl', 'yum'),
 ('Send a message to this User', 'Diesem Benutzer eine Nachricht senden', 'de', 'yum');
-INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
+INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
 ('Send a message to this User', 'Enviar un mensaje a este Usuario', 'es', 'yum'),
 ('Send a message to this User', 'Faire parvenir un message Ã  ce membre', 'fr', 'yum'),
 ('Send a message to this User', 'Invia messaggio all''utente', 'it', 'yum'),
@@ -2073,7 +2068,7 @@ INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VAL
 ('You are running the Yii User Management Module {version} in Debug Mode!', '¡Está ejecutando el Módulo de Administración de Usuarios Yii {version} en modo de depuración!', 'es', 'yum'),
 ('You are running the Yii User Management Module {version} in Debug Mode!', 'Dies ist das Yii-User-Management Modul in Version {version} im Debug Modus!', 'fr', 'yum'),
 ('You are running the Yii User Management Module {version} in Debug Mode!', 'Questo Ã¨ il modulo di YUM versione {version} in modalitÃ  debug!', 'it', 'yum');
-INSERT INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
+INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
 ('You are running the Yii User Management Module {version} in Debug Mode!', 'Uruchamiasz moduÅ‚ Yii User Management Modul, wersja {version}, w trybie DEBUG!', 'pl', 'yum'),
 ('You do not have any friends yet', 'Ihre Kontaktliste ist leer', 'de', 'yum'),
 ('You do not have any friends yet', 'No tienes ningún amigo todavía', 'es', 'yum'),

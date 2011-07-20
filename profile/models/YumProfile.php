@@ -113,7 +113,8 @@ class YumProfile extends YumActiveRecord
 
 			if ($field->field_type == 'int'
 					|| $field->field_type == 'FLOAT'
-					|| $field->field_type =='INTEGER')
+					|| $field->field_type =='INTEGER'
+					|| $field->field_type =='BOOLEAN')
 				array_push($numerical,$field->varname);
 
 			if ($field->field_type == 'DROPDOWNLIST')
@@ -225,13 +226,16 @@ class YumProfile extends YumActiveRecord
 		return $commentators;
 	}
 
-public function getProfileFields() {
-	$fields = array();
-	foreach($this->attributes as $varname => $attribute) {
-		$fields[$varname] = Yum::t($varname);
+	public function getProfileFields() {
+		$fields = array();
+
+		if(self::$fields)
+			foreach(self::$fields as $field) {
+				$varname = $field->varname;
+				$fields[$varname] = Yum::t($varname);
+			}
+		return $fields;
 	}
-	return $fields;
-}
 
 
 	public function attributeLabels()

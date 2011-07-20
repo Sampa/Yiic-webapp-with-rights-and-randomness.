@@ -158,9 +158,15 @@ class YumAuthController extends YumController {
 
 		if($user)
 			return $this->authenticate($user);
-		else
+		else {
+			Yum::log( Yum::t(
+						'Non-existent user {username} tried to log in (Ip-Address: {ip})', array(
+							'{ip}' => Yii::app()->request->getUserHostAddress(),
+							'{username}' => $this->loginForm->username)), 'error');
+
 			$this->loginForm->addError('password',
 					Yum::t('Username or Password is incorrect'));
+		}
 
 		return false;
 	}
@@ -188,7 +194,9 @@ class YumAuthController extends YumController {
 				break;
 
 			case YumUserIdentity::ERROR_PASSWORD_INVALID:
-				Yum::log(Yum::t('Failed login attempt for {username}', array(
+				Yum::log( Yum::t(
+							'Password invalid for user {username} (Ip-Address: {ip})', array(
+								'{ip}' => Yii::app()->request->getUserHostAddress(),
 								'{username}' => $this->loginForm->username)), 'error');
 
 				if(!$this->loginForm->hasErrors())
@@ -287,7 +295,9 @@ class YumAuthController extends YumController {
 					$cookie->expire = time() + (3600*24*30);
 					Yii::app()->request->cookies['login_type'] = $cookie;
 				}
-				Yum::log(Yum::t('User {username} successfully logged in', array(
+				Yum::log(Yum::t(
+							'User {username} successfully logged in (Ip: {ip})', array(
+								'{ip}' => Yii::app()->request->getUserHostAddress(),
 								'{username}' => $success->username)));
 				$this->redirectUser($success);
 			} else
