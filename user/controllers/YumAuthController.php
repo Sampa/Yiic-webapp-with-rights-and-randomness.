@@ -299,6 +299,9 @@ class YumAuthController extends YumController {
 							'User {username} successfully logged in (Ip: {ip})', array(
 								'{ip}' => Yii::app()->request->getUserHostAddress(),
 								'{username}' => $success->username)));
+				if(Yum::module()->afterLogin !== false) 
+					call_user_func(Yum::module()->afterLogin);
+
 				$this->redirectUser($success);
 			} else
 				$this->loginForm->addError('username',

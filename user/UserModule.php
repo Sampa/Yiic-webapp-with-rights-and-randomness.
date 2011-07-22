@@ -57,6 +57,9 @@ class UserModule extends CWebModule {
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';
+	
+	// valid callback function that executes after user login
+	public $afterLogin = false;
 
 	// Set this to true to really remove users instead of setting the status
 	// to -2 (YumUser::REMOVED)
