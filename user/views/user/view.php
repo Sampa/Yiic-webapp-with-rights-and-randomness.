@@ -75,7 +75,7 @@ if(Yii::app()->user->isAdmin()) {
 			);
 
 	if($profiles) {
-		$profileFields = YumProfileField::model()->forAll()->sort()->findAll();
+		$profileFields = YumProfileField::model()->forAll()->findAll();
 		if ($profileFields) {
 			foreach($profileFields as $field) {
 				array_push($attributes,array(

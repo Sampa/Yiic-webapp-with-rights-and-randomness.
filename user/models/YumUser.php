@@ -132,7 +132,7 @@ class YumUser extends YumActiveRecord {
 	public function search() {
 		$criteria = new CDbCriteria;
 
-		if(Yum::hasModule('profile')) {
+		if(Yum::hasModule('profile') && $this->profile) {
 			$criteria->with = array('profile');
 			if($this->profile)
 				$criteria->compare('profile.email', $this->profile->email, true);
@@ -141,7 +141,11 @@ class YumUser extends YumActiveRecord {
 				$criteria->addSearchCondition('profile.email',$this->email,true);
 		}
 
-		$criteria->together = true;
+		// Show newest users first by default
+		if(!isset($_GET['YumUser_sort']))
+			$criteria->order = 't.createtime DESC';
+
+		$criteria->together = false;
 		$criteria->compare('t.id', $this->id, true);
 		$criteria->compare('t.username', $this->username, true);
 		$criteria->compare('t.status', $this->status);
@@ -151,7 +155,7 @@ class YumUser extends YumActiveRecord {
 
 		return new CActiveDataProvider(get_class($this), array(
 					'criteria' => $criteria,
-					'pagination' => array('pageSize' => 20),
+					'pagination' => array('pageSize' => 10),
 					));
 	}
 

@@ -10,10 +10,18 @@ abstract class YumActiveRecord extends CActiveRecord {
 	protected $_tableName;
 
 	/**
+	 * Adds the CAdvancedArBehavior and, if enabled, the LoggableBehavior to
+	 * every YUM Active Record model
 	 * @return array
 	 */
 	public function behaviors() {
-		return array( 'CAdvancedArBehavior' );
+		$behaviors = array( 'CAdvancedArBehavior' );
+		if(Yum::module()->enableAuditTrail)
+			$behaviors = array_merge($behaviors, array( 
+						'LoggableBehavior' => 'application.modules.auditTrail.behaviors.LoggableBehavior')
+					);
+
+		return $behaviors;
 	}	
 
 	/**

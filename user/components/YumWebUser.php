@@ -5,7 +5,7 @@ class YumWebUser extends CWebUser
 	// logged in user, for example
 	// echo Yii::app()->user->data()->profile->firstname;
 	public function data() {
-		if($model = YumUser::model()->findByPk($this->id))
+		if($this->id && $model = YumUser::model()->findByPk($this->id))
 			return $model;
 		else
 			return new YumUser();
@@ -100,7 +100,8 @@ class YumWebUser extends CWebUser
 			if(!is_array($role))
 				$role = array ($role);
 
-			if($user = YumUser::model()->findByPk($uid)) {
+			if($uid && $user = YumUser::model()->with('roles')->find(
+						't.id = '.$uid)) {
 				// Check if a user has a active membership and, if so, add this
 				// to the roles
 				$roles = $user->roles;
@@ -113,7 +114,6 @@ class YumWebUser extends CWebUser
 								in_array($roleobj->id, $role))
 							return true;
 					}
-
 			}
 		}
 

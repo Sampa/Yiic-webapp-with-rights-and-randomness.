@@ -110,16 +110,26 @@ class Yum
 			$messages = Yii::app()->cache->get($cache_id);
 
 		if($messages===false) {
-			$translationTable = Yum::module()->translationTable;
-			$sql = "select message, translation from {$translationTable} where language = :language and category = :category";
+			if(Yum::module()->avoidSql) {
+				$translations = YumTranslation::model()->findAll('category = :category and language = :language', array(
+							'category' =>  $category,
+							'language' =>  $language,
+							));
+				$messages=array();
+				foreach($translations as $row)
+					$messages[$row['message']]=$row->translation;
+			} else {
+				$translationTable = Yum::module()->translationTable;
+				$sql = "select message, translation from {$translationTable} where language = :language and category = :category";
 
-			$command=Yii::app()->db->createCommand($sql);
-			$command->bindValue(':category',$category);
-			$command->bindValue(':language',$language);
+				$command=Yii::app()->db->createCommand($sql);
+				$command->bindValue(':category',$category);
+				$command->bindValue(':language',$language); 
 
-			$messages=array();
-			foreach($command->queryAll() as $row)
-				$messages[$row['message']]=$row['translation'];
+				$messages=array();
+				foreach($command->queryAll() as $row)
+					$messages[$row['message']]=$row['translation'];
+			}
 
 			if(Yii::app()->cache)
 				Yii::app()->cache->set($cache_id, $messages);

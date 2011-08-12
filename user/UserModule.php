@@ -67,6 +67,18 @@ class UserModule extends CWebModule {
 
 	public $yumBaseRoute = '/user';
 
+	// set avoidSql to true if you intent do use yii-user-management on a non
+	// mysql database. All places where a SQL query would be used for performance
+	// reason are overwritten with a ActiveRecord implementation. This should
+	// make it more compatible with other rdbms.
+	public $avoidSql = false;
+
+	// When the auditTrail extension  
+	// (http://www.yiiframework.com/extension/audittrail)
+	// is installed, use it. It simply appends the LoggableBehavior to
+	// all Yum-classes, so they get logged.
+	public $enableAuditTrail = false;
+
 	public static $dateFormat = "m-d-Y";  //"d.m.Y H:i:s"
 	public $dateTimeFormat = 'm-d-Y G:i:s';  //"d.m.Y H:i:s"
 
