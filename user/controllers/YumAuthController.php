@@ -364,6 +364,9 @@ public function actionLogout() {
 			if ($cookie) {
 				$cookie->expire = time() -1*(3600*72);
 				Yii::app()->request->cookies[$cookie->name] = $cookie;
+				$servername= '.' . Yii::app()->request->serverName;
+				setcookie ("$fb_cookie", "", time() - 3600);
+				setcookie ("$fb_cookie", "", time() - 3600, "/", "$servername", 1);
 			}
 			$session = $facebook->getSession();
 			Yum::log('Facebook logout from user '. $username);
