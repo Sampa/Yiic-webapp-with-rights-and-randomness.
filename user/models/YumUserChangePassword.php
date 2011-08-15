@@ -43,10 +43,10 @@ class YumUserChangePassword extends YumFormModel
 
 	public function createRandomPassword() {
 
-		$lowercase = Yum::module()->minLowerCase;
-		$uppercase = Yum::module()->minUpperCase;
-		$minnumbers = Yum::module()->minDigits;
-		$max = Yum::module()->maxLen;
+		$lowercase = Yum::module()->passwordRequirements['minLowerCase'];
+		$uppercase = Yum::module()->passwordRequirements['minUpperCase'];
+		$minnumbers = Yum::module()->passwordRequirements['minDigits'];
+		$max = Yum::module()->passwordRequirements['maxLen'];
 
 		$chars = "abcdefghijkmnopqrstuvwxyz";
 		$numbers = "1023456789";
