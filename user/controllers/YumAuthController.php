@@ -42,7 +42,7 @@ class YumAuthController extends YumController {
 
 				return $identity->user;
 				break;
-			case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
+			case YumUserIdentity::ERROR_STATUS_INACTIVE:
 				$this->loginForm->addError('status', Yum::t('Your account is not activated.'));
 				break;
 			case YumUserIdentity::ERROR_REMOVED:
@@ -121,7 +121,7 @@ class YumAuthController extends YumController {
 						Yum::log('User ' . $user->username .' logged in via facebook');
 						return $user;
 						break;
-					case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
+					case YumUserIdentity::ERROR_STATUS_INACTIVE:
 						$user->addError('status', Yum::t('Your account is not activated.'));
 						break;
 					case YumUserIdentity::ERROR_STATUS_BANNED:
@@ -183,7 +183,7 @@ class YumAuthController extends YumController {
 			case YumUserIdentity::ERROR_EMAIL_INVALID:
 				$this->loginForm->addError("password",Yum::t('Username or Password is incorrect'));
 				break;
-			case YumUserIdentity::ERROR_STATUS_NOTACTIVE:
+			case YumUserIdentity::ERROR_STATUS_INACTIVE:
 				$this->loginForm->addError("status",Yum::t('This account is not activated.'));
 				break;
 			case YumUserIdentity::ERROR_STATUS_BANNED:

@@ -27,7 +27,7 @@ class YumStatisticsController extends YumController {
 					'total_users' => YumUser::model()->count(),
 					'active_users' => YumUser::model()->count('status = '.YumUser::STATUS_ACTIVE),
 					'todays_registered_users' => YumUser::model()->count('createtime >= '.strtotime(date('Y-m-d'))),
-					'inactive_users' => YumUser::model()->count('status = '.YumUser::STATUS_NOTACTIVE),
+					'inactive_users' => YumUser::model()->count('status = '.YumUser::STATUS_INACTIVE),
 					'banned_users' => YumUser::model()->count('status = '.YumUser::STATUS_BANNED),
 					'admin_users' => YumUser::model()->count('superuser = 1'),
 //					'roles' => YumRole::model()->count(),

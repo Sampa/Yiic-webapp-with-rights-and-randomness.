@@ -8,10 +8,13 @@ class ProfileModule extends CWebModule {
 	public $profilesViewableByGuests = false;
 
 	public $enableProfileVisitLogging = true;
-	public $enablePrivacysetting = true;
+	public $enablePrivacySetting = true;
 	public $enableProfileComments = true;
 
-	public $privacysettingTable = '{{privacysetting}}';
+	public $privacySettingTable = '{{privacysetting}}';
+	public $profileCommentTable = '{{profile_comment}}';
+	public $profileVisitTable = '{{profile_comment}}';
+	public $profileFieldsTable = '{{profile_fields}}';
 
 	public $profileView = '/profile/view';
 
@@ -24,7 +27,7 @@ class ProfileModule extends CWebModule {
 	public $profileCommentCreateView = 
 		'application.modules.profile.views.profileComment.create';
   public $profileEditView = '/profile/update';
-  public $privacysettingView= '/privacy/update';
+  public $privacySettingView= '/privacy/update';
 
 	public $controllerMap=array(
 			'comments'=>array(
@@ -49,5 +52,4 @@ class ProfileModule extends CWebModule {
 			'ProfileModule.models.*',
 		));
 	}
-
 }

@@ -60,7 +60,7 @@ class YumProfile extends YumActiveRecord
 	// All fields that the user has activated in his privacy settings will
 	// be obtained and returned for the use in the profile view
 	public function getPublicFields() {
-		if(!Yum::module('profile')->enablePrivacysetting)
+		if(!Yum::module('profile')->enablePrivacySetting)
 			return false;
 
 		$fields = array();
@@ -215,7 +215,7 @@ class YumProfile extends YumActiveRecord
 
 	}
 
-	// Retrieve a list of all users that have commentd my profile
+	// Retrieve a list of all users that have commented my profile
 	// Do not show my own profile visit
 	public function getProfileCommentators() {
 		$commentators = array();
