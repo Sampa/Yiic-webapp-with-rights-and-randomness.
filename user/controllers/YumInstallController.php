@@ -239,6 +239,7 @@ class YumInstallController extends YumController
 							`default` varchar(255) NOT NULL DEFAULT '',
 							`position` int(3) NOT NULL default '0',
 							`visible` int(1) NOT NULL default '0',
+							`related_field_name` varchar(255) NOT NULL DEFAULT '',
 							PRIMARY KEY  (`id`),
 							KEY `varname` (`varname`,`visible`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";

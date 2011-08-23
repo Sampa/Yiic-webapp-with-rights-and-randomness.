@@ -64,7 +64,7 @@ class YumProfileField extends YumActiveRecord
 
 	/**
 	 * Returns resolved table name (incl. table prefix when it is set in db configuration)
-	 * Following algorith of searching valid table name is implemented:
+	 * Following algorithm of searching valid table name is implemented:
 	 *  - try to find out table name stored in currently used module
 	 *  - if not found try to get table name from UserModule configuration
 	 *  - if not found user default {{profile_fields}} table name
