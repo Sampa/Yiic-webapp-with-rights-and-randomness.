@@ -15,6 +15,7 @@ class ProfileModule extends CWebModule {
 	public $profileCommentTable = '{{profile_comment}}';
 	public $profileVisitTable = '{{profile_comment}}';
 	public $profileFieldsTable = '{{profile_fields}}';
+	public $profileFieldsGroupTable = '{{profile_fields_group}}';
 
 	public $profileView = '/profile/view';
 

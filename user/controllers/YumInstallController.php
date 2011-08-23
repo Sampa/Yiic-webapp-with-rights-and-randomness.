@@ -46,6 +46,7 @@ class YumInstallController extends YumController
 						'usersTable',
 						'privacySettingTable',
 						'profileFieldsTable',
+						'profileFieldsGroupTable',
 						'profileTable',
 						'profileCommentTable',
 						'profileVisitTable',
@@ -67,9 +68,7 @@ class YumInstallController extends YumController
 					 */
 					foreach ($tables as $table) {
 						if (isset($_POST[$table])) {
-							//Couldn't write the lines below in a one-liner... My bad.
 							${$table} = $_POST[$table];
-							$createdTables[$table] = $_POST[$table];
 
 							// Clean up existing Installation table-by-table
 							$db->createCommand(sprintf('DROP TABLE IF EXISTS %s',
@@ -77,7 +76,6 @@ class YumInstallController extends YumController
 
 						}
 					}
-
 
 					// Create User Table
 					$sql = "CREATE TABLE IF NOT EXISTS `" . $usersTable . "` (
@@ -92,13 +90,15 @@ class YumInstallController extends YumController
 						`superuser` int(1) NOT NULL default '0',
 						`status` int(1) NOT NULL default '0',
 						`avatar` varchar(255) default NULL,
-						`notifyType` enum('None', 'Digest', 'Instant', 'Treshhold') default 'Instant',
+						`notifyType` enum('None', 'Digest', 'Instant', 'Threshold') default 'Instant',
 						PRIMARY KEY  (`id`),
 						UNIQUE KEY `username` (`username`),
 						KEY `status` (`status`),
 						KEY `superuser` (`superuser`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
+
 					$db->createCommand($sql)->execute();
+					$createdTables['user']['usersTable'] = $usersTable;
 
 					// Create messages translation table
 					$sql = "CREATE TABLE IF NOT EXISTS `{$translationTable}` (
@@ -110,8 +110,9 @@ class YumInstallController extends YumController
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 					$db->createCommand($sql)->execute();
+					$createdTables['user']['translationTable'] = $translationTable;
 
-					// Insert the strings that come with yum
+					// Insert the translation strings that come with yum
 					$sql = file_get_contents(Yii::getPathOfAlias(
 						                         'application.modules.user.docs') . '/yum_translation.sql');
 
@@ -129,6 +130,7 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['usergroup']['usergroupTable'] = $usergroupTable;
 
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $usergroupMessagesTable . "` (
 							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -141,6 +143,7 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['usergroup']['usergroupMessagesTable'] = $usergroupMessagesTable;
 					}
 
 					// Install Membership Management submodule 
@@ -156,6 +159,7 @@ class YumInstallController extends YumController
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['membership']['membershipTable'] = $membershipTable;
 
 						$sql = " CREATE TABLE IF NOT EXISTS `{$paymentTable}` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -164,6 +168,7 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`id`)
 								) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 						$db->createCommand($sql)->execute();
+						$createdTables['membership']['paymentTable'] = $paymentTable;
 					}
 
 					// Install permission Submodule
@@ -176,6 +181,8 @@ class YumInstallController extends YumController
 							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['permission']['actionTable'] = $actionTable;
+
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $permissionTable . "` (
 							`principal_id` int(11) NOT NULL,
 							`subordinate_id` int(11) NULL,
@@ -187,6 +194,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8; ";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['permission']['permissionTable'] = $permissionTable;
 					}
 
 					// Install Friendship submodule
@@ -203,6 +211,7 @@ class YumInstallController extends YumController
 						) ENGINE = INNODB;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['friendship']['friendshipTable'] = $friendshipTable;
 					}
 
 					// Install Profiles submodule
@@ -218,9 +227,22 @@ class YumInstallController extends YumController
 							`ignore_users` varchar(255),
 							`public_profile_fields` bigint(15) unsigned,
 							PRIMARY KEY (`user_id`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-	";
+						) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
 						$db->createCommand($sql)->execute();
+						$createdTables['profile']['privacySettingTable'] = $privacySettingTable;
+
+						//Create Profile Fields Group Table
+						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsGroupTable . "` (
+							`id` int unsigned not null auto_increment,
+							`group_name` VARCHAR(50) NOT NULL,
+							`title` VARCHAR(255) NOT NULL,
+							`position` INT(3) NOT NULL DEFAULT 0,
+							PRIMARY KEY (`id`)
+						) ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
+
+						$db->createCommand($sql)->execute();
+						$createdTables['profile']['profileFieldsGroupTable'] = $profileFieldsGroupTable;
 
 						// Create Profile Fields Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
@@ -245,6 +267,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['profile']['profileFieldsTable'] = $profileFieldsTable;
 
 						// Create Profiles Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
@@ -264,6 +287,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['profile']['profileTable'] = $profileTable;
 
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileCommentTable . "` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -275,6 +299,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['profile']['profileCommentTable'] = $profileCommentTable;
 
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileVisitTable . "` (
 							`visitor_id` int(11) NOT NULL,
@@ -286,6 +311,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['profile']['profileVisitTable'] = $profileVisitTable;
 					}
 
 					// Install Role Management submodule
@@ -302,6 +328,7 @@ class YumInstallController extends YumController
 						) ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['role']['rolesTable'] = $rolesTable;
 
 						// Create User_has_role Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $userRoleTable . "` (
@@ -311,6 +338,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['role']['userRoleTable'] = $userRoleTable;
 
 					}
 
@@ -331,6 +359,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
+						$createdTables['messages']['messagesTable'] = $messagesTable;
 					}
 
 					// Generate demo data
@@ -406,7 +435,7 @@ class YumInstallController extends YumController
 					$transaction->commit();
 
 					// Victory
-					$this->render('success', array('tables' => $createdTables));
+					$this->render('success', array('modules' => $createdTables));
 				}
 				else
 				{
@@ -427,6 +456,7 @@ class YumInstallController extends YumController
 					'profileCommentTable' => Yum::resolveTableName($this->module->profileCommentTable, Yii::app()->db),
 					'profileVisitTable' => Yum::resolveTableName($this->module->profileVisitTable, Yii::app()->db),
 					'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable, Yii::app()->db),
+					'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable, Yii::app()->db),
 					'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable, Yii::app()->db),
 					'usergroupTable' => Yum::resolveTableName($this->module->usergroupTable, Yii::app()->db),
 					'usergroupMessagesTable' => Yum::resolveTableName($this->module->usergroupMessagesTable, Yii::app()->db),

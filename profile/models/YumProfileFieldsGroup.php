@@ -34,10 +34,8 @@ class YumProfileFieldsGroup extends YumActiveRecord
 	 */	
   	public function tableName()
   	{
-    	if (isset(Yum::module()->profileFieldsGroupTable))
-      		$this->_tableName = Yum::module()->profileFieldsGroupTable;
-    	elseif (isset(Yii::app()->modules['user']['profileFieldsGroupTable']))
-      		$this->_tableName = Yii::app()->modules['user']['profileFieldsGroupTable'];
+    	if (isset(Yum::module('profile')->profileFieldsGroupTable))
+      		$this->_tableName = Yum::module('profile')->profileFieldsGroupTable;
     	else
       		$this->_tableName = '{{profile_fields_group}}'; // fallback if nothing is set
 

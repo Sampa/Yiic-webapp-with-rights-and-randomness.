@@ -155,9 +155,13 @@ your Yii Web Application </p>
 
 	<div id="profiles">
 		<table>
-			<tr> 
+			<tr>
 				<td> Table for the Profile Fields </td>
-				<td> <?php echo CHtml::textField('profileFieldsTable', $profileFieldsTable);?> </td> 
+				<td> <?php echo CHtml::textField('profileFieldsTable', $profileFieldsTable);?> </td>
+			</tr>
+			<tr>
+				<td> Table for the Profile Fields Groups </td>
+				<td> <?php echo CHtml::textField('profileFieldsGroupTable', $profileFieldsGroupTable);?> </td>
 			</tr>
 			<tr> 
 				<td> Table for the Profile Visits</td>

@@ -14,22 +14,18 @@ Since yum 0.8 you can define the Module Behavior in the administration backend,
 
 <p>Now modify your config/main.php file to reflect the changes below in user module configuration:</p>
 <code>
-<div>
-	'modules' => array(
-	<div>
-		'user' => array(
-		<div>
-			'debug' => false,<br/>
-			<?php
-				foreach ($tables as $table => $value) {
-					echo "'$table' => '$value',<br/>";
-				}
-			?>
-		</div>
-		),
-	</div>
-	),
-</div>
+	<div>'modules'=> array(
+	<?php
+		foreach ($modules as $module => $config) {
+			echo "<div>'$module' => array(";
+			if ($module == 'user') echo "<div>'debug' => false,</div>";
+			foreach ($config as $key => $value) {
+				echo "<div>'$key' => '$value',</div>";
+			}
+			echo "),</div>";
+		}
+	?>
+	),</div>
 </code>
 
 <strong> Please change the Administrator Password to something better than

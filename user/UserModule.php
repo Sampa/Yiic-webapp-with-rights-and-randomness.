@@ -141,25 +141,25 @@ class UserModule extends CWebModule {
 
 	// Table names
 	private $_tables = array(
-			'users' => 'users',
-			'privacySetting' => 'privacysetting',
+			'users' => 'user',
+			'privacySetting' => 'privacy_setting',
 			'translation' => 'translation',
-			'messages' => 'messages',
-			'usergroup' => 'usergroup',
-			'usergroupMessages' => 'usergroup_messages',
-			'profileFields' => 'profile_fields',
-			'profile' => 'profiles',
+			'messages' => 'message',
+			'usergroup' => 'user_group',
+			'usergroupMessages' => 'user_group_message',
+			'profileFields' => 'profile_field',
+			'profileFieldsGroup' => 'profile_field_group',
+			'profile' => 'profile',
 			'profileComment' => 'profile_comment',
 			'profileVisit' => 'profile_visit',
-			'roles' => 'roles',
+			'roles' => 'role',
 			'membership' => 'membership',
 			'payment' => 'payment',
 			'friendship' => 'friendship',
 			'permission' => 'permission',
 			'action' => 'action',
-			'activity' => 'activities',
-			'userRole' => 'user_has_role',
-			'activity' => 'activities',
+			'activity' => 'activity',
+			'userRole' => 'user_role',
 			);
 
 	public $passwordRequirements = array(
@@ -234,7 +234,7 @@ class UserModule extends CWebModule {
 		if(!defined('YII_DEBUG'))
 			$this->debug = false;
 
-		if(Yii::app()->user->isAdmin())
+		if(method_exists(Yii::app()->user, 'isAdmin') && Yii::app()->user->isAdmin())
 			$controller->layout = Yum::module()->adminLayout;
 			
 		return parent::beforeControllerAction($controller, $action);
