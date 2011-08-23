@@ -10,7 +10,12 @@ class YumRole extends YumActiveRecord {
 
 	public function tableName()
 	{
-			return $this->_tableName = '{{roles}}'; // fallback if nothing is set
+		if (isset(Yum::module('role')->rolesTable))
+			$this->_tableName = Yum::module('role')->rolesTable;
+		else
+			$this->_tableName = '{{roles}}'; // fallback if nothing is set
+
+		return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
 	}
 
 	public function rules()
@@ -33,8 +38,8 @@ class YumRole extends YumActiveRecord {
 	public function relations()
 	{
 		return array(
-				'activeusers'=>array(self::MANY_MANY, 'YumUser', Yum::module()->userRoleTable . '(role_id, user_id)', 'condition' => 'status = 3'),
-				'users'=>array(self::MANY_MANY, 'YumUser', Yum::module()->userRoleTable . '(role_id, user_id)'),
+				'activeusers'=>array(self::MANY_MANY, 'YumUser', Yum::module('role')->userHasRoleTable . '(role_id, user_id)', 'condition' => 'status = 3'),
+				'users'=>array(self::MANY_MANY, 'YumUser', Yum::module('role')->userHasRoleTable . '(role_id, user_id)'),
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 				'memberships' => array(self::HAS_MANY, 'YumMembership', 'membership_id'),
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),

@@ -8,6 +8,7 @@ class MessagesModule extends CWebModule {
   // new internal messages by email. Available options:
   // None, Digest, Instant, User, Treshhold
 	// 'User' means to use the user-specific option in the user table
+	public $messagesTable = '{{messages}}';
 	public $notifyType = 'user';
 
 	public $layout = 'application.modules.user.views.layouts.yum';

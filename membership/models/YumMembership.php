@@ -6,7 +6,12 @@ class YumMembership extends YumActiveRecord{
 	}
 
 	public function tableName() {
-		return '{{membership}}';
+		if (isset(Yum::module('membership')->membershipTable))
+			$this->_tableName = Yum::module('membership')->membershipTable;
+		else
+			$this->_tableName = '{{membership}}'; // fallback if nothing is set
+
+		return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
 	}
 
 	public function activate() {

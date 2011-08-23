@@ -351,7 +351,7 @@ class YumUser extends YumActiveRecord
 			'friendships' => array(self::HAS_MANY, 'YumFriendship', 'inviter_id'),
 			'friendships2' => array(self::HAS_MANY, 'YumFriendship', 'friend_id'),
 			'friendship_requests' => array(self::HAS_MANY, 'YumFriendship', 'friend_id', 'condition' => 'status = 1'), // 1 = FRIENDSHIP_REQUEST
-			'roles' => array(self::MANY_MANY, 'YumRole', 'user_has_role(user_id, role_id)'),
+			'roles' => array(self::MANY_MANY, 'YumRole', Yum::module('role')->userHasRoleTable . '(user_id, role_id)'),
 			'memberships' => array(self::HAS_MANY, 'YumMembership', 'user_id'),
 			'privacy' => array(self::HAS_ONE, 'YumPrivacySetting', 'user_id'),
 		);

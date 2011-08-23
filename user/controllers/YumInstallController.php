@@ -171,32 +171,6 @@ class YumInstallController extends YumController
 						$createdTables['membership']['paymentTable'] = $paymentTable;
 					}
 
-					// Install permission Submodule
-					if (isset($_POST['installPermission'])) {
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $actionTable . "` (
-							`id` int(11) NOT NULL AUTO_INCREMENT,
-							`title` varchar(255) NOT NULL,
-							`comment` text,
-							`subject` varchar(255) DEFAULT NULL,
-							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
-
-						$db->createCommand($sql)->execute();
-						$createdTables['permission']['actionTable'] = $actionTable;
-
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $permissionTable . "` (
-							`principal_id` int(11) NOT NULL,
-							`subordinate_id` int(11) NULL,
-							`type` enum('user','role') NOT NULL,
-							`action` int(11) NOT NULL,
-							`template` tinyint(1) NOT NULL,
-							`comment` text,
-							PRIMARY KEY (`principal_id`,`subordinate_id`,`type`,`action`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8; ";
-
-						$db->createCommand($sql)->execute();
-						$createdTables['permission']['permissionTable'] = $permissionTable;
-					}
-
 					// Install Friendship submodule
 					if (isset($_POST['installFriendship'])) {
 						$sql = "CREATE TABLE  `" . $friendshipTable . "` (
@@ -338,8 +312,33 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
-						$createdTables['role']['userRoleTable'] = $userRoleTable;
+						$createdTables['role']['userHasRoleTable'] = $userRoleTable;
 
+						// Install permission support (at the end will it be a submodule?)
+						if (isset($_POST['installPermission'])) {
+							$sql = "CREATE TABLE IF NOT EXISTS `" . $actionTable . "` (
+							`id` int(11) NOT NULL AUTO_INCREMENT,
+							`title` varchar(255) NOT NULL,
+							`comment` text,
+							`subject` varchar(255) DEFAULT NULL,
+							PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
+
+							$db->createCommand($sql)->execute();
+							$createdTables['role']['actionTable'] = $actionTable;
+
+							$sql = "CREATE TABLE IF NOT EXISTS `" . $permissionTable . "` (
+							`principal_id` int(11) NOT NULL,
+							`subordinate_id` int(11) NULL,
+							`type` enum('user','role') NOT NULL,
+							`action` int(11) NOT NULL,
+							`template` tinyint(1) NOT NULL,
+							`comment` text,
+							PRIMARY KEY (`principal_id`,`subordinate_id`,`type`,`action`)
+						) ENGINE=InnoDB DEFAULT CHARSET=utf8; ";
+
+							$db->createCommand($sql)->execute();
+							$createdTables['role']['permissionTable'] = $permissionTable;
+						}
 					}
 
 					// Install Messages submodule

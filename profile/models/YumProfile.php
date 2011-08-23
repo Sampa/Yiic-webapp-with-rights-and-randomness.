@@ -88,9 +88,7 @@ class YumProfile extends YumActiveRecord
 	public function tableName()
 	{
 		if (isset(Yum::module('profile')->profileTable))
-			$this->_tableName = Yum::module()->profileTable;
-		elseif (isset(Yii::app()->modules['user']['profileTable']))
-			$this->_tableName = Yii::app()->modules['user']['profileTable'];
+			$this->_tableName = Yum::module('profile')->profileTable;
 		else
 			$this->_tableName = '{{profiles}}'; // fallback if nothing is set
 

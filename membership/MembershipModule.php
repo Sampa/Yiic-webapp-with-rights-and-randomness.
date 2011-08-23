@@ -8,6 +8,9 @@ class MembershipModule extends CWebModule {
 	// message to the user that just ordered a membership
 	public $confirmOrders = true;
 
+	public $membershipTable = '{{membership}}';
+	public $paymentTable = '{{payment}}';
+
 	// override this with your custom layout, if available
 	public $layout = 'application.modules.user.views.layouts.yum';
 
