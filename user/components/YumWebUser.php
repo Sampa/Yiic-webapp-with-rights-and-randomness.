@@ -1,12 +1,16 @@
 <?php
 class YumWebUser extends CWebUser
 {
+	public $_data;
+
 	// Use this function to access the AR Model of the actually
 	// logged in user, for example
 	// echo Yii::app()->user->data()->profile->firstname;
 	public function data() {
-		if($this->id && $model = YumUser::model()->findByPk($this->id))
-			return $model;
+		if($this->_data instanceof YumUser)
+			return $this->_data;
+		else if($this->id && $this->_data = YumUser::model()->cache(500)->findByPk($this->id))
+			return $this->_data;
 		else
 			return new YumUser();
 	}
@@ -36,7 +40,7 @@ class YumWebUser extends CWebUser
 		if($uid == 0)
 			$uid = Yii::app()->user->id;
 
-		$user = YumUser::model()->findByPk($uid);
+		$user = YumUser::model()->cache(500)->findByPk($uid);
 
 		return isset($user->users) && $user->users !== array();
 	}
@@ -46,7 +50,7 @@ class YumWebUser extends CWebUser
 		if($uid == 0)
 			$uid = Yii::app()->user->id;
 
-		$user = YumUser::model()->findByPk($uid);
+		$user = YumUser::model()->cache(500)->findByPk($uid);
 
 		$flag = false;
 		if(isset($user->roles))
@@ -69,7 +73,7 @@ class YumWebUser extends CWebUser
 		if($username == $uid)
 			return true;
 
-		$user = YumUser::model()->findByPk($uid);
+		$user = YumUser::model()->cache(500)->findByPk($uid);
 
 		if(!is_array($username))
 			$username = array ($username);
@@ -90,7 +94,7 @@ class YumWebUser extends CWebUser
 	 * @int (optional) id of the user that should be checked 
 	 * @return bool Return value tells if the User has access or hasn't access.
 	 */
-	public static function hasRole($role, $uid = 0) {
+	public function hasRole($role, $uid = 0) {
 		if(Yum::hasModule('role')) {
 			Yii::import('application.modules.role.models.*');
 
@@ -100,7 +104,7 @@ class YumWebUser extends CWebUser
 			if(!is_array($role))
 				$role = array ($role);
 
-			if($uid && $user = YumUser::model()->with('roles')->find(
+			if($uid && $user = YumUser::model()->cache(500)->with('roles')->find(
 						't.id = '.$uid)) {
 				// Check if a user has a active membership and, if so, add this
 				// to the roles

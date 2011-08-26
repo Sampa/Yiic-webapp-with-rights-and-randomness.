@@ -65,9 +65,9 @@ class YumProfile extends YumActiveRecord
 
 		$fields = array();
 
-		if($privacy = @YumUser::model()->findByPk($this->user_id)->privacy->public_profile_fields) {
+		if($privacy = @YumUser::model()->cache(500)->with('privacy')->findByPk($this->user_id)->privacy->public_profile_fields) {
 			$i = 1;
-			foreach(YumProfileField::model()->findAll() as $field) {
+			foreach(YumProfileField::model()->cache(500)->findAll() as $field) {
 				if($i & $privacy && $field->visible != 0)
 					$fields[] = $field;
 				$i*=2;
@@ -200,7 +200,7 @@ class YumProfile extends YumActiveRecord
 				'comments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
 				);
 
-		$fields = Yii::app()->db->createCommand(
+		$fields = Yii::app()->db->cache(500)->createCommand(
 				"select * from ".YumProfileField::model()->tableName()." where field_type = 'DROPDOWNLIST'")->queryAll();
 
 		foreach($fields as $field) {
@@ -210,7 +210,6 @@ class YumProfile extends YumActiveRecord
 		}
 
 		return $relations;
-
 	}
 
 	// Retrieve a list of all users that have commented my profile
@@ -263,7 +262,7 @@ class YumProfile extends YumActiveRecord
 	{
 		if(self::$fields===null)
 		{
-			self::$fields=YumProfileField::model()->findAll();
+			self::$fields=YumProfileField::model()->cache(500)->findAll();
 			if(self::$fields==null)
 				self::$fields=array();
 		}
