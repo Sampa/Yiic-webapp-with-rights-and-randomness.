@@ -176,7 +176,7 @@ class YumUserController extends YumController {
 		// When opening a empty user creation mask, we most probably want to
 		// insert an _active_ user
 		if(!isset($model->status))
-			$model->status = 3;
+			$model->status = 1;
 
 		if(isset($_POST['YumUser'])) {
 			$model->attributes=$_POST['YumUser'];

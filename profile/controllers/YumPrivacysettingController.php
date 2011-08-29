@@ -20,12 +20,11 @@ class YumPrivacysettingController extends YumController
 	}
 
 	public function beforeAction($action) {
-		if(!Yum::module('profile')->enablePrivacysetting)
+		if(!Yum::module('profile')->enablePrivacySetting)
 			throw new CHttpException(404);
 
 		return parent::beforeAction($action);
 	}
-
 
 	public function actionUpdate() {
 		$model = YumPrivacySetting::model()->findByPk(Yii::app()->user->id);
@@ -68,7 +67,7 @@ class YumPrivacysettingController extends YumController
 			$this->refresh();
 		}
 
-		$this->render(Yum::module('profile')->privacysettingView,array(
+		$this->render(Yum::module('profile')->privacySettingView,array(
 					'model'=>$model,
 					'profile'=> isset($model->user) && isset($model->user->profile)
 					? $model->user->profile 

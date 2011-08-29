@@ -109,15 +109,6 @@
 		<?php echo CHtml::error($model,'visible'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'related_field_name'); ?>
-		<?php echo CHtml::activeTextField($model,'related_field_name',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo CHtml::error($model,'related_field_name'); ?>
-		<p class="hint"><?php echo Yum::t('Which related field should be rendered? This is used only for the DROPDOWNLIST field type.'); ?></p>
-	</div>
-
-
-
 	<div class="row buttons">
 	<?php echo CHtml::submitButton($model->isNewRecord 
 			? Yum::t('Create') 

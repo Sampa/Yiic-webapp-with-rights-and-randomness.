@@ -71,7 +71,6 @@ class YumProfileComment extends YumActiveRecord{
 		return $result[0]['count(*)'];
 	}
 
-
 	public function attributeLabels()
 	{
 		return array(
@@ -82,7 +81,6 @@ class YumProfileComment extends YumActiveRecord{
 			'createtime' => Yum::t('Written at'),
 		);
 	}
-
 
 	public function search()
 	{

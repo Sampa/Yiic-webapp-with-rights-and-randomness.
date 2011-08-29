@@ -37,7 +37,7 @@ class YumUserChangePassword extends YumFormModel
 		return array(
 			'password'=>Yum::t('New password'),
 			'verifyPassword'=>Yum::t('Retype your new password'),
-			'currentPassword'=>Yum::t('Your actual password'),
+			'currentPassword'=>Yum::t('Your current password'),
 		);
 	}
 

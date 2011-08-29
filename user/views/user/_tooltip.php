@@ -2,7 +2,7 @@
 
 $template = '<p> %s: %s </p>';
 
-if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacysetting) {
+if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) {
 	if($data->privacy && $data->privacy->show_online_status) {
 		if($data->isOnline()) {
 			echo Yum::t('User is Online!');

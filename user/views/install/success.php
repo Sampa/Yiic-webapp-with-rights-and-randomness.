@@ -7,12 +7,12 @@
 
 <p> Don't forget to look in the Documentation in the docs/ directory to 
 see the module specific options that can be set in your Application 
-Configuration (for example, language).
+Configuration (for example, language). </p>>
 
-Since yum 0.8 you can define the Module Behavior in the administration backend,
- if enabled in the installation. </p>
+<p> Please add a 'tablePrefix' => '', to your application db component, even
+if you are not using a tablePrefix. If you are using one, of course set the appropriate value. </p>
 
-<p>Now modify your config/main.php file to reflect the changes below in user module configuration:</p>
+<p>If you have changed some of the default values, you now only need to modify your config/main.php file to reflect the changes below in user module configuration:</p>
 <code>
 	<div>'modules'=> array(
 	<?php

@@ -51,8 +51,6 @@ class YumAdminMenu extends CPortlet {
 							array('label' => 'Show profile visits', 'url' => array('//profile/profile/visits')),
 							array('label' => 'Manage profile fields', 'url' => array('//profile/fields/admin')),
 							array('label' => 'Create profile field', 'url' => array('//profile/fields/create')),
-							array('label' => 'Manage field groups', 'url' => array('//profile/fieldsgroup/admin')),
-							array('label' => 'Create new field group', 'url' => array('//profile/fieldsgroup/create')),
 							)
 						),
 				array('label' => 'Messages',
