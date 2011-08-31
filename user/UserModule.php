@@ -7,7 +7,7 @@ Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
 class UserModule extends CWebModule {
-	public $version = '0.8-rc4';
+	public $version = '0.8-rc5';
 	public $debug = false;
 
 	//layout related control vars
@@ -147,6 +147,9 @@ class UserModule extends CWebModule {
 			'messages' => 'message',
 			'usergroup' => 'user_group',
 			'usergroupMessages' => 'user_group_message',
+			'profile' => 'profile',
+			'profileComment' => 'profile_comment',
+			'profileVisit' => 'profile_visit',
 			'profileFields' => 'profile_field',
 			'profileFieldsGroup' => 'profile_field_group',
 			'roles' => 'role',
