@@ -9,10 +9,10 @@ class YumWebUser extends CWebUser
 	public function data() {
 		if($this->_data instanceof YumUser)
 			return $this->_data;
-		else if($this->id && $this->_data = YumUser::model()->cache(500)->findByPk($this->id))
+		else if($this->id && $this->_data = YumUser::model()->findByPk($this->id))
 			return $this->_data;
 		else
-			return new YumUser();
+			return $this->_data = new YumUser();
 	}
 
 	public function checkAccess($operation, $params=array(), $allowCaching=true)

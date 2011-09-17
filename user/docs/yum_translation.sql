@@ -1091,6 +1091,7 @@ INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `categor
 ('Not assigned', 'Non assegnato', 'it', 'yum'),
 ('Not assigned', 'Nie przypisano', 'pl', 'yum'),
 ('Not visited', 'Non visitato', 'it', 'yum'),
+('Not yet payed', 'Noch nicht bezahlt', 'de', 'yum'),
 ('Ok', 'Ok', 'de', 'yum'),
 ('Ok', 'Aceptar', 'es', 'yum'),
 ('Ok', 'Ok', 'fr', 'yum'),

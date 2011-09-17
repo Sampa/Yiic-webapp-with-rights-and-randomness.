@@ -129,6 +129,7 @@ class YumUser extends YumActiveRecord
 		if (!Yum::hasModule('membership'))
 			return array();
 
+		Yii::import('application.modules.role.models.*');
 		Yii::import('application.modules.membership.models.*');
 
 		$roles = array();
@@ -370,7 +371,7 @@ class YumUser extends YumActiveRecord
 	public function getFriendships()
 	{
 		$condition = 'inviter_id = :uid or friend_id = :uid';
-		return YumFriendship::model()->cache(500)->findAll($condition, array(':uid' => $this->id));
+		return YumFriendship::model()->findAll($condition, array(':uid' => $this->id));
 	}
 
 	// Friends can not be retrieve via the relations() method because a friend

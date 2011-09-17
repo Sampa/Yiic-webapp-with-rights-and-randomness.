@@ -1,4 +1,4 @@
-<?php $this->breadcrumbs = array('Mitgliedschaft');?>
+<?php $this->breadcrumbs = array(Yum::t('Membership'));?>
 
 <?php $this->title = Yum::t('Membership'); ?>
 	

@@ -71,9 +71,10 @@ class YumFriendship extends YumActiveRecord {
 			YumMessage::write($this->inviter, $this->invited,
 					Yum::t('Your friendship request has been accepted'),
 					YumTextSettings::getText('text_friendship_confirmed', array(
-							'{username}' => $this->inviter->username)));
+							'{username}' => $this->inviter->username))); 
 		}
-		return $this->save();
+		$this->save(false, array('acknowledgetime', 'status'));
+
 	} 
 
 	public function getFriend() {

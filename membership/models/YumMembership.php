@@ -62,7 +62,7 @@ class YumMembership extends YumActiveRecord{
 				array('membership_id, user_id, payment_id, order_date', 'required'),
 				array('end_date', 'default', 'setOnEmpty' => true, 'value' => null),
 				array('membership_id, user_id, payment_id, order_date, end_date, payment_date', 'numerical', 'integerOnly'=>true),
-				array('membership_id, user_id, payment_id, order_date, end_date, payment_date', 'safe', 'on'=>'search'),
+				array('id, membership_id, user_id, payment_id, order_date, end_date, payment_date', 'safe', 'on'=>'search'),
 				);
 	}
 
@@ -89,17 +89,20 @@ class YumMembership extends YumActiveRecord{
 				);
 	}
 
-
 	public function search()
 	{
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
+		$criteria->compare('t.id', $this->id);
 		$criteria->compare('membership_id', $this->membership_id);
 		$criteria->compare('user_id', $this->user_id);
 		$criteria->compare('payment_id', $this->payment_id);
 		$criteria->compare('order_date', $this->order_date);
-		$criteria->compare('end_date', $this->end_date);
-		$criteria->compare('payment_date', $this->payment_date);
+
+		if($this->payment_date == 'not_payed') 
+			$criteria->addCondition('payment_date is null');
+
+		$criteria->with = array('user', 'role', 'payment');
 
 		return new CActiveDataProvider(get_class($this), array(
 					'criteria'=>$criteria,

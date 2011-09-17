@@ -45,6 +45,7 @@ class YumMembershipController extends YumController {
 			$model->payment_date = time();
 
 			if($model->save()) {
+				Yii::import('application.modules.messages.models.*');
 				YumMessage::write($model->user, 1,
 						Yum::t('Payment arrived'),
 						YumTextSettings::getText('text_payment_arrived', array(
@@ -121,6 +122,7 @@ class YumMembershipController extends YumController {
 
 	public function actionAdmin() {
 		$this->layout = Yum::module()->adminLayout;
+
 		$model=new YumMembership('search');
 		$model->unsetAttributes();
 
