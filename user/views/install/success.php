@@ -7,7 +7,7 @@
 
 <p> Don't forget to look in the Documentation in the docs/ directory to 
 see the module specific options that can be set in your Application 
-Configuration (for example, language). </p>>
+Configuration (for example, language). </p>
 
 <p> Please add a 'tablePrefix' => '', to your application db component, even
 if you are not using a tablePrefix. If you are using one, of course set the appropriate value. </p>

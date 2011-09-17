@@ -1,6 +1,9 @@
 <?php
+/** This is the Active Record class file of a translation string in 
+	Yii-user-Management. Please note that it is highly suggested to use a cache
+	when using translation strings coming from a database. */
 
-class YumTranslation extends CActiveRecord{
+class YumTranslation extends YumActiveRecord{
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -8,34 +11,37 @@ class YumTranslation extends CActiveRecord{
 
 	public function tableName()
 	{
-		return 'translation';
+		if(isset(Yum::module()->translationTable))
+			return Yum::module()->translationTable;	
+		else
+			return '{{translation}}';
 	}
 
 	public function rules()
 	{
 		return array(
-			array('message, translation, language', 'required'),
-			array('category', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('message, translation, category', 'length', 'max'=>255),
-			array('language', 'length', 'max'=>5),
-			array('message, translation, language, category', 'safe', 'on'=>'search'),
-		);
+				array('message, translation, language', 'required'),
+				array('category', 'default', 'setOnEmpty' => true, 'value' => null),
+				array('message, translation, category', 'length', 'max'=>255),
+				array('language', 'length', 'max'=>5),
+				array('message, translation, language, category', 'safe', 'on'=>'search'),
+				);
 	}
 
 	public function relations()
 	{
 		return array(
-		);
+				);
 	}
 
 	public function attributeLabels()
 	{
 		return array(
-			'message' => Yum::t('Message'),
-			'translation' => Yum::t('Translation'),
-			'language' => Yum::t('Language'),
-			'category' => Yum::t('Category'),
-		);
+				'message' => Yum::t('Message'),
+				'translation' => Yum::t('Translation'),
+				'language' => Yum::t('Language'),
+				'category' => Yum::t('Category'),
+				);
 	}
 
 	public function search()
@@ -48,21 +54,7 @@ class YumTranslation extends CActiveRecord{
 		$criteria->compare('category', $this->category, true);
 
 		return new CActiveDataProvider(get_class($this), array(
-			'criteria'=>$criteria,
-		));
+					'criteria'=>$criteria,
+					));
 	}
-
-	public function beforeValidate() {
-		return parent::beforeValidate();	
-	}
-	public function afterValidate() {
-		return parent::afterValidate();	
-	}
-	public function beforeSave() {
-		return parent::beforeSave();	
-	}
-	public function afterSave() {
-		return parent::afterSave();	
-	}
-
 }

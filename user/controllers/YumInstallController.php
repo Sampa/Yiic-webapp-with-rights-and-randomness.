@@ -206,18 +206,6 @@ class YumInstallController extends YumController
 						$db->createCommand($sql)->execute();
 						$createdTables['profile']['privacySettingTable'] = $privacySettingTable;
 
-						//Create Profile Fields Group Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsGroupTable . "` (
-							`id` int unsigned not null auto_increment,
-							`group_name` VARCHAR(50) NOT NULL,
-							`title` VARCHAR(255) NOT NULL,
-							`position` INT(3) NOT NULL DEFAULT 0,
-							PRIMARY KEY (`id`)
-						) ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
-
-						$db->createCommand($sql)->execute();
-						$createdTables['profile']['profileFieldsGroupTable'] = $profileFieldsGroupTable;
-
 						// Create Profile Fields Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
 							`id` int unsigned NOT NULL auto_increment,
@@ -455,7 +443,6 @@ class YumInstallController extends YumController
 					'profileCommentTable' => Yum::resolveTableName($this->module->profileCommentTable, Yii::app()->db),
 					'profileVisitTable' => Yum::resolveTableName($this->module->profileVisitTable, Yii::app()->db),
 					'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable, Yii::app()->db),
-					'profileFieldsGroupTable' => Yum::resolveTableName($this->module->profileFieldsGroupTable, Yii::app()->db),
 					'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable, Yii::app()->db),
 					'usergroupTable' => Yum::resolveTableName($this->module->usergroupTable, Yii::app()->db),
 					'usergroupMessagesTable' => Yum::resolveTableName($this->module->usergroupMessagesTable, Yii::app()->db),

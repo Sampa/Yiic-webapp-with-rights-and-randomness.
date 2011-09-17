@@ -7,7 +7,7 @@ Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
 class UserModule extends CWebModule {
-	public $version = '0.8-rc5';
+	public $version = '0.8-rc6';
 	public $debug = false;
 
 	//layout related control vars
@@ -17,7 +17,6 @@ class UserModule extends CWebModule {
 	public $adminLayout = 'application.modules.user.views.layouts.yum';
 
 	// configuration related control vars
-
 	public $enableLogging = true;
 	public $enableOnlineStatus = true; 
 	
@@ -30,9 +29,9 @@ class UserModule extends CWebModule {
   // for example, demo and Demo would be the same user then
 	public $caseSensitiveUsers = true;
 
-	// set this to false if you do not want to access data through a REST
-	// api
-	public $enableRESTapi = true;
+	// set this to true if you do want to access data through a REST api
+	public $enableRESTapi = false;
+
 	// Set this to true to enable RESTful login over the same password as
 	// the admin account. This is set to false, so the password does not
 	// get over the network in cleartext. Use the md5 password to authenticate.
@@ -48,7 +47,7 @@ class UserModule extends CWebModule {
 	public $pageSize = 10;
 
 	// if you want the users to be able to edit their profile TEXTAREAs with an
-	// rich text Editor like CKEditor, set that here
+	// rich text Editor like CKEditor or tinymce, set that here
   public $rtepath = false; // Don't use an Rich text Editor
   public $rteadapter = false; // Don't use an Adapter
 
@@ -95,7 +94,7 @@ class UserModule extends CWebModule {
 
 	private $_urls=array(
 			'login'=>array('//user/user'),
-			'return'=>array('//profile/profile/view'),
+			'return'=>array('//user/user/index'),
 			'firstVisit'=>array('//user/privacy/update'),
 			// Page to go after admin logs in
 			'returnAdmin'=>false,
@@ -151,7 +150,6 @@ class UserModule extends CWebModule {
 			'profileComment' => 'profile_comment',
 			'profileVisit' => 'profile_visit',
 			'profileFields' => 'profile_field',
-			'profileFieldsGroup' => 'profile_field_group',
 			'roles' => 'role',
 			'membership' => 'membership',
 			'payment' => 'payment',

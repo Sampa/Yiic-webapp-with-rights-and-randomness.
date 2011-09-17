@@ -59,7 +59,6 @@ class YumAdminMenu extends CPortlet {
 							array('label' => 'Admin inbox', 'url' => array('/messages/messages/index')),
 							array('label' => 'Sent messages', 'url' => array('/messages/messages/sent')),
 							array('label' => 'Write a message', 'url' => array('/messages/messages/compose')),
-							array('label' => 'Send message notifier emails', 'url' => array('/messages/messages/sendDigest')),
 							),
 						),
 				array('label' => 'Text translations', 'url' => array('//user/translation/admin')),

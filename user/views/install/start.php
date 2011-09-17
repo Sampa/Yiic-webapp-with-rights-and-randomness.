@@ -1,3 +1,4 @@
+<div style="width: 800px;">
 <h1> Yii User Management Module Installation </h1>
 
 <?php echo CHtml::beginForm(array('install')); ?>
@@ -13,16 +14,16 @@ your Database is Accessible in protected/config/main.php. </p>
 	<?php if (Yii::app()->db): ?>
 	<div class="hint"> Your database connection seems to be working </div>
 	<?php else: ?>
-	<div class="error"> Your database connection doesn't seem to be working </div>
+	<div class="error"> Your database connection <em> doesn't </em> seem to be working </div>
 	<?php endif; ?>
 
-	<p> <strong> Every existing Table will be deleted! If you are really sure you
-want to do install the Yii-User Module, switch the 'debug' parameter to
+	<br /><p> <strong> Every existing Table will be deleted! If you are really sure you
+want to install the Yii-User-Management Module, switch the 'debug' parameter to
 true, run the installer and switch it back to false, so your data doesn't
 get overriden accidentally. </strong> </p>
 
 	<p> This Installer will create the needed database Tables in your Database and
-some Demo Data. If you want so see, what will happen exactly, look at the 
+some demo Data. If you want so see, what will happen exactly, look at the 
 controllers/InstallController.php file in the Module Source. </p>
 
 	<p> The API Documentation, examples and an Database Schema for Mysql Workbench
@@ -159,10 +160,6 @@ your Yii Web Application </p>
 				<td> Table for the Profile Fields </td>
 				<td> <?php echo CHtml::textField('profileFieldsTable', $profileFieldsTable);?> </td>
 			</tr>
-			<tr>
-				<td> Table for the Profile Fields Groups </td>
-				<td> <?php echo CHtml::textField('profileFieldsGroupTable', $profileFieldsGroupTable);?> </td>
-			</tr>
 			<tr> 
 				<td> Table for the Profile Visits</td>
 				<td> <?php echo CHtml::textField('profileVisitTable', $profileVisitTable);?> </td> 
@@ -214,3 +211,4 @@ Yii::app()->clientScript->registerScript('install', $js); ?>
 <?php echo CHtml::submitButton('Install module'); ?>
 <?php echo CHtml::endForm(); ?>
 
+</div>
