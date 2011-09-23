@@ -22,8 +22,8 @@
 <?php echo CHtml::label(Yum::t('This users have been assigned to this role'), ''); ?> 
 
 <?php 
-$this->widget('YumModule.components.Relation',
-		array('model' => $model,
+$this->widget('YumModule.components.Relation', array(
+			'model' => $model,
 			'relation' => 'users',
 			'style' => 'dropdownlist',
 			'fields' => 'username',

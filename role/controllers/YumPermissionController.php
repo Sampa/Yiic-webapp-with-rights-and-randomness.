@@ -36,7 +36,6 @@ class YumPermissionController extends YumController
 		$this->redirect(array('//role/permission/admin')); 
 	}
 
-
 	public function actionAdmin()
 	{
 		$this->layout = Yum::module('role')->layout;
@@ -50,8 +49,6 @@ class YumPermissionController extends YumController
 					'model'=>$model,
 					));
 	}
-
-
 
 	public function actionCreate() {
 		$this->layout = Yum::module()->adminLayout;

@@ -30,6 +30,7 @@ $this->breadcrumbs=array(
 				'Action.comment',
 			array(
 					'class'=>'CButtonColumn',
+					'template' => '{delete}',
 					),
 				),
 
