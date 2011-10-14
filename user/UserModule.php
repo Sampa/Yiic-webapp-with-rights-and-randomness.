@@ -157,7 +157,6 @@ class UserModule extends CWebModule {
 			'permission' => 'permission',
 			'action' => 'action',
 			'activity' => 'activity',
-			'userRole' => 'user_role',
 			);
 
 	public $passwordRequirements = array(

@@ -38,8 +38,8 @@ class YumRole extends YumActiveRecord {
 	public function relations()
 	{
 		return array(
-				'activeusers'=>array(self::MANY_MANY, 'YumUser', Yum::module('role')->userHasRoleTable . '(role_id, user_id)', 'condition' => 'status = 3'),
-				'users'=>array(self::MANY_MANY, 'YumUser', 'user_has_role(role_id, user_id)'),
+				'activeusers'=>array(self::MANY_MANY, 'YumUser', Yum::module('role')->userRoleTable . '(role_id, user_id)', 'condition' => 'status = 3'),
+				'users'=>array(self::MANY_MANY, 'YumUser', Yum::module('role')->userRoleTable. '(role_id, user_id)'),
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 				'memberships' => array(self::HAS_MANY, 'YumMembership', 'membership_id'),
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),

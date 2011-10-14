@@ -12,7 +12,7 @@ class RoleModule extends CWebModule {
 	public $rolesTable = '{{roles}}';
 	public $permissionTable = '{{permission}}';
 	public $actionTable = '{{action}}';
-	public $userHasRoleTable = '{{user_has_role}}';
+	public $userRoleTable = '{{user_role}}';
 
 	public $controllerMap=array(
 			'action'=>array(
