@@ -61,6 +61,16 @@ class YumWebUser extends CWebUser
 		return $flag;
 	}
 
+public function getRoles() {
+	Yii::import('application.modules.role.models.*');
+	$t = ' ';
+	foreach(Yii::app()->user->data()->roles as $role)
+		$t .= $role->title .' ';
+
+	return $t;
+		
+}
+
 	/**
 	 * Checks if this (non-admin) User can administrate the given user
 	 */
