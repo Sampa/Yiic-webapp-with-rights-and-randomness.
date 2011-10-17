@@ -24,8 +24,8 @@ $this->breadcrumbs=array(
 				array(
 					'filter' => false,
 					'name' => 'principal',
-					'value' => '$data->type == "user" ? @$data->principal : @$data->principal_role->title'
-					),
+					'value' => '$data->type == "user" ? $data->principal->username : @$data->principal_role->title'
+					), 
 				'Action.title',
 				'Action.comment',
 			array(

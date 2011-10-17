@@ -308,6 +308,10 @@ class YumUser extends YumActiveRecord
 		}
 	}
 
+	// We retrieve the permissions from:
+	// 1.) All direct given permissions ($this->permissions)
+	// 2.) All direct given permissions to a role the user belongs
+	// 3.) All active memberships
 	public function getPermissions()
 	{
 		if (!Yum::hasModule('role'))
@@ -315,6 +319,7 @@ class YumUser extends YumActiveRecord
 
 		Yii::import('application.modules.role.models.*');
 		$roles = $this->roles;
+
 		if (Yum::hasModule('membership'))
 			$roles = array_merge($roles, $this->getActiveMemberships());
 
@@ -324,6 +329,12 @@ class YumUser extends YumActiveRecord
 			foreach (Yii::app()->db->cache(500)->createCommand($sql)->query()->readAll() as $permission)
 				$permissions[$permission['id']] = $permission['title'];
 		}
+
+			// Direct user permission assignments
+			$sql = "select id, action.title from permission left join action on action.id = permission.action where type = 'user' and principal_id = {$this->id}";
+			foreach (Yii::app()->db->cache(500)->createCommand($sql)->query()->readAll() as $permission)
+				$permissions[$permission['id']] = $permission['title'];
+
 
 		return $permissions;
 	}

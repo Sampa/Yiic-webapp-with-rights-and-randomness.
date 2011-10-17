@@ -2,7 +2,6 @@
 $this->title = Yum::t('Confirm deletion');
 
 $this->breadcrumbs = array(
-	Yum::t('Users') => array('index'),
 	Yum::t('Delete account'));
 
 printf('<h2>%s</h2>', Yum::t('Are you really sure you want to delete your Account?'));

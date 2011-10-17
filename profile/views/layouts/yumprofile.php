@@ -13,7 +13,7 @@ if(Yum::hasModule('messages')) {
 	Yii::import('application.modules.messages.components.*');
 	$this->widget('MessageWidget');
 }
-if(Yum::hasModule('profile')) {
+if(Yum::hasModule('profile') && Yum::module('profile')->enableProfileVisitLogging) {
 	Yii::import('application.modules.profile.components.*');
 	$this->widget('ProfileVisitWidget'); 
 }

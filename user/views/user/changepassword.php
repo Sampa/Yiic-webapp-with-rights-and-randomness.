@@ -3,7 +3,6 @@ $this->pageTitle = Yii::app()->name . ' - ' . Yum::t("change password");
 echo '<h2>'. Yum::t('change password') .'</h2>';
 
 $this->breadcrumbs = array(
-	Yum::t("Profile") => array('profile'),
 	Yum::t("Change password"));
 
 if(isset($expired) && $expired)
