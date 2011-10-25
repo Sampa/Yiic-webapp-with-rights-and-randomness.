@@ -29,7 +29,7 @@ class YumAdminMenu extends CPortlet {
 						array('label' => 'Generate Demo Data', 'url' => array('//user/user/generateData'), 'visible' => Yum::module()->debug),
 						)
 					),
-				array('label'=>'Roles / Access control', 'visible' => Yum::hasModule('role'), 'items' => array(
+				array('label'=>'Roles / Access control', 'active' => Yii::app()->controller->id == 'role' || Yii::app()->controller->id == 'permission' || Yii::app()->controller->id == 'action', 'visible' => Yum::hasModule('role'), 'items' => array(
 						array('label' => 'Roles', 'url' => array('//role/role/admin')),
 						array('label' => 'Create new role', 'url' => array('//role/role/create')),
 						array('label' => 'Permissions', 'url' => array('//role/permission/admin')),

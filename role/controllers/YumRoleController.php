@@ -24,7 +24,7 @@ class YumRoleController extends YumController {
 		$assignedUsers = new CActiveDataProvider('YumUser', array(
 					'criteria' => array(
 						'condition' => "role_id = {$model->id}",
-						'join' => 'left join '.Yum::module('role')->userHasRoleTable.' on t.id = user_id')));
+						'join' => 'left join '.Yum::module('role')->userRoleTable.' on t.id = user_id')));
 
 		$activeMemberships = false;
 		if(Yum::hasModule('membership')) {

@@ -314,7 +314,7 @@ class YumUser extends YumActiveRecord
 	// 3.) All active memberships
 	public function getPermissions()
 	{
-		if (!Yum::hasModule('role'))
+		if (!Yum::hasModule('role') || !$this->id)
 			return array();
 
 		Yii::import('application.modules.role.models.*');
@@ -329,6 +329,7 @@ class YumUser extends YumActiveRecord
 			foreach (Yii::app()->db->cache(500)->createCommand($sql)->query()->readAll() as $permission)
 				$permissions[$permission['id']] = $permission['title'];
 		}
+
 
 			// Direct user permission assignments
 			$sql = "select id, action.title from permission left join action on action.id = permission.action where type = 'user' and principal_id = {$this->id}";
