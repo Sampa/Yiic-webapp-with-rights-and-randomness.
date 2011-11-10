@@ -230,7 +230,7 @@ class YumUser extends YumActiveRecord
 		elseif (isset(Yii::app()->modules['user']['usersTable']))
 			$this->_tableName = Yii::app()->modules['user']['usersTable'];
 		else
-			$this->_tableName = '{{users}}'; // fallback if nothing is set
+			$this->_tableName = '{{user}}'; // fallback if nothing is set
 
 		return Yum::resolveTableName($this->_tableName, $this->getDbConnection());
 	}
@@ -538,7 +538,8 @@ class YumUser extends YumActiveRecord
 	}
 
 	/**
-	 * @params boolean $activate Whether to generate activation key when user is registering first time (false)
+	 * @params boolean $activate Whether to generate activation key when user is
+	 * registering first time (false)
 	 * or when it is activating (true)
 	 * @params string $password password entered by user
 	 * @param array $params, optional, to allow passing values outside class in inherited classes
@@ -548,11 +549,12 @@ class YumUser extends YumActiveRecord
 	 */
 	public function generateActivationKey($activate = false)
 	{
-		$this->activationKey = $activate
-			? YumUser::encrypt(microtime())
-			: YumUser::encrypt(microtime() . $this->password);
+		if($activate) {
+			$this->activationKey = $activate;
+			$this->save(false, array('activationKey'));
+		} else
+			$this->activationKey = YumUser::encrypt(microtime() . $this->password);
 
-		$this->save(false, array('activationKey'));
 		return $this->activationKey;
 	}
 

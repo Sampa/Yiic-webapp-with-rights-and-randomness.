@@ -151,7 +151,7 @@ class YumFriendshipController extends YumController {
 					return false; // already friends, rejected or request pending
 
 		return CHtml::link(Yum::t('Add as a friend'), array(
-					'friendship/invite', 'user_id' => $invited->id));
+					'//friendship/friendship/invite', 'user_id' => $invited->id));
 	}
 }
 
