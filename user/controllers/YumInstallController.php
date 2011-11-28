@@ -443,7 +443,7 @@ class YumInstallController extends YumController
 					'profileCommentTable' => Yum::resolveTableName($this->module->profileCommentTable, Yii::app()->db),
 					'profileVisitTable' => Yum::resolveTableName($this->module->profileVisitTable, Yii::app()->db),
 					'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable, Yii::app()->db),
-					'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable, Yii::app()->db),
+					'userRoleTable' => Yum::resolveTableName(Yum::module('role')->userRoleTable, Yii::app()->db),
 					'usergroupTable' => Yum::resolveTableName($this->module->usergroupTable, Yii::app()->db),
 					'usergroupMessagesTable' => Yum::resolveTableName($this->module->usergroupMessagesTable, Yii::app()->db),
 					'permissionTable' => Yum::resolveTableName($this->module->permissionTable, Yii::app()->db),
