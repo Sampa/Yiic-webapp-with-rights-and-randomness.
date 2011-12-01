@@ -140,23 +140,23 @@ class UserModule extends CWebModule {
 
 	// Table names
 	private $_tables = array(
-			'users' => 'user',
+			'user' => 'user',
 			'privacySetting' => 'privacy_setting',
 			'translation' => 'translation',
-			'messages' => 'message',
+			'message' => 'message',
 			'usergroup' => 'user_group',
 			'usergroupMessages' => 'user_group_message',
 			'profile' => 'profile',
 			'profileComment' => 'profile_comment',
 			'profileVisit' => 'profile_visit',
-			'profileFields' => 'profile_field',
-			'roles' => 'role',
+			'profileField' => 'profile_field',
+			'role' => 'role',
+			'userRole' => 'user_role',
 			'membership' => 'membership',
 			'payment' => 'payment',
 			'friendship' => 'friendship',
 			'permission' => 'permission',
 			'action' => 'action',
-			'activity' => 'activity',
 			);
 
 	public $passwordRequirements = array(

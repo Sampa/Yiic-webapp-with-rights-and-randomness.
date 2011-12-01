@@ -43,17 +43,17 @@ class YumInstallController extends YumController
 					$transaction = $db->beginTransaction();
 
 					$tables = array(
-						'usersTable',
+						'userTable',
 						'privacySettingTable',
-						'profileFieldsTable',
+						'profileFieldTable',
 						'profileFieldsGroupTable',
 						'profileTable',
 						'profileCommentTable',
 						'profileVisitTable',
 						'membershipTable',
 						'paymentTable',
-						'messagesTable',
-						'rolesTable',
+						'messageTable',
+						'roleTable',
 						'userRoleTable',
 						'permissionTable',
 						'friendshipTable',
@@ -78,7 +78,7 @@ class YumInstallController extends YumController
 					}
 
 					// Create User Table
-					$sql = "CREATE TABLE IF NOT EXISTS `" . $usersTable . "` (
+					$sql = "CREATE TABLE IF NOT EXISTS `" . $userTable . "` (
 						`id` int unsigned NOT NULL auto_increment,
 						`username` varchar(20) NOT NULL,
 						`password` varchar(128) NOT NULL,
@@ -98,7 +98,7 @@ class YumInstallController extends YumController
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 					$db->createCommand($sql)->execute();
-					$createdTables['user']['usersTable'] = $usersTable;
+					$createdTables['user']['userTable'] = $userTable;
 
 					// Create messages translation table
 					$sql = "CREATE TABLE IF NOT EXISTS `{$translationTable}` (
@@ -207,7 +207,7 @@ class YumInstallController extends YumController
 						$createdTables['profile']['privacySettingTable'] = $privacySettingTable;
 
 						// Create Profile Fields Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldsTable . "` (
+						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileFieldTable . "` (
 							`id` int unsigned NOT NULL auto_increment,
 							`varname` varchar(50) NOT NULL DEFAULT '',
 							`title` varchar(255) NOT NULL DEFAULT '',
@@ -229,7 +229,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
-						$createdTables['profile']['profileFieldsTable'] = $profileFieldsTable;
+						$createdTables['profile']['profileFieldTable'] = $profileFieldTable;
 
 						// Create Profiles Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $profileTable . "` (
@@ -279,7 +279,7 @@ class YumInstallController extends YumController
 					// Install Role Management submodule
 					if (isset($_POST['installRole'])) {
 						// Create Roles Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $rolesTable . "` (
+						$sql = "CREATE TABLE IF NOT EXISTS `" . $roleTable . "` (
 							`id` INT unsigned NOT NULL AUTO_INCREMENT ,
 							`title` VARCHAR(255) NOT NULL ,
 							`description` VARCHAR(255) NULL,
@@ -290,7 +290,7 @@ class YumInstallController extends YumController
 						) ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 
 						$db->createCommand($sql)->execute();
-						$createdTables['role']['rolesTable'] = $rolesTable;
+						$createdTables['role']['roleTable'] = $roleTable;
 
 						// Create User_has_role Table
 						$sql = "CREATE TABLE IF NOT EXISTS `" . $userRoleTable . "` (
@@ -332,7 +332,7 @@ class YumInstallController extends YumController
 					// Install Messages submodule
 					if (isset($_POST['installMessages'])) {
 						// Create Messages Table
-						$sql = "CREATE TABLE IF NOT EXISTS `" . $messagesTable . "` (
+						$sql = "CREATE TABLE IF NOT EXISTS `" . $messageTable . "` (
 							`id` int unsigned NOT NULL auto_increment,
 							`timestamp` int unsigned NOT NULL,
 							`from_user_id` int unsigned NOT NULL,
@@ -346,12 +346,12 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
-						$createdTables['messages']['messagesTable'] = $messagesTable;
+						$createdTables['messages']['messageTable'] = $messageTable;
 					}
 
 					// Generate demo data
 
-					$sql = "INSERT INTO `" . $usersTable
+					$sql = "INSERT INTO `" . $userTable
 					   ."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES "
 					   ."(1, 'admin', '" . YumUser::encrypt('admin') . "', '', " . time() . ", 0, 1, 1),"
 					   ."(2, 'demo', '" . YumUser::encrypt('demo') . "', '', " . time() . ", 0, 0, 1)";
@@ -385,7 +385,7 @@ class YumInstallController extends YumController
 
 						$db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `" . $rolesTable . "` (`title`,`description`, `price`, `duration`) VALUES "
+						$sql = "INSERT INTO `" . $roleTable . "` (`title`,`description`, `price`, `duration`) VALUES "
 							."('UserManager', 'This users can manage Users', 0, 0),"
 							."('Demo', 'Users having the demo role', 0, 0),"
 							."('Business', 'Example Business account', 9.99, 7),"
@@ -406,7 +406,7 @@ class YumInstallController extends YumController
 							."(2, 2, 'demo','demo','demo@example.com')";
 						$db->createCommand($sql)->execute();
 
-						$sql = "INSERT INTO `" . $profileFieldsTable . "` "
+						$sql = "INSERT INTO `" . $profileFieldTable . "` "
 							."(`varname`, `title`, `field_type`, `field_size`, `required`, `visible`, `other_validator`) VALUES "
 							."('email', 'E-Mail', 'VARCHAR', 255, 1, 3, 'CEmailValidator'),"
 							."('firstname', 'First name', 'VARCHAR', 255, 1, 3, ''),"
@@ -432,18 +432,18 @@ class YumInstallController extends YumController
 			else {
 				$this->render('start', array(
 					//FIXME: We should normalize table names either in singular or plural.
-					'usersTable' => Yum::resolveTableName($this->module->usersTable, Yii::app()->db),
+					'userTable' => Yum::resolveTableName($this->module->userTable, Yii::app()->db),
 					'privacySettingTable' => Yum::resolveTableName($this->module->privacySettingTable, Yii::app()->db),
 					'translationTable' => Yum::resolveTableName($this->module->translationTable, Yii::app()->db),
-					'rolesTable' => Yum::resolveTableName($this->module->rolesTable, Yii::app()->db),
+					'roleTable' => Yum::resolveTableName($this->module->roleTable, Yii::app()->db),
 					'membershipTable' => Yum::resolveTableName($this->module->membershipTable, Yii::app()->db),
 					'paymentTable' => Yum::resolveTableName($this->module->paymentTable, Yii::app()->db),
-					'messagesTable' => Yum::resolveTableName($this->module->messagesTable, Yii::app()->db),
+					'messageTable' => Yum::resolveTableName($this->module->messageTable, Yii::app()->db),
 					'profileTable' => Yum::resolveTableName($this->module->profileTable, Yii::app()->db),
 					'profileCommentTable' => Yum::resolveTableName($this->module->profileCommentTable, Yii::app()->db),
 					'profileVisitTable' => Yum::resolveTableName($this->module->profileVisitTable, Yii::app()->db),
-					'profileFieldsTable' => Yum::resolveTableName($this->module->profileFieldsTable, Yii::app()->db),
-					'userRoleTable' => Yum::resolveTableName(Yum::module('role')->userRoleTable, Yii::app()->db),
+					'profileFieldTable' => Yum::resolveTableName($this->module->profileFieldTable, Yii::app()->db),
+					'userRoleTable' => Yum::resolveTableName($this->module->userRoleTable, Yii::app()->db),
 					'usergroupTable' => Yum::resolveTableName($this->module->usergroupTable, Yii::app()->db),
 					'usergroupMessagesTable' => Yum::resolveTableName($this->module->usergroupMessagesTable, Yii::app()->db),
 					'permissionTable' => Yum::resolveTableName($this->module->permissionTable, Yii::app()->db),

@@ -17,7 +17,7 @@ your Database is Accessible in protected/config/main.php. </p>
 	<div class="error"> Your database connection <em> doesn't </em> seem to be working </div>
 	<?php endif; ?>
 
-	<br /><p> <strong> Every existing Table will be deleted! If you are really sure you
+	<br /><p> <strong> Every already existing Table from previous yii-user-management installations will be deleted! If you are really sure you
 want to install the Yii-User-Management Module, switch the 'debug' parameter to
 true, run the installer and switch it back to false, so your data doesn't
 get overriden accidentally. </strong> </p>
@@ -39,7 +39,7 @@ your Yii Web Application </p>
 	<table>
 		<tr>
 			<td> Table for Users </td>
-			<td> <?php echo CHtml::textField('usersTable', $usersTable); ?> </td>
+			<td> <?php echo CHtml::textField('userTable', $userTable); ?> </td>
 		</tr>
 			<tr>
 				<td> Table for message translation Table (required) </td>
@@ -58,7 +58,7 @@ your Yii Web Application </p>
 		<table>
 			<tr>
 				<td> Table for the Roles </td>
-				<td> <?php echo CHtml::textField('rolesTable', $rolesTable); ?> </td> 
+				<td> <?php echo CHtml::textField('roleTable', $roleTable); ?> </td> 
 			</tr>
 			<tr>
 				<td> Table for the Role Assignment </td>
@@ -112,7 +112,7 @@ your Yii Web Application </p>
 		<table>
 			<tr>
 				<td> Table for Messages </td>
-				<td> <?php echo CHtml::textField('messagesTable', $messagesTable); ?> </td> 
+				<td> <?php echo CHtml::textField('messageTable', $messageTable); ?> </td> 
 			</tr>
 		</table>
 	</div>
@@ -158,7 +158,7 @@ your Yii Web Application </p>
 		<table>
 			<tr>
 				<td> Table for the Profile Fields </td>
-				<td> <?php echo CHtml::textField('profileFieldsTable', $profileFieldsTable);?> </td>
+				<td> <?php echo CHtml::textField('profileFieldTable', $profileFieldTable);?> </td>
 			</tr>
 			<tr> 
 				<td> Table for the Profile Visits</td>
