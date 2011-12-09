@@ -6,7 +6,7 @@ $this->breadcrumbs=array(
 	Yum::t('Sent messages'));
 
 $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'yum-sent-messages-grid',
+	'id'=>'yum-sent-message-grid',
 	'dataProvider' => $model->search(true),
 	'columns'=>array(
 		array(

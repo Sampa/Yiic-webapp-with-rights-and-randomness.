@@ -1,5 +1,5 @@
 <?php
-if(Yum::module('messages')->messageSystem != YumMessage::MSG_NONE 
+if(Yum::module('message')->messageSystem != YumMessage::MSG_NONE 
 		&& $model->id != Yii::app()->user->id) {
 
 echo '<div style="display: none;" id="write_a_message">';

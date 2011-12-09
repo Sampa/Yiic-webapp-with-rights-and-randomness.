@@ -55,6 +55,11 @@ class YumRegistrationController extends YumController {
 	 * user/docs/registration.txt
 	 */
 	public function actionRegistration() {
+		// When we overrie the registrationUrl, this one is not valid anymore!
+		if(Yum::module('registration')->registrationUrl != array(
+					'//registration/registration/registration'))
+			throw new CHttpException(403);
+
 		Yii::import('application.modules.profile.models.*');
 		$form = new YumRegistrationForm;
 		$profile = new YumProfile;

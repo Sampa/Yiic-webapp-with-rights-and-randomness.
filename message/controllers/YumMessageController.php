@@ -4,7 +4,7 @@
 
 Yii::import('application.modules.user.controllers.YumController');
 
-class YumMessagesController extends YumController {
+class YumMessageController extends YumController {
 	public function accessRules() {
 		return array(
 			array('allow',
@@ -62,7 +62,7 @@ class YumMessagesController extends YumController {
 	}
 
 	public function actionCompose($to_user_id = null) {
-		$this->performAjaxValidation('YumMessage', 'yum-messages-form');
+		$this->performAjaxValidation('YumMessage', 'yum-message-form');
 		$model = new YumMessage;
 
 		if(isset($_POST['YumMessage'])) {
@@ -118,7 +118,7 @@ class YumMessagesController extends YumController {
 		if(isset($_POST['sendDigest'])) {
 			foreach(YumMessage::model()->with('to_user')->findAll('not message_read') as $message) {
 				if((is_object($message->to_user) && $message->to_user->notifyType == 'Digest')
-						|| Yum::module('messages')->notifyType == 'Digest') { 
+						|| Yum::module('message')->notifyType == 'Digest') { 
 					$this->mailMessage($message);
 					$recipients[] = $message->to_user->profile->email;
 				}

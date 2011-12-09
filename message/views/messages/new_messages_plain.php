@@ -8,9 +8,9 @@ if($messages) {
 	foreach($messages as $message) {
 		printf("<li><span> %s</span> &nbsp; %s</li>",
 				CHtml::link($message->title, array(
-						'//messages/messages/view', 'id' => $message->id)),
+						'//message/message/view', 'id' => $message->id)),
 				CHtml::link(Yum::t('Reply'), array(
-							'//messages/messages/compose',
+							'//message/message/compose',
 							'to_user_id' => $message->from_user_id)));
 	}
 	echo '</ul>';

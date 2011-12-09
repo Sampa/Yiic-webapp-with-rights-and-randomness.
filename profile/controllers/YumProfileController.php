@@ -71,7 +71,8 @@ class YumProfileController extends YumController {
 	}
 
 	public function beforeAction($action) {
-		$this->layout = Yum::module('profile')->layout;
+		if(!isset($this->layout))
+			$this->layout = Yum::module('profile')->layout;
 		return parent::beforeAction($action);
 	}
 

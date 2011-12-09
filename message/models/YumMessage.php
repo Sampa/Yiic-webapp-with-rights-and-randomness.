@@ -105,7 +105,7 @@ class YumMessage extends YumActiveRecord
 			$timestamp2 = time();
 		}
 
-		$sql = "select count(*) from messages where timestamp > {$timestamp} and timestamp < {$timestamp2}";
+		$sql = "select count(*) from {$this->tableName()} where timestamp > {$timestamp} and timestamp < {$timestamp2}";
 		$result = Yii::app()->db->createCommand($sql)->queryAll();
 		return $result[0]['count(*)'];
 	}
@@ -141,10 +141,10 @@ class YumMessage extends YumActiveRecord
 	 */
 	public function tableName()
 	{
-		if (isset(Yum::module('messages')->messagesTable))
-			$this->_tableName = Yum::module('messages')->messagesTable;
+		if (isset(Yum::module('message')->messageTable))
+			$this->_tableName = Yum::module('message')->messageTable;
 		else
-			$this->_tableName = '{{messages}}'; // fallback if nothing is set
+			$this->_tableName = '{{message}}'; // fallback if nothing is set
 
 		return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
 	}

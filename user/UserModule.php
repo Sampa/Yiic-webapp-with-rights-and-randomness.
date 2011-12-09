@@ -141,7 +141,7 @@ class UserModule extends CWebModule {
 	// Table names
 	private $_tables = array(
 			'user' => 'user',
-			'privacySetting' => 'privacy_setting',
+			'privacySetting' => 'privacysetting',
 			'translation' => 'translation',
 			'message' => 'message',
 			'usergroup' => 'user_group',

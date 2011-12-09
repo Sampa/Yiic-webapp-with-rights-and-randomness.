@@ -3,12 +3,12 @@ Yii::setPathOfAlias('MessagesModule' , dirname(__FILE__));
 
 Yii::import('MessagesModule.models.*');
 
-class MessagesModule extends CWebModule {
+class MessageModule extends CWebModule {
 	// System-wide configuration option on how users should be notified about
   // new internal messages by email. Available options:
   // None, Digest, Instant, User, Treshhold
 	// 'User' means to use the user-specific option in the user table
-	public $messagesTable = '{{messages}}';
+	public $messageTable = '{{message}}';
 	public $notifyType = 'user';
 
 	public $layout = 'application.modules.user.views.layouts.yum';
@@ -20,7 +20,7 @@ class MessagesModule extends CWebModule {
 	public $messageSystem = YumMessage::MSG_DIALOG;
 
 	public $controllerMap=array(
-		'messages'=>array('class'=>'MessagesModule.controllers.YumMessagesController'),
+		'message'=>array('class'=>'MessagesModule.controllers.YumMessageController'),
 	);
 
 }

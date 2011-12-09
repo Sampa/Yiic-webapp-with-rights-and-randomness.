@@ -134,9 +134,9 @@ class YumProfile extends YumActiveRecord
 			if ($field->field_type=='DATE')
 			{
 				$field_rule = array($field->varname,
-						'type',
-						'type' => 'date',
-						'dateFormat' => 'yyyy-mm-dd');
+						'date',
+						'allowEmpty' => true,
+						'format' => 'yyyy-MM-dd');
 
 				if ($field->error_message)
 					$field_rule['message'] = Yum::t( $field->error_message);

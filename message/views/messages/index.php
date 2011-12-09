@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 echo Yum::renderFlash();
 
 $this->widget('zii.widgets.grid.CGridView', array(
-			'id'=>'yum-messages-grid',
+			'id'=>'yum-message-grid',
 			'dataProvider' => $model->search(),
 			'columns'=>array(
 				array(
