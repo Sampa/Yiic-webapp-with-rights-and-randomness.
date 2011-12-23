@@ -1,12 +1,15 @@
+<style type="text/css">
+td { vertical-align: top; } 
+td td { border: 1px dotted; } 
+
+input { width: 100px; } 
+</style>
 <div style="width: 800px;">
 <h1> Yii User Management Module Installation </h1>
 
 <?php echo CHtml::beginForm(array('install')); ?>
-
-	<h2> Information: </h2>
-	<hr />
 	<p> You are about to install the Yii User management Module version
-<?php echo Yii::app()->getModule('user')->version; ?>
+<em><?php echo Yii::app()->getModule('user')->version; ?> </em>
  in your Web Application. You require a working database connection to an mysql
 Database. Other Databases are not supported at this time. Please make sure 
 your Database is Accessible in protected/config/main.php. </p>
@@ -17,169 +20,161 @@ your Database is Accessible in protected/config/main.php. </p>
 	<div class="error"> Your database connection <em> doesn't </em> seem to be working </div>
 	<?php endif; ?>
 
-	<br /><p> <strong> Every already existing Table from previous yii-user-management installations will be deleted! If you are really sure you
-want to install the Yii-User-Management Module, switch the 'debug' parameter to
-true, run the installer and switch it back to false, so your data doesn't
-get overriden accidentally. </strong> </p>
+	<br />
+	<h2> Configuration of table Names: </h2>
+<table>
+	<tr>
+	<td>
 
-	<p> This Installer will create the needed database Tables in your Database and
-some demo Data. If you want so see, what will happen exactly, look at the 
-controllers/InstallController.php file in the Module Source. </p>
-
-	<p> The API Documentation, examples and an Database Schema for Mysql Workbench
-can be found in the docs/ directory of the Module. Please also take a look
-in this directory when you want to use the Role Manager of yii-user. </p>
-
-	<p> To set the language of this Module, set the 'language' config param of
-your Yii Web Application </p>
-
-	<h2> Configuration: </h2>
-	<hr />
-	<p> Yii User Management will generate the following Tables: </p>
+	<label for="installRole"> User Management </label>
+		<p>&nbsp;</p>
 	<table>
 		<tr>
-			<td> Table for Users </td>
+			<td> Users </td>
 			<td> <?php echo CHtml::textField('userTable', $userTable); ?> </td>
 		</tr>
 			<tr>
-				<td> Table for message translation Table (required) </td>
+				<td> Message translation Table (required) </td>
 				<td> <?php echo CHtml::textField('translationTable', $translationTable); ?> </td>
 			</tr>
 		</table>
 
-
-
-	<div style="clear:both;"> </div>
-
-	<label for="installRole"> Install Role Management submodule </label>
+	</td>
+	<td>
+	<label for="installRole"> Role Management submodule </label>
 	<?php echo CHtml::checkBox('installRole', true); ?>
 
 	<div id="roles">
 		<table>
 			<tr>
-				<td> Table for the Roles </td>
+				<td> Roles </td>
 				<td> <?php echo CHtml::textField('roleTable', $roleTable); ?> </td> 
 			</tr>
 			<tr>
-				<td> Table for the Role Assignment </td>
+				<td> Role Assignment </td>
 				<td> <?php echo CHtml::textField('userRoleTable', $userRoleTable); ?> </td>
 			</tr>
 				</table>
 	</div>
 
-	<div style="clear:both;"> </div>
+	</td>
+	<td>
 
-	<label for="installMembership"> Install Membership Management submodule </label>
+	<label for="installMembership"> Membership Management </label>
 	<?php echo CHtml::checkBox('installMembership', true); ?>
 
 	<div id="membership">
 		<table>
 			<tr>
-				<td> Table for the Membership assignment </td>
+				<td> Membership assignment </td>
 				<td> <?php echo CHtml::textField('membershipTable', $membershipTable); ?> </td> 
 			</tr>
 			<tr>
-				<td> Table for the Payment types </td>
+				<td> Payment types </td>
 				<td> <?php echo CHtml::textField('paymentTable', $paymentTable); ?> </td> 
 			</tr>
 				</table>
 
 	</div>
 
-	<div style="clear:both;"> </div>
+	</td>
+	<td>
 
-	<label for="installPermission"> Install permission Submodule </label>
+	<label for="installPermission"> Permission submodule </label>
 	<?php echo CHtml::checkBox('installPermission', true); ?>
 
 	<div id="permission">
 		<table>
 			<tr>
-				<td> Table for the permission Assignment </td>
+				<td> Permission Assignment </td>
 				<td> <?php echo CHtml::textField('permissionTable', $permissionTable); ?> </td>
 			</tr>
 			<tr>
-				<td> Table for the available Actions </td>
+				<td> Actions </td>
 				<td> <?php echo CHtml::textField('actionTable', $actionTable); ?> </td>
 			</tr>
 				</table>
 	</div>
 
-	<div style="clear:both;"> </div>
-
-	<label for="installMessages"> Install Messages submodule </label>
+	</td>
+	</tr><tr>
+	<td>
+	<label for="installMessages"> Messages submodule </label>
 	<?php echo CHtml::checkBox('installMessages', true); ?>
 	<div id="messages">
 		<table>
 			<tr>
-				<td> Table for Messages </td>
+				<td> Messages </td>
 				<td> <?php echo CHtml::textField('messageTable', $messageTable); ?> </td> 
 			</tr>
 		</table>
 	</div>
 
-	<div style="clear:both;"> </div>
+	</td>
+	<td>
 
-	<label for="installMessages"> Install Usergroups submodule </label>
+	<label for="installMessages"> Usergroups submodule </label>
 	<?php echo CHtml::checkBox('installUsergroup', true); ?>
 	<div id="usergroup">
 		<table>
 			<tr>
-				<td> Table for User groups </td>
+				<td> User groups </td>
 				<td> <?php echo CHtml::textField('usergroupTable', $usergroupTable); ?> </td> 
 			</tr>
 			<tr>
-				<td> Table for User group messages</td>
+				<td> User group messages</td>
 				<td> <?php echo CHtml::textField('usergroupMessagesTable',
 						$usergroupMessagesTable); ?> </td> 
 				</tr>
 		</table>
 
 	</div>
+	</td>
+	<td>
 
-	<div style="clear:both;"> </div>
-
-	<label for="installMessages"> Install Friendship submodule </label>
+	<label for="installMessages"> Friendship submodule </label>
 	<?php echo CHtml::checkBox('installFriendship', true); ?>
 	<div id="friendship">
 		<table>
 			<tr>
-				<td> Table for Friendship assignment </td>
+				<td> Friendships </td>
 				<td> <?php echo CHtml::textField('friendshipTable', $friendshipTable); ?> </td> 
 			</tr>
 		</table>
 	</div>
+	</td>
+	<td>
 
-	<div style="clear:both;"> </div>
-
-	<label for="installRole"> Install Profiles submodule </label>
+	<label for="installRole"> Profiles submodule </label>
 	<?php echo CHtml::checkBox('installProfiles', true); ?>
 
 	<div id="profiles">
 		<table>
 			<tr>
-				<td> Table for the Profile Fields </td>
+				<td> Profile Fields </td>
 				<td> <?php echo CHtml::textField('profileFieldTable', $profileFieldTable);?> </td>
 			</tr>
 			<tr> 
-				<td> Table for the Profile Visits</td>
+				<td> Profile Visits</td>
 				<td> <?php echo CHtml::textField('profileVisitTable', $profileVisitTable);?> </td> 
 			</tr>			
 			<tr> 
-				<td> Table for the Profile Comments</td>
+				<td> Profile Comments</td>
 				<td> <?php echo CHtml::textField('profileCommentTable', $profileCommentTable);?> </td> 
 			</tr>			
 			<tr> 
-				<td> Table for the Profiles </td>
+				<td> Profiles </td>
 				<td> <?php echo CHtml::textField('profileTable', $profileTable); ?> </td> 
 			</tr>
 		<tr>
-			<td> Table for Privacy settings</td>
+			<td> Privacy settings</td>
 			<td> <?php echo CHtml::textField('privacySettingTable', $privacySettingTable); ?> </td>
 		</tr>
 		</table>
 	</div>
-
-	<div style="clear:both;"> </div>
+	</td>
+	</tr>
+</table>
 
 	<?php 
 	$js = "
@@ -207,6 +202,11 @@ your Yii Web Application </p>
 
 	";
 Yii::app()->clientScript->registerScript('install', $js); ?>
+
+<p> <strong> Every already existing Table from previous yii-user-management installations will be deleted! If you are really sure you
+want to install the Yii-User-Management Module, switch the 'debug' parameter to
+true, run the installer and switch it back to false, so your data doesn't
+get overriden accidentally. </strong> </p>
 
 <?php echo CHtml::submitButton('Install module'); ?>
 <?php echo CHtml::endForm(); ?>

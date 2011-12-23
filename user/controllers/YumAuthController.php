@@ -192,7 +192,6 @@ class YumAuthController extends YumController {
 			case YumUserIdentity::ERROR_STATUS_REMOVED:
 				$this->loginForm->addError('status', Yum::t('Your account has been deleted.'));
 				break;
-
 			case YumUserIdentity::ERROR_PASSWORD_INVALID:
 				Yum::log( Yum::t(
 							'Password invalid for user {username} (Ip-Address: {ip})', array(

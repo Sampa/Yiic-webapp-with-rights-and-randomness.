@@ -1,7 +1,7 @@
 <?php 
 Yii::app()->clientScript->registerCssFile(
 		Yii::app()->getAssetManager()->publish(
-			Yii::getPathOfAlias('YumAssets').'/css/yum.css'));
+			Yii::getPathOfAlias('application.modules.user.assets.css').'/yum.css'));
 
 $module = Yum::module();
 $this->beginContent($module->baseLayout); ?>

@@ -7,7 +7,7 @@ Yii::import('YumModule.models.*');
 Yii::import('YumModule.controllers.YumController');
 
 class UserModule extends CWebModule {
-	public $version = '0.8-rc6';
+	public $version = '0.8-rc7';
 	public $debug = false;
 
 	//layout related control vars

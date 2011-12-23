@@ -23,20 +23,20 @@ class YumUserIdentity extends CUserIdentity {
 		$fb_uid = $facebook->getUser();
 		$profile = YumProfile::model()->findByAttributes(array('facebook_id'=>$fb_uid));
 		$user = ($profile) ? YumUser::model()->findByPk($profile->user_id) : null;
-			if ($user === null)
-				$this->errorCode = self::ERROR_USERNAME_INVALID;
-			else if($user->status == YumUser::STATUS_INACTIVE)
-				$this->errorCode = self::ERROR_STATUS_INACTIVE;
-			else if($user->status == YumUser::STATUS_BANNED)
-				$this->errorCode = self::ERROR_STATUS_BANNED;
-			else
-			{
-				$this->id = $user->id;
-				$this->username = 'facebook';
-				$this->facebook_id = $fb_uid;
-				//$this->facebook_user = $facebook->api('/me');
-				$this->errorCode = self::ERROR_NONE;
-			}
+		if ($user === null)
+			$this->errorCode = self::ERROR_USERNAME_INVALID;
+		else if($user->status == YumUser::STATUS_INACTIVE)
+			$this->errorCode = self::ERROR_STATUS_INACTIVE;
+		else if($user->status == YumUser::STATUS_BANNED)
+			$this->errorCode = self::ERROR_STATUS_BANNED;
+		else
+		{
+			$this->id = $user->id;
+			$this->username = 'facebook';
+			$this->facebook_id = $fb_uid;
+			//$this->facebook_user = $facebook->api('/me');
+			$this->errorCode = self::ERROR_NONE;
+		}
 	}
 
 	public function authenticateLdap()
@@ -54,62 +54,65 @@ class YumUserIdentity extends CUserIdentity {
 			throw new Exception('OpenLDAP: Could not connect to LDAP-Server');
 
 		if ($r = ldap_search($ds, $settings->ldap_basedn, '(uid=' . $this->username . ')'))
-		{
-			$result = @ldap_get_entries($ds, $r);
-			if ($result[0] && @ldap_bind($ds, $result[0]['dn'], $this->password))
-			{
+				{
+				$result = @ldap_get_entries($ds, $r);
+				if ($result[0] && @ldap_bind($ds, $result[0]['dn'], $this->password))
+				{
 				$user = YumUser::model()->find('username=:username', array(':username' => $this->username));
 				if ($user == NULL)
 				{
-					if ($settings->ldap_autocreate == 1)
-					{
-						$user = new YumUser();
-						$user->username = $this->username;
-						if ($settings->ldap_transfer_pw == 1)
-							$user->password = YumUser::encrypt($this->password);
-						$user->lastpasswordchange = 0;
-						$user->activationKey = '';
-						$user->superuser = 0;
-						$user->createtime = time();
-						$user->status = 1;
+				if ($settings->ldap_autocreate == 1)
+				{
+				$user = new YumUser();
+				$user->username = $this->username;
+				if ($settings->ldap_transfer_pw == 1)
+				$user->password = YumUser::encrypt($this->password);
+				$user->lastpasswordchange = 0;
+				$user->activationKey = '';
+				$user->superuser = 0;
+				$user->createtime = time();
+				$user->status = 1;
 
-						if ($user->save(false))
+				if ($user->save(false))
+				{
+					if (Yum::module()->enableProfiles)
+					{
+						$profile = new YumProfile();
+						$profile->user_id = $user->id;
+						$profile->privacy = 'protected';
+						if ($settings->ldap_transfer_attr == 1)
 						{
-							if (Yum::module()->enableProfiles)
-							{
-								$profile = new YumProfile();
-								$profile->user_id = $user->id;
-								$profile->privacy = 'protected';
-								if ($settings->ldap_transfer_attr == 1)
-								{
-									$profile->email = $result[0]['mail'][0];
-									$profile->lastname = $result[0]['sn'][0];
-									$profile->firstname = $result[0]['givenname'][0];
-									$profile->street = $result[0]['postaladdress'][0];
-									$profile->city = $result[0]['l'][0];
-								}
-								$profile->save(false);
-							}
+							$profile->email = $result[0]['mail'][0];
+							$profile->lastname = $result[0]['sn'][0];
+							$profile->firstname = $result[0]['givenname'][0];
+							$profile->street = $result[0]['postaladdress'][0];
+							$profile->city = $result[0]['l'][0];
 						}
-						else
-							return!$this->errorCode = self::ERROR_PASSWORD_INVALID;
+						$profile->save(false);
 					}
-					else
-						return!$this->errorCode = self::ERROR_PASSWORD_INVALID;
+				}
+				else
+					return!$this->errorCode = self::ERROR_PASSWORD_INVALID;
+				}
+				else
+					return!$this->errorCode = self::ERROR_PASSWORD_INVALID;
 				}
 
-				$this->id = $user->id;
-				$this->setState('id', $user->id);
-				$this->username = $user->username;
-				$this->user = $user;
+		$this->id = $user->id;
+		$this->setState('id', $user->id);
+		$this->username = $user->username;
+		$this->user = $user;
 
-				return!$this->errorCode = self::ERROR_NONE;
-			}
-		}
+		return!$this->errorCode = self::ERROR_NONE;
+				}
+				}
 		return!$this->errorCode = self::ERROR_PASSWORD_INVALID;
 	}
 
-	public function authenticate()
+	// Authenticate the user. When without_password is set to true, the user
+	// gets authenticated without providing a password. This is used for
+	// the option 'loginAfterSuccessfulActivation'
+	public function authenticate($without_password = false)
 	{
 		$user = YumUser::model()->find('username = :username', array(
 					':username' => $this->username));
@@ -117,14 +120,17 @@ class YumUserIdentity extends CUserIdentity {
 		// try to authenticate via email
 		if(!$user && (Yum::module()->loginType & 2) && Yum::hasModule('profile')) {
 			if($profile = YumProfile::model()->find('email = :email', array(
-						':email' => $this->username)))
+							':email' => $this->username)))
 				if($profile->user)
 					$user = $profile->user;
 		}
 
 		if(!$user)
 			return self::ERROR_STATUS_USER_DOES_NOT_EXIST;
-		if(YumUser::encrypt($this->password)!==$user->password)
+
+		if($without_password)
+			$this->credentialsConfirmed($user);
+		else if(YumUser::encrypt($this->password)!==$user->password)
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else if($user->status == YumUser::STATUS_INACTIVE)
 			$this->errorCode=self::ERROR_STATUS_INACTIVE;
@@ -132,13 +138,17 @@ class YumUserIdentity extends CUserIdentity {
 			$this->errorCode=self::ERROR_STATUS_BANNED;
 		else if($user->status == YumUser::STATUS_REMOVED)
 			$this->errorCode=self::ERROR_STATUS_REMOVED;
-		else {
-			$this->id = $user->id;
-			$this->setState('id', $user->id);
-			$this->username = $user->username;
-			$this->errorCode=self::ERROR_NONE;
-		}
+		else 
+			$this->credentialsConfirmed($user);
 		return !$this->errorCode;
+
+	}
+
+	function credentialsConfirmed($user) {
+		$this->id = $user->id;
+		$this->setState('id', $user->id);
+		$this->username = $user->username;
+		$this->errorCode=self::ERROR_NONE;
 	}
 
 	/**
