@@ -1,3 +1,4 @@
+
 <h2> <?php echo Yum::t('Registration'); ?> </h2>
 
 <?php $this->breadcrumbs = array(Yum::t('Registration')); ?>

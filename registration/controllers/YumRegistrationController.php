@@ -19,6 +19,8 @@ class YumRegistrationController extends YumController {
 	public function beforeAction($action) {
 		if (!Yii::app()->user->isGuest) 
 			$this->redirect(Yii::app()->user->returnUrl);
+
+		$this->layout = Yum::module('registration')->layout;
 		return parent::beforeAction($action);
 	}
 
@@ -143,8 +145,16 @@ class YumRegistrationController extends YumController {
 		// and do the Activation
 		$status = YumUser::activate($email, $key);
 
-		if($status instanceof YumUser)
+
+		if($status instanceof YumUser) {
+			if(Yum::module('registration')->loginAfterSuccessfulActivation) {
+				$login = new YumUserIdentity($status->username, false); 
+				$login->authenticate(true);
+				Yii::app()->user->login($login);	
+			} 
+
 			$this->render(Yum::module('registration')->activationSuccessView);
+		}
 		else
 			$this->render(Yum::module('registration')->activationFailureView, array(
 						'error' => $status));
