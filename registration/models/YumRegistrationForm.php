@@ -32,7 +32,6 @@ class YumRegistrationForm extends YumUser {
 
 			 $rules = array_merge($rules, $profile->rules());	 */
 
-
 		$rules[] = array('username', 'required');
 		$rules[] = array('password, verifyPassword', 'required');
 		$rules[] = array('password', 'compare',

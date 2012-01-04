@@ -1942,6 +1942,7 @@ INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `categor
 ('Verification code', 'Código de verificación', 'es', 'yum'),
 ('Verification code', 'Code de verification', 'fr', 'yum'),
 ('Verification code', 'Codice verifica', 'it', 'yum'),
+('verifyPassword', 'Passwort wiederholen', 'de', 'yum'),
 ('View', 'Anzeigen', 'de', 'yum'),
 ('View', 'Ver', 'es', 'yum'),
 ('View', 'Editer', 'fr', 'yum'),

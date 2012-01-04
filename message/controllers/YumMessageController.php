@@ -62,8 +62,8 @@ class YumMessageController extends YumController {
 	}
 
 	public function actionCompose($to_user_id = null) {
-		$this->performAjaxValidation('YumMessage', 'yum-message-form');
 		$model = new YumMessage;
+		$this->performAjaxValidation('YumMessage', 'yum-message-form');
 
 		if(isset($_POST['YumMessage'])) {
 			$model->attributes = $_POST['YumMessage'];

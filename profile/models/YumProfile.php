@@ -28,7 +28,7 @@ class YumProfile extends YumActiveRecord
 
 	public function afterSave() {
 		if($this->isNewRecord) 
-			Yii::log( Yum::t( 'A profile been created: {profile}', array(
+			Yii::log(Yum::t( 'A profile been created: {profile}', array(
 							'{profile}' => json_encode($this->attributes))));
 
 		return parent::afterSave();
@@ -102,8 +102,7 @@ class YumProfile extends YumActiveRecord
 		$rules = array();
 		$safe = array();
 
-		foreach (self::$fields as $field)
-		{
+		foreach (self::$fields as $field) {
 			$field_rule = array();
 
 			if ($field->required == 1)
@@ -113,14 +112,12 @@ class YumProfile extends YumActiveRecord
 					|| $field->field_type == 'FLOAT'
 					|| $field->field_type =='INTEGER'
 					|| $field->field_type =='BOOLEAN')
-				array_push($numerical,$field->varname);
+				array_push($numerical, $field->varname);
 
 			if ($field->field_type == 'DROPDOWNLIST')
 				array_push($safe, $field->varname);
 
-			if ($field->field_type =='VARCHAR'
-					||$field->field_type=='TEXT')
-			{
+			if ($field->field_type == 'VARCHAR' || $field->field_type == 'TEXT') {
 				$field_rule = array($field->varname,
 						'length',
 						'max'=>$field->field_size,
@@ -128,33 +125,22 @@ class YumProfile extends YumActiveRecord
 
 				if ($field->error_message)
 					$field_rule['message'] = Yum::t($field->error_message);
+
 				array_push($rules,$field_rule);
 			}
 
-			if ($field->field_type=='DATE')
-			{
-				$field_rule = array($field->varname,
-						'date',
-						'allowEmpty' => true,
-						'format' => 'yyyy-MM-dd');
-
-				if ($field->error_message)
-					$field_rule['message'] = Yum::t( $field->error_message);
-				array_push($rules,$field_rule);
-			}
-
-			if ($field->match)
-			{
+			if ($field->match) {
 				$field_rule = array($field->varname,
 						'match',
 						'pattern' => $field->match);
 
 				if ($field->error_message)
 					$field_rule['message'] = Yum::t( $field->error_message);
+
 				array_push($rules,$field_rule);
 			}
-			if ($field->range)
-			{
+
+			if ($field->range) {
 				// allow using commas and semicolons
 				$range=explode(';',$field->range);
 				if(count($range)===1)
@@ -166,8 +152,7 @@ class YumProfile extends YumActiveRecord
 				array_push($rules,$field_rule);
 			}
 
-			if ($field->other_validator)
-			{
+			if ($field->other_validator) {
 				$field_rule = array($field->varname,
 						$field->other_validator);
 
@@ -200,7 +185,7 @@ class YumProfile extends YumActiveRecord
 				'comments' => array(self::HAS_MANY, 'YumProfileComment', 'profile_id'),
 				);
 
-		$fields = Yii::app()->db->cache(500)->createCommand(
+		$fields = Yii::app()->db->cache(3600)->createCommand(
 				"select * from ".YumProfileField::model()->tableName()." where field_type = 'DROPDOWNLIST'")->queryAll();
 
 		foreach($fields as $field) {
@@ -234,6 +219,9 @@ class YumProfile extends YumActiveRecord
 		return $fields;
 	}
 
+	public function name() {
+		return sprintf('%s %s', $this->firstname, $this->lastname);
+	}
 
 	public function attributeLabels()
 	{

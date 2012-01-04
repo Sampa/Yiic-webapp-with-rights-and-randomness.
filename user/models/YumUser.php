@@ -353,10 +353,13 @@ class YumUser extends YumActiveRecord
 	{
 		if (Yum::hasModule('profile'))
 			Yii::import('application.modules.profile.models.*');
+		if (Yum::hasModule('message'))
+			Yii::import('application.modules.message.models.*');
+
 		return array(
 				'permissions' => array(self::HAS_MANY, 'YumPermission', 'principal_id'),
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
-				'messages' => array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.id DESC'),
+				'messages' => array(self::HAS_MANY, 'YumMessage', 'to_user_id', 'order' => 'messages.timestamp DESC'),
 				'sent_messages' => array(self::HAS_MANY, 'YumMessage', 'from_user_id'),
 				'visits' => array(self::HAS_MANY, 'YumProfileVisit', 'visited_id'),
 				'visited' => array(self::HAS_MANY, 'YumProfileVisit', 'visitor_id'),
