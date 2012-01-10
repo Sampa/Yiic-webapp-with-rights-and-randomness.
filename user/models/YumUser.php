@@ -444,6 +444,11 @@ class YumUser extends YumActiveRecord
 		// Users stay banned until they confirm their email address.
 		$this->status = YumUser::STATUS_INACTIVE;
 
+		// If the avatar module and avatar->enableGravatar is activated, we assume
+		// the user wants to use his Gravatar automatically after registration
+		if(Yum::hasModule('avatar') && Yum::module('avatar')->enableGravatar)
+			$this->avatar = 'gravatar';
+
 		if (!($profile instanceof YumProfile)) {
 			$email = $profile;
 			$this->profile = new YumProfile;
@@ -660,11 +665,18 @@ class YumUser extends YumActiveRecord
 		return $returnarray;
 	}
 
+	public function getGravatarHash() {
+		return md5(strtolower(trim($this->profile->email)));		
+	}
+
 	public function getAvatar($thumb = false)
 	{
 		if (Yum::hasModule('avatar') && $this->profile) {
 			$return = '<div class="avatar">';
 
+			if(Yum::module('avatar')->enableGravatar && $this->avatar == 'gravatar') 
+				return CHtml::image('http://www.gravatar.com/avatar/'. $this->getGravatarHash(), '');
+		
 			$options = array();
 			if ($thumb)
 				$options = array('style' => 'width: 50px; height:50px;');

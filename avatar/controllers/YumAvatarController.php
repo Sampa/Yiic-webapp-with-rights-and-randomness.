@@ -14,6 +14,14 @@ class YumAvatarController extends YumController {
 					'//profile/profile/view', 'id' => $model->id));	
 	}
 
+	public function actionEnableGravatar() {
+		$model = YumUser::model()->findByPk(Yii::app()->user->id);
+		$model->avatar = 'gravatar';
+		$model->save();
+		$this->redirect(array(
+					'//profile/profile/view', 'id' => $model->id));	
+	}
+
 	public function beforeAction($action) {
 		// Disallow guests
 		if(Yii::app()->user->isGuest)

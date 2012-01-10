@@ -15,6 +15,8 @@ class AvatarModule extends CWebModule {
 	public $avatarThumbnailWidth = 50; // For display in user browse, friend list
 	public $avatarDisplayWidth = 200;
 
+	public $enableGravatar = true;
+
 	public $controllerMap=array(
 		'avatar'=>array('class'=>'AvatarModule.controllers.YumAvatarController'),
 	);

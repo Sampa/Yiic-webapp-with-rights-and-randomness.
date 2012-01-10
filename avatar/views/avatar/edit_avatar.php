@@ -29,6 +29,11 @@ if(Yum::module('avatar')->avatarMaxWidth != 0)
 	echo CHtml::activeFileField($model, 'avatar');
 	echo CHtml::error($model, 'avatar');
 	echo '</div>';
+	if(Yum::module('avatar')->enableGravatar) 
+	echo CHtml::Button(Yum::t('Use my Gravatar'), array(
+				'submit' => array(
+					'avatar/enableGravatar')));
+
 	echo CHtml::Button(Yum::t('Remove Avatar'), array(
 				'submit' => array(
 					'avatar/removeAvatar')));

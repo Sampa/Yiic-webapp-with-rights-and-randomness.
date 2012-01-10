@@ -7,6 +7,7 @@ INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `categor
 ('Create new Translation', 'Neue Übersetzung erstellen', 'de', 'yum'),
 ('Translations have been saved', 'Die Übersetzungen wurden gespeichert', 'de', 'yum'),
 ('Category', 'Kategorie', 'de', 'yum'),
+('Use my Gravatar', 'Meinen Gravatar benutzen', 'de', 'yum'),
 ('Translation', 'Übersetzung', 'de', 'yum'),
 ('New translation', 'Neue Übersetzung', 'de', 'yum'),
 ('Text translations', 'Übersetzungstexte', 'de', 'yum'),
