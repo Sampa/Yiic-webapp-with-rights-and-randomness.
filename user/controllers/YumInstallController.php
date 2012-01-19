@@ -146,7 +146,7 @@ class YumInstallController extends YumController
 						$createdTables['usergroup']['usergroupMessagesTable'] = $usergroupMessagesTable;
 					}
 
-					// Install Membership Management submodule 
+					// Install Membership Management submodule
 					if (isset($_POST['installMembership'])) {
 						$sql = "CREATE TABLE IF NOT EXISTS `{$membershipTable}` (
 							`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -300,7 +300,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
-						$createdTables['role']['userHasRoleTable'] = $userRoleTable;
+						$createdTables['role']['userRoleTable'] = $userRoleTable;
 
 						// Install permission support (at the end will it be a submodule?)
 						if (isset($_POST['installPermission'])) {

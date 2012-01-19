@@ -9,7 +9,7 @@ class RoleModule extends CWebModule {
 
 	public $layout = 'application.modules.user.views.layouts.yum';
 
-	public $rolesTable = '{{role}}';
+	public $roleTable = '{{role}}';
 	public $permissionTable = '{{permission}}';
 	public $actionTable = '{{action}}';
 	public $userRoleTable = '{{user_role}}';
