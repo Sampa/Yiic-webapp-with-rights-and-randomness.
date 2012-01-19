@@ -14,7 +14,7 @@ class YumUserIdentity extends CUserIdentity {
 	public function authenticateFacebook() {
 		$fbconfig = Yum::module()->facebookConfig;
 		if (!$fbconfig || $fbconfig && !is_array($fbconfig))
-			throw new Exception('actionLogout for Facebook was called, but is not activated in application configuration.php');
+			throw new Exception('actionLogout for Facebook was called, but is not activated in application configuration');
 
 		Yii::import('application.modules.user.vendors.facebook.*');
 		require_once('Facebook.php');
@@ -138,7 +138,7 @@ class YumUserIdentity extends CUserIdentity {
 			$this->errorCode=self::ERROR_STATUS_BANNED;
 		else if($user->status == YumUser::STATUS_REMOVED)
 			$this->errorCode=self::ERROR_STATUS_REMOVED;
-		else 
+		else
 			$this->credentialsConfirmed($user);
 		return !$this->errorCode;
 

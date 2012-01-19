@@ -18,9 +18,9 @@ class UserModule extends CWebModule {
 
 	// configuration related control vars
 	public $enableLogging = true;
-	public $enableOnlineStatus = true; 
-	
-	// After how much seconds without an action does a user gets indicated as 
+	public $enableOnlineStatus = true;
+
+	// After how much seconds without an action does a user gets indicated as
 	// offline? Note that, of course, clicking the Logout button will indicate
 	// him as offline instantly anyway.
 	public $offlineIndicationTime = 3600; // 5 Minutes
@@ -56,7 +56,7 @@ class UserModule extends CWebModule {
 	public $salt = '';
 	 // valid callback function for password hashing ie. sha1
 	public $hashFunc = 'md5';
-	
+
 	// valid callback function that executes after user login
 	public $afterLogin = false;
 
@@ -72,7 +72,7 @@ class UserModule extends CWebModule {
 	// make it more compatible with other rdbms.
 	public $avoidSql = false;
 
-	// When the auditTrail extension  
+	// When the auditTrail extension
 	// (http://www.yiiframework.com/extension/audittrail)
 	// is installed, use it. It simply appends the LoggableBehavior to
 	// all Yum-classes, so they get logged.
@@ -83,8 +83,8 @@ class UserModule extends CWebModule {
 
 	// Use this to set dhcpOptions if using authentication over LDAP
 	public $ldapOptions = array(
-			'ldap_host' => '', 
-			'ldap_port' => '', 
+			'ldap_host' => '',
+			'ldap_port' => '',
 			'ldap_basedn' => '',
 			'ldap_protocol' => '',
 			'ldap_autocreate' => '',
@@ -108,9 +108,11 @@ class UserModule extends CWebModule {
 			'activate' => '/user/resend_activation',
 			'message' => '/user/message',
 			'passwordForm' => '/user/_activation_passwordform',
-			'messageCompose' =>'application.modules.user.views.messages.compose');
+			'messageCompose' =>'application.modules.message.views.message.compose');
 
 	// LoginType :
+	// If you want to activate many types of login just sum up the values below and assign them to 'loginType' in
+	// the user module configuration.
 	const LOGIN_BY_USERNAME		= 1;
 	const LOGIN_BY_EMAIL		= 2;
 	const LOGIN_BY_OPENID		= 4;
@@ -233,7 +235,7 @@ class UserModule extends CWebModule {
 
 		if(method_exists(Yii::app()->user, 'isAdmin') && Yii::app()->user->isAdmin())
 			$controller->layout = Yum::module()->adminLayout;
-			
+
 		return parent::beforeControllerAction($controller, $action);
 	}
 
