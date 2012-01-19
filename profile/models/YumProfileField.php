@@ -1,8 +1,8 @@
 <?php
 /**
- * This is the model class for table "{{profile_fields}}".
+ * This is the model class for table "{{profile_field}}".
  *
- * The followings are the available columns in table '{{profile_fields}}':
+ * The followings are the available columns in table '{{profile_field}}':
  * Fields:
  * @property integer $id
  * @property string $varname
@@ -19,9 +19,9 @@
  * @property string $default
  * @property integer $position
  * @property integer $visible
- * 
+ *
  * Relations
- * 
+ *
  * Scopes:
  * @method YumProfileField forAll
  * @method YumProfileField forUser
@@ -67,9 +67,9 @@ class YumProfileField extends YumActiveRecord
 	 * Following algorithm of searching valid table name is implemented:
 	 *  - try to find out table name stored in currently used module
 	 *  - if not found try to get table name from UserModule configuration
-	 *  - if not found user default {{profile_fields}} table name
+	 *  - if not found user default {{profile_field}} table name
 	 * @return string
-	 */	
+	 */
   	public function tableName()
   	{
     	if (isset(Yum::module('profile')->profileFieldsTable))
@@ -77,7 +77,7 @@ class YumProfileField extends YumActiveRecord
     	elseif (isset(Yii::app()->modules['user']['profileFieldsTable']))
       		$this->_tableName = Yii::app()->modules['user']['profileFieldsTable'];
     	else
-      		$this->_tableName = '{{profile_fields}}'; // fallback if nothing is set
+      		$this->_tableName = '{{profile_field}}'; // fallback if nothing is set
 
     	return Yum::resolveTableName($this->_tableName,$this->getDbConnection());
   	}
@@ -121,7 +121,7 @@ class YumProfileField extends YumActiveRecord
 			'visible' => Yum::t('Visible'),
 		);
 	}
-	
+
 	public function scopes()
     {
         return array(
@@ -137,7 +137,7 @@ class YumProfileField extends YumActiveRecord
         );
     }
 
-	
+
 	public static function itemAlias($type,$code=NULL) {
 		$_items = array(
 			'field_type' => array(

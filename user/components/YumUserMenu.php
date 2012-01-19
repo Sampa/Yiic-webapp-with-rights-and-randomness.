@@ -21,7 +21,7 @@ class YumUserMenu extends CPortlet {
 	}
 
 	public function getMenuItems() {
-		return array( 
+		return array(
 				array('label' => 'Profile', 'visible' => Yum::hasModule('profile'), 'items' => array(
 						array('label' => 'My profile', 'url' => array(
 								'//profile/profile/view')),
@@ -45,10 +45,10 @@ class YumUserMenu extends CPortlet {
 					),
 
 				array('label' => 'Messages',
-					'visible' => Yum::hasModule('messages'),
-					'items' => array ( 
-						array('label' => 'My inbox', 'url' => array('/messages/messages/index')),
-						array('label' => 'Sent messages', 'url' => array('/messages/messages/sent')),
+					'visible' => Yum::hasModule('message'),
+					'items' => array (
+						array('label' => 'My inbox', 'url' => array('/message/message/index')),
+						array('label' => 'Sent messages', 'url' => array('/message/message/sent')),
 						),
 					),
 

@@ -21,9 +21,9 @@ class YumAdminMenu extends CPortlet {
 	}
 
 	public function getMenuItems() {
-		return array( 
+		return array(
 				array('label'=>'Users', 'items' => array(
-						array('label'=> 'Statistics', 'url'=>array('//user/statistics/index')), 
+						array('label'=> 'Statistics', 'url'=>array('//user/statistics/index')),
 						array('label' => 'Administration', 'url' => array('//user/user/admin')),
 						array('label' => 'Create new user', 'url' => array('//user/user/create')),
 						array('label' => 'Generate Demo Data', 'url' => array('//user/user/generateData'), 'visible' => Yum::module()->debug),
@@ -54,11 +54,11 @@ class YumAdminMenu extends CPortlet {
 							)
 						),
 				array('label' => 'Messages',
-						'visible' => Yum::hasModule('messages'),
-						'items' => array ( 
-							array('label' => 'Admin inbox', 'url' => array('/messages/messages/index')),
-							array('label' => 'Sent messages', 'url' => array('/messages/messages/sent')),
-							array('label' => 'Write a message', 'url' => array('/messages/messages/compose')),
+						'visible' => Yum::hasModule('message'),
+						'items' => array (
+							array('label' => 'Admin inbox', 'url' => array('/message/message/index')),
+							array('label' => 'Sent messages', 'url' => array('/message/message/sent')),
+							array('label' => 'Write a message', 'url' => array('/message/message/compose')),
 							),
 						),
 				array('label' => 'Text translations', 'url' => array('//user/translation/admin')),

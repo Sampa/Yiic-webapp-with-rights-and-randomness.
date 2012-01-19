@@ -13,12 +13,12 @@ if(Yum::hasModule('profile') && Yum::module('profile')->enablePrivacySetting) {
 
 printf($template, Yum::t('Username'), $data->username);
 
-printf($template, Yum::t('First visit'), date(UserModule::$dateFormat, $data->createtime)); 
-printf($template, Yum::t('Last visit'), date(UserModule::$dateFormat, $data->lastvisit)); 
+printf($template, Yum::t('First visit'), date(UserModule::$dateFormat, $data->createtime));
+printf($template, Yum::t('Last visit'), date(UserModule::$dateFormat, $data->lastvisit));
 
 if(Yum::hasModule('messages')){
 	echo CHtml::link(Yum::t('Write a message'), array(
-				'//messages/messages/compose', 'to_user_id' => $data->id)) . '<br />';
+				'//message/message/compose', 'to_user_id' => $data->id)) . '<br />';
 }
 
 if(Yum::hasModule('profile')){

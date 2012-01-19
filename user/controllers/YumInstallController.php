@@ -346,7 +346,7 @@ class YumInstallController extends YumController
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 
 						$db->createCommand($sql)->execute();
-						$createdTables['messages']['messageTable'] = $messageTable;
+						$createdTables['message']['messageTable'] = $messageTable;
 					}
 
 					// Generate demo data

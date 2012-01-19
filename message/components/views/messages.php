@@ -8,9 +8,9 @@ if($messages) {
 		printf('<tr><td class="first-row">%s</td><td style="padding-left: 10px;" class="last-row">%s</td></tr>',
 				substr($message->from_user->username, 0, 10),
 				CHtml::link(substr($message->title, 0, 40), array
-					('//messages/messages/view', 'id' => $message->id)));
+					('//message/message/view', 'id' => $message->id)));
 	}
 	echo '</table>';
 } else
-echo Yum::t('No new messages'); 
+echo Yum::t('No new messages');
 ?>

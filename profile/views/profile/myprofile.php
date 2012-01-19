@@ -19,7 +19,7 @@ $this->renderPartial('/messages/new_messages');?>
     <td><?php echo CHtml::encode($model->username); ?>
 </td>
 </tr>
-<?php 
+<?php
 }
 		$profileFields = YumProfileField::model()->forOwner()->sort()->with('group')->together()->findAll();
 		if ($profileFields && Yum::hasModule('profile')) {
@@ -29,7 +29,7 @@ $this->renderPartial('/messages/new_messages');?>
 			<tr>
 				<th class="label"><?php echo CHtml::encode(Yum::t($field->title)); ?>
 				</th>
-				<td><?php 
+				<td><?php
 				if(is_object($model->profile->{ucfirst($field->varname)}))
 					echo CHtml::encode($model->profile->{ucfirst($field->varname)}->{$field->related_field_name}); ?>
 						</td>
@@ -89,7 +89,7 @@ foreach($friends as $friend) {
 $model->renderAvatar($friend);
 ?>
 <div id='user'>
-<?php 
+<?php
 echo CHtml::link(ucwords($friend->username),
 		Yii::app()->createUrl('profile/profile/view',array(
 				'id'=>$friend->id)));
@@ -129,7 +129,7 @@ echo CHtml::link(ucwords($friend->username),
 					date($format, $visit->timestamp_last_visit),
 					$visit->num_of_visits,
 					CHtml::link(Yum::t('Write a message'), array(
-							'//messages/messages/compose',
+							'//message/message/compose',
 							'to_user_id' => $visit->visitor_id))
 					);
 			}

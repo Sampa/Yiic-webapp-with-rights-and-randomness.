@@ -3,10 +3,10 @@ $this->title = Yum::t('My friends');
 $this->breadcrumbs = array(Yum::t('Friends'));
 
 
-			
+
 if($friends) {
 	echo '<div class="view-light">';
-	
+
 	echo '<table width="100%">';
 
 	foreach($friends as $friend) {
@@ -14,7 +14,7 @@ if($friends) {
 $form=$this->beginWidget('CActiveForm', array(
 			'id'=>'groups-form',
 			'enableAjaxValidation'=>false,
-			)); 
+			));
 
 		echo CHtml::activeHiddenField($friend, 'inviter_id');
 		echo CHtml::activeHiddenField($friend, 'friend_id');
@@ -44,11 +44,11 @@ $form=$this->beginWidget('CActiveForm', array(
 					$label->getAvatar(true),
 					CHtml::link($label->username, array(
 							'//profile/profile/view', 'id'=>$label->id)),
-					$friend->getStatus(), 
+					$friend->getStatus(),
 					CHtml::link(Yum::t('Write a message'), array(
-							'//messages/messages/compose', 'to_user_id'=>$label->id)),
+							'//message/message/compose', 'to_user_id'=>$label->id)),
 							$friend->status != 3 ? $options : ''
-							
+
 							);
 
 $this->endWidget();

@@ -3,7 +3,7 @@ application configuration like this:
 
 
 		'modules' => array(
-				'messages' => array(
+				'message' => array(
 					[...]
 					),
 				'user' => array(
@@ -12,6 +12,6 @@ application configuration like this:
 				);
 
 
-See the file messages/MessagesModule.php for possible configuration options.
+See the file message/MessageModule.php for possible configuration options.
 
 
