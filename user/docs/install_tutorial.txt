@@ -7,7 +7,7 @@ under an existing application is identical to these instructions.
 
 1.) Generate your Webapp:
 
-$ php yii-1.1.7/framework/yiic webapp testdrive
+$ php yii-1.1.9/framework/yiic webapp testdrive
 Create a Web application under '/var/www/testdrive'? [Yes|No] Yes
 
 [...]
@@ -109,27 +109,30 @@ role. This is explained in the detailed Documentation. It is good to let this
 line occur as the first included Model, so you can extend the User-Model with 
 your own in your Application models/ Directory if you like.
 
-Congratulations, you have installed the User Management Module!
+8.) Make sure to set a caching component. Yum relies on it. If you do not
+want to cache, add
 
-8.) Click on "Administrate your Users"
+	'components' => array(
+			'cache' => array('class' => 'system.caching.CDummyCache'),
+
+to your config/main.php.
+
+Also see http://www.yiiframework.com/doc/guide/1.1/en/caching.overview about
+some general information about caching in yii.
+
+9.) Congratulations, you have installed the User Management Module! Lets
+tidy up a little bit:
+
+10.) Click on "Administrate your Users"
 Now you are taken to the default Front-End Login-Screen of the User 
 Management Module. Log in with the Username admin and Password admin.
 
-9.) Click on the 'update Icon' (the pencil) of your administrator User.
+11.) Click on the 'update Icon' (the pencil) of your administrator User.
 Change the Password to something more safe than 'admin'. Click Save.
 
-10.) If you already didn't do it, remove the 'debug' => 'true' line from youri
+12.) If you already didn't do it, remove the 'debug' => 'true' line from youri
 Application Configuration so your new data doesn't get overwritten accidentally
 by the installation process.
-
-11.) Add a caching component to your application! Since yii-user-management
-version 0.8 translation strings are not stored in php files, but in the
-translation database table! To avoid executing a SQL query on every request,
-please activate a caching component.
-
-See http://www.yiiframework.com/doc/guide/1.1/en/caching.overview on how to do this.
-
-
 
 Configuration of your freshly installed User Management Module:
 ---------------------------------------------------------------
@@ -231,3 +234,16 @@ A: Submodules are supported by yii, but having a path like
 application.modules.user.modules.role.controllers.YumRoleController
 really looks strange, so we decided it is better to keep all modules inside
 the root modules/ directory.
+
+Q: I get the following error while installing:
+General error: 2014 Cannot execute queries while other unbuffered queries are active
+
+A: thanks to NetDabbler, there is a workaround:
+
+Comment the folowing lines in YumInstallController.php
+// $sql = file_get_contents(Yii::getPathOfAlias('application.modules.user.docs') . '/yum_translation.sql');
+// $db->createCommand($sql)->execute();
+
+Insert the translation data manually in a cmd window as:
+mysql -u yourusername -p testyum < docs/yum_translation.sql
+

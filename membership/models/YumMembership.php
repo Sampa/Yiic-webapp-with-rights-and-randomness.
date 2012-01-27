@@ -56,6 +56,37 @@ class YumMembership extends YumActiveRecord{
 		return 'id';
 	}
 
+	public function timeLeft() {
+		if($this->end_date < time())
+			return Yum::t('Expired');
+
+		$seconds = time() - $this->end_date;
+
+		$delay = array();
+
+		foreach( array( 86400, 3600, 60) as $increment) {
+			$difference = abs(round($seconds / $increment));
+			$seconds %= $increment;
+
+			$delay[] = $difference;
+
+		}
+
+		$timeleft = Yum::t('{days} D, {hours} H, {minutes} M', array(
+					'{days}' => $delay[0],
+					'{hours}' => $delay[1],
+					'{minutes}' => $delay[2],
+					));
+
+		// Mark memberships that expire in less than 30 days red 
+		if($delay[0] < 30)
+			return '<div style="background-color: red;margin: 2px;">'.$timeleft.'</div>';
+		else
+			return $timeleft;
+
+
+	}
+
 	public function rules()
 	{
 		return array(

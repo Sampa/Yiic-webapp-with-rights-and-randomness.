@@ -208,12 +208,15 @@ class YumAuthController extends YumController {
 	public function loginByEmail() {
 		if(Yum::hasModule('profile')) {
 			Yii::import('application.modules.profile.models.*');
+
 			$profile = YumProfile::model()->find('email = :email', array(
 						':email' => $this->loginForm->username));
+
 			if($profile && $profile->user)
 				return $this->authenticate($profile->user);
 		} else
-			throw new CException('The profile submodule must be enabled to allow login by Email');
+			throw new CException(Yum::t(
+					'The profile submodule must be enabled to allow login by Email'));
 	}
 
 	public function loginByOpenid() {
@@ -232,7 +235,7 @@ class YumAuthController extends YumController {
 	}
 
 	public function actionLogin() {
-		// If the user is already logged in send them to the users logged homepage
+		// If the user is already logged in send them to the return Url 
 		if (!Yii::app()->user->isGuest)
 			$this->redirect(Yum::module()->returnUrl);
 
@@ -253,40 +256,43 @@ class YumAuthController extends YumController {
 		$login_type = null;
 		if (isset($_POST['YumUserLogin'])) {
 			$this->loginForm->attributes = $_POST['YumUserLogin'];
+			$t = Yum::module()->loginType;
+
 			// validate user input for the rest of login methods
 			if ($this->loginForm->validate()) {
-				if (Yum::module()->loginType & UserModule::LOGIN_BY_USERNAME) {
+				if ($t & UserModule::LOGIN_BY_USERNAME) {
 					$success = $this->loginByUsername();
 					if ($success)
 						$login_type = 'username';
 				}
-				if (Yum::module()->loginType & UserModule::LOGIN_BY_EMAIL && !$success) {
+				if ($t & UserModule::LOGIN_BY_EMAIL && !$success) {
 					$success = $this->loginByEmail();
 					if ($success)
 						$login_type = 'email';
 				}
-				if (Yum::module()->loginType & UserModule::LOGIN_BY_OPENID && !$success) {
+				if ($t & UserModule::LOGIN_BY_OPENID && !$success) {
 					$this->loginForm->setScenario('openid');
 					$success = $this->loginByOpenid();
 					if ($success)
 						$login_type = 'openid';
 				}
-				if(Yum::module()->loginType & UserModule::LOGIN_BY_LDAP && !$success) {
+				if($t & UserModule::LOGIN_BY_LDAP && !$success) {
 					$success = $this->loginByLdap();
 					$action = 'ldap_login';
 					$login_type = 'ldap';
 				}
 			}
-			if (Yum::module()->loginType & UserModule::LOGIN_BY_FACEBOOK && !$success) {
+			if ($t & UserModule::LOGIN_BY_FACEBOOK && !$success) {
 				$success = $this->loginByFacebook();
 				if ($success)
 					$login_type = 'facebook';
 			}
-			if (Yum::module()->loginType & UserModule::LOGIN_BY_TWITTER && !$success) {
+			if ($t & UserModule::LOGIN_BY_TWITTER && !$success) {
 				$sucess = $this->loginByTwitter();
 				if ($success)
 					$login_type = 'twitter';
 			}
+
 			if ($success instanceof YumUser) {
 				//cookie with login type for later flow control in app
 				if ($login_type) {
@@ -306,6 +312,7 @@ class YumAuthController extends YumController {
 				$this->loginForm->addError('username',
 						Yum::t('Login is not possible with the given credentials'));
 		}
+
 
 		$this->render(Yum::module()->loginView, array(
 					'model' => $this->loginForm));

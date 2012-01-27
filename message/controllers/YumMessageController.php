@@ -79,7 +79,10 @@ class YumMessageController extends YumController {
 			}
 		}
 
-		$this->render('compose',array(
+		$fct = 'render';
+		if(Yii::app()->request->isAjaxRequest)
+			$fct = 'renderPartial';	
+		$this->$fct('compose',array(
 			'model'=>$model,
 			'to_user_id' => $to_user_id,
 		));

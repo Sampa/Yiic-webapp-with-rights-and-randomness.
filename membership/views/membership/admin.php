@@ -15,7 +15,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			'dataProvider'=>$model->search(),
 			'filter'=>$model,
 			'columns'=>array(
-				'id',
+				array('name' => 'id',
+					'htmlOptions' => array('style' => 'width: 20px;')),
 				'user.username',
 				'role.title',
 				array(
@@ -35,6 +36,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					),
 				'role.price',
 				'payment.title',
+				array(
+						'header' => Yum::t('Time left'),
+						'value' => '$data->timeLeft()', 
+						'type' => 'raw'),
 				array(
 						'class'=>'CButtonColumn',
 						'template' => '{update}{delete}',

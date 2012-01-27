@@ -4,7 +4,10 @@ SET time_zone = "+00:00";
 
 INSERT IGNORE INTO `translation` (`message`, `translation`, `language`, `category`) VALUES
   ('Fields with <span class=\"required\">*</span> are required.', 'Felder mit <span class=\"required\">*</span> sind Pflichtfelder.', 'de', 'yum'),
+('Time left', 'Zeit übrig', 'de', 'yum'),
 ('Create new Translation', 'Neue Übersetzung erstellen', 'de', 'yum'),
+('Expired', 'Abgelaufen', 'de', 'yum'),
+('{days} D, {hours} H, {minutes} M', '{days} T, {hours} S, {minutes} M', 'de', 'yum'),
 ('Translations have been saved', 'Die Übersetzungen wurden gespeichert', 'de', 'yum'),
 ('Category', 'Kategorie', 'de', 'yum'),
 ('Use my Gravatar', 'Meinen Gravatar benutzen', 'de', 'yum'),

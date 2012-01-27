@@ -7,7 +7,6 @@ class YumWebUser extends CWebUser
 	// logged in user, for example
 	// echo Yii::app()->user->data()->profile->firstname;
 	public function data() {
-		Yii::import('application.modules.role.models.*');
 		if($this->_data instanceof YumUser)
 			return $this->_data;
 		else if($this->id && $this->_data = YumUser::model()->findByPk($this->id))

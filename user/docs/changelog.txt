@@ -1,6 +1,9 @@
 Changelog for Yii User Management Module (Yum) 
 
 
+New in 0.8-rc6:
+- Added Gravatar support in Avatar submodule
+
 New in 0.8-rc3:
 - Added italian translation (thanks goes to marco@customsoft.it )
 - Moved translation strings away from .php files into the database
