@@ -61,7 +61,7 @@ class YumMessageController extends YumController {
 
 	}
 
-	public function actionCompose($to_user_id = null) {
+	public function actionCompose($to_user_id = null, $answer_to = 0) {
 		$model = new YumMessage;
 		$this->performAjaxValidation('YumMessage', 'yum-message-form');
 
@@ -82,9 +82,11 @@ class YumMessageController extends YumController {
 		$fct = 'render';
 		if(Yii::app()->request->isAjaxRequest)
 			$fct = 'renderPartial';	
+
 		$this->$fct('compose',array(
 			'model'=>$model,
 			'to_user_id' => $to_user_id,
+			'answer_to' => $answer_to,
 		));
 	}
 

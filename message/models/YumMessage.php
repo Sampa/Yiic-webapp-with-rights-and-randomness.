@@ -162,9 +162,14 @@ class YumMessage extends YumActiveRecord
 	public function getTitle()
 	{
 		if($this->message_read)
-			return $this->title;
+			$title = $this->title;
 		else
-			return '<strong>' . $this->title . '</strong>';
+			$title = '<strong>' . $this->title . '</strong>';
+
+		// Pseduo-threaded view
+		if($this->answered > 0)
+			$title = '<span style="padding-left:25px;">'.$title.'</span>';
+		return $title;
 	}
 
 	public function getStatus() {
@@ -206,7 +211,7 @@ class YumMessage extends YumActiveRecord
 				'sent' => array(
 					'condition' => "from_user_id = {$id}"),
 				'answered' => array(
-					'condition' => "to_user_id = {$id} and answered = 1"),
+					'condition' => "to_user_id = {$id} and answered > 0"),
 				);
 	}
 

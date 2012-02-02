@@ -1,6 +1,6 @@
 <?php 
-/*if(!isset($this->title) || $this->title == '')
-	$this->title = Yum::t('Composing new message'); */
+if(!$this->title) 
+	$this->title = Yum::t('Compose new message'); 
 if($this->breadcrumbs == array())
 	$this->breadcrumbs = array(Yum::t('Messages'), Yum::t('Compose'));
 ?>
@@ -11,11 +11,14 @@ if($this->breadcrumbs == array())
 			'id'=>'yum-message-form',
 			'action' => array('//message/message/compose'),
 			'enableAjaxValidation'=>true,
+			'enableClientValidation'=>true,
 			)); ?>
 
 <?php echo Yum::requiredFieldNote(); 
 
 echo $form->errorSummary($model); 
+
+echo CHtml::hiddenField('YumMessage[answered]', $answer_to);
 
 if($to_user_id) {
 	echo CHtml::hiddenField('YumMessage[to_user_id]', $to_user_id);

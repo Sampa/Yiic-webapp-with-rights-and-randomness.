@@ -340,7 +340,7 @@ class YumInstallController extends YumController
 							`title` varchar(255) NOT NULL,
 							`message` text,
 							`message_read` tinyint(1) NOT NULL,
-							`answered` tinyint(1) NOT NULL,
+							`answered` tinyint(1),
 							`draft` tinyint(1) default NULL,
 							PRIMARY KEY  (`id`)
 						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";

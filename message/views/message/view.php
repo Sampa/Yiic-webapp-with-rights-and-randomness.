@@ -31,6 +31,7 @@ if(Yii::app()->user->id != $model->from_user_id) {
 
 	$this->renderPartial('reply', array(
 				'to_user_id' => $model->from_user_id,
+				'answer_to' => $model->id,
 				'model' => $reply));
 	echo '</div>';
 }
