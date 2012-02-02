@@ -11,15 +11,6 @@ Yum::renderFlash();
 
 <div id="profile">
 
-<?php
-if($model->id == Yii::app()->user->id
-		&& Yum::hasModule('message')) {
-	Yii::import('application.modules.message.models.YumMessage');
-	$this->renderPartial(
-			'application.modules.message.views.message.new_messages');
-}
-?>
-
 <?php echo $model->getAvatar(); ?>
 <?php $this->renderPartial(Yum::module('profile')->publicFieldsView, array(
 			'profile' => $model->profile)); ?>
@@ -42,3 +33,11 @@ if(Yum::module('profile')->enableProfileComments
 	$this->renderPartial(Yum::module('profile')->profileCommentIndexView, array(
 			 'model' => $model->profile)); ?>
  </div>
+
+<?php
+ if(!Yii::app()->user->isGuest && Yii::app()->user->id == $model->id) {
+	echo CHtml::link(Yum::t('Edit profile'), array('//profile/profile/update'));
+	echo '&nbsp;';
+	echo CHtml::link(Yum::t('Upload avatar image'), array('//avatar/avatar/editAvatar'));
+}
+
