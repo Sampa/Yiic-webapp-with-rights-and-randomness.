@@ -10,8 +10,8 @@ class YumRole extends YumActiveRecord {
 
 	public function tableName()
 	{
-		if (isset(Yum::module('role')->rolesTable))
-			$this->_tableName = Yum::module('role')->rolesTable;
+		if (isset(Yum::module('role')->roleTable))
+			$this->_tableName = Yum::module('role')->roleTable;
 		else
 			$this->_tableName = '{{role}}'; // fallback if nothing is set
 
@@ -45,6 +45,13 @@ class YumRole extends YumActiveRecord {
 				'managed_by' => array(self::HAS_MANY, 'YumPermission', 'subordinate_id'),
 
 				);
+	}
+
+	public function activeMembership() {
+		return YumMembership::model()->lastFirst()->find(
+				'user_id = :user_id and membership_id = :role_id', array(	
+					':user_id' => Yii::app()->user->id,
+					':role_id' => $this->id));
 	}
 
 	public function activeUsers() {

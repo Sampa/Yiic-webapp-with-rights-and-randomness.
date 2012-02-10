@@ -63,11 +63,14 @@ class YumWebUser extends CWebUser
 
 public function getRoles() {
 	$t = ' ';
-	foreach(Yii::app()->user->data()->roles as $role)
-		$t .= $role->title .' ';
+	$user = Yii::app()->user->data();
+	$roles = $user->roles;
+	if($user instanceof YumUser && $roles) 
+		foreach($roles as $role)
+			$t .= $role->title .' ';
 
 	return $t;
-		
+
 }
 
 	/**

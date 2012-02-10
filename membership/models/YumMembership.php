@@ -21,7 +21,7 @@ class YumMembership extends YumActiveRecord{
 	}
 
 	public function daysLeft() {
-		$difference = $this->end_date - time();
+		$difference = abs($this->end_date - time());
 		return sprintf('%d', (int) $difference / 86400 + 1);
 	}
 
@@ -33,6 +33,12 @@ class YumMembership extends YumActiveRecord{
 
 		return parent::beforeValidate();
 	}
+
+	public function scopes()
+	{
+		return array('lastFirst' => array('order' => 'id DESC'));
+	}
+
 
 	public function afterSave() {
 		if($this->isNewRecord 
@@ -120,6 +126,29 @@ class YumMembership extends YumActiveRecord{
 				);
 	}
 
+	public function sendPaymentConfirmation () {
+		Yii::import('application.modules.message.models.*');
+		return YumMessage::write($this->user, 1,
+				Yum::t('Payment arrived'),
+				YumTextSettings::getText('text_payment_arrived', array(
+						'{payment_date}' => date(Yum::module()->dateTimeFormat, $this->payment_date),
+						'{id}' => $this->id,
+						)));
+
+	}
+
+	public function confirmPayment() {
+		$this->end_date = $this->payment_date + ($this->role->duration * 86400);
+		$this->payment_date = time();
+
+		if($this->save(false)) {
+			$this->sendPaymentConfirmation();
+			return true;
+		} else
+		return false;
+
+	}
+
 	public function search()
 	{
 		$criteria = new CDbCriteria;
@@ -139,4 +168,4 @@ class YumMembership extends YumActiveRecord{
 					'criteria'=>$criteria,
 					));
 	}
-}
+}	

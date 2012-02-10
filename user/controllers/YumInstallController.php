@@ -155,6 +155,10 @@ class YumInstallController extends YumController
 							`payment_id` int(11) NOT NULL,
 							`order_date` int(11) NOT NULL,
 							`end_date` int(11) DEFAULT NULL,
+							`name` varchar(255) DEFAULT NULL,
+							`street` varchar(255) DEFAULT NULL,
+							`zipcode` varchar(255) DEFAULT NULL,
+							`city` varchar(255) DEFAULT NULL,
 							`payment_date` int(11) NULL
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000;";
 

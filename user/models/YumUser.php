@@ -289,7 +289,14 @@ class YumUser extends YumActiveRecord
 		if (!Yum::hasModule('role'))
 			return false;
 
-		foreach ($this->roles as $role)
+		$roles = $this->roles;
+		
+		if(Yum::hasModule('membership')) {
+			foreach($this->getActiveMemberships() as $membership)
+				$roles[] = $membership;
+		}
+
+		foreach ($roles as $role)
 			if ($role->id == $role_title || $role->title == $role_title)
 				return true;
 
@@ -497,10 +504,11 @@ class YumUser extends YumActiveRecord
 			$profile = $this->profile;
 		}
 
-		if ($this->save()) {
+		if (!$this->hasErrors() && !$profile->hasErrors()) {
+			$this->save();
 			$profile->user_id = $this->id;
 			$profile->save();
-			$this->profile = $profile;
+
 			Yum::log(Yum::t('User {username} registered. Generated activation Url is {activation_url} and has been sent to {email}',
 						array(
 							'{username}' => $this->username,

@@ -40,21 +40,8 @@ class YumMembershipController extends YumController {
 		if(isset($_POST['YumMembership'])) {
 			$model = YumMembership::model()->findByPk($_POST['YumMembership']['id']); 
 			$model->attributes = $_POST['YumMembership'];
-			if($model->payment_date == 0)
-				$model->end_date = $model->payment_date + ($model->role->duration * 30.5 * 86400);
-			$model->payment_date = time();
-
-			if($model->save()) {
-				Yii::import('application.modules.messages.models.*');
-				YumMessage::write($model->user, 1,
-						Yum::t('Payment arrived'),
-						YumTextSettings::getText('text_payment_arrived', array(
-								'{payment_date}' => date(Yum::module()->dateTimeFormat, $model->payment_date),
-								'{id}' => $model->id,
-								)));
-
+			if($model->confirmPayment()) 
 				$this->redirect(array('admin'));
-			}
 		}
 
 		$this->render('update',array(
