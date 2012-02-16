@@ -250,7 +250,7 @@ class YumProfile extends YumActiveRecord
 	{
 		if(self::$fields===null)
 		{
-			self::$fields=YumProfileField::model()->cache(500)->findAll();
+			self::$fields=YumProfileField::model()->cache(3600)->findAll();
 			if(self::$fields==null)
 				self::$fields=array();
 		}

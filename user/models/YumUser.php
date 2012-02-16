@@ -289,6 +289,8 @@ class YumUser extends YumActiveRecord
 		if (!Yum::hasModule('role'))
 			return false;
 
+		Yii::import('application.modules.role.models.*');
+
 		$roles = $this->roles;
 		
 		if(Yum::hasModule('membership')) {

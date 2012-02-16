@@ -23,7 +23,7 @@ class UserModule extends CWebModule {
 	// After how much seconds without an action does a user gets indicated as
 	// offline? Note that, of course, clicking the Logout button will indicate
 	// him as offline instantly anyway.
-	public $offlineIndicationTime = 3600; // 5 Minutes
+	public $offlineIndicationTime = 300; // 5 Minutes
 
 	// set to false to enable case insensitive users.
   // for example, demo and Demo would be the same user then
