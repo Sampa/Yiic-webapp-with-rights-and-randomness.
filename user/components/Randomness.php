@@ -72,8 +72,8 @@ class Randomness
 		$r = array();
 
 		// Get some data from mt_rand()
-		for ($i = 0; $i < 16; ++$i)
-			$r[] = pack('V', mt_rand(0, 0xffffffff));
+		for ($i = 0; $i < 32; ++$i)
+			$r[] = pack('S', mt_rand(0, 0xffff));
 
 		// On unixy sustems the numerical values in ps, uptime and iostat ought to be fairly
 		// unpredictable. Gather the non-zero digits from those
