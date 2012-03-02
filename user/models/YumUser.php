@@ -184,7 +184,7 @@ class YumUser extends YumActiveRecord
 	public function setPassword($password)
 	{
 		if ($password != '') {
-			$this->password = YumUser::encrypt($password);
+			$this->password = self::passwordHash($password);
 			$this->lastpasswordchange = time();
 			$this->password_changed = true;
 			if (!$this->isNewRecord)
@@ -193,6 +193,7 @@ class YumUser extends YumActiveRecord
 				return $this;
 		}
 	}
+
 
 	public function afterSave()
 	{
@@ -485,7 +486,7 @@ class YumUser extends YumActiveRecord
 		if ($username !== null && $password !== null) {
 			// Password equality is checked in Registration Form
 			$this->username = $username;
-			$this->password = $this->encrypt($password);
+			$this->password = self::passwordHash($password);
 		}
 		$this->activationKey = $this->generateActivationKey(false, $password);
 		$this->createtime = time();
@@ -649,6 +650,20 @@ class YumUser extends YumActiveRecord
 			throw new CException('Function `' . $hashFunc . '` is not a valid callback for hashing algorithm.');
 
 		return $hashFunc($string);
+	}
+
+	/**
+	 * Generates a password hash from a token string and a salt
+	 *
+	 * @param string $pw The input token, probably a password.
+	 * @param string $salt A salt in the form expected by PHP crypt(). If absent or
+	 * null, a random Blowfish hash salt is used.
+	 * @return string
+	 */
+	public static function passwordHash($pw, $salt = null) {
+		return $salt === null
+			? crypt($pw, Randomness::blowfishSalt(10, false))
+			: crypt($pw, $salt);
 	}
 
 	public function limit($limit = 10)

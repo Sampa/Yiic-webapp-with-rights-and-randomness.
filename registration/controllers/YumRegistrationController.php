@@ -177,7 +177,7 @@ class YumRegistrationController extends YumController {
 					if (isset($_POST['YumUserChangePassword'])) {
 						$passwordform->attributes = $_POST['YumUserChangePassword'];
 						if ($passwordform->validate()) {
-							$user->password = YumUser::encrypt($passwordform->password);
+							$user->password = YumUser::passwordHash($passwordform->password);
 							$user->activationKey = YumUser::encrypt(microtime() . $passwordform->password);
 							$user->save();
 							Yum::setFlash('Your new password has been saved.');

@@ -357,8 +357,8 @@ class YumInstallController extends YumController
 
 					$sql = "INSERT INTO `" . $userTable
 					   ."` (`id`, `username`, `password`, `activationKey`, `createtime`, `lastvisit`, `superuser`, `status`) VALUES "
-					   ."(1, 'admin', '" . YumUser::encrypt('admin') . "', '', " . time() . ", 0, 1, 1),"
-					   ."(2, 'demo', '" . YumUser::encrypt('demo') . "', '', " . time() . ", 0, 0, 1)";
+					   ."(1, 'admin', '" . YumUser::passwordHash('admin') . "', '', " . time() . ", 0, 1, 1),"
+					   ."(2, 'demo', '" . YumUser::passwordHash('demo') . "', '', " . time() . ", 0, 0, 1)";
 					$db->createCommand($sql)->execute();
 
 					if (isset($_POST['installMembership'])) {

@@ -40,7 +40,7 @@ class YumUserController extends YumController {
 				$user = new YumUser();
 				$user->username = sprintf('Demo_%d_%d', rand(1, 50000), $i);
 				$user->roles = array($_POST['role']);
-				$user->password = YumUser::encrypt($_POST['password']);
+				$user->password = YumUser::passwordHash($_POST['password']);
 				$user->createtime = time();
 				$user->status = $_POST['status'];
 
@@ -115,7 +115,8 @@ class YumUserController extends YumController {
 			$form->attributes = $_POST['YumUserChangePassword'];
 			$form->validate();
 
-			if(YumUser::encrypt($form->currentPassword) != YumUser::model()->findByPk($uid)->password)
+			$currentPwHash = YumUser::model()->findByPk($uid)->password;
+			if(YumUser::passwordHash($form->currentPassword, $currentPwHash) !== $currentPwHash)
 				$form->addError('currentPassword',
 						Yum::t('Your current password is not correct'));
 
